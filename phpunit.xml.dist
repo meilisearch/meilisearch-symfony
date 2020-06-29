@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true" bootstrap="vendor/autoload.php" convertDeprecationsToExceptions="false">
+    <php>
+        <env name="KERNEL_CLASS" value="MeiliSearch\Bundle\Test\Kernel"/>
+        <env name="APP_ENV" value="test"/>
+        <env name="APP_DEBUG" value="false"/>
+        <env name="MEILISEARCH_PREFIX" value="sf_phpunit_"/>
+        <env name="MEILISEARCH_URL" value="http://127.0.0.1:7700"/>
+        <env name="MEILISEARCH_MASTER_KEY" value="masterKey"/>
+        <env name="TRAVIS_JOB_NUMBER" value=""/>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>
+    </php>
+    <testsuites>
+        <testsuite name="TestCase">
+            <directory suffix=".php">tests/TestCase/</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory>src/</directory>
+            <exclude>
+                <file>src/DependencyInjection/MeiliSearchExtension.php</file>
+                <file>src/Services/NullSearchService.php</file>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>

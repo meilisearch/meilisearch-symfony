@@ -1,0 +1,49 @@
+<?php
+
+namespace MeiliSearch\Bundle\Command;
+
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+
+/**
+ * Class MeiliSearchClearCommand.
+ *
+ * @package MeiliSearch\Bundle\Command
+ */
+final class MeiliSearchClearCommand extends IndexCommand
+{
+    /** @var string */
+    protected static $defaultName = 'meili:clear';
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configure()
+    {
+        $this
+            ->setDescription('Clear the index documents')
+            ->addOption('indices', 'i', InputOption::VALUE_OPTIONAL, 'Comma-separated list of index names');
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $indexToClear = $this->getEntitiesFromArgs($input, $output);
+
+        foreach ($indexToClear as $indexName => $entity) {
+            $className = $entity['name'];
+            $array = $this->searchService->clear($className);
+            if ('processed' === $array['status']) {
+                $output->writeln(
+                    'Cleared <info>'.$indexName.'</info> index of <comment>'.$className.'</comment> '
+                );
+            } else {
+                $output->writeln('<error>Index <info>'.$indexName.'</info>  couldn\'t be cleared</error>');
+            }
+        }
+
+        $output->writeln('<info>Done!</info>');
+
+        return 0;
+    }
+}

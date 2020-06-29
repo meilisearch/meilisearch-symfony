@@ -1,0 +1,22 @@
+meili_search:
+    prefix: '%env(MEILISEARCH_PREFIX)%_'
+    nbResults: 12
+    batchSize: 100
+    indices:
+        -   name: posts
+            class: 'MeiliSearch\Bundle\Test\Entity\Post'
+            enable_serializer_groups: true
+            settings:
+                stopWords: ['the', 'a', 'an']
+                attributesForFaceting: ['title', 'publishedAt']
+        -   name: comments
+            class: 'MeiliSearch\Bundle\Test\Entity\Comment'
+        -   name: contents
+            class: 'MeiliSearch\Bundle\Test\Entity\ContentAggregator'
+            index_if: isVisible
+        -   name: tags
+            class: 'MeiliSearch\Bundle\Test\Entity\Tag'
+            index_if: isPublic
+        -   name: links
+            class: 'MeiliSearch\Bundle\Test\Entity\Link'
+            index_if: isSponsored

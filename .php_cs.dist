@@ -1,0 +1,33 @@
+<?php
+
+if (!file_exists(__DIR__.'/src')) {
+    exit(0);
+}
+
+return PhpCsFixer\Config::create()
+    ->setRules(
+        [
+            '@Symfony' => true,
+            '@Symfony:risky' => true,
+            '@PHPUnit75Migration:risky' => true,
+            'php_unit_dedicate_assert' => ['target' => 'newest'],
+            'array_syntax' => ['syntax' => 'short'],
+            'fopen_flags' => false,
+            'protected_to_private' => false,
+            'combine_nested_dirname' => true,
+            'global_namespace_import' => [
+                'import_classes' => true,
+                'import_constants' => true,
+                'import_functions' => true,
+            ],
+            'phpdoc_no_package' => false,
+            'no_superfluous_phpdoc_tags' => false,
+            'ordered_imports' => ['sortAlgorithm' => 'none'],
+        ]
+    )
+    ->setRiskyAllowed(true)
+    ->setFinder(
+        PhpCsFixer\Finder::create()
+            ->in(__DIR__.'/src')
+            ->append([__FILE__])
+    );

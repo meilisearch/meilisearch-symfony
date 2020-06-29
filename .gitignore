@@ -1,0 +1,7 @@
+.idea
+/composer.lock
+/vendor/
+.phpunit.result.cache
+/var/
+.php_cs.cache
+/tests/cache/blog.sqlite

@@ -1,0 +1,18 @@
+version: '3.4'
+services:
+    php:
+        build:
+            context: .
+            target: php
+        volumes:
+            - .:/usr/src:rw,cached
+        depends_on:
+            - meilisearch
+
+    meilisearch:
+        image: getmeili/meilisearch
+        command: ./meilisearch --master-key=masterKey
+        ports:
+            -   target: 7700
+                published: 7700
+                protocol: tcp

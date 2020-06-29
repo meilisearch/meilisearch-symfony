@@ -1,0 +1,55 @@
+{
+    "name": "meilisearch/meilisearch-bundle",
+    "description": "Seamless integration of MeiliSearch into your Symfony project.",
+    "keywords": [
+        "meilisearch",
+        "instant",
+        "search",
+        "api",
+        "symfony",
+        "bundle"
+    ],
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "David Sanchez",
+            "email": "david38sanchez@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "ext-json": "*",
+        "meilisearch/meilisearch-php": "^0.11",
+        "symfony/filesystem": "^4.0 || ^5.0",
+        "symfony/property-access": "^4.0 || ^5.0",
+        "symfony/serializer": "^4.0 || ^5.0"
+    },
+    "require-dev": {
+        "doctrine/doctrine-bundle": "^2.0",
+        "doctrine/orm": "^2.5",
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "jms/serializer-bundle": "^3.0",
+        "phpunit/phpunit": "^8.5",
+        "symfony/doctrine-bridge": "^4.0 || ^5.0",
+        "symfony/phpunit-bridge": "^4.0 || ^5.0",
+        "symfony/yaml": "^4.0 || ^5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "MeiliSearch\\Bundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MeiliSearch\\Bundle\\Test\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "test:unit": "phpunit --colors=always --verbose",
+        "test:lint": "php-cs-fixer fix -v --config=.php_cs.dist --using-cache=no --dry-run"
+    }
+}

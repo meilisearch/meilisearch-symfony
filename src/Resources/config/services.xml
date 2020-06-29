@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <prototype namespace="MeiliSearch\Bundle\Command\" resource="../../Command" autowire="true"
+                   autoconfigure="true"/>
+
+        <service id="MeiliSearch\Bundle\Command\MeiliSearchImportCommand" autowire="true" autoconfigure="true"/>
+
+        <service id="search.search_indexer_subscriber"
+                 class="MeiliSearch\Bundle\EventListener\MeiliSearchIndexerSubscriber"
+                 public="true">
+            <argument type="service" id="search.service"/>
+            <argument type="collection"/> <!-- doctrine subscribed events -->
+            <tag name="doctrine.event_subscriber"/>
+            <tag name="doctrine_mongodb.odm.event_subscriber"/>
+        </service>
+
+        <service id="search.client" class="MeiliSearch\Client" public="true" lazy="true">
+            <argument key="$url">%env(MEILISEARCH_URL)%</argument>
+            <argument key="$api_key">%env(MEILISEARCH_MASTER_KEY)%</argument>
+        </service>
+
+        <service id="MeiliSearch\Client" alias="search.client"/>
+
+        <service id="MeiliSearch\Bundle\SearchService" alias="search.service"/>
+    </services>
+</container>
