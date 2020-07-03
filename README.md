@@ -31,12 +31,11 @@
 - [✨ Features](#-features)
 - [📖 Documentation](#-documentation)
 - [⚙️ Development Workflow](#️-development-workflow)
-  - [Run DOcker environment](#run-docker-environment)
+  - [Run Docker environment](#run-docker-environment)
   - [Release](#release)
 
 ## 🤖 Compatibility with MeiliSearch
 This package is compatible with the following MeiliSearch versions:
-- `v0.12.X`
 - `v0.11.X`
 
 ## ✨ Features
