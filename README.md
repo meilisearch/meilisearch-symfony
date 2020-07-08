@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://drive.google.com/uc?export=view&id=16hFZW-htUOv26djSxxxr8yhyLkRrM5-i" alt="MeiliSearch-Symfony" width="200" height="200" />
+  <img src="https://raw.githubusercontent.com/meilisearch/integration-guides/master/assets/logos/meilisearch_symfony.svg" alt="MeiliSearch-Symfony" width="200" height="200" />
 </p>
 
 <h1 align="center">MeiliSearch Symfony Bundle</h1>
@@ -23,7 +23,7 @@
 
 <p align="center">⚡ Lightning Fast, Ultra Relevant, and Typo-Tolerant Search Engine MeiliSearch Symfony Bundle</p>
 
-**MeiliSearchBundle** is a Bundle to integrate **MeiliSearch** within your Symfony Project.   
+**MeiliSearchBundle** is a Bundle to integrate **MeiliSearch** within your Symfony Project.
 **MeiliSearch** is a powerful, fast, open-source, easy to use and deploy search engine. Both searching and indexing are highly customizable. Features such as typo-tolerance, filters, and synonyms are provided out-of-the-box.
 
 ## Table of Contents <!-- omit in toc -->
@@ -31,8 +31,6 @@
 - [✨ Features](#-features)
 - [📖 Documentation](#-documentation)
 - [⚙️ Development Workflow](#️-development-workflow)
-  - [Run Docker environment](#run-docker-environment)
-  - [Release](#release)
 
 ## 🤖 Compatibility with MeiliSearch
 This package is compatible with the following MeiliSearch versions:
@@ -51,20 +49,20 @@ If you want to contribute, this section describes the steps to follow.
 
 Thank you for your interest in a MeiliSearch tool! ♥️
 
-### Run Docker Environment
+### Run Docker Environment <!-- omit in toc -->
 To start and build your Docker environment, just execute the next command in a terminal:
 ```sh
 docker-compose up -d
 ```
 
-#### Tests
-Each Pull Request should pass the tests, and the linter to be accepted.   
+#### Tests <!-- omit in toc -->
+Each Pull Request should pass the tests, and the linter to be accepted.
 To execute the tests, run the next command:
 ```sh
 docker-compose exec -e MEILISEARCH_URL=http://meilisearch:7700 php composer test:unit
 ```
 
-### Release
+### Release <!-- omit in toc -->
 
 MeiliSearch tools follow the [Semantic Versioning Convention](https://semver.org/).
 
