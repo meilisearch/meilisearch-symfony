@@ -21,7 +21,7 @@
 
         <service id="search.client" class="MeiliSearch\Client" public="true" lazy="true">
             <argument key="$url">%env(MEILISEARCH_URL)%</argument>
-            <argument key="$api_key">%env(MEILISEARCH_MASTER_KEY)%</argument>
+            <argument key="$apiKey">%env(MEILISEARCH_MASTER_KEY)%</argument>
         </service>
 
         <service id="MeiliSearch\Client" alias="search.client"/>
