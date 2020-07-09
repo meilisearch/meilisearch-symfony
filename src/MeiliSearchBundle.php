@@ -11,5 +11,5 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 final class MeiliSearchBundle extends Bundle
 {
-    const VERSION = '0.11.2';
+    const VERSION = '0.1.1';
 }
