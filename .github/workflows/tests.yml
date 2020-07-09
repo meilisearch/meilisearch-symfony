@@ -43,4 +43,4 @@ jobs:
 
             # Run PHP CS Fixer
             -   name: Run linter
-                run: composer test:lint
+                run: composer lint:check
