@@ -1,46 +1,33 @@
 name: Tests
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
+# Will run for every push on master and for every PR
 on:
     push:
         branches: [ master ]
     pull_request:
-        branches: [ master ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-    # This workflow contains a single job called "tests"
     tests:
-        # The type of runner that the job will run on
         runs-on: ubuntu-latest
-
         strategy:
             matrix:
                 php-versions: ['7.2.0', '7.3.0', '7.4.0']
         name: PHP ${{ matrix.php-versions }} Test
 
-        # Steps represent a sequence of tasks that will be executed as part of the job
         steps:
-            # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-            -   uses: actions/checkout@v2
+            - uses: actions/checkout@v2
 
-            # Validate Composer files
             -   name: Validate composer.json and composer.lock
                 run: composer validate
 
-            # Install dependencies
             -   name: Install dependencies
                 run: composer install --prefer-dist --no-progress --no-suggest
 
-            # Run MeiliSearch Docker instance
             -   name: Docker setup
                 run: docker run -d -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey --no-analytics=true
 
-            # Run test suite
             -   name: Run test suite
                 run: composer test:unit
 
-            # Run PHP CS Fixer
             -   name: Run linter
                 run: composer lint:check
