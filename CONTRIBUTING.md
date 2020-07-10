@@ -55,7 +55,7 @@ $ composer lint:check
 
 ### Using the Docker Environment
 
-These commands do not work on MacOS, see [this issue](https://github.com/meilisearch/meilisearch-symfony/).</br>
+These commands do not work on MacOS, see [this issue](https://github.com/meilisearch/meilisearch-symfony/).
 
 #### Setup
 
