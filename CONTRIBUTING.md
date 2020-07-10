@@ -29,31 +29,6 @@ First of all, thank you for contributing to MeiliSearch! The goal of this docume
 
 ## Development Workflow
 
-### Using the Docker Environment
-
-#### Setup
-
-To start and build your Docker environment, just execute the next command in a terminal:
-
-```sh
-$ docker-compose up -d
-```
-
-Be sure no other MeiliSearch instance is currently running on your machine.
-
-#### Tests and Linter
-
-Each Pull Request should pass the tests, and the linter to be accepted.
-
-```sh
-# Tests
-$ docker-compose exec -e MEILISEARCH_URL=http://meilisearch:7700 php composer test:unit
-# Linter
-$ docker-compose exec php composer lint:check
-# Linter (with auto-fix)
-$ docker-compose exec php composer lint:fix
-```
-
 ### Using Composer
 
 #### Setup
@@ -76,6 +51,33 @@ $ composer test:unit
 $ composer lint:check
 # Linter (with auto-fix)
 $ composer lint:check
+```
+
+### Using the Docker Environment
+
+These commands do not work on MacOS, see [this issue](https://github.com/meilisearch/meilisearch-symfony/).</br>
+
+#### Setup
+
+To start and build your Docker environment, just execute the next command in a terminal:
+
+```sh
+$ docker-compose up -d
+```
+
+Be sure no other MeiliSearch instance is currently running on your machine.
+
+#### Tests and Linter
+
+Each Pull Request should pass the tests, and the linter to be accepted.
+
+```sh
+# Tests
+$ docker-compose exec -e MEILISEARCH_URL=http://meilisearch:7700 php composer test:unit
+# Linter
+$ docker-compose exec php composer lint:check
+# Linter (with auto-fix)
+$ docker-compose exec php composer lint:fix
 ```
 
 ### Release Process
