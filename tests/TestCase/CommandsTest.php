@@ -13,8 +13,8 @@ use MeiliSearch\Bundle\Test\Entity\Comment;
 use MeiliSearch\Bundle\Test\Entity\ContentAggregator;
 use MeiliSearch\Bundle\Test\Entity\Post;
 use MeiliSearch\Client;
+use MeiliSearch\Endpoints\Indexes;
 use MeiliSearch\Exceptions\HTTPRequestException;
-use MeiliSearch\Index;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -47,7 +47,7 @@ class CommandsTest extends BaseTest
     /** @var AbstractPlatform|null $platform */
     protected $platform;
 
-    /** @var Index $index */
+    /** @var Indexes $index */
     protected $index;
 
     /**
