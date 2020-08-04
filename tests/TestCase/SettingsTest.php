@@ -70,7 +70,6 @@ class SettingsTest extends BaseTest
         $this->assertEmpty($settingA['stopWords']);
         $this->assertIsArray($settingA['synonyms']);
         $this->assertEmpty($settingA['synonyms']);
-        $this->assertNull($settingA['acceptNewFields']);
 
         $this->assertEquals(self::DEFAULT_RANKING_RULES, $settingB['rankingRules']);
         $this->assertNull($settingB['distinctAttribute']);
@@ -80,7 +79,6 @@ class SettingsTest extends BaseTest
         $this->assertEmpty($settingB['stopWords']);
         $this->assertIsArray($settingB['synonyms']);
         $this->assertEmpty($settingB['synonyms']);
-        $this->assertNull($settingB['acceptNewFields']);
     }
 
     public function testUpdateSettings()
