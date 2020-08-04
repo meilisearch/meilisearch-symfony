@@ -63,24 +63,22 @@ class SettingsTest extends BaseTest
         $this->assertEquals(self::DEFAULT_RANKING_RULES, $settingA['rankingRules']);
         $this->assertNull($settingA['distinctAttribute']);
         $this->assertIsArray($settingA['searchableAttributes']);
-        $this->assertEmpty($settingA['searchableAttributes']);
+        $this->assertEquals(['*'], $settingA['searchableAttributes']);
         $this->assertIsArray($settingA['displayedAttributes']);
-        $this->assertEmpty($settingA['displayedAttributes']);
+        $this->assertEquals(['*'], $settingA['displayedAttributes']);
         $this->assertIsArray($settingA['stopWords']);
         $this->assertEmpty($settingA['stopWords']);
         $this->assertIsArray($settingA['synonyms']);
         $this->assertEmpty($settingA['synonyms']);
-        $this->assertTrue($settingA['acceptNewFields']);
 
         $this->assertEquals(self::DEFAULT_RANKING_RULES, $settingB['rankingRules']);
         $this->assertNull($settingB['distinctAttribute']);
-        $this->assertEquals([$primaryKey], $settingB['searchableAttributes']);
-        $this->assertEquals([$primaryKey], $settingB['displayedAttributes']);
+        $this->assertEquals(['*'], $settingB['searchableAttributes']);
+        $this->assertEquals(['*'], $settingB['displayedAttributes']);
         $this->assertIsArray($settingB['stopWords']);
         $this->assertEmpty($settingB['stopWords']);
         $this->assertIsArray($settingB['synonyms']);
         $this->assertEmpty($settingB['synonyms']);
-        $this->assertTrue($settingB['acceptNewFields']);
     }
 
     public function testUpdateSettings()
