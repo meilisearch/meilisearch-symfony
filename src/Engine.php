@@ -153,9 +153,10 @@ final class Engine
      */
     public function search(string $query, string $indexName, array $requestOptions): array
     {
-        if ($query == '') {
+        if ('' == $query) {
             $query = null;
         }
+
         return $this->client->getIndex($indexName)->search($query, $requestOptions);
     }
 
