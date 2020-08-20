@@ -50,7 +50,7 @@ $ composer test:unit
 # Linter
 $ composer lint:check
 # Linter (with auto-fix)
-$ composer lint:check
+$ composer lint:fix
 ```
 
 ### Using the Docker Environment
