@@ -6,6 +6,7 @@ use MeiliSearch\Client;
 use MeiliSearch\Exceptions\HTTPRequestException;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use function count;
+use function reset;
 
 /**
  * Class Engine.
@@ -106,7 +107,7 @@ final class Engine
         foreach ($data as $indexName => $objects) {
             $result[$indexName] = $this->client
                 ->getIndex($indexName)
-                ->deleteDocument($objects);
+                ->deleteDocument(reset($objects));
         }
 
         return $result;
