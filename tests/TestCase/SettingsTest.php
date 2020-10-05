@@ -73,8 +73,8 @@ class SettingsTest extends BaseTest
 
         $this->assertEquals(self::DEFAULT_RANKING_RULES, $settingB['rankingRules']);
         $this->assertNull($settingB['distinctAttribute']);
-        $this->assertEquals(['ObjectID'], $settingB['searchableAttributes']);
-        $this->assertEquals(['ObjectID'], $settingB['displayedAttributes']);
+        $this->assertEquals(['*'], $settingB['searchableAttributes']);
+        $this->assertEquals(['*'], $settingB['displayedAttributes']);
         $this->assertIsArray($settingB['stopWords']);
         $this->assertEmpty($settingB['stopWords']);
         $this->assertIsArray($settingB['synonyms']);
