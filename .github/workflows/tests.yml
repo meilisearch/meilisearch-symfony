@@ -1,10 +1,13 @@
 name: Tests
 
-# Will run for every push on master and for every PR
 on:
-    push:
-        branches: [ master ]
-    pull_request:
+  pull_request:
+  push:
+    # trying and staging branches are for BORS config
+    branches:
+      - trying
+      - staging
+      - master
 
 jobs:
     tests:
