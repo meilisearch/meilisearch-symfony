@@ -18,11 +18,12 @@
   <a href="https://github.com/meilisearch/meilisearch-symfony/actions"><img src="https://github.com/meilisearch/meilisearch-symfony/workflows/Tests/badge.svg" alt="Test"></a>
   <a href="https://github.com/meilisearch/meilisearch-symfony/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-informational" alt="License"></a>
   <a href="https://slack.meilisearch.com"><img src="https://img.shields.io/badge/slack-MeiliSearch-blue.svg?logo=slack" alt="Slack"></a>
+  <a href="https://app.bors.tech/repositories/29020"><img src="https://bors.tech/images/badge_small.svg" alt="Bors enabled"></a>
 </p>
 
 <p align="center">⚡ The MeiliSearch bundle for Symfony</p>
 
-**MeiliSearch Symfony** is a search bundle to integrate **MeiliSearch** within your Symfony Project. **MeiliSearch** is a powerful, fast, open-source, easy to use and deploy search engine. Both searching and indexing are highly customizable. Features such as typo-tolerance, filters, facets, and synonyms are provided out-of-the-box.
+**MeiliSearch Symfony** is a search bundle to integrate **MeiliSearch** within your Symfony project. **MeiliSearch** is a powerful, fast, open-source, easy to use and deploy search engine. Both searching and indexing are highly customizable. Features such as typo-tolerance, filters, facets, and synonyms are provided out-of-the-box.
 
 ## Table of Contents <!-- omit in toc -->
 
@@ -44,6 +45,8 @@ This package only guarantees the compatibility with the [version v0.15.0 of Meil
 ## 📖 Documentation
 
 Complete documentation of the MeiliSearch Bundle is available in the [Wiki section](https://github.com/meilisearch/meilisearch-symfony/wiki).
+
+You can also check out the [MeiliSearch documentation](https://docs.meilisearch.com/guides/introduction/quick_start_guide.html).
 
 ## ⚙️ Development Workflow and Contributing
 
