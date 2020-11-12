@@ -10,27 +10,31 @@ on:
       - master
 
 jobs:
-    tests:
+    integration-tests:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php-versions: ['7.2.0', '7.3.0', '7.4.0']
-        name: PHP ${{ matrix.php-versions }} Test
-
+                php-versions: ['7.2', '7.3', '7.4']
+        name: integration-tests (PHP ${{ matrix.php-versions }})
         steps:
             - uses: actions/checkout@v2
-
             -   name: Validate composer.json and composer.lock
                 run: composer validate
-
             -   name: Install dependencies
                 run: composer install --prefer-dist --no-progress --no-suggest
-
-            -   name: Docker setup
+            -   name: MeiliSearch setup with Docker
                 run: docker run -d -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey --no-analytics=true
-
             -   name: Run test suite
                 run: composer test:unit
 
+    linter:
+        runs-on: ubuntu-latest
+        name: linter-check
+        steps:
+            - uses: actions/checkout@v2
+            -   name: Validate composer.json and composer.lock
+                run: composer validate
+            -   name: Install dependencies
+                run: composer install --prefer-dist --no-progress --no-suggest
             -   name: Run linter
                 run: composer lint:check
