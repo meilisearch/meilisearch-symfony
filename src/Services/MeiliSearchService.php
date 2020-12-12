@@ -214,6 +214,11 @@ final class MeiliSearchService implements SearchService
 
         $ids = $this->engine->search($query, $this->searchableAs($className), $requestOptions);
         $results = [];
+        
+        // Check if the engine return results in "hits" key
+        if (isset($ids['hits'])) {
+            $ids = $ids['hits'];
+        }
 
         foreach ($ids as $objectID) {
             if (in_array($className, $this->aggregators, true)) {
