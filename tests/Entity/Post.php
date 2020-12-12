@@ -27,6 +27,8 @@ class Post
     /**
      * @var string
      * @ORM\Column(type="string")
+     * @Groups({"searchable"})
+     * ^ Note that Groups work on private properties
      */
     private $title;
 
