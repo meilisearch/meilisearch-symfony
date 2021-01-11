@@ -6,6 +6,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Persistence\ObjectManager;
 use MeiliSearch\Bundle\Engine;
 use MeiliSearch\Bundle\Entity\Aggregator;
+use MeiliSearch\Bundle\Exception\SearchHitsNotFoundException;
 use MeiliSearch\Bundle\SearchableEntity;
 use MeiliSearch\Bundle\SearchService;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -216,11 +217,11 @@ final class MeiliSearchService implements SearchService
         $results = [];
 
         // Check if the engine return results in "hits" key
-        if (isset($ids['hits'])) {
-            $ids = $ids['hits'];
+        if (!isset($ids['hits'])) {
+            throw new SearchHitsNotFoundException('There is no "hits" key in the search results.');
         }
 
-        foreach ($ids as $objectID) {
+        foreach ($ids['hits'] as $objectID) {
             if (in_array($className, $this->aggregators, true)) {
                 $entityClass = $className::getEntityClassFromObjectID($objectID);
                 $id = $className::getEntityIdFromObjectID($objectID);
