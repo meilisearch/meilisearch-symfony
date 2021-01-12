@@ -7,10 +7,9 @@
 <h4 align="center">
   <a href="https://github.com/meilisearch/MeiliSearch">MeiliSearch</a> |
   <a href="https://docs.meilisearch.com">Documentation</a> |
+  <a href="https://slack.meilisearch.com">Slack</a> |
   <a href="https://roadmap.meilisearch.com/tabs/1-under-consideration">Roadmap</a> |
   <a href="https://www.meilisearch.com">Website</a> |
-  <a href="https://blog.meilisearch.com">Blog</a> |
-  <a href="https://twitter.com/meilisearch">Twitter</a> |
   <a href="https://docs.meilisearch.com/faq">FAQ</a>
 </h4>
 
@@ -18,13 +17,14 @@
   <a href="https://packagist.org/packages/meilisearch/meilisearch-symfony"><img src="https://img.shields.io/packagist/v/meilisearch/search-bundle" alt="Latest Stable Version"></a>
   <a href="https://github.com/meilisearch/meilisearch-symfony/actions"><img src="https://github.com/meilisearch/meilisearch-symfony/workflows/Tests/badge.svg" alt="Test"></a>
   <a href="https://github.com/meilisearch/meilisearch-symfony/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-informational" alt="License"></a>
-  <a href="https://slack.meilisearch.com"><img src="https://img.shields.io/badge/slack-MeiliSearch-blue.svg?logo=slack" alt="Slack"></a>
   <a href="https://app.bors.tech/repositories/29020"><img src="https://bors.tech/images/badge_small.svg" alt="Bors enabled"></a>
 </p>
 
 <p align="center">⚡ The MeiliSearch bundle for Symfony</p>
 
-**MeiliSearch Symfony** is a search bundle to integrate **MeiliSearch** within your Symfony project. **MeiliSearch** is a powerful, fast, open-source, easy to use and deploy search engine. Both searching and indexing are highly customizable. Features such as typo-tolerance, filters, facets, and synonyms are provided out-of-the-box.
+**MeiliSearch Symfony** is a search bundle to integrate **MeiliSearch** within your Symfony project.
+
+**MeiliSearch** is an open-source search engine. [Discover what MeiliSearch is!](https://github.com/meilisearch/MeiliSearch)
 
 ## Table of Contents <!-- omit in toc -->
 
