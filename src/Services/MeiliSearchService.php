@@ -216,7 +216,7 @@ final class MeiliSearchService implements SearchService
         $ids = $this->engine->search($query, $this->searchableAs($className), $requestOptions);
         $results = [];
 
-        // Check if the engine return results in "hits" key
+        // Check if the engine returns results in "hits" key
         if (!isset($ids['hits'])) {
             throw new SearchHitsNotFoundException('There is no "hits" key in the search results.');
         }
