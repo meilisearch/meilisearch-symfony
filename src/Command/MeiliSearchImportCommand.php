@@ -22,6 +22,7 @@ use function is_subclass_of;
 use function method_exists;
 use function sprintf;
 use function ucfirst;
+use const SORT_REGULAR;
 
 /**
  * Class MeiliSearchImportCommand.
