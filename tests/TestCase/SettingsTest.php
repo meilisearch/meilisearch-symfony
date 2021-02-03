@@ -93,7 +93,7 @@ class SettingsTest extends BaseTest
             ]
         );
 
-        $settings = $this->client->getIndex('sf_phpunit__posts')->getSettings();
+        $settings = $this->client->index('sf_phpunit__posts')->getSettings();
 
         $this->assertNotEmpty($settings['stopWords']);
         $this->assertEquals(['a', 'an', 'the'], $settings['stopWords']);

@@ -182,7 +182,7 @@ final class MeiliSearchImportCommand extends IndexCommand
                     $formattedResponse[$indexName] = 0;
                 }
 
-                $indexInstance = $this->searchClient->getIndex($indexName);
+                $indexInstance = $this->searchClient->index($indexName);
 
                 // Get Update status from updateID
                 $indexInstance->waitForPendingUpdate($apiResponse['updateId']);
