@@ -47,7 +47,7 @@ This package only guarantees the compatibility with the [version v0.18.1 of Meil
 
 Complete documentation of the MeiliSearch Bundle is available in the [Wiki section](https://github.com/meilisearch/meilisearch-symfony/wiki).
 
-You can also check out the [MeiliSearch documentation](https://docs.meilisearch.com/guides/introduction/quick_start_guide.html).
+You can also check out the [MeiliSearch documentation](https://docs.meilisearch.com/learn/tutorials/getting_started.html).
 
 ## ⚙️ Development Workflow and Contributing
 
