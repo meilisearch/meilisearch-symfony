@@ -16,7 +16,7 @@ First of all, thank you for contributing to MeiliSearch! The goal of this docume
 
 1. **You're familiar with [GitHub](https://github.com) and the [Pull Request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests) (PR) workflow.**
 2. **You've read the MeiliSearch [documentation](https://docs.meilisearch.com) and the [README](/README.md).**
-3. **You know about the [MeiliSearch community](https://docs.meilisearch.com/resources/contact.html). Please use this for help.**
+3. **You know about the [MeiliSearch community](https://docs.meilisearch.com/learn/what_is_meilisearch/contact.html). Please use this for help.**
 
 ## How to Contribute
 
@@ -123,6 +123,8 @@ This project integrates a tool to create automated changelogs.<br>
 _[Read more about this](https://github.com/meilisearch/integration-guides/blob/master/guides/release-drafter.md)._
 
 ### How to Publish the Release
+
+⚠️ Before doing anything, make sure you got through the guide about [Releasing an Integration Tool](https://github.com/meilisearch/integration-guides/blob/master/guides/integration-tool-release.md).
 
 Make a PR modifying the file [`src/MeiliSearchBundle.php`](/src/MeiliSearchBundle.php) with the right version.
 

@@ -106,7 +106,7 @@ final class Engine
         $result = [];
         foreach ($data as $indexName => $objects) {
             $result[$indexName] = $this->client
-                ->getIndex($indexName)
+                ->index($indexName)
                 ->deleteDocument(reset($objects));
         }
 
@@ -148,17 +148,17 @@ final class Engine
      *
      * @param string $query
      * @param string $indexName
-     * @param array  $requestOptions
+     * @param array  $searchParams
      *
      * @return array
      */
-    public function search(string $query, string $indexName, array $requestOptions): array
+    public function search(string $query, string $indexName, array $searchParams): array
     {
         if ('' === $query) {
             $query = null;
         }
 
-        return $this->client->getIndex($indexName)->search($query, $requestOptions);
+        return $this->client->index($indexName)->rawSearch($query, $searchParams);
     }
 
     /**
@@ -172,6 +172,6 @@ final class Engine
      */
     public function count(string $query, string $indexName, array $requestOptions): int
     {
-        return (int) $this->client->getIndex($indexName)->search($query, $requestOptions)['nbHits'];
+        return (int) $this->client->index($indexName)->search($query, $requestOptions)['nbHits'];
     }
 }

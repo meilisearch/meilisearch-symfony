@@ -28,26 +28,38 @@
 
 ## Table of Contents <!-- omit in toc -->
 
-- [🤖 Compatibility with MeiliSearch](#-compatibility-with-meilisearch)
-- [✨ Features](#-features)
 - [📖 Documentation](#-documentation)
+- [📝 Requirements](#-requirements)
+- [🤖 Compatibility with MeiliSearch](#-compatibility-with-meilisearch)
+- [💡 Learn More](#-learn-more)
 - [⚙️ Development Workflow and Contributing](#️-development-workflow-and-contributing)
 
-## 🤖 Compatibility with MeiliSearch
+## 📖 Documentation
 
-This package only guarantees the compatibility with the [version v0.19.0 of MeiliSearch](https://github.com/meilisearch/MeiliSearch/releases/tag/v0.19.0).
+Check out the [Wiki](https://github.com/meilisearch/meilisearch-symfony/wiki) of this repository to get started! 🚀
 
-## ✨ Features
+Also, see our [Documentation](https://docs.meilisearch.com/learn/tutorials/getting_started.html) or our [API References](https://docs.meilisearch.com/reference/api/).
+
+## 📝 Requirements
 
 * **Require** PHP 7.2 and later.
 * **Compatible** with Symfony 4.0 and later.
 * **Support** Doctrine ORM and Doctrine MongoDB.
 
-## 📖 Documentation
+## 🤖 Compatibility with MeiliSearch
 
-Complete documentation of the MeiliSearch Bundle is available in the [Wiki section](https://github.com/meilisearch/meilisearch-symfony/wiki).
+This package only guarantees the compatibility with the [version v0.19.0 of MeiliSearch](https://github.com/meilisearch/MeiliSearch/releases/tag/v0.19.0).
 
-You can also check out the [MeiliSearch documentation](https://docs.meilisearch.com/guides/introduction/quick_start_guide.html).
+## 💡 Learn More
+
+The following sections may interest you:
+
+- **Manipulate documents**: see the [API references](https://docs.meilisearch.com/reference/api/documents.html) or read more about [documents](https://docs.meilisearch.com/learn/core_concepts/documents.html).
+- **Search**: see the [API references](https://docs.meilisearch.com/reference/api/search.html) or follow our guide on [search parameters](https://docs.meilisearch.com/reference/features/search_parameters.html).
+- **Manage the indexes**: see the [API references](https://docs.meilisearch.com/reference/api/indexes.html) or read more about [indexes](https://docs.meilisearch.com/learn/core_concepts/indexes.html).
+- **Configure the index settings**: see the [API references](https://docs.meilisearch.com/reference/api/settings.html) or follow our guide on [settings parameters](https://docs.meilisearch.com/reference/features/settings.html).
+
+📖 Also, check out the [Wiki](https://github.com/meilisearch/meilisearch-symfony/wiki) of this repository!
 
 ## ⚙️ Development Workflow and Contributing
 
