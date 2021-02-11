@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/meilisearch/integration-guides/master/assets/logos/meilisearch_symfony.svg" alt="MeiliSearch-Symfony" width="200" height="200" />
+  <img src="https://raw.githubusercontent.com/meilisearch/integration-guides/main/assets/logos/meilisearch_symfony.svg" alt="MeiliSearch-Symfony" width="200" height="200" />
 </p>
 
 <h1 align="center">MeiliSearch Symfony Bundle</h1>
@@ -16,7 +16,7 @@
 <p align="center">
   <a href="https://packagist.org/packages/meilisearch/meilisearch-symfony"><img src="https://img.shields.io/packagist/v/meilisearch/search-bundle" alt="Latest Stable Version"></a>
   <a href="https://github.com/meilisearch/meilisearch-symfony/actions"><img src="https://github.com/meilisearch/meilisearch-symfony/workflows/Tests/badge.svg" alt="Test"></a>
-  <a href="https://github.com/meilisearch/meilisearch-symfony/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-informational" alt="License"></a>
+  <a href="https://github.com/meilisearch/meilisearch-symfony/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-informational" alt="License"></a>
   <a href="https://app.bors.tech/repositories/29020"><img src="https://bors.tech/images/badge_small.svg" alt="Bors enabled"></a>
 </p>
 
