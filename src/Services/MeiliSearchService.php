@@ -209,24 +209,18 @@ final class MeiliSearchService implements SearchService
         ObjectManager $objectManager,
         string $className,
         string $query = '',
-        array $requestOptions = []
+        array $searchParams = []
     ): array {
         $this->assertIsSearchable($className);
 
-        $ids = $this->engine->search($query, $this->searchableAs($className), $requestOptions);
+        $ids = $this->engine->searchIds($query, $this->searchableAs($className), $searchParams);
         $results = [];
 
-        // Check if the engine returns results in "hits" key
-        if (!isset($ids['hits'])) {
-            throw new SearchHitsNotFoundException('There is no "hits" key in the search results.');
-        }
-
-        foreach ($ids['hits'] as $objectID) {
+        foreach ($ids as $id) {
             if (in_array($className, $this->aggregators, true)) {
-                $entityClass = $className::getEntityClassFromObjectID($objectID);
-                $id = $className::getEntityIdFromObjectID($objectID);
+                $entityClass = $className::getEntityClassFromObjectID($id);
+                $id = $className::getEntityIdFromObjectID($id);
             } else {
-                $id = $objectID;
                 $entityClass = $className;
             }
 

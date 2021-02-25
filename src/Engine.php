@@ -162,6 +162,24 @@ final class Engine
     }
 
     /**
+     * Search the index and returns the document identifier.
+     *
+     * @param string                                         $query
+     * @param string                                         $indexName
+     * @param array<string, int|string|array>                $searchParams
+     *
+     * @return array<string, int|string|array>
+     *
+     */
+    public function searchIds(string $query, string $indexName, array $searchParams)
+    {
+        $primaryKey = $this->client->index($indexName)->fetchPrimaryKey();
+        $result = $this->search($query, $indexName, $searchParams);
+
+        return array_column($result['hits'], $primaryKey);
+    }
+
+    /**
      * Search the index and returns the number of results.
      *
      * @param string $query
