@@ -164,12 +164,11 @@ final class Engine
     /**
      * Search the index and returns the document identifier.
      *
-     * @param string                                         $query
-     * @param string                                         $indexName
-     * @param array<string, int|string|array>                $searchParams
+     * @param string                          $query
+     * @param string                          $indexName
+     * @param array<string, int|string|array> $searchParams
      *
      * @return array<string, int|string|array>
-     *
      */
     public function searchIds(string $query, string $indexName, array $searchParams)
     {

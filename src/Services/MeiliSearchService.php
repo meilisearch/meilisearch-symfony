@@ -6,7 +6,6 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Persistence\ObjectManager;
 use MeiliSearch\Bundle\Engine;
 use MeiliSearch\Bundle\Entity\Aggregator;
-use MeiliSearch\Bundle\Exception\SearchHitsNotFoundException;
 use MeiliSearch\Bundle\SearchableEntity;
 use MeiliSearch\Bundle\SearchService;
 use Symfony\Component\Config\Definition\Exception\Exception;
