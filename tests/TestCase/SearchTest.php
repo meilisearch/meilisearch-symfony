@@ -137,6 +137,9 @@ class SearchTest extends BaseTest
         $results = $this->searchService->search($this->objectManager, Post::class, $searchTerm);
         $this->assertCount($nbEntityIndexed , $results);
 
+        $results = $this->searchService->rawSearch(Post::class, $searchTerm);
+        $this->assertCount($nbEntityIndexed , $results['hits']);
+
         // clearup table
         $this->connection->executeUpdate($this->platform->getTruncateTableSQL($this->indexName, true));
         $this->cleanUp();

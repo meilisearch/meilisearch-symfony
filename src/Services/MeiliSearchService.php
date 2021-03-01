@@ -244,6 +244,19 @@ final class MeiliSearchService implements SearchService
     /**
      * {@inheritdoc}
      */
+    public function rawSearch(
+        string $className,
+        string $query = '',
+        array $searchParams = []
+    ): array {
+        $this->assertIsSearchable($className);
+
+        return $this->engine->search($query, $this->searchableAs($className), $searchParams);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function count(string $className, string $query = '', array $requestOptions = []): int
     {
         $this->assertIsSearchable($className);

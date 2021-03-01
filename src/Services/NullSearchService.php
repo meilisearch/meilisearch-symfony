@@ -92,6 +92,17 @@ class NullSearchService implements SearchService
     /**
      * {@inheritdoc}
      */
+    public function rawSearch(
+        string $className,
+        string $query = '',
+        array $searchParams = []
+    ): array {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function count(string $className, string $query = '', array $requestOptions = []): int
     {
         return 0;
