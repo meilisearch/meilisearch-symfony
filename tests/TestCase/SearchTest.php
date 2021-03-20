@@ -14,7 +14,7 @@ use MeiliSearch\Bundle\Test\Entity\ContentAggregator;
 use MeiliSearch\Bundle\Test\Entity\Post;
 use MeiliSearch\Client;
 use MeiliSearch\Endpoints\Indexes;
-use MeiliSearch\Exceptions\HTTPRequestException;
+use MeiliSearch\Exceptions\ApiException;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -53,7 +53,7 @@ class SearchTest extends BaseTest
     /**
      * @inheritDoc
      * @throws DBALException
-     * @throws HTTPRequestException
+     * @throws ApiException
      * @throws Exception
      */
     public function setUp(): void
@@ -77,7 +77,7 @@ class SearchTest extends BaseTest
             $this->searchService->delete(Post::class);
             $this->searchService->delete(Comment::class);
             $this->searchService->delete(ContentAggregator::class);
-        } catch (HTTPRequestException $e) {
+        } catch (ApiException $e) {
             $this->assertEquals('Index sf_phpunit__comments not found', $e->getMessage());
         }
     }

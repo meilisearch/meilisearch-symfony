@@ -3,7 +3,7 @@
 namespace MeiliSearch\Bundle;
 
 use MeiliSearch\Client;
-use MeiliSearch\Exceptions\HTTPRequestException;
+use MeiliSearch\Exceptions\ApiException;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use function count;
 use function reset;
@@ -37,7 +37,7 @@ final class Engine
      *
      * @return array
      *
-     * @throws HTTPRequestException
+     * @throws ApiException
      * @throws ExceptionInterface
      */
     public function index($searchableEntities): array
@@ -121,7 +121,7 @@ final class Engine
      *
      * @return array
      *
-     * @throws HTTPRequestException
+     * @throws ApiException
      */
     public function clear(string $indexName): array
     {
