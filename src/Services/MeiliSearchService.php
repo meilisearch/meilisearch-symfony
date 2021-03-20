@@ -208,11 +208,11 @@ final class MeiliSearchService implements SearchService
         ObjectManager $objectManager,
         string $className,
         string $query = '',
-        array $searchParams = []
+        array $requestOptions = []
     ): array {
         $this->assertIsSearchable($className);
 
-        $ids = $this->engine->searchIds($query, $this->searchableAs($className), $searchParams);
+        $ids = $this->engine->searchIds($query, $this->searchableAs($className), $requestOptions);
         $results = [];
 
         foreach ($ids as $id) {
