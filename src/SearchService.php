@@ -83,6 +83,23 @@ interface SearchService
     ): array;
 
     /**
+     * Get the raw search result.
+     *
+     * @see https://docs.meilisearch.com/reference/api/search.html#response
+     *
+     * @param string $className
+     * @param string $query
+     * @param array  $searchParams
+     *
+     * @return array
+     */
+    public function rawSearch(
+        string $className,
+        string $query = '',
+        array $searchParams = []
+    ): array;
+
+    /**
      * @param string $className
      * @param string $query
      * @param array  $requestOptions
