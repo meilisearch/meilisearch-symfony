@@ -124,7 +124,7 @@ _[Read more about this](https://github.com/meilisearch/integration-guides/blob/m
 
 ### How to Publish the Release
 
-⚠️ Before doing anything, make sure you got through the guide about [Releasing an Integration Tool](https://github.com/meilisearch/integration-guides/blob/main/guides/integration-tool-release.md).
+⚠️ Before doing anything, make sure you got through the guide about [Releasing an Integration](https://github.com/meilisearch/integration-guides/blob/main/guides/integration-release.md).
 
 Make a PR modifying the file [`src/MeiliSearchBundle.php`](/src/MeiliSearchBundle.php) with the right version.
 
