@@ -5,7 +5,7 @@ namespace MeiliSearch\Bundle\Test\TestCase;
 use Exception;
 use MeiliSearch\Bundle\Engine;
 use MeiliSearch\Bundle\Test\BaseTest;
-use MeiliSearch\Exceptions\HTTPRequestException;
+use MeiliSearch\Exceptions\ApiException;
 
 /**
  * Class EngineTest
@@ -45,7 +45,7 @@ class EngineTest extends BaseTest
         try {
             $this->engine->search('query', $searchableImage->getIndexName(), []);
         } catch (Exception $e) {
-            $this->assertInstanceOf(HTTPRequestException::class, $e);
+            $this->assertInstanceOf(ApiException::class, $e);
         }
     }
 }

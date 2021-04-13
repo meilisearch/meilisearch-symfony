@@ -8,7 +8,7 @@ use MeiliSearch\Bundle\Exception\UpdateException;
 use MeiliSearch\Bundle\Model\Aggregator;
 use MeiliSearch\Bundle\SearchService;
 use MeiliSearch\Client;
-use MeiliSearch\Exceptions\HTTPRequestException;
+use MeiliSearch\Exceptions\ApiException;
 use MeiliSearch\Exceptions\TimeOutException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -76,7 +76,7 @@ final class MeiliSearchImportCommand extends IndexCommand
      * {@inheritdoc}
      *
      * @throws TimeOutException
-     * @throws HTTPRequestException
+     * @throws ApiException
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
