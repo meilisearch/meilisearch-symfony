@@ -17,7 +17,7 @@ use function count;
 final class SearchableEntity
 {
     /** @var string */
-    protected $indexName;
+    protected $indexUid;
 
     /** @var object */
     protected $entity;
@@ -37,20 +37,20 @@ final class SearchableEntity
     /**
      * SearchableEntity constructor.
      *
-     * @param string        $indexName
+     * @param string        $indexUid
      * @param object        $entity
      * @param ClassMetadata $entityMetadata
      * @param object|null   $normalizer
      * @param array         $extra
      */
     public function __construct(
-        string $indexName,
+        string $indexUid,
         $entity,
         ClassMetadata $entityMetadata,
         $normalizer = null,
         array $extra = []
     ) {
-        $this->indexName = $indexName;
+        $this->indexUid = $indexUid;
         $this->entity = $entity;
         $this->entityMetadata = $entityMetadata;
         $this->normalizer = $normalizer;
@@ -62,9 +62,9 @@ final class SearchableEntity
     /**
      * @return string
      */
-    public function getIndexName(): string
+    public function getindexUid(): string
     {
-        return $this->indexName;
+        return $this->indexUid;
     }
 
     /**
