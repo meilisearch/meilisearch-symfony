@@ -166,12 +166,12 @@ final class Engine
      *
      * @param string $query
      * @param string $indexName
-     * @param array  $requestOptions
+     * @param array  $searchParams
      *
      * @return int
      */
-    public function count(string $query, string $indexName, array $requestOptions): int
+    public function count(string $query, string $indexName, array $searchParams): int
     {
-        return (int) $this->client->index($indexName)->search($query, $requestOptions)['nbHits'];
+        return (int) $this->client->index($indexName)->search($query, $searchParams)['nbHits'];
     }
 }

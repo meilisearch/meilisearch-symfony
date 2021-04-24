@@ -84,7 +84,7 @@ class NullSearchService implements SearchService
         ObjectManager $objectManager,
         string $className,
         string $query = '',
-        array $requestOptions = []
+        array $searchParams = []
     ): array {
         return [new stdClass()];
     }
@@ -103,7 +103,7 @@ class NullSearchService implements SearchService
     /**
      * {@inheritdoc}
      */
-    public function count(string $className, string $query = '', array $requestOptions = []): int
+    public function count(string $className, string $query = '', array $searchParams = []): int
     {
         return 0;
     }

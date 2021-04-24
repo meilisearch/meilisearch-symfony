@@ -71,7 +71,7 @@ interface SearchService
      * @param ObjectManager $objectManager
      * @param string        $className
      * @param string        $query
-     * @param array         $requestOptions
+     * @param array         $searchParams
      *
      * @return array
      */
@@ -79,7 +79,7 @@ interface SearchService
         ObjectManager $objectManager,
         string $className,
         string $query = '',
-        array $requestOptions = []
+        array $searchParams = []
     ): array;
 
     /**
@@ -102,9 +102,9 @@ interface SearchService
     /**
      * @param string $className
      * @param string $query
-     * @param array  $requestOptions
+     * @param array  $searchParams
      *
      * @return int
      */
-    public function count(string $className, string $query = '', array $requestOptions = []): int;
+    public function count(string $className, string $query = '', array $searchParams = []): int;
 }

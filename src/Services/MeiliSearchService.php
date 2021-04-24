@@ -209,11 +209,11 @@ final class MeiliSearchService implements SearchService
         ObjectManager $objectManager,
         string $className,
         string $query = '',
-        array $requestOptions = []
+        array $searchParams = []
     ): array {
         $this->assertIsSearchable($className);
 
-        $ids = $this->engine->search($query, $this->searchableAs($className), $requestOptions);
+        $ids = $this->engine->search($query, $this->searchableAs($className), $searchParams);
         $results = [];
 
         // Check if the engine returns results in "hits" key
@@ -257,11 +257,11 @@ final class MeiliSearchService implements SearchService
     /**
      * {@inheritdoc}
      */
-    public function count(string $className, string $query = '', array $requestOptions = []): int
+    public function count(string $className, string $query = '', array $searchParams = []): int
     {
         $this->assertIsSearchable($className);
 
-        return $this->engine->count($query, $this->searchableAs($className), $requestOptions);
+        return $this->engine->count($query, $this->searchableAs($className), $searchParams);
     }
 
     /**
