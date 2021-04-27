@@ -43,7 +43,7 @@ class EngineTest extends BaseTest
 
         // Search
         try {
-            $this->engine->search('query', $searchableImage->getIndexName(), []);
+            $this->engine->search('query', $searchableImage->getIndexUid(), []);
         } catch (Exception $e) {
             $this->assertInstanceOf(ApiException::class, $e);
         }
