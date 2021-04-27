@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle;
 
 use Doctrine\Persistence\Mapping\ClassMetadata;
@@ -7,38 +9,32 @@ use JMS\Serializer\ArrayTransformerInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use function count;
 
 /**
  * Class SearchableEntity.
- *
- * @package MeiliSearch\Bundle
  */
 final class SearchableEntity
 {
-    protected string $indexName;
+    private string $indexName;
 
     /** @var object */
-    protected $entity;
+    private $entity;
 
-    protected ClassMetadata $entityMetadata;
+    private ClassMetadata $entityMetadata;
 
     /** @var object */
-    protected $normalizer;
+    private $normalizer;
 
-    protected bool $useSerializerGroups;
+    private bool $useSerializerGroups;
 
     /** @var int|string */
-    protected $id;
+    private $id;
 
     /**
      * SearchableEntity constructor.
      *
-     * @param string        $indexName
-     * @param object        $entity
-     * @param ClassMetadata $entityMetadata
-     * @param object|null   $normalizer
-     * @param array         $extra
+     * @param object      $entity
+     * @param object|null $normalizer
      */
     public function __construct(
         string $indexName,
@@ -56,9 +52,6 @@ final class SearchableEntity
         $this->setId();
     }
 
-    /**
-     * @return string
-     */
     public function getIndexName(): string
     {
         return $this->indexName;
@@ -88,11 +81,11 @@ final class SearchableEntity
     {
         $ids = $this->entityMetadata->getIdentifierValues($this->entity);
 
-        if (0 === count($ids)) {
+        if (0 === \count($ids)) {
             throw new Exception('Entity has no primary key');
         }
 
-        if (1 == count($ids)) {
+        if (1 == \count($ids)) {
             $this->id = reset($ids);
         } else {
             $objectID = '';

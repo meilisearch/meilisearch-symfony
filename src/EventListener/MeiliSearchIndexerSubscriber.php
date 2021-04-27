@@ -10,13 +10,11 @@ use MeiliSearch\Bundle\SearchService;
 
 /**
  * Class MeiliSearchIndexerSubscriber.
- *
- * @package MeiliSearch\Bundle\EventListener
  */
 final class MeiliSearchIndexerSubscriber implements EventSubscriber
 {
-    protected SearchService $searchService;
-    protected array $subscribedEvents;
+    private SearchService $searchService;
+    private array $subscribedEvents;
 
     public function __construct(SearchService $searchService, array $subscribedEvents)
     {

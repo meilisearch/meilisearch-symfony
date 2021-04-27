@@ -6,8 +6,6 @@ namespace MeiliSearch\Bundle;
 
 /**
  * Class Searchable.
- *
- * @package MeiliSearch\Bundle
  */
 final class Searchable
 {

@@ -18,22 +18,20 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Class MeiliSearchService.
- *
- * @package MeiliSearch\Bundle\Services
  */
 final class MeiliSearchService implements SearchService
 {
-    protected SerializerInterface $normalizer;
-    protected Engine $engine;
-    protected array $configuration;
+    private SerializerInterface $normalizer;
+    private Engine $engine;
+    private array $configuration;
     private PropertyAccessor $propertyAccessor;
-    protected array $searchableEntities;
-    protected array $entitiesAggregators;
-    protected array $aggregators;
-    protected array $classToIndexMapping;
-    protected array $classToSerializerGroupMapping;
-    protected array $indexIfMapping;
-    protected array $settingsMapping;
+    private array $searchableEntities;
+    private array $entitiesAggregators;
+    private array $aggregators;
+    private array $classToIndexMapping;
+    private array $classToSerializerGroupMapping;
+    private array $indexIfMapping;
+    private array $settingsMapping;
 
     public function __construct(SerializerInterface $normalizer, Engine $engine, array $configuration)
     {
@@ -292,7 +290,6 @@ final class MeiliSearchService implements SearchService
     /**
      * Returns the aggregators instances of the provided entities.
      *
-     * @param ObjectManager      $objectManager
      * @param array<int, object> $entities
      *
      * @return array<int, object>
@@ -319,11 +316,7 @@ final class MeiliSearchService implements SearchService
     /**
      * For each chunk performs the provided operation.
      *
-     * @param ObjectManager      $objectManager
      * @param array<int, object> $entities
-     * @param callable           $operation
-     *
-     * @return array
      */
     private function makeSearchServiceResponseFrom(
         ObjectManager $objectManager,

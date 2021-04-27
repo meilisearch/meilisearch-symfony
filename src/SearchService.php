@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle;
 
 use Doctrine\Persistence\ObjectManager;
 
 /**
  * Interface SearchService.
- *
- * @package MeiliSearch
  */
 interface SearchService
 {
@@ -17,6 +17,7 @@ interface SearchService
     public function isSearchable($className): bool;
 
     public function getSearchable(): array;
+
     public function getConfiguration(): array;
 
     /**
@@ -25,9 +26,13 @@ interface SearchService
     public function searchableAs(string $className): string;
 
     public function index(ObjectManager $objectManager, $searchable): array;
+
     public function remove(ObjectManager $objectManager, $searchable): array;
+
     public function clear(string $className): array;
+
     public function delete(string $className): ?array;
+
     public function search(
         ObjectManager $objectManager,
         string $className,

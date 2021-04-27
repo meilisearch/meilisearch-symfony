@@ -10,8 +10,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class MeiliSearchClearCommand.
- *
- * @package MeiliSearch\Bundle\Command
  */
 final class MeiliSearchClearCommand extends IndexCommand
 {

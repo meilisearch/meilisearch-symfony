@@ -6,12 +6,9 @@ namespace MeiliSearch\Bundle\Services;
 
 use Doctrine\Persistence\ObjectManager;
 use MeiliSearch\Bundle\SearchService;
-use stdClass;
 
 /**
  * Class NullSearchService.
- *
- * @package MeiliSearch\Bundle\Services
  */
 class NullSearchService implements SearchService
 {
@@ -67,7 +64,7 @@ class NullSearchService implements SearchService
         string $query = '',
         array $requestOptions = []
     ): array {
-        return [new stdClass()];
+        return [new \stdClass()];
     }
 
     /**

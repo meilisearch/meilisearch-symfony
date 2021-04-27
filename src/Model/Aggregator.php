@@ -11,8 +11,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Class Aggregator.
- *
- * @package MeiliSearch\Bundle\Model
  */
 abstract class Aggregator implements NormalizableInterface
 {
@@ -34,7 +32,6 @@ abstract class Aggregator implements NormalizableInterface
      * Aggregator constructor.
      *
      * @param object $entity
-     * @param array  $entityIdentifierValues
      */
     public function __construct($entity, array $entityIdentifierValues)
     {

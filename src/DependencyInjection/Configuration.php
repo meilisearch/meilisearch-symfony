@@ -9,8 +9,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * Class Configuration.
- *
- * @package MeiliSearch\Bundle\DependencyInjection
  */
 final class Configuration implements ConfigurationInterface
 {

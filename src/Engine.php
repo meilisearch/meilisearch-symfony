@@ -1,16 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle;
 
+use function count;
 use MeiliSearch\Client;
 use MeiliSearch\Exceptions\ApiException;
-use function count;
-use function reset;
 
 /**
  * Class Engine.
- *
- * @package MeiliSearch\Bundle
  */
 final class Engine
 {
@@ -39,7 +38,7 @@ final class Engine
         $data = [];
         foreach ($searchableEntities as $entity) {
             $searchableArray = $entity->getSearchableArray();
-            if (null === $searchableArray || 0 === count($searchableArray)) {
+            if (null === $searchableArray || 0 === \count($searchableArray)) {
                 continue;
             }
 
@@ -67,7 +66,6 @@ final class Engine
      * This method enables you to remove one or more objects from an index.
      *
      * @param array|SearchableEntity $searchableEntities
-     *
      */
     public function remove($searchableEntities): array
     {
@@ -78,7 +76,7 @@ final class Engine
         $data = [];
         foreach ($searchableEntities as $entity) {
             $searchableArray = $entity->getSearchableArray();
-            if (null === $searchableArray || 0 === count($searchableArray)) {
+            if (null === $searchableArray || 0 === \count($searchableArray)) {
                 continue;
             }
             $indexName = $entity->getIndexName();
@@ -94,7 +92,7 @@ final class Engine
         foreach ($data as $indexName => $objects) {
             $result[$indexName] = $this->client
                 ->index($indexName)
-                ->deleteDocument(reset($objects));
+                ->deleteDocument(\reset($objects));
         }
 
         return $result;

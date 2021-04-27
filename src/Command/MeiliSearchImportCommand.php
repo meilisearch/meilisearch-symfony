@@ -16,8 +16,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class MeiliSearchImportCommand.
- *
- * @package MeiliSearch\Bundle\Command
  */
 final class MeiliSearchImportCommand extends IndexCommand
 {
