@@ -43,8 +43,15 @@ abstract class IndexCommand extends Command
 
         $config = $this->searchService->getConfiguration();
 
-        if (0 === count($indexNames)) {
+        if ((0 === count($indexNames))
+            && !empty(array_keys($config['indices']))) {
             $indexNames = array_keys($config['indices']);
+        }
+
+        if (0 === count($indexNames)) {
+            $output->writeln(
+                '<comment>No indices specified. Please either specify indices using the cli option or YAML configuration.</comment>'
+            );
         }
 
         foreach ($indexNames as $name) {
