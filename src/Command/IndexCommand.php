@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Command;
 
 use MeiliSearch\Bundle\SearchService;
@@ -17,16 +19,9 @@ use function explode;
  */
 abstract class IndexCommand extends Command
 {
-    /** @var SearchService */
-    protected $searchService;
+    protected SearchService $searchService;
 
-    /**
-     * IndexCommand constructor.
-     *
-     * @param SearchService $searchService
-     * @param string|null   $name
-     */
-    public function __construct(SearchService $searchService, string $name = null)
+    public function __construct(SearchService $searchService, ?string $name = null)
     {
         $this->searchService = $searchService;
         parent::__construct($name);

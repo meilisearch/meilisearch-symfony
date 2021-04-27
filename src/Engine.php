@@ -4,7 +4,6 @@ namespace MeiliSearch\Bundle;
 
 use MeiliSearch\Client;
 use MeiliSearch\Exceptions\ApiException;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use function count;
 use function reset;
 
@@ -15,14 +14,8 @@ use function reset;
  */
 final class Engine
 {
-    /** @var Client */
-    private $client;
+    private Client $client;
 
-    /**
-     * Engine constructor.
-     *
-     * @param Client $client
-     */
     public function __construct(Client $client)
     {
         $this->client = $client;
@@ -35,10 +28,7 @@ final class Engine
      *
      * @param array|SearchableEntity $searchableEntities
      *
-     * @return array
-     *
      * @throws ApiException
-     * @throws ExceptionInterface
      */
     public function index($searchableEntities): array
     {
@@ -78,9 +68,6 @@ final class Engine
      *
      * @param array|SearchableEntity $searchableEntities
      *
-     * @return array
-     *
-     * @throws ExceptionInterface
      */
     public function remove($searchableEntities): array
     {
@@ -117,10 +104,6 @@ final class Engine
      * Clear the records of an index.
      * This method enables you to delete an index’s contents (records).
      *
-     * @param string $indexName
-     *
-     * @return array
-     *
      * @throws ApiException
      */
     public function clear(string $indexName): array
@@ -131,13 +114,6 @@ final class Engine
         return $index->getUpdateStatus($return['updateId']);
     }
 
-    /**
-     * Delete an index and it's content.
-     *
-     * @param string $indexName
-     *
-     * @return array|null
-     */
     public function delete(string $indexName): ?array
     {
         return $this->client->deleteIndex($indexName);
@@ -145,12 +121,6 @@ final class Engine
 
     /**
      * Method used for querying an index.
-     *
-     * @param string $query
-     * @param string $indexName
-     * @param array  $searchParams
-     *
-     * @return array
      */
     public function search(string $query, string $indexName, array $searchParams): array
     {
@@ -163,12 +133,6 @@ final class Engine
 
     /**
      * Search the index and returns the number of results.
-     *
-     * @param string $query
-     * @param string $indexName
-     * @param array  $requestOptions
-     *
-     * @return int
      */
     public function count(string $query, string $indexName, array $requestOptions): int
     {

@@ -16,20 +16,17 @@ use function count;
  */
 final class SearchableEntity
 {
-    /** @var string */
-    protected $indexName;
+    protected string $indexName;
 
     /** @var object */
     protected $entity;
 
-    /** @var ClassMetadata */
-    protected $entityMetadata;
+    protected ClassMetadata $entityMetadata;
 
     /** @var object */
     protected $normalizer;
 
-    /** @var bool */
-    protected $useSerializerGroups;
+    protected bool $useSerializerGroups;
 
     /** @var int|string */
     protected $id;
@@ -68,8 +65,6 @@ final class SearchableEntity
     }
 
     /**
-     * @return array
-     *
      * @throws ExceptionInterface
      */
     public function getSearchableArray(): array
@@ -89,10 +84,7 @@ final class SearchableEntity
         return [];
     }
 
-    /**
-     * @return void
-     */
-    private function setId()
+    private function setId(): void
     {
         $ids = $this->entityMetadata->getIdentifierValues($this->entity);
 

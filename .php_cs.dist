@@ -4,9 +4,9 @@ if (!file_exists(__DIR__.'/src')) {
     exit(0);
 }
 
-return PhpCsFixer\Config::create()
-    ->setRules(
-        [
+$finder = PhpCsFixer\Finder::create()->in(__DIR__.'/src')->append([__FILE__]);
+$config = new PhpCsFixer\Config();
+$config->setRules([
             '@Symfony' => true,
             '@Symfony:risky' => true,
             '@PHPUnit75Migration:risky' => true,
@@ -26,8 +26,7 @@ return PhpCsFixer\Config::create()
         ]
     )
     ->setRiskyAllowed(true)
-    ->setFinder(
-        PhpCsFixer\Finder::create()
-            ->in(__DIR__.'/src')
-            ->append([__FILE__])
-    );
+    ->setFinder($finder)
+;
+
+return $config;

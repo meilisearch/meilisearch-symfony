@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Command;
 
 use Doctrine\Persistence\ManagerRegistry;
@@ -8,21 +10,9 @@ use MeiliSearch\Bundle\Exception\UpdateException;
 use MeiliSearch\Bundle\Model\Aggregator;
 use MeiliSearch\Bundle\SearchService;
 use MeiliSearch\Client;
-use MeiliSearch\Exceptions\ApiException;
-use MeiliSearch\Exceptions\TimeOutException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use function array_key_exists;
-use function array_map;
-use function array_merge;
-use function array_unique;
-use function count;
-use function is_subclass_of;
-use function method_exists;
-use function sprintf;
-use function ucfirst;
-use const SORT_REGULAR;
 
 /**
  * Class MeiliSearchImportCommand.
@@ -31,24 +21,10 @@ use const SORT_REGULAR;
  */
 final class MeiliSearchImportCommand extends IndexCommand
 {
-    /**
-     * @var string
-     */
     protected static $defaultName = 'meili:import';
+    protected Client $searchClient;
+    protected ManagerRegistry $managerRegistry;
 
-    /** @var Client */
-    protected $searchClient;
-
-    /** @var ManagerRegistry */
-    protected $managerRegistry;
-
-    /**
-     * MeiliSearchImportCommand constructor.
-     *
-     * @param SearchService   $searchService
-     * @param ManagerRegistry $managerRegistry
-     * @param Client          $searchClient
-     */
     public function __construct(SearchService $searchService, ManagerRegistry $managerRegistry, Client $searchClient)
     {
         parent::__construct($searchService);
@@ -56,9 +32,6 @@ final class MeiliSearchImportCommand extends IndexCommand
         $this->searchClient = $searchClient;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure()
     {
         $this
@@ -72,12 +45,6 @@ final class MeiliSearchImportCommand extends IndexCommand
             );
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws TimeOutException
-     * @throws ApiException
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $entitiesToIndex = $this->getEntitiesFromArgs($input, $output);
@@ -165,11 +132,7 @@ final class MeiliSearchImportCommand extends IndexCommand
         return 0;
     }
 
-    /**
-     * @param array $batch
-     *
-     * @return array
-     *
+    /*
      * @throws TimeOutException
      */
     private function formatIndexingResponse(array $batch): array

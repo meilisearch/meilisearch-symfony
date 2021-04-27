@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Services;
 
 use Doctrine\Persistence\ObjectManager;
@@ -21,17 +23,11 @@ class NullSearchService implements SearchService
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSearchable(): array
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfiguration(): array
     {
         return ['batchSize' => 200];
@@ -45,41 +41,26 @@ class NullSearchService implements SearchService
         return '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function index(ObjectManager $objectManager, $searchable): array
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function remove(ObjectManager $objectManager, $searchable): array
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function clear(string $className): array
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function delete(string $className): ?array
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function search(
         ObjectManager $objectManager,
         string $className,
@@ -100,9 +81,6 @@ class NullSearchService implements SearchService
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function count(string $className, string $query = '', array $requestOptions = []): int
     {
         return 0;

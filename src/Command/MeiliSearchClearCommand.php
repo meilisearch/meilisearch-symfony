@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,12 +15,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class MeiliSearchClearCommand extends IndexCommand
 {
-    /** @var string */
     protected static $defaultName = 'meili:clear';
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure()
     {
         $this
