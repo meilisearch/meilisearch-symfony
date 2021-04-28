@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MeiliSearch\Bundle\Test\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -17,6 +17,7 @@ class Comment
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"searchable"})
      */
     private ?int $id = null;
 
@@ -34,12 +35,14 @@ class Comment
      *     max=10000,
      *     maxMessage="comment.too_long"
      * )
+     * @Groups({"searchable"})
      */
     private $content;
 
     /**
      * @var \DateTime
      * @ORM\Column(type="datetime")
+     * @Groups({"searchable"})
      */
     private $publishedAt;
 

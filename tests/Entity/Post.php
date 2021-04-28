@@ -32,11 +32,13 @@ class Post
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"searchable"})
      */
     private ?string $content = null;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"searchable"})
      */
     private ?\DateTime $publishedAt = null;
 
