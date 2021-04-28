@@ -2,6 +2,7 @@
 
 namespace MeiliSearch\Bundle\Test;
 
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use MeiliSearch\Bundle\MeiliSearchBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -18,6 +19,7 @@ class Kernel extends HttpKernel
     {
         return [
             new FrameworkBundle(),
+            new DoctrineBundle(),
             new MeiliSearchBundle(),
         ];
     }
