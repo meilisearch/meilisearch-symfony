@@ -52,7 +52,8 @@ class SerializationTest extends BaseTest
             'posts',
             $post,
             $postMeta,
-            $this->get('serializer')
+            $this->get('serializer'),
+            ['useSerializerGroup' => true]
         );
 
         $expected = [
@@ -62,8 +63,9 @@ class SerializationTest extends BaseTest
             'publishedAt' => $serializedDateTime,
             'comments' => [
                 [
+                    'id' => null,
                     'content' => 'a great comment',
-                    'post_title' => 'a simple post',
+                    'publishedAt' => $serializedDateTime,
                 ],
             ],
         ];

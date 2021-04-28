@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MeiliSearch\Bundle\Test\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -43,13 +44,14 @@ class Post
     private ?\DateTime $publishedAt = null;
 
     /**
-     * @var Comment[]|ArrayCollection
+     * @var Comment[]|Collection
      * @ORM\OneToMany(
      *      targetEntity="Comment",
      *      mappedBy="post",
      *      orphanRemoval=true
      * )
      * @ORM\OrderBy({"publishedAt": "DESC"})
+     * @Groups({"searchable"})
      */
     private $comments;
 
@@ -119,7 +121,7 @@ class Post
         return $this;
     }
 
-    public function getComments(): ?ArrayCollection
+    public function getComments(): ?Collection
     {
         return $this->comments;
     }
