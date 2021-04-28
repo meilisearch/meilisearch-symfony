@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 final class SearchableEntity
 {
-    protected string $indexUid;
+    private string $indexUid;
 
     /** @var object */
     private $entity;
@@ -33,11 +33,8 @@ final class SearchableEntity
     /**
      * SearchableEntity constructor.
      *
-     * @param string        $indexUid
-     * @param object        $entity
-     * @param ClassMetadata $entityMetadata
-     * @param object|null   $normalizer
-     * @param array         $extra
+     * @param object      $entity
+     * @param object|null $normalizer
      */
     public function __construct(
         string $indexUid,
