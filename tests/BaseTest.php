@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Test;
 
-use Exception;
 use MeiliSearch\Bundle\SearchableEntity;
 use MeiliSearch\Bundle\Test\Entity\Comment;
 use MeiliSearch\Bundle\Test\Entity\Image;
@@ -14,8 +15,6 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * Class BaseTest.
- *
- * @package MeiliSearch\Bundle
  */
 class BaseTest extends KernelTestCase
 {
@@ -26,8 +25,6 @@ class BaseTest extends KernelTestCase
 
     /**
      * @param int|string|null $id
-     *
-     * @return Post
      */
     protected function createPost($id = null): Post
     {
@@ -56,8 +53,6 @@ class BaseTest extends KernelTestCase
 
     /**
      * @param int|string|null $id
-     *
-     * @return Comment
      */
     protected function createComment($id = null): Comment
     {
@@ -74,8 +69,6 @@ class BaseTest extends KernelTestCase
 
     /**
      * @param int|string|null $id
-     *
-     * @return Image
      */
     protected function createImage($id = null): Image
     {
@@ -111,9 +104,7 @@ class BaseTest extends KernelTestCase
     }
 
     /**
-     * @param Application $application
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function refreshDb(Application $application): void
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Test\Normalizer;
 
 use MeiliSearch\Bundle\Test\Entity\Comment;
@@ -7,8 +9,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Class CommentNormalizer.
- *
- * @package MeiliSearch\Bundle\Test\Normalizer
  */
 class CommentNormalizer implements NormalizerInterface
 {

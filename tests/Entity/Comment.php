@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Test\Entity;
 
 use DateTime;
@@ -11,21 +13,18 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Comment
 {
-
     /**
-     * @var int
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var Post
      * @ORM\ManyToOne(targetEntity="Post", inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $post;
+    private ?Post $post = null;
 
     /**
      * @var string
@@ -39,22 +38,20 @@ class Comment
     private $content;
 
     /**
-     * @var DateTime
+     * @var \DateTime
      * @ORM\Column(type="datetime")
      */
     private $publishedAt;
 
     /**
      * Comment constructor.
-     *
-     * @param array $attributes
      */
     public function __construct(array $attributes = [])
     {
-        $this->id          = $attributes['id'] ?? null;
-        $this->content     = $attributes['content'] ?? null;
-        $this->publishedAt = $attributes['publishedAt'] ?? new DateTime();
-        $this->post        = $attributes['post'] ?? null;
+        $this->id = $attributes['id'] ?? null;
+        $this->content = $attributes['content'] ?? null;
+        $this->publishedAt = $attributes['publishedAt'] ?? new \DateTime();
+        $this->post = $attributes['post'] ?? null;
     }
 
     public function getId(): ?int
@@ -81,12 +78,12 @@ class Comment
         return $this;
     }
 
-    public function getPublishedAt(): DateTime
+    public function getPublishedAt(): \DateTime
     {
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(DateTime $publishedAt): Comment
+    public function setPublishedAt(\DateTime $publishedAt): Comment
     {
         $this->publishedAt = $publishedAt;
 

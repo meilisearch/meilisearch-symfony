@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Test\TestCase;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\Persistence\ObjectManager;
-use Exception;
 use MeiliSearch\Bundle\Services\MeiliSearchService;
 use MeiliSearch\Bundle\Test\BaseTest;
 use MeiliSearch\Bundle\Test\Entity\Comment;
@@ -19,53 +19,34 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * Class CommandsTest
- *
- * @package MeiliSearch\Bundle\Test\TestCase
+ * Class CommandsTest.
  */
 class CommandsTest extends BaseTest
 {
-
-    /** @var MeiliSearchService $searchService */
-    protected $searchService;
-
-    /** @var Client $client */
-    protected $client;
-
-    /** @var ObjectManager $objectManager */
-    protected $objectManager;
-
-    /** @var Connection $connection */
-    protected $connection;
-
-    /** @var Application $application */
-    protected $application;
-
-    /** @var string $indexName */
-    protected $indexName;
-
-    /** @var AbstractPlatform|null $platform */
-    protected $platform;
-
-    /** @var Indexes $index */
-    protected $index;
+    protected MeiliSearchService $searchService;
+    protected Client $client;
+    protected ObjectManager $objectManager;
+    protected Connection $connection;
+    protected Application $application;
+    protected string $indexName;
+    protected ?AbstractPlatform $platform;
+    protected Indexes $index;
 
     /**
-     * @inheritDoc
-     * @throws DBALException
      * @throws ApiException
-     * @throws Exception
+     * @throws \Doctrine\DBAL\Exception
+     * @throws \Exception
      */
     public function setUp(): void
     {
         parent::setUp();
         $this->searchService = $this->get('search.service');
-        $this->client        = $this->get('search.client');
+        $this->client = $this->get('search.client');
         $this->objectManager = $this->get('doctrine')->getManager();
-        $this->connection    = $this->get('doctrine')->getConnection();
-        $this->platform      = $this->connection->getDatabasePlatform();
-        $this->indexName     = 'posts';
-        $this->index         = $this->client->getOrCreateIndex($this->getPrefix() . $this->indexName);
+        $this->connection = $this->get('doctrine')->getConnection();
+        $this->platform = $this->connection->getDatabasePlatform();
+        $this->indexName = 'posts';
+        $this->index = $this->client->getOrCreateIndex($this->getPrefix().$this->indexName);
 
         $this->application = new Application(self::$kernel);
         $this->refreshDb($this->application);
@@ -86,55 +67,58 @@ class CommandsTest extends BaseTest
     {
         $unknownIndexName = 'test';
 
-        $command       = $this->application->find('meili:clear');
+        $command = $this->application->find('meili:clear');
         $commandTester = new CommandTester($command);
 
         $commandTester->execute(
             [
-                'command'   => $command->getName(),
+                'command' => $command->getName(),
                 '--indices' => $unknownIndexName,
             ]
         );
 
         // Checks output and ensure it failed
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('No index named ' . $unknownIndexName, $output);
+        $this->assertStringContainsString('No index named '.$unknownIndexName, $output);
         $this->cleanUp();
     }
 
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
     public function testSearchImportAggregator()
     {
         $now = new \DateTime();
         $this->connection->insert(
             $this->indexName,
             [
-                'title'        => 'Test',
-                'content'      => 'Test content',
+                'title' => 'Test',
+                'content' => 'Test content',
                 'published_at' => $now->format('Y-m-d H:i:s'),
             ]
         );
         $this->connection->insert(
             $this->indexName,
             [
-                'title'        => 'Test2',
-                'content'      => 'Test content2',
+                'title' => 'Test2',
+                'content' => 'Test content2',
                 'published_at' => $now->format('Y-m-d H:i:s'),
             ]
         );
         $this->connection->insert(
             $this->indexName,
             [
-                'title'        => 'Test3',
-                'content'      => 'Test content3',
+                'title' => 'Test3',
+                'content' => 'Test content3',
                 'published_at' => $now->format('Y-m-d H:i:s'),
             ]
         );
 
-        $command       = $this->application->find('meili:import');
+        $command = $this->application->find('meili:import');
         $commandTester = new CommandTester($command);
         $commandTester->execute(
             [
-                'command'   => $command->getName(),
+                'command' => $command->getName(),
                 '--indices' => 'contents',
             ]
         );
@@ -144,7 +128,7 @@ class CommandsTest extends BaseTest
         $this->assertStringContainsString('Done!', $output);
 
         // clearup table
-        $this->connection->executeUpdate($this->platform->getTruncateTableSQL($this->indexName, true));
+        $this->connection->executeStatement($this->platform->getTruncateTableSQL($this->indexName, true));
         $this->cleanUp();
     }
 }

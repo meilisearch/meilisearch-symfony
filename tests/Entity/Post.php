@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Test\Entity;
 
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -13,36 +14,31 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class Post
 {
-
     /**
-     * @var int
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Groups({"searchable"})
      * ^ Note that Groups work on private properties
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      * @Groups({"searchable"})
      * ^ Note that Groups work on private properties
      */
-    private $title;
+    private ?string $title = null;
 
     /**
-     * @var string
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
-    private $content;
+    private ?string $content = null;
 
     /**
-     * @var DateTime
      * @ORM\Column(type="datetime")
      */
-    private $publishedAt;
+    private ?\DateTime $publishedAt = null;
 
     /**
      * @var Comment[]|ArrayCollection
@@ -57,16 +53,14 @@ class Post
 
     /**
      * Post constructor.
-     *
-     * @param array $attributes
      */
     public function __construct(array $attributes = [])
     {
-        $this->id          = $attributes['id'] ?? null;
-        $this->title       = $attributes['title'] ?? null;
-        $this->content     = $attributes['content'] ?? null;
-        $this->publishedAt = $attributes['publishedAt'] ?? new DateTime();
-        $this->comments    = new ArrayCollection($attributes['comments'] ?? []);
+        $this->id = $attributes['id'] ?? null;
+        $this->title = $attributes['title'] ?? null;
+        $this->content = $attributes['content'] ?? null;
+        $this->publishedAt = $attributes['publishedAt'] ?? new \DateTime();
+        $this->comments = new ArrayCollection($attributes['comments'] ?? []);
     }
 
     public function getId(): ?int
@@ -111,12 +105,12 @@ class Post
     /**
      * @Groups({"searchable"})
      */
-    public function getPublishedAt(): ?DateTime
+    public function getPublishedAt(): ?\DateTime
     {
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(?DateTime $publishedAt): Post
+    public function setPublishedAt(?\DateTime $publishedAt): Post
     {
         $this->publishedAt = $publishedAt;
 

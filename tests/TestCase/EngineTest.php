@@ -1,30 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Test\TestCase;
 
-use Exception;
 use MeiliSearch\Bundle\Engine;
 use MeiliSearch\Bundle\Test\BaseTest;
 use MeiliSearch\Exceptions\ApiException;
 
 /**
- * Class EngineTest
- *
- * @package MeiliSearch\Bundle\Test\TestCase
+ * Class EngineTest.
  */
 class EngineTest extends BaseTest
 {
-
-    protected $engine;
+    protected Engine $engine;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        /* @var Engine */
         $this->engine = new Engine($this->get('search.client'));
     }
 
+    /**
+     * @throws ApiException
+     */
     public function testIndexingEmptyEntity()
     {
         $searchableImage = $this->createSearchableImage();
@@ -44,7 +44,7 @@ class EngineTest extends BaseTest
         // Search
         try {
             $this->engine->search('query', $searchableImage->getIndexUid(), []);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->assertInstanceOf(ApiException::class, $e);
         }
     }

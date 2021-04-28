@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Test\TestCase;
 
-use DateTime;
 use MeiliSearch\Bundle\Searchable;
 use MeiliSearch\Bundle\SearchableEntity;
 use MeiliSearch\Bundle\Test\BaseTest;
@@ -13,19 +14,16 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
 /**
- * Class SerializationTest
- *
- * @package MeiliSearch\Bundle\Test\TestCase
+ * Class SerializationTest.
  */
 class SerializationTest extends BaseTest
 {
-
     /**
      * @throws ExceptionInterface
      */
     public function testSimpleEntityToSearchableArray()
     {
-        $datetime       = new DateTime();
+        $datetime = new \DateTime();
         $dateSerializer = new Serializer([new DateTimeNormalizer()]);
         // This way we can test that DateTime's are serialized with DateTimeNormalizer
         // And not the default ObjectNormalizer
@@ -33,18 +31,18 @@ class SerializationTest extends BaseTest
 
         $post = new Post(
             [
-                'id'          => 12,
-                'title'       => 'a simple post',
-                'content'     => 'some text',
+                'id' => 12,
+                'title' => 'a simple post',
+                'content' => 'some text',
                 'publishedAt' => $datetime,
             ]
         );
         $post->addComment(
             new Comment(
                 [
-                    'content'     => 'a great comment',
+                    'content' => 'a great comment',
                     'publishedAt' => $datetime,
-                    'post'        => $post,
+                    'post' => $post,
                 ]
             )
         );
@@ -58,13 +56,13 @@ class SerializationTest extends BaseTest
         );
 
         $expected = [
-            'id'          => 12,
-            'title'       => 'a simple post',
-            'content'     => 'some text',
+            'id' => 12,
+            'title' => 'a simple post',
+            'content' => 'some text',
             'publishedAt' => $serializedDateTime,
-            'comments'    => [
+            'comments' => [
                 [
-                    'content'    => 'a great comment',
+                    'content' => 'a great comment',
                     'post_title' => 'a simple post',
                 ],
             ],

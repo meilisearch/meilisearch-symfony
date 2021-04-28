@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Test;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
@@ -10,8 +12,6 @@ use Symfony\Component\HttpKernel\Kernel as HttpKernel;
 
 /**
  * Class Kernel.
- *
- * @package MeiliSearch\Bundle
  */
 class Kernel extends HttpKernel
 {
