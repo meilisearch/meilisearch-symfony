@@ -163,15 +163,9 @@ final class Engine
 
     /**
      * Search the index and returns the number of results.
-     *
-     * @param string $query
-     * @param string $indexUid
-     * @param array  $requestOptions
-     *
-     * @return int
      */
-    public function count(string $query, string $indexUid, array $requestOptions): int
+    public function count(string $query, string $indexName, array $searchParams): int
     {
-        return (int) $this->client->index($indexUid)->search($query, $requestOptions)['nbHits'];
+        return (int) $this->client->index($indexName)->search($query, $searchParams)['nbHits'];
     }
 }
