@@ -37,7 +37,7 @@ interface SearchService
         ObjectManager $objectManager,
         string $className,
         string $query = '',
-        array $requestOptions = []
+        array $searchParams = []
     ): array;
 
     /**
@@ -51,5 +51,5 @@ interface SearchService
         array $searchParams = []
     ): array;
 
-    public function count(string $className, string $query = '', array $requestOptions = []): int;
+    public function count(string $className, string $query = '', array $searchParams = []): int;
 }

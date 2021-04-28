@@ -119,10 +119,9 @@ final class MeiliSearchImportCommand extends IndexCommand
                 }
 
                 ++$page;
-                $repository->clear();
             } while (count($entities) >= $config['batchSize']);
 
-            $repository->clear();
+            $manager->clear();
         }
 
         $output->writeln('<info>Done!</info>');

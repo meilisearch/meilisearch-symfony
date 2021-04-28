@@ -42,19 +42,19 @@ final class Engine
                 continue;
             }
 
-            $indexName = $entity->getIndexName();
+            $indexUid = $entity->getIndexUid();
 
-            if (!isset($data[$indexName])) {
-                $data[$indexName] = [];
+            if (!isset($data[$indexUid])) {
+                $data[$indexUid] = [];
             }
 
-            $data[$indexName][] = $searchableArray + ['objectID' => $entity->getId()];
+            $data[$indexUid][] = $searchableArray + ['objectID' => $entity->getId()];
         }
 
         $result = [];
-        foreach ($data as $indexName => $objects) {
-            $result[$indexName] = $this->client
-                ->getOrCreateIndex($indexName, ['primaryKey' => 'objectID'])
+        foreach ($data as $indexUid => $objects) {
+            $result[$indexUid] = $this->client
+                ->getOrCreateIndex($indexUid, ['primaryKey' => 'objectID'])
                 ->addDocuments($objects);
         }
 
@@ -79,20 +79,20 @@ final class Engine
             if (null === $searchableArray || 0 === \count($searchableArray)) {
                 continue;
             }
-            $indexName = $entity->getIndexName();
+            $indexUid = $entity->getIndexName();
 
-            if (!isset($data[$indexName])) {
-                $data[$indexName] = [];
+            if (!isset($data[$indexUid])) {
+                $data[$indexUid] = [];
             }
 
-            $data[$indexName][] = $entity->getId();
+            $data[$indexUid][] = $entity->getId();
         }
 
         $result = [];
-        foreach ($data as $indexName => $objects) {
-            $result[$indexName] = $this->client
-                ->index($indexName)
-                ->deleteDocument(\reset($objects));
+        foreach ($data as $indexUid => $objects) {
+            $result[$indexUid] = $this->client
+                ->index($indexUid)
+                ->deleteDocument(reset($objects));
         }
 
         return $result;
@@ -104,36 +104,39 @@ final class Engine
      *
      * @throws ApiException
      */
-    public function clear(string $indexName): array
+    public function clear(string $indexUid): array
     {
-        $index = $this->client->getOrCreateIndex($indexName);
+        $index = $this->client->getOrCreateIndex($indexUid);
         $return = $index->deleteAllDocuments();
 
         return $index->getUpdateStatus($return['updateId']);
     }
 
-    public function delete(string $indexName): ?array
+    /**
+     * Delete an index and it's content.
+     */
+    public function delete(string $indexUid): ?array
     {
-        return $this->client->deleteIndex($indexName);
+        return $this->client->deleteIndex($indexUid);
     }
 
     /**
      * Method used for querying an index.
      */
-    public function search(string $query, string $indexName, array $searchParams): array
+    public function search(string $query, string $indexUid, array $searchParams): array
     {
         if ('' === $query) {
             $query = null;
         }
 
-        return $this->client->index($indexName)->rawSearch($query, $searchParams);
+        return $this->client->index($indexUid)->rawSearch($query, $searchParams);
     }
 
     /**
      * Search the index and returns the number of results.
      */
-    public function count(string $query, string $indexName, array $requestOptions): int
+    public function count(string $query, string $indexName, array $searchParams): int
     {
-        return (int) $this->client->index($indexName)->search($query, $requestOptions)['nbHits'];
+        return (int) $this->client->index($indexName)->search($query, $searchParams)['nbHits'];
     }
 }
