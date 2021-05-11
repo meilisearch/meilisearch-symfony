@@ -1,14 +1,12 @@
 <?php
 
-namespace MeiliSearch\Bundle\Exception;
+declare(strict_types=1);
 
-use LogicException;
+namespace MeiliSearch\Bundle\Exception;
 
 /**
  * Class InvalidEntityForAggregator.
- *
- * @package MeiliSearch\Bundle\Exception
  */
-final class InvalidEntityForAggregator extends LogicException
+final class InvalidEntityForAggregator extends \LogicException
 {
 }

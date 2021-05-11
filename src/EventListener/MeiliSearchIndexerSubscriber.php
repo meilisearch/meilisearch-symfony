@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
@@ -8,23 +10,12 @@ use MeiliSearch\Bundle\SearchService;
 
 /**
  * Class MeiliSearchIndexerSubscriber.
- *
- * @package MeiliSearch\Bundle\EventListener
  */
 final class MeiliSearchIndexerSubscriber implements EventSubscriber
 {
-    /** @var SearchService */
-    protected $searchService;
+    private SearchService $searchService;
+    private array $subscribedEvents;
 
-    /** @var array */
-    protected $subscribedEvents;
-
-    /**
-     * MeiliSearchIndexerSubscriber constructor.
-     *
-     * @param SearchService $searchService
-     * @param array         $subscribedEvents
-     */
     public function __construct(SearchService $searchService, array $subscribedEvents)
     {
         $this->searchService = $searchService;
@@ -48,6 +39,6 @@ final class MeiliSearchIndexerSubscriber implements EventSubscriber
 
     public function preRemove(LifecycleEventArgs $args): void
     {
-        $this->searchService->remove($args->getObjectManager(), $object = $args->getObject());
+        $this->searchService->remove($args->getObjectManager(), $args->getObject());
     }
 }

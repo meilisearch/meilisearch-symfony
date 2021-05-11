@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Test\TestCase;
 
-use Exception;
 use MeiliSearch\Bundle\SearchService;
 use MeiliSearch\Bundle\Test\BaseTest;
 use MeiliSearch\Client;
@@ -10,13 +11,10 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * Class SettingsTest
- *
- * @package MeiliSearch\Bundle\Test\TestCase
+ * Class SettingsTest.
  */
 class SettingsTest extends BaseTest
 {
-
     const DEFAULT_RANKING_RULES
         = [
             'typo',
@@ -27,28 +25,21 @@ class SettingsTest extends BaseTest
             'exactness',
         ];
 
-    /** @var Client $client */
-    protected $client;
-
-    /** @var string $indexName */
-    protected $indexName;
-
-    /** @var Application $application */
-    protected $application;
-
-    /** @var SearchService $searchService */
-    protected $searchService;
+    protected Client $client;
+    protected string $indexName;
+    protected Application $application;
+    protected SearchService $searchService;
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public function setUp(): void
     {
         parent::setUp();
 
         $this->searchService = $this->get('search.service');
-        $this->client        = $this->get('search.client');
-        $this->indexName     = 'posts';
+        $this->client = $this->get('search.client');
+        $this->indexName = 'posts';
 
         $this->application = new Application(self::$kernel);
         $this->refreshDb($this->application);
@@ -57,8 +48,8 @@ class SettingsTest extends BaseTest
     public function testGetDefaultSettings()
     {
         $primaryKey = 'ObjectID';
-        $settingA   = $this->client->getOrCreateIndex('indexA')->getSettings();
-        $settingB   = $this->client->getOrCreateIndex('indexB', ['primaryKey' => $primaryKey])->getSettings();
+        $settingA = $this->client->getOrCreateIndex('indexA')->getSettings();
+        $settingB = $this->client->getOrCreateIndex('indexB', ['primaryKey' => $primaryKey])->getSettings();
 
         $this->assertEquals(self::DEFAULT_RANKING_RULES, $settingA['rankingRules']);
         $this->assertNull($settingA['distinctAttribute']);
@@ -83,13 +74,13 @@ class SettingsTest extends BaseTest
 
     public function testUpdateSettings()
     {
-        $command       = $this->application->find('meili:import');
+        $command = $this->application->find('meili:import');
         $commandTester = new CommandTester($command);
         $commandTester->execute(
             [
-                'command'           => $command->getName(),
-                '--indices'         => 'posts',
-                '--update-settings' => true
+                'command' => $command->getName(),
+                '--indices' => 'posts',
+                '--update-settings' => true,
             ]
         );
 
@@ -101,5 +92,4 @@ class SettingsTest extends BaseTest
         $this->assertNotEmpty($settings['attributesForFaceting']);
         $this->assertEquals(['title', 'publishedAt'], $settings['attributesForFaceting']);
     }
-
 }

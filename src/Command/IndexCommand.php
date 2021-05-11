@@ -1,32 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Command;
 
 use MeiliSearch\Bundle\SearchService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use function array_keys;
-use function count;
-use function explode;
 
 /**
  * Class IndexCommand.
- *
- * @package MeiliSearch\Bundle\Command
  */
 abstract class IndexCommand extends Command
 {
-    /** @var SearchService */
-    protected $searchService;
+    protected SearchService $searchService;
 
-    /**
-     * IndexCommand constructor.
-     *
-     * @param SearchService $searchService
-     * @param string|null   $name
-     */
-    public function __construct(SearchService $searchService, string $name = null)
+    public function __construct(SearchService $searchService, ?string $name = null)
     {
         $this->searchService = $searchService;
         parent::__construct($name);
@@ -38,7 +28,7 @@ abstract class IndexCommand extends Command
         $indexNames = [];
 
         if ($indexList = $input->getOption('indices')) {
-            $indexNames = explode(',', $indexList);
+            $indexNames = \explode(',', $indexList);
         }
 
         $config = $this->searchService->getConfiguration();

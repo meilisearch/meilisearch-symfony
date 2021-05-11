@@ -1,28 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle;
 
+use function count;
 use MeiliSearch\Client;
 use MeiliSearch\Exceptions\ApiException;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
-use function count;
-use function reset;
 
 /**
  * Class Engine.
- *
- * @package MeiliSearch\Bundle
  */
 final class Engine
 {
-    /** @var Client */
-    private $client;
+    private Client $client;
 
-    /**
-     * Engine constructor.
-     *
-     * @param Client $client
-     */
     public function __construct(Client $client)
     {
         $this->client = $client;
@@ -35,10 +27,7 @@ final class Engine
      *
      * @param array|SearchableEntity $searchableEntities
      *
-     * @return array
-     *
      * @throws ApiException
-     * @throws ExceptionInterface
      */
     public function index($searchableEntities): array
     {
@@ -49,7 +38,7 @@ final class Engine
         $data = [];
         foreach ($searchableEntities as $entity) {
             $searchableArray = $entity->getSearchableArray();
-            if (null === $searchableArray || 0 === count($searchableArray)) {
+            if (null === $searchableArray || 0 === \count($searchableArray)) {
                 continue;
             }
 
@@ -77,10 +66,6 @@ final class Engine
      * This method enables you to remove one or more objects from an index.
      *
      * @param array|SearchableEntity $searchableEntities
-     *
-     * @return array
-     *
-     * @throws ExceptionInterface
      */
     public function remove($searchableEntities): array
     {
@@ -91,7 +76,7 @@ final class Engine
         $data = [];
         foreach ($searchableEntities as $entity) {
             $searchableArray = $entity->getSearchableArray();
-            if (null === $searchableArray || 0 === count($searchableArray)) {
+            if (null === $searchableArray || 0 === \count($searchableArray)) {
                 continue;
             }
             $indexUid = $entity->getIndexName();
@@ -117,10 +102,6 @@ final class Engine
      * Clear the records of an index.
      * This method enables you to delete an index’s contents (records).
      *
-     * @param string $indexUid
-     *
-     * @return array
-     *
      * @throws ApiException
      */
     public function clear(string $indexUid): array
@@ -133,10 +114,6 @@ final class Engine
 
     /**
      * Delete an index and it's content.
-     *
-     * @param string $indexUid
-     *
-     * @return array|null
      */
     public function delete(string $indexUid): ?array
     {
@@ -145,12 +122,6 @@ final class Engine
 
     /**
      * Method used for querying an index.
-     *
-     * @param string $query
-     * @param string $indexUid
-     * @param array  $searchParams
-     *
-     * @return array
      */
     public function search(string $query, string $indexUid, array $searchParams): array
     {
