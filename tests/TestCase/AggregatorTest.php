@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Test\TestCase;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,13 +14,10 @@ use MeiliSearch\Bundle\Test\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 /**
- * Class AggregatorTest
- *
- * @package MeiliSearch\Bundle\Test\TestCase
+ * Class AggregatorTest.
  */
 class AggregatorTest extends BaseTest
 {
-
     /**
      * @var EntityManagerInterface
      */
@@ -58,8 +57,8 @@ class AggregatorTest extends BaseTest
     {
         $post = new Post(
             [
-                'id'      => 1,
-                'title'   => 'Test',
+                'id' => 1,
+                'title' => 'Test',
                 'content' => 'Test content',
             ]
         );
@@ -69,7 +68,7 @@ class AggregatorTest extends BaseTest
         $postMetadata = $this->entityManager->getClassMetadata(Post::class);
         $this->entityManager->getProxyFactory()->generateProxyClasses([$postMetadata], null);
 
-        $proxy             = $this->entityManager->getProxyFactory()->getProxy($postMetadata->getName(), ['id' => 1]);
+        $proxy = $this->entityManager->getProxyFactory()->getProxy($postMetadata->getName(), ['id' => 1]);
         $contentAggregator = new ContentAggregator($proxy, ['objectId']);
 
         $serializer = $this->get('serializer');

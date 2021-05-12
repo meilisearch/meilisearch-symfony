@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Test;
 
-use Exception;
 use MeiliSearch\Bundle\SearchableEntity;
 use MeiliSearch\Bundle\Test\Entity\Comment;
 use MeiliSearch\Bundle\Test\Entity\Image;
@@ -12,42 +13,18 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-use function class_exists;
-use function getenv;
-use function is_null;
-use function rand;
-use function sprintf;
-
 /**
- * Class BaseTest
- *
- * @package MeiliSearch\Bundle
+ * Class BaseTest.
  */
 class BaseTest extends KernelTestCase
 {
-
-    public static function setUpBeforeClass(): void
-    {
-        /*
-         * Older version of PHPUnit (<6.0) load
-         * env variables differently, we override them
-         * here to make sure they're coming from the
-         * env rather than the XML config
-         */
-        if (class_exists('\PHPUnit_Runner_Version')) {
-            $_ENV['MEILISEARCH_PREFIX'] = getenv('MEILISEARCH_PREFIX');
-        }
-    }
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->bootKernel();
     }
 
     /**
      * @param int|string|null $id
-     *
-     * @return Post
      */
     protected function createPost($id = null): Post
     {
@@ -55,7 +32,7 @@ class BaseTest extends KernelTestCase
         $post->setTitle('Test');
         $post->setContent('Test content');
 
-        if (!is_null($id)) {
+        if (null !== $id) {
             $post->setId($id);
         }
 
@@ -67,7 +44,7 @@ class BaseTest extends KernelTestCase
         $post = $this->createPost(rand(100, 300));
 
         return new SearchableEntity(
-            $this->getPrefix() . 'posts',
+            $this->getPrefix().'posts',
             $post,
             $this->get('doctrine')->getManager()->getClassMetadata(Post::class),
             $this->get('serializer')
@@ -76,8 +53,6 @@ class BaseTest extends KernelTestCase
 
     /**
      * @param int|string|null $id
-     *
-     * @return Comment
      */
     protected function createComment($id = null): Comment
     {
@@ -85,7 +60,7 @@ class BaseTest extends KernelTestCase
         $comment->setContent('Comment content');
         $comment->setPost(new Post(['title' => 'What a post!']));
 
-        if (!is_null($id)) {
+        if (null !== $id) {
             $comment->setId($id);
         }
 
@@ -94,14 +69,12 @@ class BaseTest extends KernelTestCase
 
     /**
      * @param int|string|null $id
-     *
-     * @return Image
      */
     protected function createImage($id = null): Image
     {
         $image = new Image();
 
-        if (!is_null($id)) {
+        if (null !== $id) {
             $image->setId($id);
         }
 
@@ -113,7 +86,7 @@ class BaseTest extends KernelTestCase
         $image = $this->createImage(rand(100, 300));
 
         return new SearchableEntity(
-            $this->getPrefix() . 'image',
+            $this->getPrefix().'image',
             $image,
             $this->get('doctrine')->getManager()->getClassMetadata(Image::class),
             null
@@ -131,19 +104,17 @@ class BaseTest extends KernelTestCase
     }
 
     /**
-     * @param Application $application
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function refreshDb(Application $application): void
     {
         $inputs = [
             new ArrayInput(
                 [
-                    'command'         => 'doctrine:schema:drop',
+                    'command' => 'doctrine:schema:drop',
                     '--full-database' => true,
-                    '--force'         => true,
-                    '--quiet'         => true,
+                    '--force' => true,
+                    '--quiet' => true,
                 ]
             ),
             new ArrayInput(

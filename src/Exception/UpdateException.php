@@ -1,14 +1,12 @@
 <?php
 
-namespace MeiliSearch\Bundle\Exception;
+declare(strict_types=1);
 
-use LogicException;
+namespace MeiliSearch\Bundle\Exception;
 
 /**
  * Class UpdateException.
- *
- * @package MeiliSearch\Bundle\Exception
  */
-final class UpdateException extends LogicException
+final class UpdateException extends \LogicException
 {
 }
