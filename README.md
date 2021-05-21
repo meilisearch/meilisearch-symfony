@@ -42,7 +42,7 @@ Also, see our [Documentation](https://docs.meilisearch.com/learn/tutorials/getti
 
 ## 📝 Requirements
 
-* **Require** PHP 7.2 and later.
+* **Require** PHP 7.4 and later.
 * **Compatible** with Symfony 4.0 and later.
 * **Support** Doctrine ORM and Doctrine MongoDB.
 

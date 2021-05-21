@@ -19,6 +19,8 @@ final class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->scalarNode('url')->end()
+                ->scalarNode('api_key')->end()
                 ->scalarNode('prefix')
                     ->defaultValue(null)
                 ->end()
