@@ -33,6 +33,9 @@ final class MeiliSearchExtension extends Extension
             $config['prefix'] = $container->getParameter('kernel.environment').'_';
         }
 
+        $container->setParameter('meili_url', $config['url']);
+        $container->setParameter('meili_api_key', $config['api_key']);
+
         if (\count($doctrineSubscribedEvents = $config['doctrineSubscribedEvents']) > 0) {
             $container->getDefinition('search.search_indexer_subscriber')->setArgument(1, $doctrineSubscribedEvents);
         } else {
