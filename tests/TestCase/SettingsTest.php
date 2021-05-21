@@ -15,7 +15,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class SettingsTest extends BaseTest
 {
-    const DEFAULT_RANKING_RULES
+    public const DEFAULT_RANKING_RULES
         = [
             'typo',
             'words',

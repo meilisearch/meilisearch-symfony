@@ -28,7 +28,7 @@
     },
     "require-dev": {
         "doctrine/doctrine-bundle": "^2.3",
-        "friendsofphp/php-cs-fixer": "^2.18",
+        "friendsofphp/php-cs-fixer": "^3.0",
         "jms/serializer-bundle": "^3.0",
         "nyholm/psr7": "^1.3",
         "phpunit/phpunit": "^9.5",
@@ -52,7 +52,7 @@
     },
     "scripts": {
         "test:unit": "phpunit --colors=always --verbose",
-        "lint:check": "php-cs-fixer fix -v --config=.php_cs.dist --using-cache=no --dry-run",
-        "lint:fix": "php-cs-fixer fix -v --config=.php_cs.dist --using-cache=no"
+        "lint:check": "php-cs-fixer fix -v --using-cache=no --dry-run",
+        "lint:fix": "php-cs-fixer fix -v --using-cache=no"
     }
 }
