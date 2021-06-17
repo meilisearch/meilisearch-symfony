@@ -64,43 +64,66 @@ class SearchTest extends BaseTest
         }
     }
 
+    public function postProvider()
+    {
+        return [
+            'post-contents differ from object-ID' => [
+                [
+                    [
+                        'title' => 'Test',
+                        'content' => 'Test content',
+                        'published_at' => (new \DateTime())->format('Y-m-d H:i:s'),
+                    ],
+                    [
+                        'title' => 'Test2',
+                        'content' => 'Test content2',
+                        'published_at' => (new \DateTime())->format('Y-m-d H:i:s'),
+                    ],
+                    [
+                        'title' => 'Test3',
+                        'content' => 'Test content3',
+                        'published_at' => (new \DateTime())->format('Y-m-d H:i:s'),
+                    ],
+                ],
+            ],
+            'post-contents match object-ID' => [
+                [
+                    [
+                        'title' => 'Test',
+                        'content' => 1,
+                        'published_at' => (new \DateTime())->format('Y-m-d H:i:s'),
+                    ],
+                    [
+                        'title' => 'Test2',
+                        'content' => 1,
+                        'published_at' => (new \DateTime())->format('Y-m-d H:i:s'),
+                    ],
+                    [
+                        'title' => 'Test3',
+                        'content' => 1,
+                        'published_at' => (new \DateTime())->format('Y-m-d H:i:s'),
+                    ],
+                ],
+            ],
+        ];
+    }
+
     /**
+     * @dataProvider postProvider
+     *
      * @throws \Doctrine\DBAL\Exception
      */
-    public function testSearchImportAggregator()
+    public function testSearchImportAggregator(array $posts)
     {
         $nbEntityIndexed = 0;
         // START - Insertion Part took from CommandsTest class
-        $now = new \DateTime();
-        $this->connection->insert(
-            $this->indexName,
-            [
-                'title' => 'Test',
-                'content' => 'Test content',
-                'published_at' => $now->format('Y-m-d H:i:s'),
-            ]
-        );
-        ++$nbEntityIndexed;
-
-        $this->connection->insert(
-            $this->indexName,
-            [
-                'title' => 'Test2',
-                'content' => 'Test content2',
-                'published_at' => $now->format('Y-m-d H:i:s'),
-            ]
-        );
-        ++$nbEntityIndexed;
-
-        $this->connection->insert(
-            $this->indexName,
-            [
-                'title' => 'Test3',
-                'content' => 'Test content3',
-                'published_at' => $now->format('Y-m-d H:i:s'),
-            ]
-        );
-        ++$nbEntityIndexed;
+        foreach ($posts as $post) {
+            $this->connection->insert(
+                $this->indexName,
+                $post
+            );
+            ++$nbEntityIndexed;
+        }
 
         $command = $this->application->find('meili:import');
         $commandTester = new CommandTester($command);
@@ -121,8 +144,14 @@ class SearchTest extends BaseTest
         $results = $this->searchService->search($this->objectManager, Post::class, $searchTerm);
         $this->assertCount($nbEntityIndexed, $results);
 
+        $testDataTitles = array_map(fn (array $post) => $post['title'], $posts);
+        $resultTitles = array_map(fn (Post $post) => $post->getTitle(), $results);
+        $this->assertEqualsCanonicalizing($testDataTitles, $resultTitles);
+
         $results = $this->searchService->rawSearch(Post::class, $searchTerm);
         $this->assertCount($nbEntityIndexed, $results['hits']);
+        $resultTitles = array_map(fn (array $hit) => $hit['title'], $results['hits']);
+        $this->assertEqualsCanonicalizing($testDataTitles, $resultTitles);
 
         // clearup table
         $this->connection->executeStatement($this->platform->getTruncateTableSQL($this->indexName, true));
