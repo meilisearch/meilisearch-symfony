@@ -8,6 +8,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Persistence\ObjectManager;
 use MeiliSearch\Bundle\Engine;
 use MeiliSearch\Bundle\Entity\Aggregator;
+use MeiliSearch\Bundle\Exception\ObjectIdNotFoundException;
 use MeiliSearch\Bundle\Exception\SearchHitsNotFoundException;
 use MeiliSearch\Bundle\SearchableEntity;
 use MeiliSearch\Bundle\SearchService;
@@ -158,16 +159,21 @@ final class MeiliSearchService implements SearchService
         $results = [];
 
         // Check if the engine returns results in "hits" key
-        if (!isset($ids['hits'])) {
-            throw new SearchHitsNotFoundException('There is no "hits" key in the search results.');
+        if (!isset($ids[self::RESULT_KEY_HITS])) {
+            throw new SearchHitsNotFoundException(sprintf('There is no "%s" key in the search results.', self::RESULT_KEY_HITS));
         }
 
-        foreach ($ids['hits'] as $objectID) {
+        foreach ($ids[self::RESULT_KEY_HITS] as $hit) {
+            if (!isset($hit[self::RESULT_KEY_OBJECTID])) {
+                throw new ObjectIdNotFoundException(sprintf('There is no "%s" key in the result.', self::RESULT_KEY_OBJECTID));
+            }
+
             if (in_array($className, $this->aggregators, true)) {
-                $entityClass = $className::getEntityClassFromObjectId($objectID);
-                $id = $className::getEntityIdFromObjectId($objectID);
+                $objectId = $hit[self::RESULT_KEY_OBJECTID];
+                $entityClass = $className::getEntityClassFromObjectId($objectId);
+                $id = $className::getEntityIdFromObjectId($objectId);
             } else {
-                $id = $objectID;
+                $id = $hit[self::RESULT_KEY_OBJECTID];
                 $entityClass = $className;
             }
 
