@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MeiliSearch\Bundle\Test\TestCase;
 
-use MeiliSearch\Bundle\SearchService;
 use MeiliSearch\Bundle\Test\BaseTest;
 use MeiliSearch\Client;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -15,6 +14,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class SettingsTest extends BaseTest
 {
+    private static string $indexName = 'posts';
+
     public const DEFAULT_RANKING_RULES
         = [
             'typo',
@@ -26,9 +27,7 @@ class SettingsTest extends BaseTest
         ];
 
     protected Client $client;
-    protected string $indexName;
     protected Application $application;
-    protected SearchService $searchService;
 
     /**
      * @throws \Exception
@@ -37,19 +36,15 @@ class SettingsTest extends BaseTest
     {
         parent::setUp();
 
-        $this->searchService = $this->get('search.service');
         $this->client = $this->get('search.client');
-        $this->indexName = 'posts';
-
         $this->application = new Application(self::$kernel);
-        $this->refreshDb($this->application);
     }
 
     public function testGetDefaultSettings()
     {
         $primaryKey = 'ObjectID';
-        $settingA = $this->client->getOrCreateIndex('indexA')->getSettings();
-        $settingB = $this->client->getOrCreateIndex('indexB', ['primaryKey' => $primaryKey])->getSettings();
+        $settingA = $this->client->getOrCreateIndex($this->getPrefix().'indexA')->getSettings();
+        $settingB = $this->client->getOrCreateIndex($this->getPrefix().'indexB', ['primaryKey' => $primaryKey])->getSettings();
 
         $this->assertEquals(self::DEFAULT_RANKING_RULES, $settingA['rankingRules']);
         $this->assertNull($settingA['distinctAttribute']);
@@ -74,18 +69,19 @@ class SettingsTest extends BaseTest
 
     public function testUpdateSettings()
     {
+        $index = $this->getPrefix().self::$indexName;
+
         $command = $this->application->find('meili:import');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(
-            [
-                'command' => $command->getName(),
-                '--indices' => 'posts',
-                '--update-settings' => true,
-            ]
-        );
+        $commandTester->execute([
+            '--indices' => $index,
+            '--update-settings' => true,
+        ]);
 
-        $settings = $this->client->index('sf_phpunit__posts')->getSettings();
+        $settings = $this->client->index($index)->getSettings();
 
+        $output = $commandTester->getDisplay();
+        $this->assertStringContainsString('Settings updated.', $output);
         $this->assertNotEmpty($settings['stopWords']);
         $this->assertEquals(['a', 'an', 'the'], $settings['stopWords']);
 

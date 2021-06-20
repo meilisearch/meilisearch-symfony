@@ -32,6 +32,7 @@ final class Engine
     public function index($searchableEntities): array
     {
         if ($searchableEntities instanceof SearchableEntity) {
+            /** @var SearchableEntity[] $searchableEntities */
             $searchableEntities = [$searchableEntities];
         }
 
@@ -70,10 +71,13 @@ final class Engine
     public function remove($searchableEntities): array
     {
         if ($searchableEntities instanceof SearchableEntity) {
+            /** @var SearchableEntity[] $searchableEntities */
             $searchableEntities = [$searchableEntities];
         }
 
         $data = [];
+
+        /** @var SearchableEntity $entity */
         foreach ($searchableEntities as $entity) {
             $searchableArray = $entity->getSearchableArray();
             if (null === $searchableArray || 0 === \count($searchableArray)) {
@@ -137,6 +141,6 @@ final class Engine
      */
     public function count(string $query, string $indexName, array $searchParams): int
     {
-        return (int) $this->client->index($indexName)->search($query, $searchParams)['nbHits'];
+        return $this->client->index($indexName)->search($query, $searchParams)->getHitsCount();
     }
 }

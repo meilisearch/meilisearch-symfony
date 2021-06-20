@@ -13,12 +13,14 @@ meili_search:
                 attributesForFaceting: ['title', 'publishedAt']
         -   name: comments
             class: 'MeiliSearch\Bundle\Test\Entity\Comment'
-        -   name: contents
+        -   name: aggregated
             class: 'MeiliSearch\Bundle\Test\Entity\ContentAggregator'
             index_if: isVisible
         -   name: tags
             class: 'MeiliSearch\Bundle\Test\Entity\Tag'
             index_if: isPublic
-        -   name: links
+        # Yes, we want to have links in the same index as tags
+        # We just set the same index name 'tags'
+        -   name: tags
             class: 'MeiliSearch\Bundle\Test\Entity\Link'
             index_if: isSponsored

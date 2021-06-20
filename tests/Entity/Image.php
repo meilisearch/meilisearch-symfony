@@ -18,15 +18,14 @@ class Image
      */
     private ?int $id;
 
+    /**
+     * @ORM\Column(type="string")
+     */
     private string $url;
 
-    /**
-     * Image constructor.
-     */
-    public function __construct(array $attributes = [])
+    public function __construct()
     {
-        $this->id = $attributes['id'] ?? null;
-        $this->url = $attributes['url'] ?? 'https://docs.meilisearch.com/logo.png';
+        $this->url = 'https://docs.meilisearch.com/logo.png';
     }
 
     public function getId(): ?int

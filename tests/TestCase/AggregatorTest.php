@@ -4,40 +4,19 @@ declare(strict_types=1);
 
 namespace MeiliSearch\Bundle\Test\TestCase;
 
-use Doctrine\ORM\EntityManagerInterface;
 use MeiliSearch\Bundle\Exception\EntityNotFoundInObjectID;
 use MeiliSearch\Bundle\Exception\InvalidEntityForAggregator;
 use MeiliSearch\Bundle\Test\BaseTest;
 use MeiliSearch\Bundle\Test\Entity\ContentAggregator;
 use MeiliSearch\Bundle\Test\Entity\EmptyAggregator;
 use MeiliSearch\Bundle\Test\Entity\Post;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Serializer\Serializer;
 
-/**
- * Class AggregatorTest.
- */
 class AggregatorTest extends BaseTest
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $application = new Application(self::$kernel);
-        $this->refreshDb($application);
-
-        $this->entityManager = $this->get('doctrine')->getManager();
-    }
-
     public function testGetEntities()
     {
-        $entities = EmptyAggregator::getEntities();
-
-        $this->assertEquals([], $entities);
+        $this->assertEquals([], EmptyAggregator::getEntities());
     }
 
     public function testGetEntityClassFromObjectID()
@@ -55,22 +34,15 @@ class AggregatorTest extends BaseTest
 
     public function testAggregatorProxyClass()
     {
-        $post = new Post(
-            [
-                'id' => 1,
-                'title' => 'Test',
-                'content' => 'Test content',
-            ]
-        );
-        $this->entityManager->persist($post);
-        $this->entityManager->flush();
+        $this->createPost();
 
         $postMetadata = $this->entityManager->getClassMetadata(Post::class);
-        $this->entityManager->getProxyFactory()->generateProxyClasses([$postMetadata], null);
+        $this->entityManager->getProxyFactory()->generateProxyClasses([$postMetadata]);
 
         $proxy = $this->entityManager->getProxyFactory()->getProxy($postMetadata->getName(), ['id' => 1]);
         $contentAggregator = new ContentAggregator($proxy, ['objectId']);
 
+        /** @var Serializer $serializer */
         $serializer = $this->get('serializer');
 
         $serializedData = $contentAggregator->normalize($serializer);

@@ -45,29 +45,31 @@ final class MeiliSearchImportCommand extends IndexCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $entitiesToIndex = $this->getEntitiesFromArgs($input, $output);
+        $indexes = $this->getEntitiesFromArgs($input, $output);
         $config = $this->searchService->getConfiguration();
 
-        foreach ($entitiesToIndex as $key => $entity) {
-            $entityClassName = $entity['name'];
+        foreach ($indexes as $key => $index) {
+            $entityClassName = $index['class'];
             if (is_subclass_of($entityClassName, Aggregator::class)) {
-                unset($entitiesToIndex[$key]);
-                $entitiesToIndex = array_merge(
-                    $entitiesToIndex,
+                $indexes->forget($key);
+
+                $indexes = collect(array_merge(
+                    $indexes->toArray(),
                     array_map(
                         function ($entity) {
-                            return ['name' => $entity];
+                            return ['class' => $entity];
                         },
                         $entityClassName::getEntities()
                     )
-                );
+                ));
             }
         }
 
-        $entitiesToIndex = array_unique($entitiesToIndex, SORT_REGULAR);
+        $entitiesToIndex = array_unique($indexes->toArray(), SORT_REGULAR);
 
-        foreach ($entitiesToIndex as $index => $entity) {
-            $entityClassName = $entity['name'];
+        /** @var array $index */
+        foreach ($entitiesToIndex as $index) {
+            $entityClassName = $index['class'];
             if (!$this->searchService->isSearchable($entityClassName)) {
                 continue;
             }
@@ -75,13 +77,15 @@ final class MeiliSearchImportCommand extends IndexCommand
             $manager = $this->managerRegistry->getManagerForClass($entityClassName);
             $repository = $manager->getRepository($entityClassName);
 
+            $output->writeln('<info>Importing for index '.$entityClassName.'</info>');
+
             $page = 0;
             do {
                 $entities = $repository->findBy(
                     [],
                     null,
-                    $config['batchSize'],
-                    $config['batchSize'] * $page
+                    $config->get('batchSize'),
+                    $config->get('batchSize') * $page
                 );
 
                 $responses = $this->formatIndexingResponse($this->searchService->index($manager, $entities));
@@ -97,9 +101,9 @@ final class MeiliSearchImportCommand extends IndexCommand
                     );
                 }
 
-                if (!empty($entity['settings'])) {
-                    $indexInstance = $this->searchClient->getOrCreateIndex($config['prefix'].$index);
-                    foreach ($entity['settings'] as $variable => $value) {
+                if (!empty($index['settings'])) {
+                    $indexInstance = $this->searchClient->getOrCreateIndex($index['name']);
+                    foreach ($index['settings'] as $variable => $value) {
                         $method = sprintf('update%s', ucfirst($variable));
                         if (false === method_exists($indexInstance, $method)) {
                             throw new InvalidSettingName(sprintf('Invalid setting name: "%s"', $variable));
@@ -114,12 +118,14 @@ final class MeiliSearchImportCommand extends IndexCommand
 
                         if ('failed' === $updateStatus['status']) {
                             throw new UpdateException($updateStatus['error']);
+                        } else {
+                            $output->writeln('<info>Settings updated.</info>');
                         }
                     }
                 }
 
                 ++$page;
-            } while (count($entities) >= $config['batchSize']);
+            } while (count($entities) >= $config->get('batchSize'));
 
             $manager->clear();
         }

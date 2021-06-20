@@ -12,7 +12,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="tags")
  */
 class Tag implements NormalizableInterface
 {
@@ -23,27 +22,49 @@ class Tag implements NormalizableInterface
     private ?int $id;
 
     /**
-     * @ORM\Id
      * @ORM\Column(type="string")
      */
-    private string $name;
-
-    private int $count;
-
-    private $public;
-
-    private \DateTime $publishedAt;
+    private string $name = '';
 
     /**
-     * Tag constructor.
+     * @ORM\Column(type="smallint")
      */
-    public function __construct(array $attributes = [])
+    private int $count = 0;
+
+    private $public = true;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private \DateTimeInterface $publishedAt;
+
+    public function __construct()
     {
-        $this->id = $attributes['id'] ?? null;
-        $this->name = $attributes['name'] ?? 'This is a tag';
-        $this->count = $attributes['count'] ?? 0;
-        $this->public = $attributes['public'] ?? true;
-        $this->publishedAt = $attributes['publishedAt'] ?? new \DateTime();
+        $this->publishedAt = new \DateTime();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(?int $id): Tag
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): Tag
+    {
+        $this->name = $name;
+
+        return $this;
     }
 
     public function isPublic(): bool

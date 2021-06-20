@@ -26,16 +26,20 @@ final class MeiliSearchClearCommand extends IndexCommand
     {
         $indexToClear = $this->getEntitiesFromArgs($input, $output);
 
-        foreach ($indexToClear as $indexName => $entity) {
-            $className = $entity['name'];
+        /** @var array $index */
+        foreach ($indexToClear as $index) {
+            $indexName = $index['name'];
+            $className = $index['class'];
             $array = $this->searchService->clear($className);
             if ('failed' === $array['status']) {
                 $output->writeln('<error>Index <info>'.$indexName.'</info>  couldn\'t be cleared</error>');
             } else {
-                $output->writeln(
-                    'Cleared <info>'.$indexName.'</info> index of <comment>'.$className.'</comment> '
-                );
+                $output->writeln('Cleared <info>'.$indexName.'</info> index of <comment>'.$className.'</comment>');
             }
+        }
+
+        if (0 === count($indexToClear)) {
+            $output->writeln('Cannot clear index. Not found.');
         }
 
         $output->writeln('<info>Done!</info>');
