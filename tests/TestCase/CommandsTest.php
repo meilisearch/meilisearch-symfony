@@ -98,4 +98,46 @@ class CommandsTest extends BaseTest
         $this->assertStringContainsString('Done!', $output);
         $this->assertSame(0, $return);
     }
+
+    public function testImportingIndexNameWithAndWithoutPrefix(): void
+    {
+        for ($i = 0; $i <= 5; ++$i) {
+            $this->createPost();
+        }
+
+        $command = $this->application->find('meili:import');
+        $commandTester = new CommandTester($command);
+        $return = $commandTester->execute([
+            '--indices' => $this->index->getUid(), // This is the already prefixed name
+        ]);
+
+        $output = $commandTester->getDisplay();
+        $this->assertStringContainsString('Importing for index MeiliSearch\Bundle\Test\Entity\Post', $output);
+        $this->assertStringContainsString('Indexed '.$i.' / '.$i.' MeiliSearch\Bundle\Test\Entity\Post entities into sf_phpunit__'.self::$indexName.' index', $output);
+        $this->assertStringContainsString('Done!', $output);
+        $this->assertSame(0, $return);
+
+        // Reset database and MS indexes
+        parent::setUp();
+
+        for ($i = 0; $i <= 5; ++$i) {
+            $this->createPost();
+        }
+
+        $command = $this->application->find('meili:import');
+        $commandTester = new CommandTester($command);
+        $return = $commandTester->execute([
+            '--indices' => self::$indexName, // This is the already prefixed name
+        ]);
+
+        // Check that the same index like above is created with the same name, although we passed it
+        // in without the prefix
+        $this->assertInstanceOf(Indexes::class, $this->index->fetchInfo());
+
+        $output = $commandTester->getDisplay();
+        $this->assertStringContainsString('Importing for index MeiliSearch\Bundle\Test\Entity\Post', $output);
+        $this->assertStringContainsString('Indexed '.$i.' / '.$i.' MeiliSearch\Bundle\Test\Entity\Post entities into sf_phpunit__'.self::$indexName.' index', $output);
+        $this->assertStringContainsString('Done!', $output);
+        $this->assertSame(0, $return);
+    }
 }
