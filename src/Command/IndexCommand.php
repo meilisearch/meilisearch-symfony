@@ -44,7 +44,7 @@ abstract class IndexCommand extends Command
             $list = \explode(',', $indexList);
             $indexNames = collect($list)->transform(function (string $item) {
                 // Check if the given index name already contains the prefix
-                if(strpos($item, $this->prefix) === false) {
+                if (false === strpos($item, $this->prefix)) {
                     return $this->prefix.$item;
                 }
 
