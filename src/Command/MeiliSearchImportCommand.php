@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace MeiliSearch\Bundle\Command;
 
+use Doctrine\Persistence\ManagerRegistry;
 use MeiliSearch\Bundle\Exception\InvalidSettingName;
 use MeiliSearch\Bundle\Exception\UpdateException;
 use MeiliSearch\Bundle\Model\Aggregator;
 use MeiliSearch\Bundle\SearchService;
 use MeiliSearch\Client;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
