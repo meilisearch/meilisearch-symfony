@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MeiliSearch\Bundle;
 
 use Doctrine\Persistence\Mapping\ClassMetadata;
-use JMS\Serializer\ArrayTransformerInterface;
+use MeiliSearch\Bundle\Exception\UnknownNormalizerException;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -70,8 +70,6 @@ final class SearchableEntity
 
         if ($this->normalizer instanceof NormalizerInterface) {
             return $this->normalizer->normalize($this->entity, Searchable::NORMALIZATION_FORMAT, $context);
-        } elseif ($this->normalizer instanceof ArrayTransformerInterface) {
-            return $this->normalizer->toArray($this->entity);
         }
 
         return [];
