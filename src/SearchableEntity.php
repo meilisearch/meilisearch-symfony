@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MeiliSearch\Bundle;
 
 use Doctrine\Persistence\Mapping\ClassMetadata;
-use MeiliSearch\Bundle\Exception\UnknownNormalizerException;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
