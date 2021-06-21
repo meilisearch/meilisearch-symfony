@@ -53,7 +53,7 @@ class SearchTest extends BaseTest
     {
         $testDataTitles = [];
 
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 5; ++$i) {
             $testDataTitles[] = $this->createPost()->getTitle();
         }
 
