@@ -11,6 +11,9 @@ use Doctrine\Persistence\ObjectManager;
  */
 interface SearchService
 {
+    public const RESULT_KEY_HITS = 'hits';
+    public const RESULT_KEY_OBJECTID = 'objectID';
+
     /**
      * @param string|object $className
      */
