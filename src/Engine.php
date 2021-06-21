@@ -79,7 +79,7 @@ final class Engine
             if (null === $searchableArray || 0 === \count($searchableArray)) {
                 continue;
             }
-            $indexUid = $entity->getIndexName();
+            $indexUid = $entity->getIndexUid();
 
             if (!isset($data[$indexUid])) {
                 $data[$indexUid] = [];
