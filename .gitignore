@@ -4,3 +4,4 @@
 .phpunit.result.cache
 /var/
 .php-cs-fixer.cache
+/tests/coverage

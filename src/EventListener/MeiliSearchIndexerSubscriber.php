@@ -8,9 +8,6 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use MeiliSearch\Bundle\SearchService;
 
-/**
- * Class MeiliSearchIndexerSubscriber.
- */
 final class MeiliSearchIndexerSubscriber implements EventSubscriber
 {
     private SearchService $searchService;
@@ -38,6 +35,11 @@ final class MeiliSearchIndexerSubscriber implements EventSubscriber
     }
 
     public function preRemove(LifecycleEventArgs $args): void
+    {
+        $this->searchService->remove($args->getObjectManager(), $args->getObject());
+    }
+
+    public function postRemove(LifecycleEventArgs $args): void
     {
         $this->searchService->remove($args->getObjectManager(), $args->getObject());
     }
