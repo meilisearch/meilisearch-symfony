@@ -14,10 +14,6 @@ class ContentAggregator extends Aggregator
 {
     public function getIsVisible(): bool
     {
-        if ($this->entity instanceof Post) {
-            return 'Foo' !== $this->entity->getTitle();
-        }
-
         return true;
     }
 
@@ -25,8 +21,7 @@ class ContentAggregator extends Aggregator
     {
         return [
             Post::class,
-            Comment::class,
-            Image::class,
+            Tag::class,
         ];
     }
 }

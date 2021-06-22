@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MeiliSearch\Bundle;
 
 use Doctrine\Persistence\ObjectManager;
+use Illuminate\Support\Collection;
 
 /**
  * Interface SearchService.
@@ -21,7 +22,7 @@ interface SearchService
 
     public function getSearchable(): array;
 
-    public function getConfiguration(): array;
+    public function getConfiguration(): Collection;
 
     /**
      * Get the index name for the given `$className`.
@@ -35,6 +36,8 @@ interface SearchService
     public function clear(string $className): array;
 
     public function delete(string $className): ?array;
+
+    public function deleteByIndexName(string $indexName): ?array;
 
     public function search(
         ObjectManager $objectManager,

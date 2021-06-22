@@ -51,7 +51,7 @@ final class SearchableEntity
         $this->setId();
     }
 
-    public function getindexUid(): string
+    public function getIndexUid(): string
     {
         return $this->indexUid;
     }

@@ -78,19 +78,53 @@ class ConfigurationTest extends BaseTest
                     'serializer' => 'serializer',
                     'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
                     'indices' => [
-                        'posts' => [
+                        0 => [
+                            'name' => 'posts',
                             'class' => 'App\Entity\Post',
                             'enable_serializer_groups' => false,
                             'index_if' => null,
                             'settings' => [],
                         ],
-                        'tags' => [
+                        1 => [
+                            'name' => 'tags',
                             'class' => 'App\Entity\Tag',
                             'enable_serializer_groups' => true,
                             'index_if' => null,
                             'settings' => [],
                         ],
                     ],
+                ],
+            ],
+            'same index for multiple models' => [
+                [
+                    'prefix' => 'sf_',
+                    'indices' => [
+                        [
+                            'name' => 'items', 'class' => 'App\Entity\Post', 'enable_serializer_groups' => false, 'index_if' => null, 'settings' => [],
+                        ],
+                        [
+                            'name' => 'items', 'class' => 'App\Entity\Tag', 'enable_serializer_groups' => false, 'index_if' => null, 'settings' => [],
+                        ],
+                    ],
+                    'nbResults' => 20,
+                    'batchSize' => 500,
+                    'serializer' => 'serializer',
+                    'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
+                ],
+                [
+                    'prefix' => 'sf_',
+                    'indices' => [
+                        [
+                            'name' => 'items', 'class' => 'App\Entity\Post', 'enable_serializer_groups' => false, 'index_if' => null, 'settings' => [],
+                        ],
+                        [
+                            'name' => 'items', 'class' => 'App\Entity\Tag',  'enable_serializer_groups' => false, 'index_if' => null, 'settings' => [],
+                        ],
+                    ],
+                    'nbResults' => 20,
+                    'batchSize' => 500,
+                    'serializer' => 'serializer',
+                    'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
                 ],
             ],
         ];

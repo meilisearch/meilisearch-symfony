@@ -6,6 +6,7 @@ namespace MeiliSearch\Bundle\Services;
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Persistence\ObjectManager;
+use Illuminate\Support\Collection;
 use MeiliSearch\Bundle\Engine;
 use MeiliSearch\Bundle\Entity\Aggregator;
 use MeiliSearch\Bundle\Exception\ObjectIdNotFoundException;
@@ -24,12 +25,11 @@ final class MeiliSearchService implements SearchService
 {
     private SerializerInterface $normalizer;
     private Engine $engine;
-    private array $configuration;
+    private Collection $configuration;
     private PropertyAccessor $propertyAccessor;
     private array $searchableEntities;
     private array $entitiesAggregators;
     private array $aggregators;
-    private array $classToIndexMapping;
     private array $classToSerializerGroupMapping;
     private array $indexIfMapping;
     private array $settingsMapping;
@@ -38,12 +38,11 @@ final class MeiliSearchService implements SearchService
     {
         $this->normalizer = $normalizer;
         $this->engine = $engine;
-        $this->configuration = $configuration;
+        $this->configuration = new Collection($configuration);
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
 
         $this->setSearchableEntities();
         $this->setAggregatorsAndEntitiesAggregators();
-        $this->setClassToIndexMapping();
         $this->setClassToSerializerGroupMapping();
         $this->setIndexIfMapping();
         $this->setSettingsMapping();
@@ -66,7 +65,7 @@ final class MeiliSearchService implements SearchService
         return $this->searchableEntities;
     }
 
-    public function getConfiguration(): array
+    public function getConfiguration(): Collection
     {
         return $this->configuration;
     }
@@ -76,7 +75,10 @@ final class MeiliSearchService implements SearchService
      */
     public function searchableAs(string $className): string
     {
-        return $this->configuration['prefix'].$this->classToIndexMapping[$className];
+        $indexes = Collection::wrap($this->getConfiguration()->get('indices'));
+        $index = $indexes->firstWhere('class', $className);
+
+        return $this->getConfiguration()->get('prefix').$index['name'];
     }
 
     public function index(ObjectManager $objectManager, $searchable): array
@@ -138,6 +140,11 @@ final class MeiliSearchService implements SearchService
         $this->assertIsSearchable($className);
 
         return $this->engine->clear($this->searchableAs($className));
+    }
+
+    public function deleteByIndexName(string $indexName): ?array
+    {
+        return $this->engine->delete($indexName);
     }
 
     public function delete(string $className): ?array
@@ -208,10 +215,7 @@ final class MeiliSearchService implements SearchService
         return $this->engine->count($query, $this->searchableAs($className), $searchParams);
     }
 
-    /**
-     * @param object $entity
-     */
-    public function shouldBeIndexed($entity): bool
+    public function shouldBeIndexed(object $entity): bool
     {
         $className = ClassUtils::getClass($entity);
         $propertyPath = $this->indexIfMapping[$className];
@@ -230,7 +234,7 @@ final class MeiliSearchService implements SearchService
     private function setSearchableEntities(): void
     {
         $searchable = [];
-        foreach ($this->configuration['indices'] as $name => $index) {
+        foreach ($this->configuration->get('indices') as $index) {
             $searchable[] = $index['class'];
         }
         $this->searchableEntities = array_unique($searchable);
@@ -241,7 +245,7 @@ final class MeiliSearchService implements SearchService
         $this->entitiesAggregators = [];
         $this->aggregators = [];
 
-        foreach ($this->configuration['indices'] as $index) {
+        foreach ($this->configuration->get('indices') as $index) {
             if (is_subclass_of($index['class'], Aggregator::class)) {
                 foreach ($index['class']::getEntities() as $entityClass) {
                     if (!isset($this->entitiesAggregators[$entityClass])) {
@@ -257,19 +261,12 @@ final class MeiliSearchService implements SearchService
         $this->aggregators = array_unique($this->aggregators);
     }
 
-    private function setClassToIndexMapping(): void
-    {
-        $mapping = [];
-        foreach ($this->configuration['indices'] as $indexName => $indexDetails) {
-            $mapping[$indexDetails['class']] = $indexName;
-        }
-        $this->classToIndexMapping = $mapping;
-    }
-
     private function setClassToSerializerGroupMapping(): void
     {
         $mapping = [];
-        foreach ($this->configuration['indices'] as $indexDetails) {
+
+        /** @var array $indexDetails */
+        foreach ($this->configuration->get('indices') as $indexDetails) {
             $mapping[$indexDetails['class']] = $indexDetails['enable_serializer_groups'];
         }
         $this->classToSerializerGroupMapping = $mapping;
@@ -278,7 +275,9 @@ final class MeiliSearchService implements SearchService
     private function setIndexIfMapping(): void
     {
         $mapping = [];
-        foreach ($this->configuration['indices'] as $indexDetails) {
+
+        /** @var array $indexDetails */
+        foreach ($this->configuration->get('indices') as $indexDetails) {
             $mapping[$indexDetails['class']] = $indexDetails['index_if'];
         }
         $this->indexIfMapping = $mapping;
@@ -287,7 +286,9 @@ final class MeiliSearchService implements SearchService
     private function setSettingsMapping(): void
     {
         $mapping = [];
-        foreach ($this->configuration['indices'] as $indexDetails) {
+
+        /** @var array $indexDetails */
+        foreach ($this->configuration->get('indices') as $indexDetails) {
             $mapping[$indexDetails['class']] = $indexDetails['settings'];
         }
         $this->settingsMapping = $mapping;
@@ -330,7 +331,7 @@ final class MeiliSearchService implements SearchService
         callable $operation
     ): array {
         $batch = [];
-        foreach (array_chunk($entities, $this->configuration['batchSize']) as $chunk) {
+        foreach (array_chunk($entities, $this->configuration->get('batchSize')) as $chunk) {
             $searchableEntitiesChunk = [];
             foreach ($chunk as $entity) {
                 $entityClassName = ClassUtils::getClass($entity);

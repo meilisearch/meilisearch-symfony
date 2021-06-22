@@ -37,15 +37,12 @@ class SerializationTest extends BaseTest
                 'publishedAt' => $datetime,
             ]
         );
-        $post->addComment(
-            new Comment(
-                [
-                    'content' => 'a great comment',
-                    'publishedAt' => $datetime,
-                    'post' => $post,
-                ]
-            )
-        );
+
+        $comment = new Comment();
+        $comment->setContent('a great comment');
+        $comment->setPost($post);
+        $post->addComment($comment);
+
         $postMeta = $this->get('doctrine')->getManager()->getClassMetadata(Post::class);
 
         $searchablePost = new SearchableEntity(

@@ -4,4 +4,3 @@
 .phpunit.result.cache
 /var/
 .php-cs-fixer.cache
-/tests/cache/blog.sqlite
