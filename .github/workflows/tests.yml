@@ -48,7 +48,7 @@ jobs:
             -   name: Install dependencies
                 run: composer install --prefer-dist --no-progress
 
-            -   name: Run linter
+            -   name: PHP CS Fixer
                 run: composer lint:check
 
             -   name: PHPstan
