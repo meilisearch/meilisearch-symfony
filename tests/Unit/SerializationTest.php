@@ -21,7 +21,7 @@ class SerializationTest extends KernelTestCase
     /**
      * @throws ExceptionInterface
      */
-    public function testSimpleEntityToSearchableArray()
+    public function testSimpleEntityToSearchableArray(): void
     {
         $datetime = new \DateTime();
         $dateSerializer = new Serializer([new DateTimeNormalizer()]);

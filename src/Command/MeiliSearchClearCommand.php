@@ -15,7 +15,7 @@ final class MeiliSearchClearCommand extends IndexCommand
 {
     protected static $defaultName = 'meili:clear';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Clear the index documents')

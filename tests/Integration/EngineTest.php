@@ -25,7 +25,7 @@ class EngineTest extends BaseKernelTestCase
     /**
      * @throws ApiException
      */
-    public function testIndexingEmptyEntity()
+    public function testIndexingEmptyEntity(): void
     {
         $searchableImage = $this->createSearchableImage();
 

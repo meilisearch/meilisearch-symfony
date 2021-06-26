@@ -57,7 +57,7 @@ abstract class BaseKernelTestCase extends KernelTestCase
 
     protected function createSearchablePost(): SearchableEntity
     {
-        $post = $this->createPost(rand(100, 300));
+        $post = $this->createPost(random_int(100, 300));
 
         return new SearchableEntity(
             $this->getPrefix().'posts',
@@ -108,7 +108,7 @@ abstract class BaseKernelTestCase extends KernelTestCase
 
     protected function createSearchableImage(): SearchableEntity
     {
-        $image = $this->createImage(rand(100, 300));
+        $image = $this->createImage(random_int(100, 300));
 
         return new SearchableEntity(
             $this->getPrefix().'image',
@@ -169,7 +169,7 @@ abstract class BaseKernelTestCase extends KernelTestCase
         return sprintf('%s/%s.json', $indexName, $type);
     }
 
-    private function cleanUp()
+    private function cleanUp(): void
     {
         collect($this->searchService->getConfiguration()->get('indices'))
                 ->each(function ($item) {
@@ -182,7 +182,7 @@ abstract class BaseKernelTestCase extends KernelTestCase
         $this->cleanupIndex($this->getPrefix().'indexB');
     }
 
-    private function cleanupIndex(string $indexName)
+    private function cleanupIndex(string $indexName): void
     {
         try {
             $this->searchService->deleteByIndexName($indexName);

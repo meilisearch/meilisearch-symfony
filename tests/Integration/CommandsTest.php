@@ -36,7 +36,7 @@ class CommandsTest extends BaseKernelTestCase
         $this->application = new Application(self::createKernel());
     }
 
-    public function testSearchClearUnknownIndex()
+    public function testSearchClearUnknownIndex(): void
     {
         $unknownIndexName = 'test';
 
@@ -54,7 +54,7 @@ class CommandsTest extends BaseKernelTestCase
     /**
      * Importing 'Tag' and 'Link' into the same 'tags' index.
      */
-    public function testImportDifferentEntitiesIntoSameIndex()
+    public function testImportDifferentEntitiesIntoSameIndex(): void
     {
         for ($i = 0; $i <= 5; ++$i) {
             $this->createTag(['id' => $i]);
@@ -80,7 +80,7 @@ class CommandsTest extends BaseKernelTestCase
         $this->assertSame(8, $searchResult->getHitsCount());
     }
 
-    public function testSearchImportAggregator()
+    public function testSearchImportAggregator(): void
     {
         for ($i = 0; $i <= 5; ++$i) {
             $this->createPost();

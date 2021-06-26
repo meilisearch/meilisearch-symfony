@@ -38,7 +38,7 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
         $this->createPost();
         $post = $this->createPost();
 
-        $eventArgs = new \Doctrine\Persistence\Event\LifecycleEventArgs($post, $this->entityManager);
+        $eventArgs = new LifecycleEventArgs($post, $this->entityManager);
 
         $subscriber = new DoctrineEventSubscriber($this->searchService, []);
         $subscriber->postUpdate($eventArgs);
@@ -57,7 +57,7 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
     {
         $post = $this->createPost();
 
-        $eventArgs = new \Doctrine\Persistence\Event\LifecycleEventArgs($post, $this->entityManager);
+        $eventArgs = new LifecycleEventArgs($post, $this->entityManager);
 
         $subscriber = new DoctrineEventSubscriber($this->searchService, []);
         $subscriber->postPersist($eventArgs);

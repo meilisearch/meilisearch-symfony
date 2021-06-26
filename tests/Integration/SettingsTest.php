@@ -40,7 +40,7 @@ class SettingsTest extends BaseKernelTestCase
         $this->application = new Application(self::$kernel);
     }
 
-    public function testGetDefaultSettings()
+    public function testGetDefaultSettings(): void
     {
         $primaryKey = 'ObjectID';
         $settingA = $this->client->getOrCreateIndex($this->getPrefix().'indexA')->getSettings();
@@ -67,7 +67,7 @@ class SettingsTest extends BaseKernelTestCase
         $this->assertEmpty($settingB['synonyms']);
     }
 
-    public function testUpdateSettings()
+    public function testUpdateSettings(): void
     {
         $index = $this->getPrefix().self::$indexName;
 

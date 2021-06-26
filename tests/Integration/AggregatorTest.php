@@ -14,25 +14,25 @@ use Symfony\Component\Serializer\Serializer;
 
 class AggregatorTest extends BaseKernelTestCase
 {
-    public function testGetEntities()
+    public function testGetEntities(): void
     {
         $this->assertEquals([], EmptyAggregator::getEntities());
     }
 
-    public function testGetEntityClassFromObjectID()
+    public function testGetEntityClassFromObjectID(): void
     {
         $this->expectException(EntityNotFoundInObjectID::class);
         EmptyAggregator::getEntityClassFromObjectID('test');
     }
 
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $this->expectException(InvalidEntityForAggregator::class);
         $post = new Post();
         new ContentAggregator($post, ['objectId', 'url']);
     }
 
-    public function testAggregatorProxyClass()
+    public function testAggregatorProxyClass(): void
     {
         $this->createPost();
 

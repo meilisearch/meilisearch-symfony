@@ -64,8 +64,6 @@ abstract class IndexCommand extends Command
             );
         }
 
-        return collect($this->getIndices())->reject(function (array $item) use ($indexNames) {
-            return !in_array($item['name'], $indexNames->toArray(), true);
-        });
+        return collect($this->getIndices())->reject(fn (array $item) => !in_array($item['name'], $indexNames->toArray(), true));
     }
 }

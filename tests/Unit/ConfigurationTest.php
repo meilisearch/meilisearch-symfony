@@ -18,7 +18,7 @@ class ConfigurationTest extends KernelTestCase
      * @param mixed $inputConfig
      * @param mixed $expectedConfig
      */
-    public function testConfigurationTree($inputConfig, $expectedConfig)
+    public function testConfigurationTree($inputConfig, $expectedConfig): void
     {
         $configuration = new Configuration();
 
