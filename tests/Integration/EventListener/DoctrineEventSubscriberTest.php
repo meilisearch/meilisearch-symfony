@@ -69,7 +69,7 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $subscriber->preRemove($eventArgs);
 
-        /**
+        /*
          * As the deletion of a document is an asyncronous transaction, we need to wait some seconds
          * till this is executed. This was introduced as with Github actions there was no other option.
          */
