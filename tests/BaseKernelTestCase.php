@@ -15,7 +15,6 @@ use MeiliSearch\Bundle\Test\Entity\Post;
 use MeiliSearch\Bundle\Test\Entity\Tag;
 use MeiliSearch\Exceptions\ApiException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class BaseKernelTestCase extends KernelTestCase
 {
@@ -172,7 +171,7 @@ abstract class BaseKernelTestCase extends KernelTestCase
     private function cleanUp(): void
     {
         collect($this->searchService->getConfiguration()->get('indices'))
-                ->each(function ($item) {
+                ->each(function ($item): bool {
                     $this->cleanupIndex($this->getPrefix().$item['name']);
 
                     return true;
@@ -190,31 +189,5 @@ abstract class BaseKernelTestCase extends KernelTestCase
             // Don't assert undefined indexes.
             // Just plainly delete all existing indexes to get a clean state.
         }
-    }
-
-    /**
-     * Rebuilds the container with custom container configuration.
-     *
-     * @param \Closure $containerConfigurator Closure that takes the ContainerBuilder and configures it.
-     *
-     * Example:
-     *
-     *     $this->rebuildContainer(function (ContainerBuilder $container) {
-     *         $container->setParameter('foo', 'bar');
-     *     });
-     */
-    public function rebuildContainer(\Closure $containerConfigurator): ContainerInterface
-    {
-        if (self::$kernel) {
-            self::$kernel->shutdown();
-            self::$kernel = null;
-            self::$container = null;
-        }
-
-        self::$kernel = new KernelWithDoctrineListeners($containerConfigurator);
-        self::$kernel->boot();
-        self::$container = self::$kernel->getContainer();
-
-        return self::$container;
     }
 }

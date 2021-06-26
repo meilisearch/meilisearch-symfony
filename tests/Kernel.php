@@ -15,6 +15,9 @@ use Symfony\Component\HttpKernel\Kernel as HttpKernel;
  */
 class Kernel extends HttpKernel
 {
+    /**
+     * {@inheritDoc}
+     */
     public function registerBundles(): array
     {
         return [

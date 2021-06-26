@@ -61,7 +61,12 @@ final class SearchableEntity
      */
     public function getSearchableArray(): array
     {
-        $context = ['fieldsMapping' => $this->entityMetadata->fieldMappings];
+        /** @var \Doctrine\ORM\Mapping\ClassMetadataInfo&\Doctrine\Persistence\Mapping\ClassMetadata $metadata */
+        $metadata = $this->entityMetadata;
+
+        $context = [
+            'fieldsMapping' => $metadata->fieldMappings,
+        ];
 
         if ($this->useSerializerGroups) {
             $context['groups'] = [Searchable::NORMALIZATION_GROUP];

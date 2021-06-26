@@ -130,10 +130,6 @@ class CommandsTest extends BaseKernelTestCase
             '--indices' => self::$indexName, // This is the already prefixed name
         ]);
 
-        // Check that the same index like above is created with the same name, although we passed it
-        // in without the prefix
-        $this->assertInstanceOf(Indexes::class, $this->index->fetchInfo());
-
         $output = $commandTester->getDisplay();
         $this->assertStringContainsString('Importing for index MeiliSearch\Bundle\Test\Entity\Post', $output);
         $this->assertStringContainsString('Indexed '.$i.' / '.$i.' MeiliSearch\Bundle\Test\Entity\Post entities into sf_phpunit__'.self::$indexName.' index', $output);
