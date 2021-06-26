@@ -9,7 +9,6 @@ use MeiliSearch\Bundle\EventListener\DoctrineEventSubscriber;
 use MeiliSearch\Bundle\Test\BaseKernelTestCase;
 use MeiliSearch\Bundle\Test\Entity\Post;
 
-
 class DoctrineEventSubscriberTest extends BaseKernelTestCase
 {
     /**

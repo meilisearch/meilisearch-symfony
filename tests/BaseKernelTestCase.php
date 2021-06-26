@@ -203,7 +203,7 @@ abstract class BaseKernelTestCase extends KernelTestCase
      *         $container->setParameter('foo', 'bar');
      *     });
      */
-    public function rebuildContainer(\Closure $containerConfigurator) : ContainerInterface
+    public function rebuildContainer(\Closure $containerConfigurator): ContainerInterface
     {
         if (self::$kernel) {
             self::$kernel->shutdown();

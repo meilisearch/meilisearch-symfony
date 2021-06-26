@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace MeiliSearch\Bundle\Test;
 
 use DG\BypassFinals;
-use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 
