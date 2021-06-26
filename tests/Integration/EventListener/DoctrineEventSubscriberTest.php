@@ -69,6 +69,9 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $subscriber->preRemove($eventArgs);
 
+        // Wait, till deletion is executed
+        sleep(5);
+
         $result = $this->searchService->search($this->entityManager, Post::class, $post->getTitle());
 
         $this->assertCount(0, $result);
