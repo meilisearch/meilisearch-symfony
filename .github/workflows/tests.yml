@@ -25,7 +25,7 @@ jobs:
             -   name: Validate composer.json and composer.lock
                 run: composer validate
             -   name: Install dependencies
-                run: composer install --prefer-dist --no-progress --no-suggest
+                run: composer install --prefer-dist --no-progress
             -   name: MeiliSearch setup with Docker
                 run: docker run -d -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey --no-analytics=true
             -   name: Run test suite
@@ -43,6 +43,6 @@ jobs:
             -   name: Validate composer.json and composer.lock
                 run: composer validate
             -   name: Install dependencies
-                run: composer install --prefer-dist --no-progress --no-suggest
+                run: composer install --prefer-dist --no-progress
             -   name: Run linter
                 run: composer lint:check
