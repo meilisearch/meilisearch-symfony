@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle\Test\TestCase;
+namespace MeiliSearch\Bundle\Test\Integration;
 
 use MeiliSearch\Bundle\Exception\EntityNotFoundInObjectID;
 use MeiliSearch\Bundle\Exception\InvalidEntityForAggregator;
-use MeiliSearch\Bundle\Test\BaseTest;
+use MeiliSearch\Bundle\Test\BaseKernelTestCase;
 use MeiliSearch\Bundle\Test\Entity\ContentAggregator;
 use MeiliSearch\Bundle\Test\Entity\EmptyAggregator;
 use MeiliSearch\Bundle\Test\Entity\Post;
 use Symfony\Component\Serializer\Serializer;
 
-class AggregatorTest extends BaseTest
+class AggregatorTest extends BaseKernelTestCase
 {
     public function testGetEntities()
     {

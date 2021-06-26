@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle\Test\TestCase;
+namespace MeiliSearch\Bundle\Test\Integration;
 
 use MeiliSearch\Bundle\Engine;
-use MeiliSearch\Bundle\Test\BaseTest;
+use MeiliSearch\Bundle\Test\BaseKernelTestCase;
 use MeiliSearch\Exceptions\ApiException;
 
 /**
  * Class EngineTest.
  */
-class EngineTest extends BaseTest
+class EngineTest extends BaseKernelTestCase
 {
     protected Engine $engine;
 

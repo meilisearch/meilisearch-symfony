@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle\Test\TestCase;
+namespace MeiliSearch\Bundle\Test\Integration;
 
-use MeiliSearch\Bundle\Test\BaseTest;
+use MeiliSearch\Bundle\Test\BaseKernelTestCase;
 use MeiliSearch\Client;
 use MeiliSearch\Endpoints\Indexes;
 use MeiliSearch\Exceptions\ApiException;
@@ -15,7 +15,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 /**
  * Class CommandsTest.
  */
-class CommandsTest extends BaseTest
+class CommandsTest extends BaseKernelTestCase
 {
     private static string $indexName = 'posts';
 
