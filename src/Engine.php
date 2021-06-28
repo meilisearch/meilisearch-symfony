@@ -80,7 +80,7 @@ final class Engine
         /** @var SearchableEntity $entity */
         foreach ($searchableEntities as $entity) {
             $searchableArray = $entity->getSearchableArray();
-            if (null == $searchableArray || 0 == \count($searchableArray)) {
+            if (\count($searchableArray) === 0) {
                 continue;
             }
             $indexUid = $entity->getIndexUid();
