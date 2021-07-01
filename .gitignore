@@ -3,5 +3,4 @@
 /vendor/
 .phpunit.result.cache
 /var/
-.php_cs.cache
-/tests/cache/blog.sqlite
+.php-cs-fixer.cache

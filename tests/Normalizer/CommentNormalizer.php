@@ -1,33 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Test\Normalizer;
 
 use MeiliSearch\Bundle\Test\Entity\Comment;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Class CommentNormalizer
- *
- * @package MeiliSearch\Bundle\Test\Normalizer
+ * Class CommentNormalizer.
  */
 class CommentNormalizer implements NormalizerInterface
 {
-
-    /**
-     * @inheritDoc
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array
     {
         return [
-            'content'    => $object->getContent(),
+            'content' => $object->getContent(),
             'post_title' => $object->getPost()->getTitle(),
         ];
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof Comment;
     }

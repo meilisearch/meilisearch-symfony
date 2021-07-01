@@ -1,17 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Test\TestCase;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\Persistence\ObjectManager;
-use Exception;
-use MeiliSearch\Bundle\Services\MeiliSearchService;
 use MeiliSearch\Bundle\Test\BaseTest;
-use MeiliSearch\Bundle\Test\Entity\Comment;
-use MeiliSearch\Bundle\Test\Entity\ContentAggregator;
 use MeiliSearch\Bundle\Test\Entity\Post;
+use MeiliSearch\Bundle\Test\Entity\Tag;
 use MeiliSearch\Client;
 use MeiliSearch\Endpoints\Indexes;
 use MeiliSearch\Exceptions\ApiException;
@@ -19,129 +16,88 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * Class SearchTest
- *
- * @package MeiliSearch\Bundle\Test\TestCase
+ * Class SearchTest.
  */
 class SearchTest extends BaseTest
 {
+    private static string $indexName = 'aggregated';
 
-    /** @var MeiliSearchService $searchService */
-    protected $searchService;
-
-    /** @var Client $client */
-    protected $client;
-
-    /** @var ObjectManager $objectManager */
-    protected $objectManager;
-
-    /** @var Connection $connection */
-    protected $connection;
-
-    /** @var Application $application */
-    protected $application;
-
-    /** @var string $indexName */
-    protected $indexName;
-
-    /** @var AbstractPlatform|null $platform */
-    protected $platform;
-
-    /** @var Indexes $index */
-    protected $index;
+    protected Client $client;
+    protected Connection $connection;
+    protected ObjectManager $objectManager;
+    protected Application $application;
+    protected Indexes $index;
 
     /**
-     * @inheritDoc
-     * @throws DBALException
+     * {@inheritDoc}
+     *
      * @throws ApiException
-     * @throws Exception
+     * @throws \Exception
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->searchService = $this->get('search.service');
-        $this->client        = $this->get('search.client');
+
+        $this->client = $this->get('search.client');
         $this->objectManager = $this->get('doctrine')->getManager();
-        $this->connection    = $this->get('doctrine')->getConnection();
-        $this->platform      = $this->connection->getDatabasePlatform();
-        $this->indexName     = 'posts';
-        $this->index         = $this->client->getOrCreateIndex($this->getPrefix() . $this->indexName);
-
-        $this->application = new Application(self::$kernel);
-        $this->refreshDb($this->application);
+        $this->index = $this->client->getOrCreateIndex($this->getPrefix().self::$indexName);
+        $this->application = new Application(self::createKernel());
     }
 
-    public function cleanUp()
+    /**
+     * This test checks the search results on aggregated models.
+     * We create models for 'post' and 'tag' using an aggregated 'ContentAggregator' with
+     * the index name 'aggregated'.
+     */
+    public function testSearchImportAggregator(): void
     {
-        try {
-            $this->searchService->delete(Post::class);
-            $this->searchService->delete(Comment::class);
-            $this->searchService->delete(ContentAggregator::class);
-        } catch (ApiException $e) {
-            $this->assertEquals('Index sf_phpunit__comments not found', $e->getMessage());
+        $testDataTitles = [];
+
+        for ($i = 0; $i < 5; ++$i) {
+            $testDataTitles[] = $this->createPost()->getTitle();
         }
-    }
 
-    public function testSearchImportAggregator()
-    {
-        $nbEntityIndexed = 0;
-        // START - Insertion Part took from CommandsTest class
-        $now = new \DateTime();
-        $this->connection->insert(
-            $this->indexName,
-            [
-                'title'        => 'Test',
-                'content'      => 'Test content',
-                'published_at' => $now->format('Y-m-d H:i:s'),
-            ]
-        );
-        $nbEntityIndexed++;
+        $this->createTag(['id' => 99]);
 
-        $this->connection->insert(
-            $this->indexName,
-            [
-                'title'        => 'Test2',
-                'content'      => 'Test content2',
-                'published_at' => $now->format('Y-m-d H:i:s'),
-            ]
-        );
-        $nbEntityIndexed++;
-
-        $this->connection->insert(
-            $this->indexName,
-            [
-                'title'        => 'Test3',
-                'content'      => 'Test content3',
-                'published_at' => $now->format('Y-m-d H:i:s'),
-            ]
-        );
-        $nbEntityIndexed++;
-
-
-        $command       = $this->application->find('meili:import');
+        $command = $this->application->find('meili:import');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(
-            [
-                'command'   => $command->getName(),
-                '--indices' => 'contents',
-            ]
-        );
+        $commandTester->execute([
+            '--indices' => $this->index->getUid(),
+        ]);
 
-        // Checks output
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Done!', $output);
-        // END - Insertion Part took from CommandsTest class
 
-        // Test searchService
-        $searchTerm = 'test';
+        $this->assertStringContainsString('Importing for index MeiliSearch\Bundle\Test\Entity\Post', $output);
+        $this->assertStringContainsString('Importing for index MeiliSearch\Bundle\Test\Entity\Tag', $output);
+        $this->assertStringContainsString('Indexed '.$i.' / '.$i.' MeiliSearch\Bundle\Test\Entity\Post entities into sf_phpunit__posts index', $output);
+        $this->assertStringContainsString('Indexed '.$i.' / '.$i.' MeiliSearch\Bundle\Test\Entity\Post entities into sf_phpunit__'.self::$indexName.' index', $output);
+        $this->assertStringContainsString('Indexed 1 / 1 MeiliSearch\Bundle\Test\Entity\Tag entities into sf_phpunit__tags index', $output);
+        $this->assertStringContainsString('Indexed 1 / 1 MeiliSearch\Bundle\Test\Entity\Tag entities into sf_phpunit__'.self::$indexName.' index', $output);
+        $this->assertStringContainsString('Done!', $output);
+
+        $searchTerm = 'Test';
+
         $results = $this->searchService->search($this->objectManager, Post::class, $searchTerm);
-        $this->assertCount($nbEntityIndexed , $results);
+        $this->assertCount(5, $results);
+
+        $resultTitles = array_map(fn (Post $post) => $post->getTitle(), $results);
+        $this->assertEqualsCanonicalizing($testDataTitles, $resultTitles);
 
         $results = $this->searchService->rawSearch(Post::class, $searchTerm);
-        $this->assertCount($nbEntityIndexed , $results['hits']);
 
-        // clearup table
-        $this->connection->executeUpdate($this->platform->getTruncateTableSQL($this->indexName, true));
-        $this->cleanUp();
+        $this->assertCount(5, $results['hits']);
+        $resultTitles = array_map(fn (array $hit) => $hit['title'], $results['hits']);
+        $this->assertEqualsCanonicalizing($testDataTitles, $resultTitles);
+
+        $this->assertCount(5, $results['hits']);
+        $this->assertSame(5, $results['nbHits']);
+
+        $results = $this->searchService->search($this->objectManager, Tag::class, $searchTerm);
+        $this->assertCount(1, $results);
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
     }
 }

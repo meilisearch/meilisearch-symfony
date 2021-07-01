@@ -1,97 +1,55 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle;
 
 use Doctrine\Persistence\ObjectManager;
+use Illuminate\Support\Collection;
 
 /**
  * Interface SearchService.
- *
- * @package MeiliSearch
  */
 interface SearchService
 {
+    public const RESULT_KEY_HITS = 'hits';
+    public const RESULT_KEY_OBJECTID = 'objectID';
+
     /**
      * @param string|object $className
-     *
-     * @return bool
      */
     public function isSearchable($className): bool;
 
-    /**
-     * @return array
-     */
     public function getSearchable(): array;
 
-    /**
-     * @return array
-     */
-    public function getConfiguration(): array;
+    public function getConfiguration(): Collection;
 
     /**
      * Get the index name for the given `$className`.
-     *
-     * @param string $className
-     *
-     * @return string
      */
     public function searchableAs(string $className): string;
 
-    /**
-     * @param ObjectManager $objectManager
-     * @param               $searchable
-     *
-     * @return array
-     */
     public function index(ObjectManager $objectManager, $searchable): array;
 
-    /**
-     * @param ObjectManager $objectManager
-     * @param               $searchable
-     *
-     * @return array
-     */
     public function remove(ObjectManager $objectManager, $searchable): array;
 
-    /**
-     * @param string $className
-     *
-     * @return array
-     */
     public function clear(string $className): array;
 
-    /**
-     * @param string $className
-     *
-     * @return array|null
-     */
     public function delete(string $className): ?array;
 
-    /**
-     * @param ObjectManager $objectManager
-     * @param string        $className
-     * @param string        $query
-     * @param array         $requestOptions
-     *
-     * @return array
-     */
+    public function deleteByIndexName(string $indexName): ?array;
+
     public function search(
         ObjectManager $objectManager,
         string $className,
         string $query = '',
-        array $requestOptions = []
+        array $searchParams = []
     ): array;
 
     /**
      * Get the raw search result.
      *
      * @see https://docs.meilisearch.com/reference/api/search.html#response
-     *
-     * @param string $className
-     * @param string $query
-     * @param array  $searchParams
-     *
-     * @return array
      */
     public function rawSearch(
         string $className,
@@ -99,12 +57,5 @@ interface SearchService
         array $searchParams = []
     ): array;
 
-    /**
-     * @param string $className
-     * @param string $query
-     * @param array  $requestOptions
-     *
-     * @return int
-     */
-    public function count(string $className, string $query = '', array $requestOptions = []): int;
+    public function count(string $className, string $query = '', array $searchParams = []): int;
 }

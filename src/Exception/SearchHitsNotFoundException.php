@@ -1,14 +1,12 @@
 <?php
 
-namespace MeiliSearch\Bundle\Exception;
+declare(strict_types=1);
 
-use LogicException;
+namespace MeiliSearch\Bundle\Exception;
 
 /**
  * Class SearchHitsNotFoundException.
- *
- * @package MeiliSearch\Bundle\Exception
  */
-final class SearchHitsNotFoundException extends LogicException
+final class SearchHitsNotFoundException extends \LogicException
 {
 }

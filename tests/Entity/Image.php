@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Test\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -9,29 +11,21 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Image
 {
-
     /**
-     * @var int
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
-     * @var string
+     * @ORM\Column(type="string")
      */
-    private $url;
+    private string $url;
 
-    /**
-     * Image constructor.
-     *
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
+    public function __construct()
     {
-        $this->id  = $attributes['id'] ?? null;
-        $this->url = $attributes['url'] ?? 'https://docs.meilisearch.com/logo.png';
+        $this->url = 'https://docs.meilisearch.com/logo.png';
     }
 
     public function getId(): ?int

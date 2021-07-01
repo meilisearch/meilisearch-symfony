@@ -1,14 +1,12 @@
 <?php
 
-namespace MeiliSearch\Bundle\Exception;
+declare(strict_types=1);
 
-use LogicException;
+namespace MeiliSearch\Bundle\Exception;
 
 /**
  * Class InvalidSettingName.
- *
- * @package MeiliSearch\Bundle\Exception
  */
-final class InvalidSettingName extends LogicException
+final class InvalidSettingName extends \LogicException
 {
 }

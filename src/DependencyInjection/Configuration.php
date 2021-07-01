@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -7,21 +9,18 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * Class Configuration.
- *
- * @package MeiliSearch\Bundle\DependencyInjection
  */
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('meili_search');
         $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
+                ->scalarNode('url')->end()
+                ->scalarNode('api_key')->end()
                 ->scalarNode('prefix')
                     ->defaultValue(null)
                 ->end()
@@ -39,9 +38,12 @@ final class Configuration implements ConfigurationInterface
                     ->defaultValue('serializer')
                 ->end()
                 ->arrayNode('indices')
-                    ->useAttributeAsKey('name')
                     ->arrayPrototype()
                         ->children()
+                            ->scalarNode('name')
+                                ->isRequired()
+                                ->cannotBeEmpty()
+                            ->end()
                             ->scalarNode('class')
                                 ->isRequired()
                                 ->cannotBeEmpty()

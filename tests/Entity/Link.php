@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Test\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -9,55 +11,88 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="links")
  */
 class Link implements NormalizableInterface
 {
-
     /**
-     * @var int
      * @ORM\Id
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var mixed|string $name
+     * @ORM\Column(type="string")
      */
-    private $name;
+    private string $name = 'Test link';
 
     /**
-     * @var mixed|null $url
+     * @ORM\Column(type="string")
      */
-    private $url;
+    private string $url = 'https://docs.meilisearch.com';
 
     /**
-     * Link constructor.
-     *
-     * @param array $attributes
+     * @ORM\Column(type="boolean", options={"default"=false})
      */
-    public function __construct(array $attributes = [])
+    private bool $isSponsored = false;
+
+    public function getId(): int
     {
-        $this->id   = $attributes['id'] ?? null;
-        $this->name = $attributes['name'] ?? 'This is a tag';
-        $this->url  = $attributes['url'] ?? null;
+        return $this->id;
     }
 
-    private function isSponsored(): bool
+    public function setId(int $id): Link
     {
-        return false;
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): Link
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getUrl(): string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(string $url): Link
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    public function isSponsored(): bool
+    {
+        return $this->isSponsored;
+    }
+
+    public function setIsSponsored(bool $isSponsored): Link
+    {
+        $this->isSponsored = $isSponsored;
+
+        return $this;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function normalize(NormalizerInterface $normalizer, $format = null, array $context = [])
     {
         if (Searchable::NORMALIZATION_FORMAT === $format) {
             return [
-                'id'   => $this->id,
-                'name' => 'this test is correct',
-                'url'  => 'https://www.meilisearch.com',
+                'id' => $this->id,
+                'name' => $this->name,
+                'url' => $this->url,
             ];
         }
 

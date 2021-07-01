@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Test\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use MeiliSearch\Bundle\Searchable;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
@@ -11,42 +12,59 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="tags")
  */
 class Tag implements NormalizableInterface
 {
-
     /**
-     * @var int
      * @ORM\Id
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $id;
+    private ?int $id;
 
     /**
-     * @ORM\Id
      * @ORM\Column(type="string")
      */
-    private $name;
-
-    private $count;
-
-    private $public;
-
-    private $publishedAt;
+    private string $name = '';
 
     /**
-     * Tag constructor.
-     *
-     * @param array $attributes
+     * @ORM\Column(type="smallint")
      */
-    public function __construct(array $attributes = [])
+    private int $count = 0;
+
+    private $public = true;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private \DateTimeInterface $publishedAt;
+
+    public function __construct()
     {
-        $this->id          = $attributes['id'] ?? null;
-        $this->name        = $attributes['name'] ?? 'This is a tag';
-        $this->count       = $attributes['count'] ?? 0;
-        $this->public      = $attributes['public'] ?? true;
-        $this->publishedAt = $attributes['publishedAt'] ?? new DateTime();
+        $this->publishedAt = new \DateTime();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(?int $id): Tag
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): Tag
+    {
+        $this->name = $name;
+
+        return $this;
     }
 
     public function isPublic(): bool
@@ -62,16 +80,17 @@ class Tag implements NormalizableInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ExceptionInterface
      */
     public function normalize(NormalizerInterface $normalizer, $format = null, array $context = [])
     {
         if (Searchable::NORMALIZATION_FORMAT === $format) {
             return [
-                'id'          => $this->id,
-                'name'        => 'this test is correct',
-                'count'       => 10,
+                'id' => $this->id,
+                'name' => 'this test is correct',
+                'count' => 10,
                 'publishedAt' => $normalizer->normalize($this->publishedAt),
             ];
         }

@@ -1,18 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Test\TestCase;
 
 use MeiliSearch\Bundle\DependencyInjection\Configuration;
 use MeiliSearch\Bundle\Test\BaseTest;
 
 /**
- * Class ConfigurationTest
- *
- * @package MeiliSearch\Bundle\Test\TestCase
+ * Class ConfigurationTest.
  */
 class ConfigurationTest extends BaseTest
 {
-
     /**
      * @dataProvider dataTestConfigurationTree
      *
@@ -23,9 +22,9 @@ class ConfigurationTest extends BaseTest
     {
         $configuration = new Configuration();
 
-        $node             = $configuration->getConfigTreeBuilder()->buildTree();
+        $node = $configuration->getConfigTreeBuilder()->buildTree();
         $normalizedConfig = $node->normalize($inputConfig);
-        $finalizedConfig  = $node->finalize($normalizedConfig);
+        $finalizedConfig = $node->finalize($normalizedConfig);
 
         $this->assertEquals($expectedConfig, $finalizedConfig);
     }
@@ -36,62 +35,96 @@ class ConfigurationTest extends BaseTest
             'test empty config for default value' => [
                 [],
                 [
-                    'prefix'                   => null,
-                    'nbResults'                => 20,
-                    'batchSize'                => 500,
-                    'serializer'               => 'serializer',
+                    'prefix' => null,
+                    'nbResults' => 20,
+                    'batchSize' => 500,
+                    'serializer' => 'serializer',
                     'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
-                    'indices'                  => [],
+                    'indices' => [],
                 ],
             ],
-            'Simple config'                       => [
+            'Simple config' => [
                 [
-                    'prefix'    => 'sf_',
+                    'prefix' => 'sf_',
                     'nbResults' => 40,
                     'batchSize' => 100,
                 ],
                 [
-                    'prefix'                   => 'sf_',
-                    'nbResults'                => 40,
-                    'batchSize'                => 100,
-                    'serializer'               => 'serializer',
+                    'prefix' => 'sf_',
+                    'nbResults' => 40,
+                    'batchSize' => 100,
+                    'serializer' => 'serializer',
                     'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
-                    'indices'                  => [],
+                    'indices' => [],
                 ],
             ],
-            'Index config'                        => [
+            'Index config' => [
                 [
-                    'prefix'  => 'sf_',
+                    'prefix' => 'sf_',
                     'indices' => [
                         ['name' => 'posts', 'class' => 'App\Entity\Post', 'index_if' => null],
                         [
-                            'name'                     => 'tags',
-                            'class'                    => 'App\Entity\Tag',
+                            'name' => 'tags',
+                            'class' => 'App\Entity\Tag',
                             'enable_serializer_groups' => true,
-                            'index_if'                 => null
+                            'index_if' => null,
                         ],
                     ],
                 ],
                 [
-                    'prefix'                   => 'sf_',
-                    'nbResults'                => 20,
-                    'batchSize'                => 500,
-                    'serializer'               => 'serializer',
+                    'prefix' => 'sf_',
+                    'nbResults' => 20,
+                    'batchSize' => 500,
+                    'serializer' => 'serializer',
                     'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
-                    'indices'                  => [
-                        'posts' => [
-                            'class'                    => 'App\Entity\Post',
+                    'indices' => [
+                        0 => [
+                            'name' => 'posts',
+                            'class' => 'App\Entity\Post',
                             'enable_serializer_groups' => false,
-                            'index_if'                 => null,
-                            'settings'                 => []
+                            'index_if' => null,
+                            'settings' => [],
                         ],
-                        'tags'  => [
-                            'class'                    => 'App\Entity\Tag',
+                        1 => [
+                            'name' => 'tags',
+                            'class' => 'App\Entity\Tag',
                             'enable_serializer_groups' => true,
-                            'index_if'                 => null,
-                            'settings'                 => []
+                            'index_if' => null,
+                            'settings' => [],
                         ],
                     ],
+                ],
+            ],
+            'same index for multiple models' => [
+                [
+                    'prefix' => 'sf_',
+                    'indices' => [
+                        [
+                            'name' => 'items', 'class' => 'App\Entity\Post', 'enable_serializer_groups' => false, 'index_if' => null, 'settings' => [],
+                        ],
+                        [
+                            'name' => 'items', 'class' => 'App\Entity\Tag', 'enable_serializer_groups' => false, 'index_if' => null, 'settings' => [],
+                        ],
+                    ],
+                    'nbResults' => 20,
+                    'batchSize' => 500,
+                    'serializer' => 'serializer',
+                    'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
+                ],
+                [
+                    'prefix' => 'sf_',
+                    'indices' => [
+                        [
+                            'name' => 'items', 'class' => 'App\Entity\Post', 'enable_serializer_groups' => false, 'index_if' => null, 'settings' => [],
+                        ],
+                        [
+                            'name' => 'items', 'class' => 'App\Entity\Tag',  'enable_serializer_groups' => false, 'index_if' => null, 'settings' => [],
+                        ],
+                    ],
+                    'nbResults' => 20,
+                    'batchSize' => 500,
+                    'serializer' => 'serializer',
+                    'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
                 ],
             ],
         ];

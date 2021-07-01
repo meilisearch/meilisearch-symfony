@@ -1,65 +1,71 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MeiliSearch\Bundle\Command;
 
+use Illuminate\Support\Collection;
 use MeiliSearch\Bundle\SearchService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use function array_keys;
-use function count;
-use function explode;
 
 /**
  * Class IndexCommand.
- *
- * @package MeiliSearch\Bundle\Command
  */
 abstract class IndexCommand extends Command
 {
-    /** @var SearchService */
-    protected $searchService;
+    private string $prefix;
+    protected SearchService $searchService;
 
-    /**
-     * IndexCommand constructor.
-     *
-     * @param SearchService $searchService
-     * @param string|null   $name
-     */
-    public function __construct(SearchService $searchService, string $name = null)
+    public function __construct(SearchService $searchService, ?string $name = null)
     {
         $this->searchService = $searchService;
+        $this->prefix = $this->searchService->getConfiguration()->get('prefix');
+
         parent::__construct($name);
     }
 
-    protected function getEntitiesFromArgs(InputInterface $input, OutputInterface $output): array
+    protected function getIndices(): Collection
     {
-        $entities = [];
-        $indexNames = [];
+        return collect($this->searchService->getConfiguration()->get('indices'))
+            ->transform(function (array $item) {
+                $item['name'] = $this->prefix.$item['name'];
+
+                return $item;
+            });
+    }
+
+    protected function getEntitiesFromArgs(InputInterface $input, OutputInterface $output): Collection
+    {
+        $indexNames = collect();
 
         if ($indexList = $input->getOption('indices')) {
-            $indexNames = explode(',', $indexList);
+            $list = \explode(',', $indexList);
+            $indexNames = collect($list)->transform(function (string $item) {
+                // Check if the given index name already contains the prefix
+                if (false === strpos($item, $this->prefix)) {
+                    return $this->prefix.$item;
+                }
+
+                return $item;
+            });
         }
 
         $config = $this->searchService->getConfiguration();
 
+        if ((0 === count($indexNames)) && count($config->get('indices')) > 0) {
+            $indexNames = $this->getIndices();
+        }
+
         if (0 === count($indexNames)) {
-            $indexNames = array_keys($config['indices']);
+            $output->writeln(
+                '<comment>No indices specified. Please either specify indices using the cli option or YAML configuration.</comment>'
+            );
         }
 
-        foreach ($indexNames as $name) {
-            if (isset($config['indices'][$name])) {
-                $entities[$name]['name'] = $config['indices'][$name]['class'];
-                if (true === $input->hasOption('update-settings') && !empty($config['indices'][$name]['settings'])) {
-                    $entities[$name]['settings'] = $config['indices'][$name]['settings'];
-                }
-            } else {
-                $output->writeln(
-                    '<comment>No index named <info>'.$name.'</info> was found. Check you configuration.</comment>'
-                );
-            }
-        }
-
-        return $entities;
+        return collect($this->getIndices())->reject(function (array $item) use ($indexNames) {
+            return !in_array($item['name'], $indexNames->toArray(), true);
+        });
     }
 }
