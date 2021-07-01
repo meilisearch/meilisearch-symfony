@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle\Test\TestCase;
+namespace MeiliSearch\Bundle\Test\Integration;
 
-use MeiliSearch\Bundle\Test\BaseTest;
+use MeiliSearch\Bundle\Test\BaseKernelTestCase;
 use MeiliSearch\Client;
 use MeiliSearch\Endpoints\Indexes;
 use MeiliSearch\Exceptions\ApiException;
@@ -15,7 +15,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 /**
  * Class CommandsTest.
  */
-class CommandsTest extends BaseTest
+class CommandsTest extends BaseKernelTestCase
 {
     private static string $indexName = 'posts';
 
@@ -36,7 +36,7 @@ class CommandsTest extends BaseTest
         $this->application = new Application(self::createKernel());
     }
 
-    public function testSearchClearUnknownIndex()
+    public function testSearchClearUnknownIndex(): void
     {
         $unknownIndexName = 'test';
 
@@ -54,7 +54,7 @@ class CommandsTest extends BaseTest
     /**
      * Importing 'Tag' and 'Link' into the same 'tags' index.
      */
-    public function testImportDifferentEntitiesIntoSameIndex()
+    public function testImportDifferentEntitiesIntoSameIndex(): void
     {
         for ($i = 0; $i <= 5; ++$i) {
             $this->createTag(['id' => $i]);
@@ -80,7 +80,7 @@ class CommandsTest extends BaseTest
         $this->assertSame(8, $searchResult->getHitsCount());
     }
 
-    public function testSearchImportAggregator()
+    public function testSearchImportAggregator(): void
     {
         for ($i = 0; $i <= 5; ++$i) {
             $this->createPost();
@@ -129,10 +129,6 @@ class CommandsTest extends BaseTest
         $return = $commandTester->execute([
             '--indices' => self::$indexName, // This is the already prefixed name
         ]);
-
-        // Check that the same index like above is created with the same name, although we passed it
-        // in without the prefix
-        $this->assertInstanceOf(Indexes::class, $this->index->fetchInfo());
 
         $output = $commandTester->getDisplay();
         $this->assertStringContainsString('Importing for index MeiliSearch\Bundle\Test\Entity\Post', $output);

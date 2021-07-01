@@ -31,7 +31,7 @@ class Tag implements NormalizableInterface
      */
     private int $count = 0;
 
-    private $public = true;
+    private bool $public = true;
 
     /**
      * @ORM\Column(type="datetime")

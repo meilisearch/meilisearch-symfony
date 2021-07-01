@@ -8,10 +8,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use MeiliSearch\Bundle\SearchService;
 
-/**
- * Class MeiliSearchIndexerSubscriber.
- */
-final class MeiliSearchIndexerSubscriber implements EventSubscriber
+final class DoctrineEventSubscriber implements EventSubscriber
 {
     private SearchService $searchService;
     private array $subscribedEvents;

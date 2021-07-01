@@ -1,17 +1,15 @@
 <?xml version="1.0" ?>
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
+        <defaults autowire="true" autoconfigure="true"/>
 
-        <prototype namespace="MeiliSearch\Bundle\Command\" resource="../../Command" autowire="true"
-                   autoconfigure="true"/>
-
-        <service id="MeiliSearch\Bundle\Command\MeiliSearchImportCommand" autowire="true" autoconfigure="true"/>
+        <prototype namespace="MeiliSearch\Bundle\Command\" resource="../../Command" />
 
         <service id="search.search_indexer_subscriber"
-                 class="MeiliSearch\Bundle\EventListener\MeiliSearchIndexerSubscriber"
+                 class="MeiliSearch\Bundle\EventListener\DoctrineEventSubscriber"
                  public="true">
             <argument type="service" id="search.service"/>
             <argument type="collection"/> <!-- doctrine subscribed events -->
@@ -25,7 +23,6 @@
         </service>
 
         <service id="MeiliSearch\Client" alias="search.client"/>
-
         <service id="MeiliSearch\Bundle\SearchService" alias="search.service"/>
     </services>
 </container>

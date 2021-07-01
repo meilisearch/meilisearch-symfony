@@ -48,6 +48,8 @@ class Comment
 
     /**
      * Comment constructor.
+     *
+     * @param array<string, mixed> $attributes
      */
     public function __construct(array $attributes = [])
     {

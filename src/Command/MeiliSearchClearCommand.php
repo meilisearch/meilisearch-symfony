@@ -15,7 +15,7 @@ final class MeiliSearchClearCommand extends IndexCommand
 {
     protected static $defaultName = 'meili:clear';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Clear the index documents')
@@ -26,7 +26,7 @@ final class MeiliSearchClearCommand extends IndexCommand
     {
         $indexToClear = $this->getEntitiesFromArgs($input, $output);
 
-        /** @var array $index */
+        /** @var array<string, mixed> $index */
         foreach ($indexToClear as $index) {
             $indexName = $index['name'];
             $className = $index['class'];

@@ -25,24 +25,33 @@ jobs:
             -   name: Validate composer.json and composer.lock
                 run: composer validate
             -   name: Install dependencies
-                run: composer install --prefer-dist --no-progress --no-suggest
+                run: composer install --prefer-dist --no-progress --quiet
             -   name: MeiliSearch setup with Docker
                 run: docker run -d -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey --no-analytics=true
+            -   name: Check
+                run: curl http://127.0.0.1:7700
             -   name: Run test suite
                 run: composer test:unit
 
-    linter:
+    code-style:
         runs-on: ubuntu-latest
-        name: linter-check
+        name: 'Code style'
         steps:
             -   uses: actions/checkout@v2
+
             -   name: Install PHP
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: '7.4'
+
             -   name: Validate composer.json and composer.lock
                 run: composer validate
+
             -   name: Install dependencies
-                run: composer install --prefer-dist --no-progress --no-suggest
-            -   name: Run linter
+                run: composer install --prefer-dist --no-progress --quiet
+
+            -   name: PHP CS Fixer
                 run: composer lint:check
+
+            -   name: PHPstan
+                run: composer phpstan

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle\Test\TestCase;
+namespace MeiliSearch\Bundle\Test\Integration;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ObjectManager;
-use MeiliSearch\Bundle\Test\BaseTest;
+use MeiliSearch\Bundle\Test\BaseKernelTestCase;
 use MeiliSearch\Bundle\Test\Entity\Post;
 use MeiliSearch\Bundle\Test\Entity\Tag;
 use MeiliSearch\Client;
@@ -18,7 +18,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 /**
  * Class SearchTest.
  */
-class SearchTest extends BaseTest
+class SearchTest extends BaseKernelTestCase
 {
     private static string $indexName = 'aggregated';
 

@@ -30,7 +30,7 @@ final class MeiliSearchImportCommand extends IndexCommand
         $this->searchClient = $searchClient;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Import given entity into search engine')
@@ -56,9 +56,7 @@ final class MeiliSearchImportCommand extends IndexCommand
                 $indexes = collect(array_merge(
                     $indexes->toArray(),
                     array_map(
-                        function ($entity) {
-                            return ['class' => $entity];
-                        },
+                        fn ($entity) => ['class' => $entity],
                         $entityClassName::getEntities()
                     )
                 ));
@@ -101,7 +99,9 @@ final class MeiliSearchImportCommand extends IndexCommand
                     );
                 }
 
-                if (!empty($index['settings'])) {
+                if (isset($index['settings'])
+                    && is_array($index['settings'])
+                    && count($index['settings']) > 0) {
                     $indexInstance = $this->searchClient->getOrCreateIndex($index['name']);
                     foreach ($index['settings'] as $variable => $value) {
                         $method = sprintf('update%s', ucfirst($variable));
