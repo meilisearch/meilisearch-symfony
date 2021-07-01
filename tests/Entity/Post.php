@@ -138,7 +138,7 @@ class Post
 
     public function removeComment(Comment $comment): Post
     {
-        $comment->setPost(null);
+        $comment->setPost($this);
         $this->comments->removeElement($comment);
 
         return $this;

@@ -42,7 +42,7 @@ abstract class IndexCommand extends Command
 
         if ($indexList = $input->getOption('indices')) {
             $list = \explode(',', $indexList);
-            $indexNames = collect($list)->transform(function (string $item) {
+            $indexNames = collect($list)->transform(function (string $item): string {
                 // Check if the given index name already contains the prefix
                 if (false === strpos($item, $this->prefix)) {
                     return $this->prefix.$item;
@@ -64,8 +64,6 @@ abstract class IndexCommand extends Command
             );
         }
 
-        return collect($this->getIndices())->reject(function (array $item) use ($indexNames) {
-            return !in_array($item['name'], $indexNames->toArray(), true);
-        });
+        return collect($this->getIndices())->reject(fn (array $item) => !in_array($item['name'], $indexNames->toArray(), true));
     }
 }

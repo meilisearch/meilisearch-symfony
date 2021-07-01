@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle\Test\TestCase;
+namespace MeiliSearch\Bundle\Test\Unit;
 
 use MeiliSearch\Bundle\DependencyInjection\Configuration;
-use MeiliSearch\Bundle\Test\BaseTest;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * Class ConfigurationTest.
  */
-class ConfigurationTest extends BaseTest
+class ConfigurationTest extends KernelTestCase
 {
     /**
      * @dataProvider dataTestConfigurationTree
@@ -18,7 +18,7 @@ class ConfigurationTest extends BaseTest
      * @param mixed $inputConfig
      * @param mixed $expectedConfig
      */
-    public function testConfigurationTree($inputConfig, $expectedConfig)
+    public function testConfigurationTree($inputConfig, $expectedConfig): void
     {
         $configuration = new Configuration();
 

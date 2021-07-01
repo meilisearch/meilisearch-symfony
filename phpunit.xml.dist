@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" colors="true" bootstrap="vendor/autoload.php" convertDeprecationsToExceptions="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
-  <coverage>
-    <include>
-      <directory>src/</directory>
-    </include>
-    <exclude>
-      <file>src/DependencyInjection/MeiliSearchExtension.php</file>
-      <file>src/Services/NullSearchService.php</file>
-    </exclude>
-  </coverage>
-  <php>
-    <env name="KERNEL_CLASS" value="MeiliSearch\Bundle\Test\Kernel"/>
-    <env name="APP_ENV" value="test"/>
-    <env name="APP_DEBUG" value="false"/>
-    <env name="MEILISEARCH_PREFIX" value="sf_phpunit_"/>
-    <env name="MEILISEARCH_URL" value="http://127.0.0.1:7700"/>
-    <env name="MEILISEARCH_API_KEY" value="masterKey"/>
-    <env name="TRAVIS_JOB_NUMBER" value=""/>
-    <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>
-  </php>
-  <testsuites>
-    <testsuite name="TestCase">
-      <directory suffix=".php">tests/TestCase/</directory>
-    </testsuite>
-  </testsuites>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" colors="true" bootstrap="vendor/autoload.php"
+         convertDeprecationsToExceptions="false"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd">
+    <coverage>
+        <include>
+            <directory>src/</directory>
+        </include>
+    </coverage>
+    <php>
+        <env name="KERNEL_CLASS" value="MeiliSearch\Bundle\Test\Kernel"/>
+        <env name="APP_ENV" value="test"/>
+        <env name="APP_DEBUG" value="false"/>
+        <env name="MEILISEARCH_PREFIX" value="sf_phpunit_"/>
+        <env name="MEILISEARCH_URL" value="http://127.0.0.1:7700"/>
+        <env name="MEILISEARCH_API_KEY" value="masterKey"/>
+        <env name="TRAVIS_JOB_NUMBER" value=""/>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>
+    </php>
+    <testsuites>
+        <testsuite name="Integration">
+            <directory suffix=".php">tests/Integration</directory>
+        </testsuite>
+        <testsuite name="Unit">
+            <directory suffix=".php">tests/Unit</directory>
+        </testsuite>
+    </testsuites>
 </phpunit>

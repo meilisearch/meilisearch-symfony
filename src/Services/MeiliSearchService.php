@@ -88,9 +88,7 @@ final class MeiliSearchService implements SearchService
 
         $searchableToBeIndexed = array_filter(
             $searchable,
-            function ($entity) {
-                return $this->isSearchable($entity);
-            }
+            fn ($entity) => $this->isSearchable($entity)
         );
 
         $searchableToBeRemoved = [];
@@ -108,9 +106,7 @@ final class MeiliSearchService implements SearchService
         return $this->makeSearchServiceResponseFrom(
             $objectManager,
             $searchableToBeIndexed,
-            function ($chunk) {
-                return $this->engine->index($chunk);
-            }
+            fn ($chunk) => $this->engine->index($chunk)
         );
     }
 
@@ -121,17 +117,13 @@ final class MeiliSearchService implements SearchService
 
         $searchable = array_filter(
             $searchable,
-            function ($entity) {
-                return $this->isSearchable($entity);
-            }
+            fn ($entity) => $this->isSearchable($entity)
         );
 
         return $this->makeSearchServiceResponseFrom(
             $objectManager,
             $searchable,
-            function ($chunk) {
-                return $this->engine->remove($chunk);
-            }
+            fn ($chunk) => $this->engine->remove($chunk)
         );
     }
 

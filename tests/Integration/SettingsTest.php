@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle\Test\TestCase;
+namespace MeiliSearch\Bundle\Test\Integration;
 
-use MeiliSearch\Bundle\Test\BaseTest;
+use MeiliSearch\Bundle\Test\BaseKernelTestCase;
 use MeiliSearch\Client;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -12,7 +12,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 /**
  * Class SettingsTest.
  */
-class SettingsTest extends BaseTest
+class SettingsTest extends BaseKernelTestCase
 {
     private static string $indexName = 'posts';
 
@@ -40,7 +40,7 @@ class SettingsTest extends BaseTest
         $this->application = new Application(self::$kernel);
     }
 
-    public function testGetDefaultSettings()
+    public function testGetDefaultSettings(): void
     {
         $primaryKey = 'ObjectID';
         $settingA = $this->client->getOrCreateIndex($this->getPrefix().'indexA')->getSettings();
@@ -67,7 +67,7 @@ class SettingsTest extends BaseTest
         $this->assertEmpty($settingB['synonyms']);
     }
 
-    public function testUpdateSettings()
+    public function testUpdateSettings(): void
     {
         $index = $this->getPrefix().self::$indexName;
 
