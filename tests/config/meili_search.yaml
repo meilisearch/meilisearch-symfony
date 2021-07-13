@@ -10,7 +10,7 @@ meili_search:
             enable_serializer_groups: true
             settings:
                 stopWords: ['the', 'a', 'an']
-                attributesForFaceting: ['title', 'publishedAt']
+                filterableAttribute: ['title', 'publishedAt']
         -   name: comments
             class: 'MeiliSearch\Bundle\Test\Entity\Comment'
         -   name: aggregated

@@ -18,12 +18,11 @@ class SettingsTest extends BaseKernelTestCase
 
     public const DEFAULT_RANKING_RULES
         = [
-            'typo',
-            'words',
-            'proximity',
-            'attribute',
-            'wordsPosition',
-            'exactness',
+            "words",
+            "typo",
+            "proximity",
+            "attribute",
+            "exactness"
         ];
 
     protected Client $client;
@@ -85,7 +84,7 @@ class SettingsTest extends BaseKernelTestCase
         $this->assertNotEmpty($settings['stopWords']);
         $this->assertEquals(['a', 'an', 'the'], $settings['stopWords']);
 
-        $this->assertNotEmpty($settings['attributesForFaceting']);
-        $this->assertEquals(['title', 'publishedAt'], $settings['attributesForFaceting']);
+        $this->assertNotEmpty($settings['filterableAttributes']);
+        $this->assertEquals(['title', 'publishedAt'], $settings['filterableAttributes']);
     }
 }
