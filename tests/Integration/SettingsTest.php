@@ -18,11 +18,11 @@ class SettingsTest extends BaseKernelTestCase
 
     public const DEFAULT_RANKING_RULES
         = [
-            "words",
-            "typo",
-            "proximity",
-            "attribute",
-            "exactness"
+            'words',
+            'typo',
+            'proximity',
+            'attribute',
+            'exactness',
         ];
 
     protected Client $client;
