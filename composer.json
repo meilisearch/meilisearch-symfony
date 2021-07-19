@@ -57,7 +57,7 @@
         "sort-packages": true
     },
     "scripts": {
-        "phpstan": "./vendor/bin/phpstan --memory-limit=128 --ansi",
+        "phpstan": "./vendor/bin/phpstan --memory-limit=1G --ansi",
         "test:unit": "./vendor/bin/phpunit --colors=always --verbose",
         "test:unit:coverage": "XDEBUG_MODE=coverage ./vendor/bin/phpunit --colors=always --coverage-html=tests/coverage",
         "lint:check": "./vendor/bin/php-cs-fixer fix -v --using-cache=no --dry-run",
