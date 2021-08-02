@@ -4,13 +4,14 @@ name: Pre-Release Tests
 # Will only run for PRs and pushes to bump-meilisearch-v*
 on:
     push:
-        branches: bump-meilisearch-v*
+        branches:
+        - bump-meilisearch-v*
     pull_request:
-        branches: bump-meilisearch-v*
+        branches:
+        - bump-meilisearch-v*
 
 jobs:
     integration-tests:
-        name: integration-tests-against-rc
         runs-on: ubuntu-latest
         strategy:
             matrix:
