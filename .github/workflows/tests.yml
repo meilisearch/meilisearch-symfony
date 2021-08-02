@@ -31,8 +31,6 @@ jobs:
                 run: composer install --prefer-dist --no-progress --quiet
             -   name: MeiliSearch setup with Docker
                 run: docker run -d -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey --no-analytics=true
-            -   name: Check
-                run: curl http://127.0.0.1:7700
             -   name: Run test suite
                 run: composer test:unit
 
