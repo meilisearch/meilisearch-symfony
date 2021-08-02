@@ -1,7 +1,7 @@
 status = [
     'integration-tests (PHP 7.4)',
     'integration-tests (PHP 8.0)',
-    'linter-check'
+    'Code style'
 ]
 # 1 hour timeout
 timeout-sec = 3600
