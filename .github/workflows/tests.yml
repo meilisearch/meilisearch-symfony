@@ -11,6 +11,9 @@ on:
 
 jobs:
     integration-tests:
+        # Will not run if the event is a PR to bump-meilisearch-v* (so a pre-release PR)
+        # Will still run for each push to bump-meilisearch-v*
+        if: github.event_name != 'pull_request' || !startsWith(github.base_ref, 'bump-meilisearch-v')
         runs-on: ubuntu-latest
         strategy:
             matrix:
@@ -28,8 +31,6 @@ jobs:
                 run: composer install --prefer-dist --no-progress --quiet
             -   name: MeiliSearch setup with Docker
                 run: docker run -d -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey --no-analytics=true
-            -   name: Check
-                run: curl http://127.0.0.1:7700
             -   name: Run test suite
                 run: composer test:unit
 
