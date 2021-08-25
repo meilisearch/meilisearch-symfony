@@ -38,6 +38,7 @@ abstract class IndexCommand extends Command
 
     protected function getEntitiesFromArgs(InputInterface $input, OutputInterface $output): Collection
     {
+        $indices = $this->getIndices();
         $indexNames = collect();
 
         if ($indexList = $input->getOption('indices')) {
@@ -52,18 +53,18 @@ abstract class IndexCommand extends Command
             });
         }
 
-        $config = $this->searchService->getConfiguration();
-
-        if ((0 === count($indexNames)) && count($config->get('indices')) > 0) {
-            $indexNames = $this->getIndices();
-        }
-
-        if (0 === count($indexNames)) {
+        if (0 === count($indexNames) && 0 === count($indices)) {
             $output->writeln(
                 '<comment>No indices specified. Please either specify indices using the cli option or YAML configuration.</comment>'
             );
+
+            return collect();
         }
 
-        return collect($this->getIndices())->reject(fn (array $item) => !in_array($item['name'], $indexNames->toArray(), true));
+        if (count($indexNames) > 0) {
+            return $indices->reject(fn (array $item) => !in_array($item['name'], $indexNames->toArray(), true));
+        }
+
+        return $indices;
     }
 }
