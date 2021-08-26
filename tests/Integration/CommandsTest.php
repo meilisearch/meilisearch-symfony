@@ -51,6 +51,60 @@ class CommandsTest extends BaseKernelTestCase
         $this->assertStringContainsString('Cannot clear index. Not found.', $output);
     }
 
+    public function testSearchImportAndClearWithoutIndices(): void
+    {
+        for ($i = 0; $i <= 5; ++$i) {
+            $this->createPost();
+        }
+
+        for ($i = 0; $i <= 5; ++$i) {
+            $this->createTag(['id' => $i]);
+        }
+
+        $importCommand = $this->application->find('meili:import');
+        $importCommandTester = new CommandTester($importCommand);
+        $importCommandTester->execute([]);
+
+        $importOutput = $importCommandTester->getDisplay();
+
+        $this->assertSame(<<<'EOD'
+Importing for index MeiliSearch\Bundle\Test\Entity\Post
+Indexed 6 / 6 MeiliSearch\Bundle\Test\Entity\Post entities into sf_phpunit__posts index
+Indexed 6 / 6 MeiliSearch\Bundle\Test\Entity\Post entities into sf_phpunit__aggregated index
+Settings updated.
+Settings updated.
+Importing for index MeiliSearch\Bundle\Test\Entity\Comment
+Importing for index MeiliSearch\Bundle\Test\Entity\Tag
+Indexed 6 / 6 MeiliSearch\Bundle\Test\Entity\Tag entities into sf_phpunit__tags index
+Indexed 6 / 6 MeiliSearch\Bundle\Test\Entity\Tag entities into sf_phpunit__aggregated index
+Importing for index MeiliSearch\Bundle\Test\Entity\Link
+Importing for index MeiliSearch\Bundle\Test\Entity\Post
+Indexed 6 / 6 MeiliSearch\Bundle\Test\Entity\Post entities into sf_phpunit__posts index
+Indexed 6 / 6 MeiliSearch\Bundle\Test\Entity\Post entities into sf_phpunit__aggregated index
+Importing for index MeiliSearch\Bundle\Test\Entity\Tag
+Indexed 6 / 6 MeiliSearch\Bundle\Test\Entity\Tag entities into sf_phpunit__tags index
+Indexed 6 / 6 MeiliSearch\Bundle\Test\Entity\Tag entities into sf_phpunit__aggregated index
+Done!
+
+EOD, $importOutput);
+
+        $clearCommand = $this->application->find('meili:clear');
+        $clearCommandTester = new CommandTester($clearCommand);
+        $clearCommandTester->execute([]);
+
+        $clearOutput = $clearCommandTester->getDisplay();
+
+        $this->assertSame(<<<'EOD'
+Cleared sf_phpunit__posts index of MeiliSearch\Bundle\Test\Entity\Post
+Cleared sf_phpunit__comments index of MeiliSearch\Bundle\Test\Entity\Comment
+Cleared sf_phpunit__aggregated index of MeiliSearch\Bundle\Test\Entity\ContentAggregator
+Cleared sf_phpunit__tags index of MeiliSearch\Bundle\Test\Entity\Tag
+Cleared sf_phpunit__tags index of MeiliSearch\Bundle\Test\Entity\Link
+Done!
+
+EOD, $clearOutput);
+    }
+
     /**
      * Importing 'Tag' and 'Link' into the same 'tags' index.
      */
