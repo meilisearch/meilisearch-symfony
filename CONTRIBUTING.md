@@ -52,6 +52,8 @@ composer test:unit
 composer lint:check
 # Linter (with auto-fix)
 composer lint:fix
+# PHPstan
+composer phpstan
 ```
 
 ### Using the Docker Environment
