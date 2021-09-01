@@ -7,6 +7,7 @@ namespace MeiliSearch\Bundle\Test\Integration\EventListener;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use MeiliSearch\Bundle\EventListener\DoctrineEventSubscriber;
 use MeiliSearch\Bundle\Test\BaseKernelTestCase;
+use MeiliSearch\Bundle\Test\Entity\Page;
 use MeiliSearch\Bundle\Test\Entity\Post;
 
 class DoctrineEventSubscriberTest extends BaseKernelTestCase
@@ -30,6 +31,23 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
         $this->assertSame(2, $result[0]->getId());
     }
 
+    public function testPostPersistWithObjectId(): void
+    {
+        $this->createPage(1);
+        $page = $this->createPage(2);
+
+        $eventArgs = new LifecycleEventArgs($page, $this->entityManager);
+
+        $subscriber = new DoctrineEventSubscriber($this->searchService, []);
+        $subscriber->postPersist($eventArgs);
+        sleep(1);
+
+        $result = $this->searchService->search($this->entityManager, Page::class, $page->getTitle());
+
+        $this->assertCount(1, $result);
+        $this->assertSame((string) $page->getId(), (string) $result[0]->getId());
+    }
+
     /**
      * This tests creates two posts in the database, but only one is triggered via an event to MS.
      */
@@ -47,6 +65,23 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $this->assertCount(1, $result);
         $this->assertSame(2, $result[0]->getId());
+    }
+
+    public function testPostUpdateWithObjectId(): void
+    {
+        $this->createPage(1);
+        $page = $this->createPage(2);
+
+        $eventArgs = new LifecycleEventArgs($page, $this->entityManager);
+
+        $subscriber = new DoctrineEventSubscriber($this->searchService, []);
+        $subscriber->postUpdate($eventArgs);
+        sleep(1);
+
+        $result = $this->searchService->search($this->entityManager, Page::class, $page->getTitle());
+
+        $this->assertCount(1, $result);
+        $this->assertSame((string) $page->getId(), (string) $result[0]->getId());
     }
 
     /**
@@ -76,6 +111,29 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
         sleep(2);
 
         $result = $this->searchService->search($this->entityManager, Post::class, $post->getTitle());
+
+        $this->assertCount(0, $result);
+    }
+
+    public function testPreRemoveWithObjectId(): void
+    {
+        $page = $this->createPage(1);
+
+        $eventArgs = new LifecycleEventArgs($page, $this->entityManager);
+
+        $subscriber = new DoctrineEventSubscriber($this->searchService, []);
+        $subscriber->postPersist($eventArgs);
+        sleep(1);
+
+        $result = $this->searchService->search($this->entityManager, Page::class, $page->getTitle());
+
+        $this->assertCount(1, $result);
+        $this->assertSame((string) $page->getId(), (string) $result[0]->getId());
+
+        $subscriber->preRemove($eventArgs);
+        sleep(1);
+
+        $result = $this->searchService->search($this->entityManager, Page::class, $page->getTitle());
 
         $this->assertCount(0, $result);
     }

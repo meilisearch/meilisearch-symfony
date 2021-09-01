@@ -11,6 +11,8 @@ use MeiliSearch\Bundle\SearchService;
 use MeiliSearch\Bundle\Test\Entity\Comment;
 use MeiliSearch\Bundle\Test\Entity\Image;
 use MeiliSearch\Bundle\Test\Entity\Link;
+use MeiliSearch\Bundle\Test\Entity\ObjectId\DummyObjectId;
+use MeiliSearch\Bundle\Test\Entity\Page;
 use MeiliSearch\Bundle\Test\Entity\Post;
 use MeiliSearch\Bundle\Test\Entity\Tag;
 use MeiliSearch\Exceptions\ApiException;
@@ -52,6 +54,19 @@ abstract class BaseKernelTestCase extends KernelTestCase
         $this->entityManager->flush();
 
         return $post;
+    }
+
+    protected function createPage(int $id): Page
+    {
+        $page = new Page();
+        $page->setTitle('Test Page');
+        $page->setContent('Test content page');
+        $page->setId(new DummyObjectId($id));
+
+        $this->entityManager->persist($page);
+        $this->entityManager->flush();
+
+        return $page;
     }
 
     protected function createSearchablePost(): SearchableEntity
