@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MeiliSearch\Bundle;
 
-use function count;
 use MeiliSearch\Client;
 use MeiliSearch\Exceptions\ApiException;
 
