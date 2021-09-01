@@ -24,3 +24,6 @@ meili_search:
         -   name: tags
             class: 'MeiliSearch\Bundle\Test\Entity\Link'
             index_if: isSponsored
+        -   name: pages
+            class: 'MeiliSearch\Bundle\Test\Entity\Page'
+            enable_serializer_groups: true

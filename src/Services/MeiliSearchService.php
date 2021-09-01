@@ -177,7 +177,7 @@ final class MeiliSearchService implements SearchService
             }
 
             $repo = $objectManager->getRepository($entityClass);
-            $entity = $repo->findOneBy(['id' => $id]);
+            $entity = $repo->find($id);
 
             if (null !== $entity) {
                 $results[] = $entity;

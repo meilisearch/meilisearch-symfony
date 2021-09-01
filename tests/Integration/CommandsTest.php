@@ -58,6 +58,10 @@ class CommandsTest extends BaseKernelTestCase
         }
 
         for ($i = 0; $i <= 5; ++$i) {
+            $this->createPage($i);
+        }
+
+        for ($i = 0; $i <= 5; ++$i) {
             $this->createTag(['id' => $i]);
         }
 
@@ -78,6 +82,8 @@ Importing for index MeiliSearch\Bundle\Test\Entity\Tag
 Indexed 6 / 6 MeiliSearch\Bundle\Test\Entity\Tag entities into sf_phpunit__tags index
 Indexed 6 / 6 MeiliSearch\Bundle\Test\Entity\Tag entities into sf_phpunit__aggregated index
 Importing for index MeiliSearch\Bundle\Test\Entity\Link
+Importing for index MeiliSearch\Bundle\Test\Entity\Page
+Indexed 6 / 6 MeiliSearch\Bundle\Test\Entity\Page entities into sf_phpunit__pages index
 Importing for index MeiliSearch\Bundle\Test\Entity\Post
 Indexed 6 / 6 MeiliSearch\Bundle\Test\Entity\Post entities into sf_phpunit__posts index
 Indexed 6 / 6 MeiliSearch\Bundle\Test\Entity\Post entities into sf_phpunit__aggregated index
@@ -100,6 +106,7 @@ Cleared sf_phpunit__comments index of MeiliSearch\Bundle\Test\Entity\Comment
 Cleared sf_phpunit__aggregated index of MeiliSearch\Bundle\Test\Entity\ContentAggregator
 Cleared sf_phpunit__tags index of MeiliSearch\Bundle\Test\Entity\Tag
 Cleared sf_phpunit__tags index of MeiliSearch\Bundle\Test\Entity\Link
+Cleared sf_phpunit__pages index of MeiliSearch\Bundle\Test\Entity\Page
 Done!
 
 EOD, $clearOutput);
