@@ -51,7 +51,7 @@ class CommandsTest extends BaseKernelTestCase
         $this->assertStringContainsString('Cannot clear index. Not found.', $output);
     }
 
-    public function testSearchImportAndClearWithoutIndices(): void
+    public function testSearchImportAndClearAndDeleteWithoutIndices(): void
     {
         for ($i = 0; $i <= 5; ++$i) {
             $this->createPost();
@@ -107,6 +107,22 @@ Cleared sf_phpunit__aggregated index of MeiliSearch\Bundle\Test\Entity\ContentAg
 Cleared sf_phpunit__tags index of MeiliSearch\Bundle\Test\Entity\Tag
 Cleared sf_phpunit__tags index of MeiliSearch\Bundle\Test\Entity\Link
 Cleared sf_phpunit__pages index of MeiliSearch\Bundle\Test\Entity\Page
+Done!
+
+EOD, $clearOutput);
+
+        $clearCommand = $this->application->find('meili:delete');
+        $clearCommandTester = new CommandTester($clearCommand);
+        $clearCommandTester->execute([]);
+
+        $clearOutput = $clearCommandTester->getDisplay();
+
+        $this->assertSame(<<<'EOD'
+Deleted sf_phpunit__posts
+Deleted sf_phpunit__comments
+Deleted sf_phpunit__aggregated
+Deleted sf_phpunit__tags
+Deleted sf_phpunit__pages
 Done!
 
 EOD, $clearOutput);
