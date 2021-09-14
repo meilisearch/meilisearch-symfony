@@ -22,6 +22,7 @@ class SettingsTest extends BaseKernelTestCase
             'typo',
             'proximity',
             'attribute',
+            'sort',
             'exactness',
         ];
 
@@ -85,6 +86,6 @@ class SettingsTest extends BaseKernelTestCase
         $this->assertEquals(['a', 'an', 'the'], $settings['stopWords']);
 
         $this->assertNotEmpty($settings['filterableAttributes']);
-        $this->assertEquals(['title', 'publishedAt'], $settings['filterableAttributes']);
+        $this->assertEquals(['publishedAt', 'title'], $settings['filterableAttributes']);
     }
 }
