@@ -48,7 +48,7 @@ final class Engine
                 $data[$indexUid] = [];
             }
 
-            $data[$indexUid][] = $searchableArray + ['objectID' => $entity->getId()];
+            $data[$indexUid][] = $searchableArray + ['objectID' => $this->normalizeId($entity->getId())];
         }
 
         $result = [];
@@ -88,7 +88,7 @@ final class Engine
                 $data[$indexUid] = [];
             }
 
-            $data[$indexUid][] = $entity->getId();
+            $data[$indexUid][] = $this->normalizeId($entity->getId());
         }
 
         $result = [];
@@ -141,5 +141,14 @@ final class Engine
     public function count(string $query, string $indexName, array $searchParams): int
     {
         return $this->client->index($indexName)->search($query, $searchParams)->getHitsCount();
+    }
+
+    private function normalizeId($id)
+    {
+        if (is_object($id) && method_exists($id, '__toString')) {
+            return (string) $id;
+        }
+
+        return $id;
     }
 }
