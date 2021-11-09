@@ -40,7 +40,8 @@ final class MeiliSearchImportCommand extends IndexCommand
                 null,
                 InputOption::VALUE_NONE,
                 'Update settings related to indices to the search engine'
-            );
+            )
+            ->addOption('batch-size', null, InputOption::VALUE_REQUIRED);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -64,6 +65,8 @@ final class MeiliSearchImportCommand extends IndexCommand
         }
 
         $entitiesToIndex = array_unique($indexes->toArray(), SORT_REGULAR);
+        $batchSize = $input->getOption('batch-size');
+        $batchSize = ctype_digit($batchSize) ? (int) $batchSize : $config->get('batchSize');
 
         /** @var array $index */
         foreach ($entitiesToIndex as $index) {
@@ -82,8 +85,8 @@ final class MeiliSearchImportCommand extends IndexCommand
                 $entities = $repository->findBy(
                     [],
                     null,
-                    $config->get('batchSize'),
-                    $config->get('batchSize') * $page
+                    $batchSize,
+                    $batchSize * $page
                 );
 
                 $responses = $this->formatIndexingResponse($this->searchService->index($manager, $entities));
@@ -125,7 +128,7 @@ final class MeiliSearchImportCommand extends IndexCommand
                 }
 
                 ++$page;
-            } while (count($entities) >= $config->get('batchSize'));
+            } while (count($entities) >= $batchSize);
 
             $manager->clear();
         }
