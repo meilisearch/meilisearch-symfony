@@ -128,6 +128,34 @@ Done!
 EOD, $clearOutput);
     }
 
+    public function testSearchImportWithCustomBatchSize(): void
+    {
+        for ($i = 0; $i <= 10; ++$i) {
+            $this->createPage($i);
+        }
+
+        $importCommand = $this->application->find('meili:import');
+        $importCommandTester = new CommandTester($importCommand);
+        $importCommandTester->execute([
+            '--indices' => 'pages',
+            '--batch-size' => '2',
+        ]);
+
+        $importOutput = $importCommandTester->getDisplay();
+
+        $this->assertSame(<<<'EOD'
+Importing for index MeiliSearch\Bundle\Test\Entity\Page
+Indexed 2 / 2 MeiliSearch\Bundle\Test\Entity\Page entities into sf_phpunit__pages index
+Indexed 2 / 2 MeiliSearch\Bundle\Test\Entity\Page entities into sf_phpunit__pages index
+Indexed 2 / 2 MeiliSearch\Bundle\Test\Entity\Page entities into sf_phpunit__pages index
+Indexed 2 / 2 MeiliSearch\Bundle\Test\Entity\Page entities into sf_phpunit__pages index
+Indexed 2 / 2 MeiliSearch\Bundle\Test\Entity\Page entities into sf_phpunit__pages index
+Indexed 1 / 1 MeiliSearch\Bundle\Test\Entity\Page entities into sf_phpunit__pages index
+Done!
+
+EOD, $importOutput);
+    }
+
     /**
      * Importing 'Tag' and 'Link' into the same 'tags' index.
      */
