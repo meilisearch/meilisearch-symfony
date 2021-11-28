@@ -154,15 +154,16 @@ final class MeiliSearchService implements SearchService
     ): array {
         $this->assertIsSearchable($className);
 
-        $ids = $this->engine->search($query, $this->searchableAs($className), $searchParams);
-        $results = [];
+        $rawResult = $this->engine->search($query, $this->searchableAs($className), $searchParams);
 
         // Check if the engine returns results in "hits" key
-        if (!isset($ids[self::RESULT_KEY_HITS])) {
+        if (!isset($rawResult[self::RESULT_KEY_HITS])) {
             throw new SearchHitsNotFoundException(sprintf('There is no "%s" key in the search results.', self::RESULT_KEY_HITS));
         }
 
-        foreach ($ids[self::RESULT_KEY_HITS] as $hit) {
+        $sortedIds = [];
+        $groupedIds = [];
+        foreach ($rawResult[self::RESULT_KEY_HITS] as $hit) {
             if (!isset($hit[self::RESULT_KEY_OBJECTID])) {
                 throw new ObjectIdNotFoundException(sprintf('There is no "%s" key in the result.', self::RESULT_KEY_OBJECTID));
             }
@@ -176,11 +177,37 @@ final class MeiliSearchService implements SearchService
                 $entityClass = $className;
             }
 
-            $repo = $objectManager->getRepository($entityClass);
-            $entity = $repo->find($id);
+            if (!isset($groupedIds[$entityClass])) {
+                $groupedIds[$entityClass] = [];
+            }
 
-            if (null !== $entity) {
-                $results[] = $entity;
+            $groupedIds[$entityClass][] = $id;
+            $sortedIds[] = $id;
+        }
+
+        $entities = [];
+        $classIdField = [];
+        foreach ($groupedIds as $entityClass => $ids) {
+            $idField = $objectManager->getClassMetadata($entityClass)->getSingleIdentifierFieldName();
+            $classIdField[$entityClass] = $idField;
+
+            // TODO find alternative
+            // findBy() doesn't find entities whose identifier is an object (only find($id) can)
+            // probably it's a doctrine bug
+            $entities[] = $objectManager->getRepository($entityClass)->findBy([
+                $idField => $ids,
+            ]);
+        }
+        $entities = \array_merge(...$entities);
+
+        $results = [];
+        foreach ($sortedIds as $id) {
+            foreach ($entities as $entity) {
+                $getter = 'get'.ucfirst($classIdField[\get_class($entity)]);
+                if ($entity->$getter() === $id) {
+                    $results[] = $entity;
+                    continue 2;
+                }
             }
         }
 
