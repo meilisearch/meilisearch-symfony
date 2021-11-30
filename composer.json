@@ -40,7 +40,7 @@
         "phpunit/phpunit": "^9.5",
         "symfony/doctrine-bridge": "^4.0 || ^5.0",
         "symfony/http-client": "^4.0 || ^5.0",
-        "symfony/phpunit-bridge": "^4.0 || ^5.0",
+        "symfony/phpunit-bridge": "^6.0.0",
         "symfony/yaml": "^4.0 || ^5.0"
     },
     "autoload": {
