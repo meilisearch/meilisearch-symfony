@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace MeiliSearch\Bundle\Command;
 
 use Doctrine\Persistence\ManagerRegistry;
+use MeiliSearch\Bundle\DataProvider\DataProviderRegistryInterface;
 use MeiliSearch\Bundle\Exception\InvalidSettingName;
 use MeiliSearch\Bundle\Exception\UpdateException;
 use MeiliSearch\Bundle\Model\Aggregator;
 use MeiliSearch\Bundle\SearchService;
 use MeiliSearch\Client;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Class MeiliSearchImportCommand.
@@ -20,16 +23,26 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class MeiliSearchImportCommand extends IndexCommand
 {
     protected static $defaultName = 'meili:import';
+
     protected Client $searchClient;
     protected ManagerRegistry $managerRegistry;
+    private DataProviderRegistryInterface $dataProviderRegistry;
 
-    public function __construct(SearchService $searchService, ManagerRegistry $managerRegistry, Client $searchClient)
-    {
+    public function __construct(
+        DataProviderRegistryInterface $dataProviderRegistry,
+        SearchService $searchService,
+        ManagerRegistry $managerRegistry,
+        Client $searchClient
+    ) {
         parent::__construct($searchService);
         $this->managerRegistry = $managerRegistry;
         $this->searchClient = $searchClient;
+        $this->dataProviderRegistry = $dataProviderRegistry;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function configure(): void
     {
         $this
@@ -43,8 +56,19 @@ final class MeiliSearchImportCommand extends IndexCommand
             );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $style = new SymfonyStyle($input, $output);
+
+        if (0 === $this->dataProviderRegistry->count()) {
+            $style->error('No data provider found');
+
+            return Command::FAILURE;
+        }
+
         $indexes = $this->getEntitiesFromArgs($input, $output);
         $config = $this->searchService->getConfiguration();
 

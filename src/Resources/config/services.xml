@@ -24,5 +24,15 @@
 
         <service id="MeiliSearch\Client" alias="search.client"/>
         <service id="MeiliSearch\Bundle\SearchService" alias="search.service"/>
+
+        <service id="MeiliSearch\Bundle\DataProvider\DataProviderRegistry" class="MeiliSearch\Bundle\DataProvider\DataProviderRegistry" public="false" lazy="true">
+            <argument type="tagged_iterator" tag="meili_search.data_provider" />
+        </service>
+
+        <service alias="MeiliSearch\Bundle\DataProvider\DataProviderRegistry" id="MeiliSearch\Bundle\DataProvider\DataProviderRegistryInterface" />
+
+        <instanceof id="MeiliSearch\Bundle\DataProvider\DataProviderInterface">
+            <tag name="meili_search.data_provider" />
+        </instanceof>
     </services>
 </container>
