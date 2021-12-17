@@ -241,4 +241,42 @@ EOD, $importOutput);
         $this->assertStringContainsString('Done!', $output);
         $this->assertSame(0, $return);
     }
+
+    public function testSearchCreateWithoutIndices(): void
+    {
+        $createCommand = $this->application->find('meili:create');
+        $createCommandTester = new CommandTester($createCommand);
+        $createCommandTester->execute([]);
+
+        $createOutput = $createCommandTester->getDisplay();
+
+        $this->assertSame(<<<'EOD'
+Creating index sf_phpunit__posts for MeiliSearch\Bundle\Test\Entity\Post
+Creating index sf_phpunit__comments for MeiliSearch\Bundle\Test\Entity\Comment
+Creating index sf_phpunit__tags for MeiliSearch\Bundle\Test\Entity\Tag
+Creating index sf_phpunit__tags for MeiliSearch\Bundle\Test\Entity\Link
+Creating index sf_phpunit__pages for MeiliSearch\Bundle\Test\Entity\Page
+Creating index sf_phpunit__aggregated for MeiliSearch\Bundle\Test\Entity\Post
+Creating index sf_phpunit__aggregated for MeiliSearch\Bundle\Test\Entity\Tag
+Done!
+
+EOD, $createOutput);
+    }
+
+    public function testSearchCreateWithIndices(): void
+    {
+        $createCommand = $this->application->find('meili:create');
+        $createCommandTester = new CommandTester($createCommand);
+        $createCommandTester->execute([
+            '--indices' => 'posts',
+        ]);
+
+        $createOutput = $createCommandTester->getDisplay();
+
+        $this->assertSame(<<<'EOD'
+Creating index sf_phpunit__posts for MeiliSearch\Bundle\Test\Entity\Post
+Done!
+
+EOD, $createOutput);
+    }
 }
