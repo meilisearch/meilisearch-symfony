@@ -26,7 +26,8 @@ abstract class BaseKernelTestCase extends KernelTestCase
     protected function setUp(): void
     {
         self::bootKernel();
-        $this->entityManager = static::$kernel->getContainer()->get('doctrine.orm.entity_manager');
+
+        $this->entityManager = $this->get('doctrine.orm.entity_manager');
         $this->searchService = $this->get('search.service');
 
         $metaData = $this->entityManager->getMetadataFactory()->getAllMetadata();
@@ -175,7 +176,7 @@ abstract class BaseKernelTestCase extends KernelTestCase
 
     protected function get(string $id): ?object
     {
-        return self::$kernel->getContainer()->get($id);
+        return self::getContainer()->get($id);
     }
 
     protected function getFileName(string $indexName, string $type): string
