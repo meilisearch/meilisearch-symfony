@@ -156,6 +156,47 @@ Done!
 EOD, $importOutput);
     }
 
+    public function testSearchImportWithCustomResponseTimeout(): void
+    {
+        for ($i = 0; $i < 10; ++$i) {
+            $this->createPage($i);
+        }
+
+        $importCommand = $this->application->find('meili:import');
+        $importCommandTester = new CommandTester($importCommand);
+        $return = $importCommandTester->execute([
+            '--indices' => 'pages',
+            '--response-timeout' => 10000,
+        ]);
+        $output = $importCommandTester->getDisplay();
+
+        $this->assertStringContainsString('Importing for index MeiliSearch\Bundle\Test\Entity\Page', $output);
+        $this->assertStringContainsString('Indexed '.$i.' / '.$i.' MeiliSearch\Bundle\Test\Entity\Page entities into sf_phpunit__pages index', $output);
+        $this->assertStringContainsString('Done!', $output);
+        $this->assertSame(0, $return);
+
+        // Reset all
+        parent::setUp();
+
+        for ($i = 0; $i < 10; ++$i) {
+            $this->createPage($i);
+        }
+
+        // test if it will work with a bad option
+        $importCommand = $this->application->find('meili:import');
+        $importCommandTester = new CommandTester($importCommand);
+        $return = $importCommandTester->execute([
+            '--indices' => 'pages',
+            '--response-timeout' => 'asd',
+        ]);
+        $output = $importCommandTester->getDisplay();
+
+        $this->assertStringContainsString('Importing for index MeiliSearch\Bundle\Test\Entity\Page', $output);
+        $this->assertStringContainsString('Indexed '.$i.' / '.$i.' MeiliSearch\Bundle\Test\Entity\Page entities into sf_phpunit__pages index', $output);
+        $this->assertStringContainsString('Done!', $output);
+        $this->assertSame(0, $return);
+    }
+
     /**
      * Importing 'Tag' and 'Link' into the same 'tags' index.
      */

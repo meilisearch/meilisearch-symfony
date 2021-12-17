@@ -19,6 +19,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class MeiliSearchImportCommand extends IndexCommand
 {
+    private const DEFAULT_RESPONSE_TIMEOUT = 5000;
+
     protected static $defaultName = 'meili:import';
     protected Client $searchClient;
     protected ManagerRegistry $managerRegistry;
@@ -41,7 +43,15 @@ final class MeiliSearchImportCommand extends IndexCommand
                 InputOption::VALUE_NONE,
                 'Update settings related to indices to the search engine'
             )
-            ->addOption('batch-size', null, InputOption::VALUE_REQUIRED);
+            ->addOption('batch-size', null, InputOption::VALUE_REQUIRED)
+            ->addOption(
+                'response-timeout',
+                't',
+                InputOption::VALUE_REQUIRED,
+                'Timeout (in ms) to get response from the search engine',
+                self::DEFAULT_RESPONSE_TIMEOUT
+            )
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -67,6 +77,7 @@ final class MeiliSearchImportCommand extends IndexCommand
         $entitiesToIndex = array_unique($indexes->toArray(), SORT_REGULAR);
         $batchSize = $input->getOption('batch-size');
         $batchSize = ctype_digit($batchSize) ? (int) $batchSize : $config->get('batchSize');
+        $responseTimeout = ((int) $input->getOption('response-timeout')) ?: self::DEFAULT_RESPONSE_TIMEOUT;
 
         /** @var array $index */
         foreach ($entitiesToIndex as $index) {
@@ -89,7 +100,7 @@ final class MeiliSearchImportCommand extends IndexCommand
                     $batchSize * $page
                 );
 
-                $responses = $this->formatIndexingResponse($this->searchService->index($manager, $entities));
+                $responses = $this->formatIndexingResponse($this->searchService->index($manager, $entities), $responseTimeout);
                 foreach ($responses as $indexName => $numberOfRecords) {
                     $output->writeln(
                         sprintf(
@@ -116,7 +127,7 @@ final class MeiliSearchImportCommand extends IndexCommand
                         $update = $indexInstance->{$method}($value);
 
                         // Get Update status from updateID
-                        $indexInstance->waitForPendingUpdate($update['updateId']);
+                        $indexInstance->waitForPendingUpdate($update['updateId'], $responseTimeout);
                         $updateStatus = $indexInstance->getUpdateStatus($update['updateId']);
 
                         if ('failed' === $updateStatus['status']) {
@@ -141,7 +152,7 @@ final class MeiliSearchImportCommand extends IndexCommand
     /*
      * @throws TimeOutException
      */
-    private function formatIndexingResponse(array $batch): array
+    private function formatIndexingResponse(array $batch, int $responseTimeout): array
     {
         $formattedResponse = [];
 
@@ -154,7 +165,7 @@ final class MeiliSearchImportCommand extends IndexCommand
                 $indexInstance = $this->searchClient->index($indexName);
 
                 // Get Update status from updateID
-                $indexInstance->waitForPendingUpdate($apiResponse['updateId']);
+                $indexInstance->waitForPendingUpdate($apiResponse['updateId'], $responseTimeout);
                 $updateStatus = $indexInstance->getUpdateStatus($apiResponse['updateId']);
 
                 if ('failed' === $updateStatus['status']) {
