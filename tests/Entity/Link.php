@@ -86,7 +86,7 @@ class Link implements NormalizableInterface
     /**
      * {@inheritDoc}
      */
-    public function normalize(NormalizerInterface $normalizer, $format = null, array $context = [])
+    public function normalize(NormalizerInterface $normalizer, $format = null, array $context = []): array
     {
         if (Searchable::NORMALIZATION_FORMAT === $format) {
             return [
