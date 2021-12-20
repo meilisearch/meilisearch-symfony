@@ -84,7 +84,7 @@ class Tag implements NormalizableInterface
      *
      * @throws ExceptionInterface
      */
-    public function normalize(NormalizerInterface $normalizer, $format = null, array $context = [])
+    public function normalize(NormalizerInterface $normalizer, $format = null, array $context = []): array
     {
         if (Searchable::NORMALIZATION_FORMAT === $format) {
             return [
@@ -95,6 +95,6 @@ class Tag implements NormalizableInterface
             ];
         }
 
-        return true;
+        return [];
     }
 }
