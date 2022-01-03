@@ -32,7 +32,6 @@ final class MeiliSearchService implements SearchService
     private array $aggregators;
     private array $classToSerializerGroupMapping;
     private array $indexIfMapping;
-    private array $settingsMapping;
 
     public function __construct(SerializerInterface $normalizer, Engine $engine, array $configuration)
     {
@@ -45,7 +44,6 @@ final class MeiliSearchService implements SearchService
         $this->setAggregatorsAndEntitiesAggregators();
         $this->setClassToSerializerGroupMapping();
         $this->setIndexIfMapping();
-        $this->setSettingsMapping();
     }
 
     /**
@@ -273,17 +271,6 @@ final class MeiliSearchService implements SearchService
             $mapping[$indexDetails['class']] = $indexDetails['index_if'];
         }
         $this->indexIfMapping = $mapping;
-    }
-
-    private function setSettingsMapping(): void
-    {
-        $mapping = [];
-
-        /** @var array $indexDetails */
-        foreach ($this->configuration->get('indices') as $indexDetails) {
-            $mapping[$indexDetails['class']] = $indexDetails['settings'];
-        }
-        $this->settingsMapping = $mapping;
     }
 
     /**
