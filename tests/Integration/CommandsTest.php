@@ -156,6 +156,47 @@ Done!
 EOD, $importOutput);
     }
 
+    public function testSearchImportWithCustomResponseTimeout(): void
+    {
+        for ($i = 0; $i < 10; ++$i) {
+            $this->createPage($i);
+        }
+
+        $importCommand = $this->application->find('meili:import');
+        $importCommandTester = new CommandTester($importCommand);
+        $return = $importCommandTester->execute([
+            '--indices' => 'pages',
+            '--response-timeout' => 10000,
+        ]);
+        $output = $importCommandTester->getDisplay();
+
+        $this->assertStringContainsString('Importing for index MeiliSearch\Bundle\Test\Entity\Page', $output);
+        $this->assertStringContainsString('Indexed '.$i.' / '.$i.' MeiliSearch\Bundle\Test\Entity\Page entities into sf_phpunit__pages index', $output);
+        $this->assertStringContainsString('Done!', $output);
+        $this->assertSame(0, $return);
+
+        // Reset all
+        parent::setUp();
+
+        for ($i = 0; $i < 10; ++$i) {
+            $this->createPage($i);
+        }
+
+        // test if it will work with a bad option
+        $importCommand = $this->application->find('meili:import');
+        $importCommandTester = new CommandTester($importCommand);
+        $return = $importCommandTester->execute([
+            '--indices' => 'pages',
+            '--response-timeout' => 'asd',
+        ]);
+        $output = $importCommandTester->getDisplay();
+
+        $this->assertStringContainsString('Importing for index MeiliSearch\Bundle\Test\Entity\Page', $output);
+        $this->assertStringContainsString('Indexed '.$i.' / '.$i.' MeiliSearch\Bundle\Test\Entity\Page entities into sf_phpunit__pages index', $output);
+        $this->assertStringContainsString('Done!', $output);
+        $this->assertSame(0, $return);
+    }
+
     /**
      * Importing 'Tag' and 'Link' into the same 'tags' index.
      */
@@ -240,5 +281,43 @@ EOD, $importOutput);
         $this->assertStringContainsString('Indexed '.$i.' / '.$i.' MeiliSearch\Bundle\Test\Entity\Post entities into sf_phpunit__'.self::$indexName.' index', $output);
         $this->assertStringContainsString('Done!', $output);
         $this->assertSame(0, $return);
+    }
+
+    public function testSearchCreateWithoutIndices(): void
+    {
+        $createCommand = $this->application->find('meili:create');
+        $createCommandTester = new CommandTester($createCommand);
+        $createCommandTester->execute([]);
+
+        $createOutput = $createCommandTester->getDisplay();
+
+        $this->assertSame(<<<'EOD'
+Creating index sf_phpunit__posts for MeiliSearch\Bundle\Test\Entity\Post
+Creating index sf_phpunit__comments for MeiliSearch\Bundle\Test\Entity\Comment
+Creating index sf_phpunit__tags for MeiliSearch\Bundle\Test\Entity\Tag
+Creating index sf_phpunit__tags for MeiliSearch\Bundle\Test\Entity\Link
+Creating index sf_phpunit__pages for MeiliSearch\Bundle\Test\Entity\Page
+Creating index sf_phpunit__aggregated for MeiliSearch\Bundle\Test\Entity\Post
+Creating index sf_phpunit__aggregated for MeiliSearch\Bundle\Test\Entity\Tag
+Done!
+
+EOD, $createOutput);
+    }
+
+    public function testSearchCreateWithIndices(): void
+    {
+        $createCommand = $this->application->find('meili:create');
+        $createCommandTester = new CommandTester($createCommand);
+        $createCommandTester->execute([
+            '--indices' => 'posts',
+        ]);
+
+        $createOutput = $createCommandTester->getDisplay();
+
+        $this->assertSame(<<<'EOD'
+Creating index sf_phpunit__posts for MeiliSearch\Bundle\Test\Entity\Post
+Done!
+
+EOD, $createOutput);
     }
 }

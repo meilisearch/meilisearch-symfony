@@ -1,6 +1,7 @@
 status = [
     'integration-tests (PHP 7.4)',
     'integration-tests (PHP 8.0)',
+    'integration-tests (PHP 8.1)',
     'Code style'
 ]
 # 1 hour timeout
