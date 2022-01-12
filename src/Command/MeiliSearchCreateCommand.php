@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MeiliSearch\Bundle\Command;
 
 use MeiliSearch\Bundle\Exception\InvalidSettingName;
-use MeiliSearch\Bundle\Exception\UpdateException;
+use MeiliSearch\Bundle\Exception\TaskException;
 use MeiliSearch\Bundle\Model\Aggregator;
 use MeiliSearch\Bundle\SearchService;
 use MeiliSearch\Client;
@@ -74,13 +74,13 @@ final class MeiliSearchCreateCommand extends IndexCommand
                         throw new InvalidSettingName(sprintf('Invalid setting name: "%s"', $variable));
                     }
 
-                    $update = $indexInstance->{$method}($value);
+                    $task = $indexInstance->{$method}($value);
 
-                    $indexInstance->waitForPendingUpdate($update['updateId']);
-                    $updateStatus = $indexInstance->getUpdateStatus($update['updateId']);
+                    $indexInstance->waitForTask($task['uid']);
+                    $task = $indexInstance->getTask($task['uid']);
 
-                    if ('failed' === $updateStatus['status']) {
-                        throw new UpdateException($updateStatus['error']);
+                    if ('failed' === $task['status']) {
+                        throw new TaskException($task['error']);
                     }
                 }
             }

@@ -112,7 +112,7 @@ final class Engine
         $index = $this->client->getOrCreateIndex($indexUid);
         $return = $index->deleteAllDocuments();
 
-        return $index->getUpdateStatus($return['updateId']);
+        return $index->getTask($return['uid']);
     }
 
     /**
