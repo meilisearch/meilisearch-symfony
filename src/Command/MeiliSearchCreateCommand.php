@@ -64,7 +64,7 @@ final class MeiliSearchCreateCommand extends IndexCommand
 
             $output->writeln('<info>Creating index '.$index['name'].' for '.$entityClassName.'</info>');
 
-            $indexInstance = $this->searchClient->getOrCreateIndex($index['name']);
+            $indexInstance = $this->searchClient->index($index['name']);
 
             if (isset($index['settings']) && is_array($index['settings'])) {
                 foreach ($index['settings'] as $variable => $value) {

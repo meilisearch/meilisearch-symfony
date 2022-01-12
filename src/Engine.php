@@ -54,8 +54,8 @@ final class Engine
         $result = [];
         foreach ($data as $indexUid => $objects) {
             $result[$indexUid] = $this->client
-                ->getOrCreateIndex($indexUid, ['primaryKey' => 'objectID'])
-                ->addDocuments($objects);
+                ->index($indexUid)
+                ->addDocuments($objects, 'objectID');
         }
 
         return $result;
@@ -109,7 +109,7 @@ final class Engine
      */
     public function clear(string $indexUid): array
     {
-        $index = $this->client->getOrCreateIndex($indexUid);
+        $index = $this->client->index($indexUid);
         $return = $index->deleteAllDocuments();
 
         return $index->getTask($return['uid']);

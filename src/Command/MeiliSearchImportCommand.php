@@ -116,7 +116,7 @@ final class MeiliSearchImportCommand extends IndexCommand
                 if (isset($index['settings'])
                     && is_array($index['settings'])
                     && count($index['settings']) > 0) {
-                    $indexInstance = $this->searchClient->getOrCreateIndex($index['name']);
+                    $indexInstance = $this->searchClient->index($index['name']);
                     foreach ($index['settings'] as $variable => $value) {
                         $method = sprintf('update%s', ucfirst($variable));
                         if (false === method_exists($indexInstance, $method)) {
