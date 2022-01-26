@@ -1,6 +1,6 @@
 # Contributing
 
-First of all, thank you for contributing to MeiliSearch! The goal of this document is to provide everything you need to know in order to contribute to MeiliSearch and its different integrations.
+First of all, thank you for contributing to meilisearch! The goal of this document is to provide everything you need to know in order to contribute to meilisearch and its different integrations.
 
 <!-- MarkdownTOC autolink="true" style="ordered" indent="   " -->
 
@@ -15,8 +15,8 @@ First of all, thank you for contributing to MeiliSearch! The goal of this docume
 ## Assumptions
 
 1. **You're familiar with [GitHub](https://github.com) and the [Pull Request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests) (PR) workflow.**
-2. **You've read the MeiliSearch [documentation](https://docs.meilisearch.com) and the [README](/README.md).**
-3. **You know about the [MeiliSearch community](https://docs.meilisearch.com/learn/what_is_meilisearch/contact.html). Please use this for help.**
+2. **You've read the meilisearch [documentation](https://docs.meilisearch.com) and the [README](/README.md).**
+3. **You know about the [meilisearch community](https://docs.meilisearch.com/learn/what_is_meilisearch/contact.html). Please use this for help.**
 
 ## How to Contribute
 
@@ -68,7 +68,7 @@ To start and build your Docker environment, just execute the next command in a t
 docker-compose up -d
 ```
 
-Be sure no other MeiliSearch instance is currently running on your machine.
+Be sure no other meilisearch instance is currently running on your machine.
 
 #### Tests and Linter
 
@@ -112,7 +112,7 @@ Some notes on GitHub PRs:
 
 ## Release Process (for internal team only)
 
-MeiliSearch tools follow the [Semantic Versioning Convention](https://semver.org/).
+meilisearch tools follow the [Semantic Versioning Convention](https://semver.org/).
 
 ### Automation to Rebase and Merge the PRs
 
@@ -128,7 +128,7 @@ _[Read more about this](https://github.com/meilisearch/integration-guides/blob/m
 
 ⚠️ Before doing anything, make sure you got through the guide about [Releasing an Integration](https://github.com/meilisearch/integration-guides/blob/main/resources/integration-release.md).
 
-Make a PR modifying the file [`src/MeiliSearchBundle.php`](/src/MeiliSearchBundle.php) with the right version.
+Make a PR modifying the file [`src/meilisearchBundle.php`](/src/meilisearchBundle.php) with the right version.
 
 ```ruby
 VERSION = 'X.X.X'
