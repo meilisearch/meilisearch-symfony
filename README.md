@@ -1,11 +1,11 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/meilisearch/integration-guides/main/assets/logos/meilisearch_symfony.svg" alt="MeiliSearch-Symfony" width="200" height="200" />
+  <img src="https://raw.githubusercontent.com/meilisearch/integration-guides/main/assets/logos/meilisearch_symfony.svg" alt="Meilisearch-Symfony" width="200" height="200" />
 </p>
 
-<h1 align="center">MeiliSearch Symfony Bundle</h1>
+<h1 align="center">Meilisearch Symfony Bundle</h1>
 
 <h4 align="center">
-  <a href="https://github.com/meilisearch/MeiliSearch">MeiliSearch</a> |
+  <a href="https://github.com/meilisearch/meilisearch">Meilisearch</a> |
   <a href="https://docs.meilisearch.com">Documentation</a> |
   <a href="https://slack.meilisearch.com">Slack</a> |
   <a href="https://roadmap.meilisearch.com/tabs/1-under-consideration">Roadmap</a> |
@@ -20,17 +20,17 @@
   <a href="https://app.bors.tech/repositories/29020"><img src="https://bors.tech/images/badge_small.svg" alt="Bors enabled"></a>
 </p>
 
-<p align="center">⚡ The MeiliSearch bundle for Symfony</p>
+<p align="center">⚡ The Meilisearch bundle for Symfony</p>
 
-**MeiliSearch Symfony** is a search bundle to integrate **MeiliSearch** within your Symfony project.
+**Meilisearch Symfony** is a search bundle to integrate **Meilisearch** within your Symfony project.
 
-**MeiliSearch** is an open-source search engine. [Discover what MeiliSearch is!](https://github.com/meilisearch/MeiliSearch)
+**Meilisearch** is an open-source search engine. [Discover what Meilisearch is!](https://github.com/meilisearch/meilisearch)
 
 ## Table of Contents <!-- omit in toc -->
 
 - [📖 Documentation](#-documentation)
 - [📝 Requirements](#-requirements)
-- [🤖 Compatibility with MeiliSearch](#-compatibility-with-meilisearch)
+- [🤖 Compatibility with Meilisearch](#-compatibility-with-meilisearch)
 - [💡 Learn More](#-learn-more)
 - [⚙️ Development Workflow and Contributing](#️-development-workflow-and-contributing)
 
@@ -46,9 +46,9 @@ Also, see our [Documentation](https://docs.meilisearch.com/learn/tutorials/getti
 * **Compatible** with Symfony 4.0 and later.
 * **Support** Doctrine ORM and Doctrine MongoDB.
 
-## 🤖 Compatibility with MeiliSearch
+## 🤖 Compatibility with Meilisearch
 
-This package only guarantees the compatibility with the [version v0.24.0 of MeiliSearch](https://github.com/meilisearch/MeiliSearch/releases/tag/v0.24.0).
+This package only guarantees the compatibility with the [version v0.24.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.24.0).
 
 ## 💡 Learn More
 
@@ -69,4 +69,4 @@ If you want to know more about the development workflow or want to contribute, p
 
 <hr>
 
-**MeiliSearch** provides and maintains many **SDKs and Integration tools** like this one. We want to provide everyone with an **amazing search experience for any kind of project**. If you want to contribute, make suggestions, or just know what's going on right now, visit us in the [integration-guides](https://github.com/meilisearch/integration-guides) repository.
+**Meilisearch** provides and maintains many **SDKs and Integration tools** like this one. We want to provide everyone with an **amazing search experience for any kind of project**. If you want to contribute, make suggestions, or just know what's going on right now, visit us in the [integration-guides](https://github.com/meilisearch/integration-guides) repository.
