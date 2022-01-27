@@ -104,6 +104,7 @@ final class Engine
     /**
      * Clear the records of an index.
      * This method enables you to delete an index’s contents (records).
+     * Will fail if the index does not exists.
      *
      * @throws ApiException
      */
@@ -116,7 +117,7 @@ final class Engine
     }
 
     /**
-     * Delete an index and it's content.
+     * Delete an index and its content.
      */
     public function delete(string $indexUid): ?array
     {
