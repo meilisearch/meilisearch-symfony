@@ -61,8 +61,6 @@ final class SearchableEntity
      */
     public function getSearchableArray(): array
     {
-        // $metadata = $this->entityMetadata;
-
         $context = [
             /** @phpstan-ignore-next-line */
             'fieldsMapping' => $this->entityMetadata->fieldMappings,
