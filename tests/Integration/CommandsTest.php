@@ -32,7 +32,7 @@ class CommandsTest extends BaseKernelTestCase
         parent::setUp();
 
         $this->client = $this->get('search.client');
-        $this->index = $this->client->getOrCreateIndex($this->getPrefix().self::$indexName);
+        $this->index = $this->client->index($this->getPrefix().self::$indexName);
         $this->application = new Application(self::createKernel());
     }
 
@@ -221,7 +221,7 @@ EOD, $importOutput);
         $this->assertStringContainsString('Done!', $output);
 
         /** @var SearchResult $searchResult */
-        $searchResult = $this->client->getOrCreateIndex($this->getPrefix().'tags')->search('Test');
+        $searchResult = $this->client->index($this->getPrefix().'tags')->search('Test');
         $this->assertCount(8, $searchResult->getHits());
         $this->assertSame(8, $searchResult->getHitsCount());
     }

@@ -54,8 +54,8 @@ final class Engine
         $result = [];
         foreach ($data as $indexUid => $objects) {
             $result[$indexUid] = $this->client
-                ->getOrCreateIndex($indexUid, ['primaryKey' => 'objectID'])
-                ->addDocuments($objects);
+                ->index($indexUid)
+                ->addDocuments($objects, 'objectID');
         }
 
         return $result;
@@ -104,19 +104,20 @@ final class Engine
     /**
      * Clear the records of an index.
      * This method enables you to delete an index’s contents (records).
+     * Will fail if the index does not exists.
      *
      * @throws ApiException
      */
     public function clear(string $indexUid): array
     {
-        $index = $this->client->getOrCreateIndex($indexUid);
-        $return = $index->deleteAllDocuments();
+        $index = $this->client->index($indexUid);
+        $task = $index->deleteAllDocuments();
 
-        return $index->getUpdateStatus($return['updateId']);
+        return $task;
     }
 
     /**
-     * Delete an index and it's content.
+     * Delete an index and its content.
      */
     public function delete(string $indexUid): ?array
     {

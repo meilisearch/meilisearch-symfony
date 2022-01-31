@@ -6,7 +6,7 @@ namespace MeiliSearch\Bundle\Command;
 
 use Doctrine\Persistence\ManagerRegistry;
 use MeiliSearch\Bundle\Exception\InvalidSettingName;
-use MeiliSearch\Bundle\Exception\UpdateException;
+use MeiliSearch\Bundle\Exception\TaskException;
 use MeiliSearch\Bundle\Model\Aggregator;
 use MeiliSearch\Bundle\SearchService;
 use MeiliSearch\Client;
@@ -116,7 +116,7 @@ final class MeiliSearchImportCommand extends IndexCommand
                 if (isset($index['settings'])
                     && is_array($index['settings'])
                     && count($index['settings']) > 0) {
-                    $indexInstance = $this->searchClient->getOrCreateIndex($index['name']);
+                    $indexInstance = $this->searchClient->index($index['name']);
                     foreach ($index['settings'] as $variable => $value) {
                         $method = sprintf('update%s', ucfirst($variable));
                         if (false === method_exists($indexInstance, $method)) {
@@ -124,14 +124,14 @@ final class MeiliSearchImportCommand extends IndexCommand
                         }
 
                         // Update
-                        $update = $indexInstance->{$method}($value);
+                        $task = $indexInstance->{$method}($value);
 
-                        // Get Update status from updateID
-                        $indexInstance->waitForPendingUpdate($update['updateId'], $responseTimeout);
-                        $updateStatus = $indexInstance->getUpdateStatus($update['updateId']);
+                        // Get task information using uid
+                        $indexInstance->waitForTask($task['uid'], $responseTimeout);
+                        $task = $indexInstance->getTask($task['uid']);
 
-                        if ('failed' === $updateStatus['status']) {
-                            throw new UpdateException($updateStatus['error']);
+                        if ('failed' === $task['status']) {
+                            throw new TaskException($task['error']);
                         } else {
                             $output->writeln('<info>Settings updated.</info>');
                         }
@@ -164,15 +164,15 @@ final class MeiliSearchImportCommand extends IndexCommand
 
                 $indexInstance = $this->searchClient->index($indexName);
 
-                // Get Update status from updateID
-                $indexInstance->waitForPendingUpdate($apiResponse['updateId'], $responseTimeout);
-                $updateStatus = $indexInstance->getUpdateStatus($apiResponse['updateId']);
+                // Get task information using uid
+                $indexInstance->waitForTask($apiResponse['uid'], $responseTimeout);
+                $task = $indexInstance->getTask($apiResponse['uid']);
 
-                if ('failed' === $updateStatus['status']) {
-                    throw new UpdateException($updateStatus['error']);
+                if ('failed' === $task['status']) {
+                    throw new TaskException($task['error']);
                 }
 
-                $formattedResponse[$indexName] += $updateStatus['type']['number'];
+                $formattedResponse[$indexName] += $task['details']['indexedDocuments'];
             }
         }
 
