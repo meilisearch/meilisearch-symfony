@@ -1,6 +1,6 @@
 {
     "name": "meilisearch/search-bundle",
-    "description": "Seamless integration of MeiliSearch into your Symfony project.",
+    "description": "Seamless integration of Meilisearch into your Symfony project.",
     "keywords": [
         "meilisearch",
         "instant",

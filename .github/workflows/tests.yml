@@ -41,7 +41,7 @@ jobs:
                 env:
                     SYMFONY_REQUIRE: ${{ matrix.sf-version }}
                 run: composer install --prefer-dist --no-progress --quiet
-            -   name: MeiliSearch setup with Docker
+            -   name: Meilisearch setup with Docker
                 run: docker run -d -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey --no-analytics=true
             -   name: Run test suite
                 run: composer test:unit
