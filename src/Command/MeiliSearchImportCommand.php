@@ -172,7 +172,7 @@ final class MeiliSearchImportCommand extends IndexCommand
                     throw new TaskException($task['error']);
                 }
 
-                $formattedResponse[$indexName] += $task['type']['number'];
+                $formattedResponse[$indexName] += $task['details']['indexedDocuments'];
             }
         }
 
