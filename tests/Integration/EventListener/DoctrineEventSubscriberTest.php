@@ -24,6 +24,7 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $this->client = $this->get('search.client');
     }
+
     /**
      * This tests creates two posts in the database, but only one is triggered via an event to Meilisearch.
      */

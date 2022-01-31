@@ -61,7 +61,7 @@ final class SearchableEntity
      */
     public function getSearchableArray(): array
     {
-        /** @var \Doctrine\ORM\Mapping\ClassMetadataInfo&\Doctrine\Persistence\Mapping\ClassMetadata $metadata */
+        /** @var \Doctrine\ORM\Mapping\ClassMetadataInfo|\Doctrine\Persistence\Mapping\ClassMetadata $metadata */
         $metadata = $this->entityMetadata;
 
         $context = [
