@@ -9,11 +9,23 @@ use MeiliSearch\Bundle\EventListener\DoctrineEventSubscriber;
 use MeiliSearch\Bundle\Test\BaseKernelTestCase;
 use MeiliSearch\Bundle\Test\Entity\Page;
 use MeiliSearch\Bundle\Test\Entity\Post;
+use MeiliSearch\Client;
 
 class DoctrineEventSubscriberTest extends BaseKernelTestCase
 {
+    protected Client $client;
+
     /**
-     * This tests creates two posts in the database, but only one is triggered via an event to MS.
+     * @throws \Exception
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->client = $this->get('search.client');
+    }
+    /**
+     * This tests creates two posts in the database, but only one is triggered via an event to Meilisearch.
      */
     public function testPostPersist(): void
     {
@@ -24,6 +36,9 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $subscriber = new DoctrineEventSubscriber($this->searchService, []);
         $subscriber->postPersist($eventArgs);
+
+        $firstTask = $this->client->getTasks()['results'][0];
+        $this->client->waitForTask($firstTask['uid']);
 
         $result = $this->searchService->search($this->entityManager, Post::class, $post->getTitle());
 
@@ -40,7 +55,9 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $subscriber = new DoctrineEventSubscriber($this->searchService, []);
         $subscriber->postPersist($eventArgs);
-        sleep(1);
+
+        $firstTask = $this->client->getTasks()['results'][0];
+        $this->client->waitForTask($firstTask['uid']);
 
         $result = $this->searchService->search($this->entityManager, Page::class, $page->getTitle());
 
@@ -49,7 +66,7 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
     }
 
     /**
-     * This tests creates two posts in the database, but only one is triggered via an event to MS.
+     * This tests creates two posts in the database, but only one is triggered via an event to Meilisearch.
      */
     public function testPostUpdate(): void
     {
@@ -60,6 +77,9 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $subscriber = new DoctrineEventSubscriber($this->searchService, []);
         $subscriber->postUpdate($eventArgs);
+
+        $firstTask = $this->client->getTasks()['results'][0];
+        $this->client->waitForTask($firstTask['uid']);
 
         $result = $this->searchService->search($this->entityManager, Post::class, $post->getTitle());
 
@@ -85,7 +105,7 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
     }
 
     /**
-     * This tests creates posts in the database, send it to MS via a trigger. Afterwards Doctrines 'preRemove' event
+     * This tests creates posts in the database, send it to Meilisearch via a trigger. Afterwards Doctrines 'preRemove' event
      * is going to remove that entity from MS.
      */
     public function testPreRemove(): void
@@ -97,6 +117,9 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
         $subscriber = new DoctrineEventSubscriber($this->searchService, []);
         $subscriber->postPersist($eventArgs);
 
+        $firstTask = $this->client->getTasks()['results'][0];
+        $this->client->waitForTask($firstTask['uid']);
+
         $result = $this->searchService->search($this->entityManager, Post::class, $post->getTitle());
 
         $this->assertCount(1, $result);
@@ -106,7 +129,7 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         /*
          * As the deletion of a document is an asyncronous transaction, we need to wait some seconds
-         * till this is executed. This was introduced as with Github actions there was no other option.
+         * till this is executed. This was introduced as with GitHub actions there was no other option.
          */
         sleep(2);
 

@@ -43,8 +43,16 @@ class SettingsTest extends BaseKernelTestCase
     public function testGetDefaultSettings(): void
     {
         $primaryKey = 'ObjectID';
-        $settingA = $this->client->index($this->getPrefix().'indexA')->getSettings();
-        $settingB = $this->client->index($this->getPrefix().'indexB', ['primaryKey' => $primaryKey])->getSettings();
+        $indexAName = $this->getPrefix().'indexA';
+        $indexBName = $this->getPrefix().'indexB';
+        $this->client->createIndex($indexAName);
+        $this->client->createIndex($indexBName, ['primaryKey' => $primaryKey]);
+
+        $firstTask = $this->client->getTasks()['results'][0];
+        $this->client->waitForTask($firstTask['uid']);
+
+        $settingA = $this->client->index($indexAName)->getSettings();
+        $settingB = $this->client->index($indexBName)->getSettings();
 
         $this->assertEquals(self::DEFAULT_RANKING_RULES, $settingA['rankingRules']);
         $this->assertNull($settingA['distinctAttribute']);
