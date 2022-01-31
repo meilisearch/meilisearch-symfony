@@ -38,8 +38,7 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
         $subscriber = new DoctrineEventSubscriber($this->searchService, []);
         $subscriber->postPersist($eventArgs);
 
-        $firstTask = $this->client->getTasks()['results'][0];
-        $this->client->waitForTask($firstTask['uid']);
+        $this->waitForAllTasks();
 
         $result = $this->searchService->search($this->entityManager, Post::class, $post->getTitle());
 
@@ -57,8 +56,7 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
         $subscriber = new DoctrineEventSubscriber($this->searchService, []);
         $subscriber->postPersist($eventArgs);
 
-        $firstTask = $this->client->getTasks()['results'][0];
-        $this->client->waitForTask($firstTask['uid']);
+        $this->waitForAllTasks();
 
         $result = $this->searchService->search($this->entityManager, Page::class, $page->getTitle());
 
@@ -79,8 +77,7 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
         $subscriber = new DoctrineEventSubscriber($this->searchService, []);
         $subscriber->postUpdate($eventArgs);
 
-        $firstTask = $this->client->getTasks()['results'][0];
-        $this->client->waitForTask($firstTask['uid']);
+        $this->waitForAllTasks();
 
         $result = $this->searchService->search($this->entityManager, Post::class, $post->getTitle());
 
@@ -97,7 +94,8 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $subscriber = new DoctrineEventSubscriber($this->searchService, []);
         $subscriber->postUpdate($eventArgs);
-        sleep(1);
+
+        $this->waitForAllTasks();
 
         $result = $this->searchService->search($this->entityManager, Page::class, $page->getTitle());
 
@@ -118,8 +116,7 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
         $subscriber = new DoctrineEventSubscriber($this->searchService, []);
         $subscriber->postPersist($eventArgs);
 
-        $firstTask = $this->client->getTasks()['results'][0];
-        $this->client->waitForTask($firstTask['uid']);
+        $this->waitForAllTasks();
 
         $result = $this->searchService->search($this->entityManager, Post::class, $post->getTitle());
 
@@ -128,11 +125,7 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $subscriber->preRemove($eventArgs);
 
-        /*
-         * As the deletion of a document is an asyncronous transaction, we need to wait some seconds
-         * till this is executed. This was introduced as with GitHub actions there was no other option.
-         */
-        sleep(2);
+        $this->waitForAllTasks();
 
         $result = $this->searchService->search($this->entityManager, Post::class, $post->getTitle());
 
@@ -147,7 +140,8 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $subscriber = new DoctrineEventSubscriber($this->searchService, []);
         $subscriber->postPersist($eventArgs);
-        sleep(1);
+
+        $this->waitForAllTasks();
 
         $result = $this->searchService->search($this->entityManager, Page::class, $page->getTitle());
 
@@ -155,10 +149,20 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
         $this->assertSame((string) $page->getId(), (string) $result[0]->getId());
 
         $subscriber->preRemove($eventArgs);
-        sleep(1);
+
+        $this->waitForAllTasks();
 
         $result = $this->searchService->search($this->entityManager, Page::class, $page->getTitle());
 
         $this->assertCount(0, $result);
+    }
+
+    /**
+     * Waits for all the tasks to be finished by checking the topest one (so the newest one).
+     */
+    private function waitForAllTasks(): void
+    {
+        $firstTask = $this->client->getTasks()['results'][0];
+        $this->client->waitForTask($firstTask['uid']);
     }
 }
