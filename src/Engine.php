@@ -111,9 +111,9 @@ final class Engine
     public function clear(string $indexUid): array
     {
         $index = $this->client->index($indexUid);
-        $return = $index->deleteAllDocuments();
+        $task = $index->deleteAllDocuments();
 
-        return $index->getTask($return['uid']);
+        return $task;
     }
 
     /**
