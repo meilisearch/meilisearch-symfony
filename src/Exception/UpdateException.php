@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace MeiliSearch\Bundle\Exception;
 
 /**
- * Class UpdateException.
+ * Class TaskException.
  */
-final class UpdateException extends \LogicException
+final class TaskException extends \LogicException
 {
 }

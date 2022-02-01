@@ -40,7 +40,7 @@ class SearchTest extends BaseKernelTestCase
 
         $this->client = $this->get('search.client');
         $this->objectManager = $this->get('doctrine')->getManager();
-        $this->index = $this->client->getOrCreateIndex($this->getPrefix().self::$indexName);
+        $this->index = $this->client->index($this->getPrefix().self::$indexName);
         $this->application = new Application(self::createKernel());
     }
 
