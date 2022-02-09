@@ -76,7 +76,7 @@ final class MeiliSearchImportCommand extends IndexCommand
 
         $entitiesToIndex = array_unique($indexes->toArray(), SORT_REGULAR);
         $batchSize = $input->getOption('batch-size');
-        $batchSize = ctype_digit($batchSize) ? (int) $batchSize : $config->get('batchSize');
+        $batchSize = null !== $batchSize && ctype_digit($batchSize) ? (int) $batchSize : $config->get('batchSize');
         $responseTimeout = ((int) $input->getOption('response-timeout')) ?: self::DEFAULT_RESPONSE_TIMEOUT;
 
         /** @var array $index */
