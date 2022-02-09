@@ -75,5 +75,8 @@ jobs:
       - name: PHP CS Fixer
         run: composer lint:check
 
+      - name: PHP MD
+        run: composer phpmd
+
       - name: PHPstan
         run: composer phpstan

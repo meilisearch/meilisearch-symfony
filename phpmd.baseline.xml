@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<phpmd-baseline>
+  <violation rule="PHPMD\Rule\CleanCode\IfStatementAssignment" file="src/Command/IndexCommand.php" method="getEntitiesFromArgs"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="src/Command/MeiliSearchClearCommand.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Command/MeiliSearchCreateCommand.php" method="execute"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Command/MeiliSearchImportCommand.php" method="execute"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="src/Command/MeiliSearchImportCommand.php" method="execute"/>
+  <violation rule="PHPMD\Rule\Design\CountInLoopExpression" file="src/Command/MeiliSearchImportCommand.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="src/Command/MeiliSearchImportCommand.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\IfStatementAssignment" file="src/DependencyInjection/MeiliSearchExtension.php" method="load"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/DependencyInjection/MeiliSearchExtension.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="src/DependencyInjection/MeiliSearchExtension.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Engine.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Model/Aggregator.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/SearchableEntity.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="src/SearchableEntity.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="src/Services/MeiliSearchService.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Services/MeiliSearchService.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Services/MeiliSearchService.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Services/MeiliSearchService.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Services/MeiliSearchService.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="src/Services/MeiliSearchService.php"/>
+</phpmd-baseline>
