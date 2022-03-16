@@ -22,7 +22,7 @@
         "ext-json": "*",
         "doctrine/doctrine-bundle": "^2.4",
         "illuminate/collections": "^8.47",
-        "meilisearch/meilisearch-php": "^0.21.0",
+        "meilisearch/meilisearch-php": "^0.23.0",
         "symfony/filesystem": "^4.4 || ^5.0 || ^6.0",
         "symfony/property-access": "^4.4 || ^5.0 || ^6.0",
         "symfony/serializer": "^4.4 || ^5.0 || ^6.0"

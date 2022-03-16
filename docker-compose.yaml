@@ -11,7 +11,7 @@ services:
 
     meilisearch:
         image: getmeili/meilisearch
-        command: ./meilisearch --master-key=masterKey --no-analytics=true
+        command: ./meilisearch --master-key=masterKey --no-analytics
         ports:
             -   target: 7700
                 published: 7700
