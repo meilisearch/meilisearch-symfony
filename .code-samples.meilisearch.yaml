@@ -1,0 +1,39 @@
+landing_getting_started_1: |-
+    # Configure your entities by adding them in config/packages/meili_search.yaml
+    meili_search:
+        url: 'http://127.0.0.1:7700'
+        api_key: 'masterKey'
+        indices:
+            - name: movies
+              class: App\Entity\Movie
+
+    <?php
+    // src/Controller/MoviesController.php
+    namespace App\Controller;
+
+    use App\Entity\Movie;
+    use Doctrine\Persistence\ManagerRegistry;
+    use Symfony\Component\HttpFoundation\Response;
+
+    class MoviesController extends AbstractController
+    {
+        #[Route('/add-movies', name: 'addMovies')]
+        public function addMovies(ManagerRegistry $doctrine): Response
+        {
+            $entityManager = $doctrine->getManager();
+
+            $movies = ['Carol', 'Wonder Woman', 'Life of Pi', 'Mad Max: Fury Road', 'Moana', 'Philadelphia'];
+
+            foreach ($movies as $title) {
+                $movie = new Movie();
+                $movie->setTitle($title);
+
+                $entityManager->persist($movie);
+            }
+
+            // Inserting data in your DB table will automatically update your Meilisearch index
+            $entityManager->flush();
+
+            //...
+        }
+    }
