@@ -1,4 +1,5 @@
 landing_getting_started_1: |-
+    ```yml
     # Configure your entities by adding them in config/packages/meili_search.yaml
     meili_search:
         url: 'http://127.0.0.1:7700'
@@ -6,7 +7,9 @@ landing_getting_started_1: |-
         indices:
             - name: movies
               class: App\Entity\Movie
+    ```
 
+    ```php
     <?php
     // src/Controller/MoviesController.php
     namespace App\Controller;
@@ -37,3 +40,4 @@ landing_getting_started_1: |-
             //...
         }
     }
+    ```
