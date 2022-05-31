@@ -18,12 +18,12 @@ abstract class IndexCommand extends Command
     private string $prefix;
     protected SearchService $searchService;
 
-    public function __construct(SearchService $searchService, ?string $name = null)
+    public function __construct(SearchService $searchService)
     {
         $this->searchService = $searchService;
         $this->prefix = $this->searchService->getConfiguration()->get('prefix');
 
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function getIndices(): Collection

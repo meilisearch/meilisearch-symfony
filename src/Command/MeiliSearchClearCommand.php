@@ -13,12 +13,20 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class MeiliSearchClearCommand extends IndexCommand
 {
-    protected static $defaultName = 'meili:clear';
+    public static function getDefaultName(): string
+    {
+        return 'meili:clear';
+    }
+
+    public static function getDefaultDescription(): string
+    {
+        return 'Clear the index documents';
+    }
 
     protected function configure(): void
     {
         $this
-            ->setDescription('Clear the index documents')
+            ->setDescription(self::getDefaultDescription())
             ->addOption('indices', 'i', InputOption::VALUE_OPTIONAL, 'Comma-separated list of index names');
     }
 
