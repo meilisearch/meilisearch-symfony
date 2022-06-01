@@ -43,9 +43,6 @@ docker-compose run --rm package bash -c "list of the commands required to build 
 
 To install dependencies:
 
-
-Install the dependencies:
-
 ```sh
 composer install
 ```
