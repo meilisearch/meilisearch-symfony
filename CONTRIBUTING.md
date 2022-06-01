@@ -34,6 +34,16 @@ First of all, thank you for contributing to Meilisearch! The goal of this docume
 
 #### Setup
 
+You can set up your local environment natively or using `docker`, check out the [`docker-compose.yml`](/docker-compose.yml).
+
+Example of running all the checks with docker:
+```bash
+docker-compose run --rm package bash -c "list of the commands required to build + run tests + run linters"
+```
+
+To install dependencies:
+
+
 Install the dependencies:
 
 ```sh
@@ -61,6 +71,16 @@ composer phpstan
 These commands do not work on MacOS, see [this issue](https://github.com/meilisearch/meilisearch-symfony/issues/6).
 
 #### Setup
+
+You can set up your local environment natively or using `docker`, check out the [`docker-compose.yml`](/docker-compose.yml).
+
+Example of running all the checks with docker:
+```bash
+docker-compose run --rm package bash -c "list of the commands required to build + run tests + run linters"
+```
+
+To install dependencies:
+
 
 To start and build your Docker environment, just execute the next command in a terminal:
 
