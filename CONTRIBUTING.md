@@ -38,7 +38,7 @@ You can set up your local environment natively or using `docker`, check out the 
 
 Example of running all the checks with docker:
 ```bash
-docker-compose run --rm package bash -c "list of the commands required to build + run tests + run linters"
+docker-compose run --rm package bash -c "composer install && composer test:unit && composer lint:check"
 ```
 
 To install dependencies:
@@ -93,7 +93,7 @@ Each Pull Request should pass the tests, and the linter to be accepted.
 
 ```sh
 # Tests
-docker-compose exec -e MEILISEARCH_URL=http://meilisearch:7700 php composer test:unit
+docker-compose exec -e MEILISEARCH_HOST=http://meilisearch:7700 php composer test:unit
 # Linter
 docker-compose exec php composer lint:check
 # Linter (with auto-fix)
