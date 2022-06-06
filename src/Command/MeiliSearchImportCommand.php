@@ -21,21 +21,31 @@ final class MeiliSearchImportCommand extends IndexCommand
 {
     private const DEFAULT_RESPONSE_TIMEOUT = 5000;
 
-    protected static $defaultName = 'meili:import';
     protected Client $searchClient;
     protected ManagerRegistry $managerRegistry;
 
     public function __construct(SearchService $searchService, ManagerRegistry $managerRegistry, Client $searchClient)
     {
         parent::__construct($searchService);
+
         $this->managerRegistry = $managerRegistry;
         $this->searchClient = $searchClient;
+    }
+
+    public static function getDefaultName(): string
+    {
+        return 'meili:import';
+    }
+
+    public static function getDefaultDescription(): string
+    {
+        return 'Import given entity into search engine';
     }
 
     protected function configure(): void
     {
         $this
-            ->setDescription('Import given entity into search engine')
+            ->setDescription(self::getDefaultDescription())
             ->addOption('indices', 'i', InputOption::VALUE_OPTIONAL, 'Comma-separated list of index names')
             ->addOption(
                 'update-settings',

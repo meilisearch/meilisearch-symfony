@@ -15,8 +15,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class MeiliSearchCreateCommand extends IndexCommand
 {
-    protected static $defaultName = 'meili:create';
-
     private Client $searchClient;
 
     public function __construct(SearchService $searchService, Client $searchClient)
@@ -26,10 +24,20 @@ final class MeiliSearchCreateCommand extends IndexCommand
         $this->searchClient = $searchClient;
     }
 
+    public static function getDefaultName(): string
+    {
+        return 'meili:create';
+    }
+
+    public static function getDefaultDescription(): string
+    {
+        return 'Create indexes';
+    }
+
     protected function configure(): void
     {
         $this
-            ->setDescription('Create indexes')
+            ->setDescription(self::getDefaultDescription())
             ->addOption('indices', 'i', InputOption::VALUE_OPTIONAL, 'Comma-separated list of index names');
     }
 
