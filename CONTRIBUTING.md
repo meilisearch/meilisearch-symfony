@@ -78,7 +78,6 @@ docker-compose run --rm package bash -c "list of the commands required to build 
 
 To install dependencies:
 
-
 To start and build your Docker environment, just execute the next command in a terminal:
 
 ```sh
