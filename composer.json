@@ -54,7 +54,10 @@
         }
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
     },
     "scripts": {
         "phpstan": "./vendor/bin/phpstan --memory-limit=1G --ansi",

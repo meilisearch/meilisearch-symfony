@@ -10,63 +10,64 @@ on:
       - main
 
 jobs:
-    integration-tests:
-        # Will not run if the event is a PR to bump-meilisearch-v* (so a pre-release PR)
-        # Will still run for each push to bump-meilisearch-v*
-        if: github.event_name != 'pull_request' || !startsWith(github.base_ref, 'bump-meilisearch-v')
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                php-version: ['7.4', '8.0', '8.1']
-                include:
-                    - php-version: '7.4'
-                      sf-version: '4.4.*'
-                    - php-version: '7.4'
-                      sf-version: '5.4.*'
-                    - php-version: '8.0'
-                      sf-version: '6.0.*'
-                    - php-version: '8.1'
-                      sf-version: '6.0.*'
-                    - php-version: '8.1'
-                      sf-version: '6.1.*'
-        name: integration-tests (PHP ${{ matrix.php-version }})
-        steps:
-            -   uses: actions/checkout@v3
-            -   name: Install PHP
-                uses: shivammathur/setup-php@v2
-                with:
-                    php-version: ${{ matrix.php-version }}
-                    tools: composer:v2, flex
-            -   name: Validate composer.json and composer.lock
-                run: composer validate
-            -   name: Install dependencies
-                env:
-                    SYMFONY_REQUIRE: ${{ matrix.sf-version }}
-                run: composer install --prefer-dist --no-progress --quiet
-            -   name: Meilisearch setup with Docker
-                run: docker run -d -p 7700:7700 getmeili/meilisearch:latest meilisearch --master-key=masterKey --no-analytics
-            -   name: Run test suite
-                run: composer test:unit
+  integration-tests:
+    # Will not run if the event is a PR to bump-meilisearch-v* (so a pre-release PR)
+    # Will still run for each push to bump-meilisearch-v*
+    if: github.event_name != 'pull_request' || !startsWith(github.base_ref, 'bump-meilisearch-v')
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: ['7.4', '8.0', '8.1']
+        include:
+          - php-version: '7.4'
+            sf-version: '4.4.*'
+          - php-version: '7.4'
+            sf-version: '5.4.*'
+          - php-version: '8.0'
+            sf-version: '6.0.*'
+          - php-version: '8.1'
+            sf-version: '6.0.*'
+          - php-version: '8.1'
+            sf-version: '6.1.*'
 
-    code-style:
-        runs-on: ubuntu-latest
-        name: 'Code style'
-        steps:
-            -   uses: actions/checkout@v3
+    name: integration-tests (PHP ${{ matrix.php-version }})
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer:v2, flex
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+      - name: Install dependencies
+        env:
+          SYMFONY_REQUIRE: ${{ matrix.sf-version }}
+        run: composer install --prefer-dist --no-progress --quiet
+      - name: Meilisearch setup with Docker
+        run: docker run -d -p 7700:7700 getmeili/meilisearch:latest meilisearch --master-key=masterKey --no-analytics
+      - name: Run test suite
+        run: composer test:unit
 
-            -   name: Install PHP
-                uses: shivammathur/setup-php@v2
-                with:
-                    php-version: '8.0'
+  code-style:
+    runs-on: ubuntu-latest
+    name: 'Code style'
+    steps:
+      - uses: actions/checkout@v3
 
-            -   name: Validate composer.json and composer.lock
-                run: composer validate
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
 
-            -   name: Install dependencies
-                run: composer install --prefer-dist --no-progress --quiet
+      - name: Validate composer.json and composer.lock
+        run: composer validate
 
-            -   name: PHP CS Fixer
-                run: composer lint:check
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --quiet
 
-            -   name: PHPstan
-                run: composer phpstan
+      - name: PHP CS Fixer
+        run: composer lint:check
+
+      - name: PHPstan
+        run: composer phpstan

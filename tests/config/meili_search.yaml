@@ -1,5 +1,5 @@
 meili_search:
-    url: '%env(MEILISEARCH_URL)%'
+    url: '%env(MEILISEARCH_HOST)%'
     api_key: '%env(MEILISEARCH_API_KEY)%'
     prefix: '%env(MEILISEARCH_PREFIX)%_'
     nbResults: 12
