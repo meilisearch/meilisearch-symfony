@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MeiliSearch\Bundle;
 
-use Doctrine\Persistence\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -19,6 +19,7 @@ final class SearchableEntity
     /** @var object */
     private $entity;
 
+    /** @var ClassMetadata<object> */
     private ClassMetadata $entityMetadata;
 
     /** @var object */
@@ -32,8 +33,9 @@ final class SearchableEntity
     /**
      * SearchableEntity constructor.
      *
-     * @param object      $entity
-     * @param object|null $normalizer
+     * @param object                $entity
+     * @param object|null           $normalizer
+     * @param ClassMetadata<object> $entityMetadata
      */
     public function __construct(
         string $indexUid,
