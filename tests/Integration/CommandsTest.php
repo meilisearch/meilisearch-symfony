@@ -320,4 +320,13 @@ Done!
 
 EOD, $createOutput);
     }
+
+    public function testCreateExecuteIndexCreation(): void
+    {
+        $createCommand = $this->application->find('meili:create');
+        $createCommandTester = new CommandTester($createCommand);
+        $createCommandTester->execute([]);
+
+        $this->assertEquals($this->client->getTasks()['results'][0]['type'], 'indexCreation');
+    }
 }
