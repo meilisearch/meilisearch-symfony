@@ -6,7 +6,7 @@ namespace MeiliSearch\Bundle\Services;
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Persistence\ObjectManager;
-use Illuminate\Support\Collection;
+use MeiliSearch\Bundle\CollectionXX;
 use MeiliSearch\Bundle\Engine;
 use MeiliSearch\Bundle\Entity\Aggregator;
 use MeiliSearch\Bundle\Exception\ObjectIdNotFoundException;
@@ -25,7 +25,7 @@ final class MeiliSearchService implements SearchService
 {
     private SerializerInterface $normalizer;
     private Engine $engine;
-    private Collection $configuration;
+    private CollectionXX $configuration;
     private PropertyAccessor $propertyAccessor;
     private array $searchableEntities;
     private array $entitiesAggregators;
@@ -37,7 +37,7 @@ final class MeiliSearchService implements SearchService
     {
         $this->normalizer = $normalizer;
         $this->engine = $engine;
-        $this->configuration = new Collection($configuration);
+        $this->configuration = new CollectionXX($configuration);
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
 
         $this->setSearchableEntities();
@@ -63,7 +63,7 @@ final class MeiliSearchService implements SearchService
         return $this->searchableEntities;
     }
 
-    public function getConfiguration(): Collection
+    public function getConfiguration(): CollectionXX
     {
         return $this->configuration;
     }
@@ -73,8 +73,9 @@ final class MeiliSearchService implements SearchService
      */
     public function searchableAs(string $className): string
     {
-        $indexes = Collection::wrap($this->getConfiguration()->get('indices'));
-        $index = $indexes->firstWhere('class', $className);
+        $indexes = $this->getConfiguration()->get('indices');
+        $indexes = array_filter($indexes, fn ($item) => $item['class'] == $className);
+        $index = reset($indexes);
 
         return $this->getConfiguration()->get('prefix').$index['name'];
     }

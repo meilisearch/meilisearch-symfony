@@ -9,6 +9,7 @@ use MeiliSearch\Bundle\Exception\InvalidSettingName;
 use MeiliSearch\Bundle\Exception\TaskException;
 use MeiliSearch\Bundle\Model\Aggregator;
 use MeiliSearch\Bundle\SearchService;
+// use MeiliSearch\Bundle\CollectionXX;
 use MeiliSearch\Client;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -74,7 +75,7 @@ final class MeiliSearchImportCommand extends IndexCommand
             if (is_subclass_of($entityClassName, Aggregator::class)) {
                 $indexes->forget($key);
 
-                $indexes = collect(array_merge(
+                $indexes = new CollectionXX(array_merge(
                     $indexes->toArray(),
                     array_map(
                         fn ($entity) => ['class' => $entity],

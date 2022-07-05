@@ -186,12 +186,11 @@ abstract class BaseKernelTestCase extends KernelTestCase
 
     private function cleanUp(): void
     {
-        collect($this->searchService->getConfiguration()->get('indices'))
-                ->each(function ($item): bool {
-                    $this->cleanupIndex($this->getPrefix().$item['name']);
+        $indexes = $this->searchService->getConfiguration()->get('indices');
 
-                    return true;
-                });
+        foreach ($indexes as $item) {
+            $this->cleanupIndex($this->getPrefix().$item['name']);
+        }
 
         $this->cleanupIndex($this->getPrefix().'indexA');
         $this->cleanupIndex($this->getPrefix().'indexB');

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MeiliSearch\Bundle;
 
 use Doctrine\Persistence\ObjectManager;
-use Illuminate\Support\Collection;
+use MeiliSearch\Bundle\CollectionXX;
 
 /**
  * Interface SearchService.
@@ -22,7 +22,7 @@ interface SearchService
 
     public function getSearchable(): array;
 
-    public function getConfiguration(): Collection;
+    public function getConfiguration(): CollectionXX;
 
     /**
      * Get the index name for the given `$className`.

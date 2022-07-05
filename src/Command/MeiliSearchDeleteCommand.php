@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MeiliSearch\Bundle\Command;
 
+use MeiliSearch\Bundle\CollectionXX;
 use MeiliSearch\Exceptions\ApiException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -33,10 +34,17 @@ final class MeiliSearchDeleteCommand extends IndexCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $indexToDelete = collect($this->getEntitiesFromArgs($input, $output))->unique('name');
+        $list = $this->getEntitiesFromArgs($input, $output);
+
+        $indexesToDelete = [];
+        foreach($list as $element) {
+            $hash = $element['name'];
+            $indexesToDelete[$hash] = $element;
+        }
+        $indexesToDelete = new CollectionXX(array_values($indexesToDelete));
 
         /** @var array<string, mixed> $index */
-        foreach ($indexToDelete as $index) {
+        foreach ($indexesToDelete as $index) {
             $indexName = $index['name'];
             try {
                 $this->searchService->deleteByIndexName($indexName);
@@ -47,7 +55,7 @@ final class MeiliSearchDeleteCommand extends IndexCommand
             $output->writeln('Deleted <info>'.$indexName.'</info>');
         }
 
-        if (0 === count($indexToDelete)) {
+        if (0 === count($indexesToDelete)) {
             $output->writeln('Cannot delete index. Not found.');
         }
 

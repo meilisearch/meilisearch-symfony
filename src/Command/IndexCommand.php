@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MeiliSearch\Bundle\Command;
 
-use Illuminate\Support\Collection;
+use MeiliSearch\Bundle\CollectionXX;
 use MeiliSearch\Bundle\SearchService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,24 +26,23 @@ abstract class IndexCommand extends Command
         parent::__construct();
     }
 
-    protected function getIndices(): Collection
+    protected function getIndices(): CollectionXX
     {
-        return collect($this->searchService->getConfiguration()->get('indices'))
-            ->transform(function (array $item) {
+        return (new CollectionXX($this->searchService->getConfiguration()->get('indices')))->transform(function (array $item) {
                 $item['name'] = $this->prefix.$item['name'];
 
                 return $item;
             });
     }
 
-    protected function getEntitiesFromArgs(InputInterface $input, OutputInterface $output): Collection
+    protected function getEntitiesFromArgs(InputInterface $input, OutputInterface $output): CollectionXX
     {
         $indices = $this->getIndices();
-        $indexNames = collect();
+        $indexNames = new CollectionXX();
 
         if ($indexList = $input->getOption('indices')) {
             $list = \explode(',', $indexList);
-            $indexNames = collect($list)->transform(function (string $item): string {
+            $indexNames = (new CollectionXX($list))->transform(function (string $item): string {
                 // Check if the given index name already contains the prefix
                 if (!str_contains($item, $this->prefix)) {
                     return $this->prefix.$item;
@@ -58,11 +57,15 @@ abstract class IndexCommand extends Command
                 '<comment>No indices specified. Please either specify indices using the cli option or YAML configuration.</comment>'
             );
 
-            return collect();
+            return new CollectionXX();
         }
 
         if (count($indexNames) > 0) {
-            return $indices->reject(fn (array $item) => !in_array($item['name'], $indexNames->toArray(), true));
+            foreach ($indices->getItems() as $key => $value) {
+                if (!in_array($value['name'], $indexNames->toArray(), true)) {
+                    unset($indices[$key]);
+                }
+            }
         }
 
         return $indices;

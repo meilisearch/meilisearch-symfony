@@ -63,7 +63,9 @@ class SearchTest extends BaseKernelTestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             '--indices' => $this->index->getUid(),
-        ]);
+        ], ['verbosity' => true, 'capture_stderr_separately' => true]);
+
+        var_dump($commandTester->getOutput()->__toString());
 
         $output = $commandTester->getDisplay();
 
