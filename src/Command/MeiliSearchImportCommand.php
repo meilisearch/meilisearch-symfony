@@ -137,8 +137,8 @@ final class MeiliSearchImportCommand extends IndexCommand
                         $task = $indexInstance->{$method}($value);
 
                         // Get task information using uid
-                        $indexInstance->waitForTask($task['uid'], $responseTimeout);
-                        $task = $indexInstance->getTask($task['uid']);
+                        $indexInstance->waitForTask($task['taskUid'], $responseTimeout);
+                        $task = $indexInstance->getTask($task['taskUid']);
 
                         if ('failed' === $task['status']) {
                             throw new TaskException($task['error']);
@@ -175,8 +175,8 @@ final class MeiliSearchImportCommand extends IndexCommand
                 $indexInstance = $this->searchClient->index($indexName);
 
                 // Get task information using uid
-                $indexInstance->waitForTask($apiResponse['uid'], $responseTimeout);
-                $task = $indexInstance->getTask($apiResponse['uid']);
+                $indexInstance->waitForTask($apiResponse['taskUid'], $responseTimeout);
+                $task = $indexInstance->getTask($apiResponse['taskUid']);
 
                 if ('failed' === $task['status']) {
                     throw new TaskException($task['error']);

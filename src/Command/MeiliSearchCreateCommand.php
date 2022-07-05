@@ -84,8 +84,8 @@ final class MeiliSearchCreateCommand extends IndexCommand
 
                     $task = $indexInstance->{$method}($value);
 
-                    $indexInstance->waitForTask($task['uid']);
-                    $task = $indexInstance->getTask($task['uid']);
+                    $indexInstance->waitForTask($task['taskUid']);
+                    $task = $indexInstance->getTask($task['taskUid']);
 
                     if ('failed' === $task['status']) {
                         throw new TaskException($task['error']);

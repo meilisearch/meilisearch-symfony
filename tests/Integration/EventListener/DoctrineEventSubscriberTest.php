@@ -162,7 +162,7 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
      */
     private function waitForAllTasks(): void
     {
-        $firstTask = $this->client->getTasks()['results'][0];
+        $firstTask = $this->client->getTasks()->getResults()[0];
         $this->client->waitForTask($firstTask['uid']);
     }
 }
