@@ -327,6 +327,6 @@ EOD, $createOutput);
         $createCommandTester = new CommandTester($createCommand);
         $createCommandTester->execute([]);
 
-        $this->assertEquals($this->client->getTasks()['results'][0]['type'], 'indexCreation');
+        $this->assertEquals($this->client->getTasks()->getResults()[0]['type'], 'indexCreation');
     }
 }
