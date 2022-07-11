@@ -17,7 +17,7 @@ $config->setRules([
                 'import_constants' => false,
             ],
         ]
-    )
+)
     ->setRiskyAllowed(true)
     ->setFinder($finder)
 ;
