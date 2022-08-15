@@ -146,7 +146,7 @@ _[Read more about this](https://github.com/meilisearch/integration-guides/blob/m
 
 Make a PR modifying the file [`src/MeiliSearchBundle.php`](/src/MeiliSearchBundle.php) with the right version.
 
-```ruby
+```php
 VERSION = 'X.X.X'
 ```
 
