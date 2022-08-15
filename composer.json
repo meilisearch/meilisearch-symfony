@@ -41,7 +41,8 @@
     "symfony/doctrine-bridge": "^4.4 || ^5.0 || ^6.0",
     "symfony/http-client": "^4.4 || ^5.0 || ^6.0",
     "symfony/phpunit-bridge": "^4.4 || ^5.0 || ^6.0",
-    "symfony/yaml": "^4.4 || ^5.0 || ^6.0"
+    "symfony/yaml": "^4.4 || ^5.0 || ^6.0",
+    "matthiasnoback/symfony-dependency-injection-test": "^4.3"
   },
   "autoload": {
     "psr-4": {
