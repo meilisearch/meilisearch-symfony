@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MeiliSearch\Bundle\DependencyInjection;
 
 use MeiliSearch\Bundle\Engine;
+use MeiliSearch\Bundle\MeiliSearchBundle;
 use MeiliSearch\Bundle\Services\MeiliSearchService;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -29,12 +30,13 @@ final class MeiliSearchExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        if (null === $config['prefix']) {
+        if (null === $config['prefix'] && $container->hasParameter('kernel.environment')) {
             $config['prefix'] = $container->getParameter('kernel.environment').'_';
         }
 
-        $container->setParameter('meili_url', $config['url']);
-        $container->setParameter('meili_api_key', $config['api_key']);
+        $container->setParameter('meili_url', $config['url'] ?? null);
+        $container->setParameter('meili_api_key', $config['api_key'] ?? null);
+        $container->setParameter('meili_symfony_version', MeiliSearchBundle::qualifiedVersion());
 
         if (\count($doctrineSubscribedEvents = $config['doctrineSubscribedEvents']) > 0) {
             $container->getDefinition('search.search_indexer_subscriber')->setArgument(1, $doctrineSubscribedEvents);
