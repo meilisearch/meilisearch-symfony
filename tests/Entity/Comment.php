@@ -29,6 +29,7 @@ class Comment
 
     /**
      * @var string
+     *
      * @ORM\Column(type="text")
      *     min=5,
      *     minMessage="comment.too_short",
@@ -41,6 +42,7 @@ class Comment
 
     /**
      * @var \DateTime
+     *
      * @ORM\Column(type="datetime")
      * @Groups({"searchable"})
      */

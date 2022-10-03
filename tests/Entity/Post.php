@@ -45,6 +45,7 @@ class Post
 
     /**
      * @var Comment[]|Collection
+     *
      * @ORM\OneToMany(
      *      targetEntity="Comment",
      *      mappedBy="post",
