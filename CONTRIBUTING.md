@@ -105,7 +105,7 @@ Each Pull Request should pass the tests, and the linter to be accepted.
 
 ```sh
 # Tests
-docker-compose exec -e MEILISEARCH_HOST=http://meilisearch:7700 php composer test:unit
+docker-compose exec -e MEILISEARCH_URL=http://meilisearch:7700 php composer test:unit
 # Linter
 docker-compose exec php composer lint:check
 # Linter (with auto-fix)

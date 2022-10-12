@@ -12,7 +12,7 @@
         <env name="APP_ENV" value="test"/>
         <env name="APP_DEBUG" value="false"/>
         <env name="MEILISEARCH_PREFIX" value="sf_phpunit_"/>
-        <env name="MEILISEARCH_HOST" value="http://127.0.0.1:7700"/>
+        <env name="MEILISEARCH_URL" value="http://127.0.0.1:7700"/>
         <env name="MEILISEARCH_API_KEY" value="masterKey"/>
         <env name="TRAVIS_JOB_NUMBER" value=""/>
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>
