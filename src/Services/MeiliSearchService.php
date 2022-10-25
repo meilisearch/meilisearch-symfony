@@ -6,7 +6,7 @@ namespace MeiliSearch\Bundle\Services;
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Persistence\ObjectManager;
-use Illuminate\Support\Collection;
+use MeiliSearch\Bundle\Collection;
 use MeiliSearch\Bundle\Engine;
 use MeiliSearch\Bundle\Entity\Aggregator;
 use MeiliSearch\Bundle\Exception\ObjectIdNotFoundException;
@@ -73,7 +73,7 @@ final class MeiliSearchService implements SearchService
      */
     public function searchableAs(string $className): string
     {
-        $indexes = Collection::wrap($this->getConfiguration()->get('indices'));
+        $indexes = new Collection($this->getConfiguration()->get('indices'));
         $index = $indexes->firstWhere('class', $className);
 
         return $this->getConfiguration()->get('prefix').$index['name'];

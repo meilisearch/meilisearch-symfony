@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MeiliSearch\Bundle;
 
 use Doctrine\Persistence\ObjectManager;
-use Illuminate\Support\Collection;
 
 /**
  * Interface SearchService.
