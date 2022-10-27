@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MeiliSearch\Bundle\Command;
 
 use Doctrine\Persistence\ManagerRegistry;
+use MeiliSearch\Bundle\Collection;
 use MeiliSearch\Bundle\Exception\InvalidSettingName;
 use MeiliSearch\Bundle\Exception\TaskException;
 use MeiliSearch\Bundle\Model\Aggregator;
@@ -74,8 +75,8 @@ final class MeiliSearchImportCommand extends IndexCommand
             if (is_subclass_of($entityClassName, Aggregator::class)) {
                 $indexes->forget($key);
 
-                $indexes = collect(array_merge(
-                    $indexes->toArray(),
+                $indexes = new Collection(array_merge(
+                    $indexes->all(),
                     array_map(
                         fn ($entity) => ['class' => $entity],
                         $entityClassName::getEntities()
@@ -84,7 +85,7 @@ final class MeiliSearchImportCommand extends IndexCommand
             }
         }
 
-        $entitiesToIndex = array_unique($indexes->toArray(), SORT_REGULAR);
+        $entitiesToIndex = array_unique($indexes->all(), SORT_REGULAR);
         $batchSize = $input->getOption('batch-size');
         $batchSize = ctype_digit($batchSize) ? (int) $batchSize : $config->get('batchSize');
         $responseTimeout = ((int) $input->getOption('response-timeout')) ?: self::DEFAULT_RESPONSE_TIMEOUT;

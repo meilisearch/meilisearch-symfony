@@ -6,6 +6,7 @@ namespace MeiliSearch\Bundle\Test;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
+use MeiliSearch\Bundle\Collection;
 use MeiliSearch\Bundle\SearchableEntity;
 use MeiliSearch\Bundle\SearchService;
 use MeiliSearch\Bundle\Test\Entity\Comment;
@@ -186,7 +187,7 @@ abstract class BaseKernelTestCase extends KernelTestCase
 
     private function cleanUp(): void
     {
-        collect($this->searchService->getConfiguration()->get('indices'))
+        (new Collection($this->searchService->getConfiguration()->get('indices')))
                 ->each(function ($item): bool {
                     $this->cleanupIndex($this->getPrefix().$item['name']);
 

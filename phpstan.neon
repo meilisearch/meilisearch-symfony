@@ -1,5 +1,7 @@
 parameters:
-    level: 5
-    paths:
-        - src
-        - tests
+	level: 5
+	paths:
+		- src
+		- tests
+	ignoreErrors:
+		- '#Class UnitEnum not found#'

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MeiliSearch\Bundle\Command;
 
+use MeiliSearch\Bundle\Collection;
 use MeiliSearch\Bundle\Exception\InvalidSettingName;
 use MeiliSearch\Bundle\Exception\TaskException;
 use MeiliSearch\Bundle\Model\Aggregator;
@@ -50,8 +51,8 @@ final class MeiliSearchCreateCommand extends IndexCommand
             if (is_subclass_of($entityClassName, Aggregator::class)) {
                 $indexes->forget($key);
 
-                $indexes = collect(array_merge(
-                    $indexes->toArray(),
+                $indexes = new Collection(array_merge(
+                    $indexes->all(),
                     array_map(
                         static fn ($entity) => ['name' => $index['name'], 'class' => $entity],
                         $entityClassName::getEntities()
@@ -60,7 +61,7 @@ final class MeiliSearchCreateCommand extends IndexCommand
             }
         }
 
-        $entitiesToIndex = array_unique($indexes->toArray(), SORT_REGULAR);
+        $entitiesToIndex = array_unique($indexes->all(), SORT_REGULAR);
 
         /** @var array $index */
         foreach ($entitiesToIndex as $index) {

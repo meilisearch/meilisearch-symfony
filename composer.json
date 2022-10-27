@@ -21,7 +21,6 @@
     "php": "^7.4|^8.0",
     "ext-json": "*",
     "doctrine/doctrine-bundle": "^2.4",
-    "illuminate/collections": "^8.47",
     "meilisearch/meilisearch-php": "^0.25.0",
     "symfony/filesystem": "^4.4 || ^5.0 || ^6.0",
     "symfony/property-access": "^4.4 || ^5.0 || ^6.0",
