@@ -77,6 +77,7 @@ Indexed 6 / 6 MeiliSearch\Bundle\Test\Entity\Post entities into sf_phpunit__post
 Indexed 6 / 6 MeiliSearch\Bundle\Test\Entity\Post entities into sf_phpunit__aggregated index
 Settings updated.
 Settings updated.
+Settings updated.
 Importing for index MeiliSearch\Bundle\Test\Entity\Comment
 Importing for index MeiliSearch\Bundle\Test\Entity\Tag
 Indexed 6 / 6 MeiliSearch\Bundle\Test\Entity\Tag entities into sf_phpunit__tags index
