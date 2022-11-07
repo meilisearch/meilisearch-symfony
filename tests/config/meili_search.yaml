@@ -11,6 +11,13 @@ meili_search:
             settings:
                 stopWords: ['the', 'a', 'an']
                 filterableAttributes: ['title', 'publishedAt']
+                typoTolerance:
+                    enabled: true
+                    disableOnAttributes: ['title']
+                    disableOnWords: ['york']
+                    minWordSizeForTypos:
+                        oneTypo: 5
+                        twoTypos: 9
         -   name: comments
             class: 'MeiliSearch\Bundle\Test\Entity\Comment'
         -   name: aggregated

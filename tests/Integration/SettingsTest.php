@@ -6,6 +6,7 @@ namespace MeiliSearch\Bundle\Test\Integration;
 
 use MeiliSearch\Bundle\Test\BaseKernelTestCase;
 use MeiliSearch\Client;
+use MeiliSearch\Contracts\Index\TypoTolerance;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -60,5 +61,12 @@ class SettingsTest extends BaseKernelTestCase
 
         $this->assertNotEmpty($settings['filterableAttributes']);
         $this->assertEquals(['publishedAt', 'title'], $settings['filterableAttributes']);
+
+        $this->assertArrayHasKey('typoTolerance', $settings);
+        $this->assertInstanceOf(TypoTolerance::class, $settings['typoTolerance']);
+        $this->assertTrue($settings['typoTolerance']['enabled']);
+        $this->assertEquals(['title'], $settings['typoTolerance']['disableOnAttributes']);
+        $this->assertEquals(['york'], $settings['typoTolerance']['disableOnWords']);
+        $this->assertEquals(['oneTypo' => 5, 'twoTypos' => 9], $settings['typoTolerance']['minWordSizeForTypos']);
     }
 }
