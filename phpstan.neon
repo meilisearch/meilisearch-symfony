@@ -3,5 +3,3 @@ parameters:
 	paths:
 		- src
 		- tests
-	ignoreErrors:
-		- '#Class UnitEnum not found#'
