@@ -96,6 +96,29 @@ class SearchTest extends BaseKernelTestCase
         $this->assertCount(1, $results);
     }
 
+    public function testSearchPagination(): void
+    {
+        $testDataTitles = [];
+
+        for ($i = 0; $i < 5; ++$i) {
+            $testDataTitles[] = $this->createPost()->getTitle();
+        }
+
+        $command = $this->application->find('meili:import');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            '--indices' => $this->index->getUid(),
+        ]);
+
+        $searchTerm = 'Test';
+
+        $results = $this->searchService->search($this->objectManager, Post::class, $searchTerm, ['page' => 2, 'hitsPerPage' => 2]);
+        $this->assertCount(2, $results);
+
+        $resultTitles = array_map(fn (Post $post) => $post->getTitle(), $results);
+        $this->assertEqualsCanonicalizing(array_slice($testDataTitles, 2, 2), $resultTitles);
+    }
+
     protected function tearDown(): void
     {
         parent::tearDown();
