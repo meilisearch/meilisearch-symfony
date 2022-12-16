@@ -17,7 +17,7 @@
             <tag name="doctrine_mongodb.odm.event_subscriber"/>
         </service>
 
-        <service id="search.client" class="MeiliSearch\Client" public="true" lazy="true">
+        <service id="search.client" class="Meilisearch\Client" public="true" lazy="true">
             <argument key="$url">%meili_url%</argument>
             <argument key="$apiKey">%meili_api_key%</argument>
             <argument key="$httpClient" type="service" id="psr18.http_client" on-invalid="ignore" />
@@ -26,7 +26,7 @@
             </argument>
         </service>
 
-        <service id="MeiliSearch\Client" alias="search.client"/>
+        <service id="Meilisearch\Client" alias="search.client"/>
         <service id="MeiliSearch\Bundle\SearchService" alias="search.service"/>
     </services>
 </container>
