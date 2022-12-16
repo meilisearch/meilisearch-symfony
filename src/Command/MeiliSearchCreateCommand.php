@@ -9,7 +9,7 @@ use MeiliSearch\Bundle\Exception\InvalidSettingName;
 use MeiliSearch\Bundle\Exception\TaskException;
 use MeiliSearch\Bundle\Model\Aggregator;
 use MeiliSearch\Bundle\SearchService;
-use MeiliSearch\Client;
+use Meilisearch\Client;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
