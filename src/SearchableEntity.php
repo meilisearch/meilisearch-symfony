@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle;
+namespace Meilisearch\Bundle;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Component\Config\Definition\Exception\Exception;

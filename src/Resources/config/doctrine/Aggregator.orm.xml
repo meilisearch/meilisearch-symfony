@@ -4,7 +4,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <mapped-superclass name="MeiliSearch\Bundle\Entity\Aggregator">
+    <mapped-superclass name="Meilisearch\Bundle\Entity\Aggregator">
         <id name="objectID" type="string">
             <generator strategy="AUTO"/>
         </id>

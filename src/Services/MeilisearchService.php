@@ -2,26 +2,26 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle\Services;
+namespace Meilisearch\Bundle\Services;
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Persistence\ObjectManager;
-use MeiliSearch\Bundle\Collection;
-use MeiliSearch\Bundle\Engine;
-use MeiliSearch\Bundle\Entity\Aggregator;
-use MeiliSearch\Bundle\Exception\ObjectIdNotFoundException;
-use MeiliSearch\Bundle\Exception\SearchHitsNotFoundException;
-use MeiliSearch\Bundle\SearchableEntity;
-use MeiliSearch\Bundle\SearchService;
+use Meilisearch\Bundle\Collection;
+use Meilisearch\Bundle\Engine;
+use Meilisearch\Bundle\Entity\Aggregator;
+use Meilisearch\Bundle\Exception\ObjectIdNotFoundException;
+use Meilisearch\Bundle\Exception\SearchHitsNotFoundException;
+use Meilisearch\Bundle\SearchableEntity;
+use Meilisearch\Bundle\SearchService;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Class MeiliSearchService.
+ * Class MeilisearchService.
  */
-final class MeiliSearchService implements SearchService
+final class MeilisearchService implements SearchService
 {
     private SerializerInterface $normalizer;
     private Engine $engine;

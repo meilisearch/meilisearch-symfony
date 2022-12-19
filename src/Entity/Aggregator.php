@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle\Entity;
+namespace Meilisearch\Bundle\Entity;
 
-use MeiliSearch\Bundle\Model\Aggregator as BaseAggregator;
+use Meilisearch\Bundle\Model\Aggregator as BaseAggregator;
 
 /**
  * Class Aggregator.

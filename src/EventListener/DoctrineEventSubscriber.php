@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle\EventListener;
+namespace Meilisearch\Bundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use MeiliSearch\Bundle\SearchService;
+use Meilisearch\Bundle\SearchService;
 
 final class DoctrineEventSubscriber implements EventSubscriber
 {

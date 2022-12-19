@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
-use MeiliSearch\Bundle\DependencyInjection\MeiliSearchExtension;
-use MeiliSearch\Bundle\MeiliSearchBundle;
+use Meilisearch\Bundle\DependencyInjection\MeilisearchExtension;
+use Meilisearch\Bundle\MeilisearchBundle;
 
-class MeiliSearchExtensionTest extends AbstractExtensionTestCase
+class MeilisearchExtensionTest extends AbstractExtensionTestCase
 {
     protected function getContainerExtensions(): array
     {
         return [
-            new MeiliSearchExtension(),
+            new MeilisearchExtension(),
         ];
     }
 
@@ -26,6 +26,6 @@ class MeiliSearchExtensionTest extends AbstractExtensionTestCase
     {
         $this->load();
 
-        $this->assertContainerBuilderHasParameter('meili_symfony_version', MeiliSearchBundle::qualifiedVersion());
+        $this->assertContainerBuilderHasParameter('meili_symfony_version', MeilisearchBundle::qualifiedVersion());
     }
 }

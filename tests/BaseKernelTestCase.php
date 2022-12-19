@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle\Test;
+namespace Meilisearch\Bundle\Test;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
-use MeiliSearch\Bundle\Collection;
-use MeiliSearch\Bundle\SearchableEntity;
-use MeiliSearch\Bundle\SearchService;
-use MeiliSearch\Bundle\Test\Entity\Comment;
-use MeiliSearch\Bundle\Test\Entity\Image;
-use MeiliSearch\Bundle\Test\Entity\Link;
-use MeiliSearch\Bundle\Test\Entity\ObjectId\DummyObjectId;
-use MeiliSearch\Bundle\Test\Entity\Page;
-use MeiliSearch\Bundle\Test\Entity\Post;
-use MeiliSearch\Bundle\Test\Entity\Tag;
-use MeiliSearch\Exceptions\ApiException;
+use Meilisearch\Bundle\Collection;
+use Meilisearch\Bundle\SearchableEntity;
+use Meilisearch\Bundle\SearchService;
+use Meilisearch\Bundle\Test\Entity\Comment;
+use Meilisearch\Bundle\Test\Entity\Image;
+use Meilisearch\Bundle\Test\Entity\Link;
+use Meilisearch\Bundle\Test\Entity\ObjectId\DummyObjectId;
+use Meilisearch\Bundle\Test\Entity\Page;
+use Meilisearch\Bundle\Test\Entity\Post;
+use Meilisearch\Bundle\Test\Entity\Tag;
+use Meilisearch\Exceptions\ApiException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 abstract class BaseKernelTestCase extends KernelTestCase

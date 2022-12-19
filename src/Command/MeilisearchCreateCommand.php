@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle\Command;
+namespace Meilisearch\Bundle\Command;
 
-use MeiliSearch\Bundle\Collection;
-use MeiliSearch\Bundle\Exception\InvalidSettingName;
-use MeiliSearch\Bundle\Exception\TaskException;
-use MeiliSearch\Bundle\Model\Aggregator;
-use MeiliSearch\Bundle\SearchService;
+use Meilisearch\Bundle\Collection;
+use Meilisearch\Bundle\Exception\InvalidSettingName;
+use Meilisearch\Bundle\Exception\TaskException;
+use Meilisearch\Bundle\Model\Aggregator;
+use Meilisearch\Bundle\SearchService;
 use Meilisearch\Client;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class MeiliSearchCreateCommand extends IndexCommand
+final class MeilisearchCreateCommand extends IndexCommand
 {
     private Client $searchClient;
 

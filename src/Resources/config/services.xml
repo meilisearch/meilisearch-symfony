@@ -6,10 +6,10 @@
     <services>
         <defaults autowire="true" autoconfigure="true"/>
 
-        <prototype namespace="MeiliSearch\Bundle\Command\" resource="../../Command" />
+        <prototype namespace="Meilisearch\Bundle\Command\" resource="../../Command" />
 
         <service id="search.search_indexer_subscriber"
-                 class="MeiliSearch\Bundle\EventListener\DoctrineEventSubscriber"
+                 class="Meilisearch\Bundle\EventListener\DoctrineEventSubscriber"
                  public="true">
             <argument type="service" id="search.service"/>
             <argument type="collection"/> <!-- doctrine subscribed events -->
@@ -27,6 +27,6 @@
         </service>
 
         <service id="Meilisearch\Client" alias="search.client"/>
-        <service id="MeiliSearch\Bundle\SearchService" alias="search.service"/>
+        <service id="Meilisearch\Bundle\SearchService" alias="search.service"/>
     </services>
 </container>
