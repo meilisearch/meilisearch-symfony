@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle\DependencyInjection;
+namespace Meilisearch\Bundle\DependencyInjection;
 
-use MeiliSearch\Bundle\Engine;
-use MeiliSearch\Bundle\MeiliSearchBundle;
-use MeiliSearch\Bundle\Services\MeiliSearchService;
+use Meilisearch\Bundle\Engine;
+use Meilisearch\Bundle\MeilisearchBundle;
+use Meilisearch\Bundle\Services\MeilisearchService;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -15,9 +15,9 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * Class MeiliSearchExtension.
+ * Class MeilisearchExtension.
  */
-final class MeiliSearchExtension extends Extension
+final class MeilisearchExtension extends Extension
 {
     /**
      * {@inheritdoc}
@@ -36,7 +36,7 @@ final class MeiliSearchExtension extends Extension
 
         $container->setParameter('meili_url', $config['url'] ?? null);
         $container->setParameter('meili_api_key', $config['api_key'] ?? null);
-        $container->setParameter('meili_symfony_version', MeiliSearchBundle::qualifiedVersion());
+        $container->setParameter('meili_symfony_version', MeilisearchBundle::qualifiedVersion());
 
         if (\count($doctrineSubscribedEvents = $config['doctrineSubscribedEvents']) > 0) {
             $container->getDefinition('search.search_indexer_subscriber')->setArgument(1, $doctrineSubscribedEvents);
@@ -47,7 +47,7 @@ final class MeiliSearchExtension extends Extension
         $engineDefinition = new Definition(Engine::class, [new Reference('search.client')]);
 
         $searchServiceDefinition = (new Definition(
-            MeiliSearchService::class,
+            MeilisearchService::class,
             [new Reference($config['serializer']), $engineDefinition, $config]
         ));
 

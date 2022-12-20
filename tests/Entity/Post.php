@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle\Test\Entity;
+namespace Meilisearch\Bundle\Test\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

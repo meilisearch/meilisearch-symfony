@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle\Exception;
+namespace Meilisearch\Bundle\Exception;
 
 /**
  * Class EntityNotFoundInObjectID.

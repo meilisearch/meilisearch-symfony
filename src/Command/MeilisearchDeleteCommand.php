@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle\Command;
+namespace Meilisearch\Bundle\Command;
 
-use MeiliSearch\Bundle\Collection;
-use MeiliSearch\Exceptions\ApiException;
+use Meilisearch\Bundle\Collection;
+use Meilisearch\Exceptions\ApiException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class MeiliSearchDeleteCommand.
+ * Class MeilisearchDeleteCommand.
  */
-final class MeiliSearchDeleteCommand extends IndexCommand
+final class MeilisearchDeleteCommand extends IndexCommand
 {
     public static function getDefaultName(): string
     {

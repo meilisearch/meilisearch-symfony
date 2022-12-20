@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle;
+namespace Meilisearch\Bundle;
 
-use MeiliSearch\Client;
-use MeiliSearch\Exceptions\ApiException;
+use Meilisearch\Client;
+use Meilisearch\Exceptions\ApiException;
 
 /**
  * Class Engine.

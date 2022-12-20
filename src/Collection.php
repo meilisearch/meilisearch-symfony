@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle;
+namespace Meilisearch\Bundle;
 
 final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
 {

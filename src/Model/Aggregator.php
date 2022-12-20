@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle\Model;
+namespace Meilisearch\Bundle\Model;
 
-use MeiliSearch\Bundle\Exception\EntityNotFoundInObjectID;
-use MeiliSearch\Bundle\Exception\InvalidEntityForAggregator;
+use Meilisearch\Bundle\Exception\EntityNotFoundInObjectID;
+use Meilisearch\Bundle\Exception\InvalidEntityForAggregator;
 use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

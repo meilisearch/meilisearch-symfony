@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle\Test;
+namespace Meilisearch\Bundle\Test;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
-use MeiliSearch\Bundle\MeiliSearchBundle;
+use Meilisearch\Bundle\MeilisearchBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
@@ -26,7 +26,7 @@ class Kernel extends HttpKernel
         return [
             new FrameworkBundle(),
             new DoctrineBundle(),
-            new MeiliSearchBundle(),
+            new MeilisearchBundle(),
         ];
     }
 
@@ -34,6 +34,6 @@ class Kernel extends HttpKernel
     {
         $loader->load(__DIR__.'/config/config.yaml');
         $loader->load(__DIR__.'/../src/Resources/config/services.xml');
-        $loader->load(__DIR__.'/config/meili_search.yaml');
+        $loader->load(__DIR__.'/config/meilisearch.yaml');
     }
 }

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle\Test\Integration;
+namespace Meilisearch\Bundle\Test\Integration;
 
-use MeiliSearch\Bundle\Test\BaseKernelTestCase;
-use MeiliSearch\Client;
-use MeiliSearch\Contracts\Index\TypoTolerance;
+use Meilisearch\Bundle\Test\BaseKernelTestCase;
+use Meilisearch\Client;
+use Meilisearch\Contracts\Index\TypoTolerance;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 

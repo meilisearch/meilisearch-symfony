@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle\Command;
+namespace Meilisearch\Bundle\Command;
 
-use MeiliSearch\Bundle\Collection;
-use MeiliSearch\Bundle\SearchService;
+use Meilisearch\Bundle\Collection;
+use Meilisearch\Bundle\SearchService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

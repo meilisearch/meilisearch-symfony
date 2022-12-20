@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle;
+namespace Meilisearch\Bundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Class MeiliSearchBundle.
+ * Class MeilisearchBundle.
  */
-final class MeiliSearchBundle extends Bundle
+final class MeilisearchBundle extends Bundle
 {
     public const VERSION = '0.9.0';
 
     public static function qualifiedVersion()
     {
-        return sprintf('Meilisearch Symfony (v%s)', MeiliSearchBundle::VERSION);
+        return sprintf('Meilisearch Symfony (v%s)', MeilisearchBundle::VERSION);
     }
 }

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MeiliSearch\Bundle\Test\Entity;
+namespace Meilisearch\Bundle\Test\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use MeiliSearch\Bundle\Searchable;
+use Meilisearch\Bundle\Searchable;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

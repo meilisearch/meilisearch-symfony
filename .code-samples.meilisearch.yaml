@@ -1,7 +1,7 @@
 landing_getting_started_1: |-
     ```yml
-    # Configure your entities by adding them in config/packages/meili_search.yaml
-    meili_search:
+    # Configure your entities by adding them in config/packages/meilisearch.yaml
+    meilisearch:
         url: 'http://127.0.0.1:7700'
         api_key: 'masterKey'
         indices:
