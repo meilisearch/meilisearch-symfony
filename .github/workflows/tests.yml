@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: ['7.4', '8.0', '8.1']
+        php-version: ['7.4', '8.0', '8.1', '8.2']
         include:
           - php-version: '7.4'
             sf-version: '4.4.*'
@@ -29,8 +29,10 @@ jobs:
             sf-version: '6.0.*'
           - php-version: '8.1'
             sf-version: '6.1.*'
+          - php-version: '8.2'
+            sf-version: '6.2.*'
 
-    name: integration-tests (PHP ${{ matrix.php-version }})
+    name: integration-tests (PHP ${{ matrix.php-version }}) (Symfony ${{ matrix.sf-version }})
     steps:
       - uses: actions/checkout@v3
       - name: Install PHP
@@ -58,7 +60,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.0'
+          php-version: '8.1'
 
       - name: Validate composer.json and composer.lock
         run: composer validate
