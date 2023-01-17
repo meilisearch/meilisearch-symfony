@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Meilisearch\Bundle\Test;
+namespace Meilisearch\Bundle\Tests;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Meilisearch\Bundle\Collection;
 use Meilisearch\Bundle\SearchableEntity;
 use Meilisearch\Bundle\SearchService;
-use Meilisearch\Bundle\Test\Entity\Comment;
-use Meilisearch\Bundle\Test\Entity\Image;
-use Meilisearch\Bundle\Test\Entity\Link;
-use Meilisearch\Bundle\Test\Entity\ObjectId\DummyObjectId;
-use Meilisearch\Bundle\Test\Entity\Page;
-use Meilisearch\Bundle\Test\Entity\Post;
-use Meilisearch\Bundle\Test\Entity\Tag;
+use Meilisearch\Bundle\Tests\Entity\Comment;
+use Meilisearch\Bundle\Tests\Entity\Image;
+use Meilisearch\Bundle\Tests\Entity\Link;
+use Meilisearch\Bundle\Tests\Entity\ObjectId\DummyObjectId;
+use Meilisearch\Bundle\Tests\Entity\Page;
+use Meilisearch\Bundle\Tests\Entity\Post;
+use Meilisearch\Bundle\Tests\Entity\Tag;
 use Meilisearch\Exceptions\ApiException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

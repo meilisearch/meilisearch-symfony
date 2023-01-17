@@ -17,4 +17,9 @@ final class MeilisearchBundle extends Bundle
     {
         return sprintf('Meilisearch Symfony (v%s)', MeilisearchBundle::VERSION);
     }
+
+    public function getPath(): string
+    {
+        return \dirname(__DIR__);
+    }
 }

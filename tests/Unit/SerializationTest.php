@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Meilisearch\Bundle\Test\Unit;
+namespace Meilisearch\Bundle\Tests\Unit;
 
 use Meilisearch\Bundle\Searchable;
 use Meilisearch\Bundle\SearchableEntity;
-use Meilisearch\Bundle\Test\Entity\Comment;
-use Meilisearch\Bundle\Test\Entity\Post;
+use Meilisearch\Bundle\Tests\Entity\Comment;
+use Meilisearch\Bundle\Tests\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**

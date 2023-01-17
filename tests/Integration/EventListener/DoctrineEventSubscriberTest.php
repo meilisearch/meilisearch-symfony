@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Meilisearch\Bundle\Test\Integration\EventListener;
+namespace Meilisearch\Bundle\Tests\Integration\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Meilisearch\Bundle\EventListener\DoctrineEventSubscriber;
-use Meilisearch\Bundle\Test\BaseKernelTestCase;
-use Meilisearch\Bundle\Test\Entity\Page;
-use Meilisearch\Bundle\Test\Entity\Post;
+use Meilisearch\Bundle\Tests\BaseKernelTestCase;
+use Meilisearch\Bundle\Tests\Entity\Page;
+use Meilisearch\Bundle\Tests\Entity\Post;
 use Meilisearch\Client;
 
 class DoctrineEventSubscriberTest extends BaseKernelTestCase

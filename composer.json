@@ -50,7 +50,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Meilisearch\\Bundle\\Test\\": "tests/"
+      "Meilisearch\\Bundle\\Tests\\": "tests/"
     }
   },
   "config": {
