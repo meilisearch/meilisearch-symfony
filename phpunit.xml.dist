@@ -8,7 +8,7 @@
         </include>
     </coverage>
     <php>
-        <env name="KERNEL_CLASS" value="Meilisearch\Bundle\Test\Kernel"/>
+        <env name="KERNEL_CLASS" value="Meilisearch\Bundle\Tests\Kernel"/>
         <env name="APP_ENV" value="test"/>
         <env name="APP_DEBUG" value="false"/>
         <env name="MEILISEARCH_PREFIX" value="sf_phpunit_"/>

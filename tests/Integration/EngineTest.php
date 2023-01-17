@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Meilisearch\Bundle\Test\Integration;
+namespace Meilisearch\Bundle\Tests\Integration;
 
 use Meilisearch\Bundle\Engine;
-use Meilisearch\Bundle\Test\BaseKernelTestCase;
+use Meilisearch\Bundle\Tests\BaseKernelTestCase;
 use Meilisearch\Exceptions\ApiException;
 
 /**

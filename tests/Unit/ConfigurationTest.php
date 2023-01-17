@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Meilisearch\Bundle\Test\Unit;
+namespace Meilisearch\Bundle\Tests\Unit;
 
 use Meilisearch\Bundle\DependencyInjection\Configuration;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Meilisearch\Bundle\Test;
+namespace Meilisearch\Bundle\Tests;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Meilisearch\Bundle\MeilisearchBundle;
@@ -33,7 +33,7 @@ class Kernel extends HttpKernel
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load(__DIR__.'/config/config.yaml');
-        $loader->load(__DIR__.'/../src/Resources/config/services.xml');
+        $loader->load(__DIR__.'/../config/services.xml');
         $loader->load(__DIR__.'/config/meilisearch.yaml');
     }
 }
