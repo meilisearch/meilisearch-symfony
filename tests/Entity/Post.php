@@ -11,14 +11,18 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
+ *
  * @ORM\Table(name="posts")
  */
 class Post
 {
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue
+     *
      * @ORM\Column(type="integer")
+     *
      * @Groups({"searchable"})
      * ^ Note that Groups work on private properties
      */
@@ -26,6 +30,7 @@ class Post
 
     /**
      * @ORM\Column(type="string", nullable=true)
+     *
      * @Groups({"searchable"})
      * ^ Note that Groups work on private properties
      */
@@ -33,12 +38,14 @@ class Post
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     *
      * @Groups({"searchable"})
      */
     private ?string $content = null;
 
     /**
      * @ORM\Column(type="datetime")
+     *
      * @Groups({"searchable"})
      */
     private ?\DateTime $publishedAt = null;
@@ -51,7 +58,9 @@ class Post
      *      mappedBy="post",
      *      orphanRemoval=true
      * )
+     *
      * @ORM\OrderBy({"publishedAt": "DESC"})
+     *
      * @Groups({"searchable"})
      */
     private $comments;

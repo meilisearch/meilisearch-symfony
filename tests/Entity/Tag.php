@@ -17,6 +17,7 @@ class Tag implements NormalizableInterface
 {
     /**
      * @ORM\Id
+     *
      * @ORM\Column(type="integer", nullable=true)
      */
     private ?int $id;

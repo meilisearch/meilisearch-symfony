@@ -9,20 +9,25 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
+ *
  * @ORM\Table(name="comments")
  */
 class Comment
 {
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue
+     *
      * @ORM\Column(type="integer", nullable=true)
+     *
      * @Groups({"searchable"})
      */
     private ?int $id = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="Post", inversedBy="comments")
+     *
      * @ORM\JoinColumn(nullable=false)
      */
     private ?Post $post = null;
@@ -36,6 +41,7 @@ class Comment
      *     max=10000,
      *     maxMessage="comment.too_long"
      * )
+     *
      * @Groups({"searchable"})
      */
     private $content;
@@ -44,6 +50,7 @@ class Comment
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
+     *
      * @Groups({"searchable"})
      */
     private $publishedAt;
