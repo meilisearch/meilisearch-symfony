@@ -16,6 +16,7 @@ class Link implements NormalizableInterface
 {
     /**
      * @ORM\Id
+     *
      * @ORM\Column(type="integer")
      */
     private int $id;
