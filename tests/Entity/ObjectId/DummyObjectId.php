@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Meilisearch\Bundle\Test\Entity\ObjectId;
+namespace Meilisearch\Bundle\Tests\Entity\ObjectId;
 
 class DummyObjectId
 {

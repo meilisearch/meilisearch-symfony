@@ -2,32 +2,26 @@
 
 declare(strict_types=1);
 
-namespace Meilisearch\Bundle\Test\Unit;
+namespace Meilisearch\Bundle\Tests\Unit;
 
 use Meilisearch\Bundle\Searchable;
 use Meilisearch\Bundle\SearchableEntity;
-use Meilisearch\Bundle\Test\Entity\Comment;
-use Meilisearch\Bundle\Test\Entity\Post;
+use Meilisearch\Bundle\Tests\Entity\Comment;
+use Meilisearch\Bundle\Tests\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * Class SerializationTest.
  */
 class SerializationTest extends KernelTestCase
 {
-    /**
-     * @throws ExceptionInterface
-     */
     public function testSimpleEntityToSearchableArray(): void
     {
         $datetime = new \DateTime();
-        $dateSerializer = new Serializer([new DateTimeNormalizer()]);
+        $dateNormalizer = static::getContainer()->get('serializer.normalizer.datetime');
         // This way we can test that DateTime's are serialized with DateTimeNormalizer
         // And not the default ObjectNormalizer
-        $serializedDateTime = $dateSerializer->normalize($datetime, Searchable::NORMALIZATION_FORMAT);
+        $serializedDateTime = $dateNormalizer->normalize($datetime, Searchable::NORMALIZATION_FORMAT);
 
         $post = new Post(
             [

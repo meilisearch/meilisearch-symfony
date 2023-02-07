@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Meilisearch\Bundle\Test\Integration;
+namespace Meilisearch\Bundle\Tests\Integration;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ObjectManager;
-use Meilisearch\Bundle\Test\BaseKernelTestCase;
-use Meilisearch\Bundle\Test\Entity\Post;
-use Meilisearch\Bundle\Test\Entity\Tag;
+use Meilisearch\Bundle\Tests\BaseKernelTestCase;
+use Meilisearch\Bundle\Tests\Entity\Post;
+use Meilisearch\Bundle\Tests\Entity\Tag;
 use Meilisearch\Client;
 use Meilisearch\Endpoints\Indexes;
 use Meilisearch\Exceptions\ApiException;
@@ -67,12 +67,12 @@ class SearchTest extends BaseKernelTestCase
 
         $output = $commandTester->getDisplay();
 
-        $this->assertStringContainsString('Importing for index Meilisearch\Bundle\Test\Entity\Post', $output);
-        $this->assertStringContainsString('Importing for index Meilisearch\Bundle\Test\Entity\Tag', $output);
-        $this->assertStringContainsString('Indexed '.$i.' / '.$i.' Meilisearch\Bundle\Test\Entity\Post entities into sf_phpunit__posts index', $output);
-        $this->assertStringContainsString('Indexed '.$i.' / '.$i.' Meilisearch\Bundle\Test\Entity\Post entities into sf_phpunit__'.self::$indexName.' index', $output);
-        $this->assertStringContainsString('Indexed 1 / 1 Meilisearch\Bundle\Test\Entity\Tag entities into sf_phpunit__tags index', $output);
-        $this->assertStringContainsString('Indexed 1 / 1 Meilisearch\Bundle\Test\Entity\Tag entities into sf_phpunit__'.self::$indexName.' index', $output);
+        $this->assertStringContainsString('Importing for index Meilisearch\Bundle\Tests\Entity\Post', $output);
+        $this->assertStringContainsString('Importing for index Meilisearch\Bundle\Tests\Entity\Tag', $output);
+        $this->assertStringContainsString('Indexed '.$i.' / '.$i.' Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index', $output);
+        $this->assertStringContainsString('Indexed '.$i.' / '.$i.' Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__'.self::$indexName.' index', $output);
+        $this->assertStringContainsString('Indexed 1 / 1 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__tags index', $output);
+        $this->assertStringContainsString('Indexed 1 / 1 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__'.self::$indexName.' index', $output);
         $this->assertStringContainsString('Done!', $output);
 
         $searchTerm = 'Test';

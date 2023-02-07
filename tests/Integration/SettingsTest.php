@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Meilisearch\Bundle\Test\Integration;
+namespace Meilisearch\Bundle\Tests\Integration;
 
-use Meilisearch\Bundle\Test\BaseKernelTestCase;
+use Meilisearch\Bundle\Tests\BaseKernelTestCase;
 use Meilisearch\Client;
 use Meilisearch\Contracts\Index\TypoTolerance;
 use Symfony\Bundle\FrameworkBundle\Console\Application;

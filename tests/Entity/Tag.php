@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Meilisearch\Bundle\Test\Entity;
+namespace Meilisearch\Bundle\Tests\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Meilisearch\Bundle\Searchable;
@@ -17,6 +17,7 @@ class Tag implements NormalizableInterface
 {
     /**
      * @ORM\Id
+     *
      * @ORM\Column(type="integer", nullable=true)
      */
     private ?int $id;

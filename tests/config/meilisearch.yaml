@@ -6,7 +6,7 @@ meilisearch:
     batchSize: 100
     indices:
         -   name: posts
-            class: 'Meilisearch\Bundle\Test\Entity\Post'
+            class: 'Meilisearch\Bundle\Tests\Entity\Post'
             enable_serializer_groups: true
             settings:
                 stopWords: ['the', 'a', 'an']
@@ -19,18 +19,18 @@ meilisearch:
                         oneTypo: 5
                         twoTypos: 9
         -   name: comments
-            class: 'Meilisearch\Bundle\Test\Entity\Comment'
+            class: 'Meilisearch\Bundle\Tests\Entity\Comment'
         -   name: aggregated
-            class: 'Meilisearch\Bundle\Test\Entity\ContentAggregator'
+            class: 'Meilisearch\Bundle\Tests\Entity\ContentAggregator'
             index_if: isVisible
         -   name: tags
-            class: 'Meilisearch\Bundle\Test\Entity\Tag'
+            class: 'Meilisearch\Bundle\Tests\Entity\Tag'
             index_if: isPublic
         # Yes, we want to have links in the same index as tags
         # We just set the same index name 'tags'
         -   name: tags
-            class: 'Meilisearch\Bundle\Test\Entity\Link'
+            class: 'Meilisearch\Bundle\Tests\Entity\Link'
             index_if: isSponsored
         -   name: pages
-            class: 'Meilisearch\Bundle\Test\Entity\Page'
+            class: 'Meilisearch\Bundle\Tests\Entity\Page'
             enable_serializer_groups: true

@@ -6,7 +6,7 @@
     <services>
         <defaults autowire="true" autoconfigure="true"/>
 
-        <prototype namespace="Meilisearch\Bundle\Command\" resource="../../Command" />
+        <prototype namespace="Meilisearch\Bundle\Command\" resource="../src/Command" />
 
         <service id="search.search_indexer_subscriber"
                  class="Meilisearch\Bundle\EventListener\DoctrineEventSubscriber"

@@ -24,7 +24,7 @@ final class MeilisearchExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(\dirname(__DIR__).'/Resources/config'));
+        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../../config'));
         $loader->load('services.xml');
 
         $configuration = new Configuration();

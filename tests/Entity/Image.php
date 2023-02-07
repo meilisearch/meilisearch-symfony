@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Meilisearch\Bundle\Test\Entity;
+namespace Meilisearch\Bundle\Tests\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -13,7 +13,9 @@ class Image
 {
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue
+     *
      * @ORM\Column(type="integer")
      */
     private ?int $id;
