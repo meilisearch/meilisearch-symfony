@@ -34,3 +34,5 @@ meilisearch:
         -   name: pages
             class: 'Meilisearch\Bundle\Tests\Entity\Page'
             enable_serializer_groups: true
+        -   name: self_normalizable
+            class: 'Meilisearch\Bundle\Tests\Entity\SelfNormalizable'

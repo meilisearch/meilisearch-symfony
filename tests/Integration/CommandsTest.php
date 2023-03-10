@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle\Tests\Integration;
 
 use Meilisearch\Bundle\Tests\BaseKernelTestCase;
+use Meilisearch\Bundle\Tests\Entity\SelfNormalizable;
 use Meilisearch\Client;
 use Meilisearch\Endpoints\Indexes;
 use Meilisearch\Exceptions\ApiException;
@@ -85,6 +86,7 @@ Indexed 6 / 6 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__aggr
 Importing for index Meilisearch\Bundle\Tests\Entity\Link
 Importing for index Meilisearch\Bundle\Tests\Entity\Page
 Indexed 6 / 6 Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index
+Importing for index Meilisearch\Bundle\Tests\Entity\SelfNormalizable
 Importing for index Meilisearch\Bundle\Tests\Entity\Post
 Indexed 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index
 Indexed 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__aggregated index
@@ -108,6 +110,7 @@ Cleared sf_phpunit__aggregated index of Meilisearch\Bundle\Tests\Entity\ContentA
 Cleared sf_phpunit__tags index of Meilisearch\Bundle\Tests\Entity\Tag
 Cleared sf_phpunit__tags index of Meilisearch\Bundle\Tests\Entity\Link
 Cleared sf_phpunit__pages index of Meilisearch\Bundle\Tests\Entity\Page
+Cleared sf_phpunit__self_normalizable index of Meilisearch\Bundle\Tests\Entity\SelfNormalizable
 Done!
 
 EOD, $clearOutput);
@@ -124,6 +127,7 @@ Deleted sf_phpunit__comments
 Deleted sf_phpunit__aggregated
 Deleted sf_phpunit__tags
 Deleted sf_phpunit__pages
+Deleted sf_phpunit__self_normalizable
 Done!
 
 EOD, $clearOutput);
@@ -298,6 +302,7 @@ Creating index sf_phpunit__comments for Meilisearch\Bundle\Tests\Entity\Comment
 Creating index sf_phpunit__tags for Meilisearch\Bundle\Tests\Entity\Tag
 Creating index sf_phpunit__tags for Meilisearch\Bundle\Tests\Entity\Link
 Creating index sf_phpunit__pages for Meilisearch\Bundle\Tests\Entity\Page
+Creating index sf_phpunit__self_normalizable for Meilisearch\Bundle\Tests\Entity\SelfNormalizable
 Creating index sf_phpunit__aggregated for Meilisearch\Bundle\Tests\Entity\Post
 Creating index sf_phpunit__aggregated for Meilisearch\Bundle\Tests\Entity\Tag
 Done!
@@ -329,5 +334,42 @@ EOD, $createOutput);
         $createCommandTester->execute([]);
 
         $this->assertEquals($this->client->getTasks()->getResults()[0]['type'], 'indexCreation');
+    }
+
+    public function testImportsSelfNormalizable(): void
+    {
+        for ($i = 1; $i <= 2; ++$i) {
+            $this->entityManager->persist(new SelfNormalizable($i, "Self normalizabie $i"));
+        }
+
+        $this->entityManager->flush();
+
+        $importCommand = $this->application->find('meili:import');
+        $importCommandTester = new CommandTester($importCommand);
+        $importCommandTester->execute(['--indices' => 'self_normalizable']);
+
+        $importOutput = $importCommandTester->getDisplay();
+
+        $this->assertSame(<<<'EOD'
+Importing for index Meilisearch\Bundle\Tests\Entity\SelfNormalizable
+Indexed 2 / 2 Meilisearch\Bundle\Tests\Entity\SelfNormalizable entities into sf_phpunit__self_normalizable index
+Done!
+
+EOD, $importOutput);
+
+        self::assertSame([
+            [
+                'objectID' => 1,
+                'id' => 1,
+                'name' => 'this test is correct',
+                'self_normalized' => true,
+            ],
+            [
+                'objectID' => 2,
+                'id' => 2,
+                'name' => 'this test is correct',
+                'self_normalized' => true,
+            ],
+        ], $this->client->index('sf_phpunit__self_normalizable')->getDocuments()->getResults());
     }
 }

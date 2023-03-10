@@ -16,14 +16,14 @@ use Meilisearch\Bundle\SearchService;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Class MeilisearchService.
  */
 final class MeilisearchService implements SearchService
 {
-    private SerializerInterface $normalizer;
+    private NormalizerInterface $normalizer;
     private Engine $engine;
     private Collection $configuration;
     private PropertyAccessor $propertyAccessor;
@@ -33,7 +33,7 @@ final class MeilisearchService implements SearchService
     private array $classToSerializerGroupMapping;
     private array $indexIfMapping;
 
-    public function __construct(SerializerInterface $normalizer, Engine $engine, array $configuration)
+    public function __construct(NormalizerInterface $normalizer, Engine $engine, array $configuration)
     {
         $this->normalizer = $normalizer;
         $this->engine = $engine;
