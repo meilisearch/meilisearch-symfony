@@ -7,6 +7,7 @@ namespace Meilisearch\Bundle;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -22,8 +23,7 @@ final class SearchableEntity
     /** @var ClassMetadata<object> */
     private ClassMetadata $entityMetadata;
 
-    /** @var object */
-    private $normalizer;
+    private ?NormalizerInterface $normalizer;
 
     private bool $useSerializerGroups;
 
@@ -34,14 +34,13 @@ final class SearchableEntity
      * SearchableEntity constructor.
      *
      * @param object                $entity
-     * @param object|null           $normalizer
      * @param ClassMetadata<object> $entityMetadata
      */
     public function __construct(
         string $indexUid,
         $entity,
         ClassMetadata $entityMetadata,
-        $normalizer = null,
+        ?NormalizerInterface $normalizer = null,
         array $extra = []
     ) {
         $this->indexUid = $indexUid;
@@ -71,7 +70,11 @@ final class SearchableEntity
             $context['groups'] = [Searchable::NORMALIZATION_GROUP];
         }
 
-        if ($this->normalizer instanceof NormalizerInterface) {
+        if ($this->entity instanceof NormalizableInterface && null !== $this->normalizer) {
+            return $this->entity->normalize($this->normalizer, Searchable::NORMALIZATION_FORMAT, $context);
+        }
+
+        if (null !== $this->normalizer) {
             return $this->normalizer->normalize($this->entity, Searchable::NORMALIZATION_FORMAT, $context);
         }
 
@@ -86,7 +89,7 @@ final class SearchableEntity
             throw new Exception('Entity has no primary key');
         }
 
-        if (1 == \count($ids)) {
+        if (1 === \count($ids)) {
             $this->id = reset($ids);
         } else {
             $objectID = '';
