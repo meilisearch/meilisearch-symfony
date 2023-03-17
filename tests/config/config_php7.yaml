@@ -1,6 +1,9 @@
 framework:
     test: true
     secret: 67d829bf61dc5f87a73fd814e2c9f629
+    annotations: true
+    serializer:
+        enable_annotations: true
 
 doctrine:
     dbal:
@@ -16,7 +19,7 @@ doctrine:
         mappings:
             App:
                 is_bundle: false
-                type: attribute
+                type: annotation
                 dir: '%kernel.project_dir%/tests/Entity'
                 prefix: 'Meilisearch\Bundle\Tests\Entity'
                 alias: App

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Meilisearch\Bundle\Tests\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -12,6 +13,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @ORM\Table(name="pages")
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'pages')]
 class Page
 {
     /**
@@ -21,6 +24,9 @@ class Page
      *
      * @ORM\Column(type="object")
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'NONE')]
+    #[ORM\Column(type: Types::OBJECT)]
     private $id = null;
 
     /**
@@ -28,6 +34,8 @@ class Page
      *
      * @Groups({"searchable"})
      */
+    #[ORM\Column(type: Types::STRING, nullable: true)]
+    #[Groups('searchable')]
     private ?string $title = null;
 
     /**
@@ -35,6 +43,8 @@ class Page
      *
      * @Groups({"searchable"})
      */
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups('searchable')]
     private ?string $content = null;
 
     public function getId()

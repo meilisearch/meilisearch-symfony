@@ -32,7 +32,11 @@ class Kernel extends HttpKernel
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        $loader->load(__DIR__.'/config/config.yaml');
+        if (PHP_VERSION_ID >= 80000) {
+            $loader->load(__DIR__.'/config/config.yaml');
+        } else {
+            $loader->load(__DIR__.'/config/config_php7.yaml');
+        }
         $loader->load(__DIR__.'/../config/services.xml');
         $loader->load(__DIR__.'/config/meilisearch.yaml');
     }

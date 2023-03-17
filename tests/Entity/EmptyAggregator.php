@@ -10,6 +10,7 @@ use Meilisearch\Bundle\Entity\Aggregator;
 /**
  * @ORM\Entity
  */
+#[ORM\Entity]
 class EmptyAggregator extends Aggregator
 {
 }
