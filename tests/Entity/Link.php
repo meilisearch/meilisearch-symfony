@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Meilisearch\Bundle\Tests\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Meilisearch\Bundle\Searchable;
 use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
@@ -12,6 +13,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 /**
  * @ORM\Entity
  */
+#[ORM\Entity]
 class Link implements NormalizableInterface
 {
     /**
@@ -19,21 +21,26 @@ class Link implements NormalizableInterface
      *
      * @ORM\Column(type="integer")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: Types::INTEGER)]
     private int $id;
 
     /**
      * @ORM\Column(type="string")
      */
+    #[ORM\Column(type: Types::STRING)]
     private string $name = 'Test link';
 
     /**
      * @ORM\Column(type="string")
      */
+    #[ORM\Column(type: Types::STRING)]
     private string $url = 'https://docs.meilisearch.com';
 
     /**
      * @ORM\Column(type="boolean", options={"default"=false})
      */
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
     private bool $isSponsored = false;
 
     public function getId(): int

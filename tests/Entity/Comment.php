@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Meilisearch\Bundle\Tests\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -12,6 +13,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @ORM\Table(name="comments")
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'comments')]
 class Comment
 {
     /**
@@ -23,6 +26,10 @@ class Comment
      *
      * @Groups({"searchable"})
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[Groups('searchable')]
     private ?int $id = null;
 
     /**
@@ -30,20 +37,19 @@ class Comment
      *
      * @ORM\JoinColumn(nullable=false)
      */
+    #[ORM\ManyToOne(inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Post $post = null;
 
     /**
      * @var string
      *
      * @ORM\Column(type="text")
-     *     min=5,
-     *     minMessage="comment.too_short",
-     *     max=10000,
-     *     maxMessage="comment.too_long"
-     * )
      *
      * @Groups({"searchable"})
      */
+    #[ORM\Column(type: Types::TEXT)]
+    #[Groups('searchable')]
     private $content;
 
     /**
@@ -53,6 +59,8 @@ class Comment
      *
      * @Groups({"searchable"})
      */
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups('searchable')]
     private $publishedAt;
 
     /**

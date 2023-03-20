@@ -6,6 +6,7 @@ namespace Meilisearch\Bundle\Tests\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -14,6 +15,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @ORM\Table(name="posts")
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'posts')]
 class Post
 {
     /**
@@ -26,6 +29,10 @@ class Post
      * @Groups({"searchable"})
      * ^ Note that Groups work on private properties
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
+    #[Groups('searchable')]
     private ?int $id = null;
 
     /**
@@ -34,6 +41,8 @@ class Post
      * @Groups({"searchable"})
      * ^ Note that Groups work on private properties
      */
+    #[ORM\Column(type: Types::STRING, nullable: true)]
+    #[Groups('searchable')]
     private ?string $title = null;
 
     /**
@@ -41,6 +50,8 @@ class Post
      *
      * @Groups({"searchable"})
      */
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups('searchable')]
     private ?string $content = null;
 
     /**
@@ -48,10 +59,12 @@ class Post
      *
      * @Groups({"searchable"})
      */
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups('searchable')]
     private ?\DateTime $publishedAt = null;
 
     /**
-     * @var Comment[]|Collection
+     * @var Collection<int, Comment>
      *
      * @ORM\OneToMany(
      *      targetEntity="Comment",
@@ -63,6 +76,9 @@ class Post
      *
      * @Groups({"searchable"})
      */
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'post', orphanRemoval: true)]
+    #[ORM\OrderBy(['publishedAt' => 'DESC'])]
+    #[Groups('searchable')]
     private $comments;
 
     /**
