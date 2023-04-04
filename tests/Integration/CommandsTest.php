@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle\Tests\Integration;
 
 use Meilisearch\Bundle\Tests\BaseKernelTestCase;
+use Meilisearch\Bundle\Tests\Entity\DummyCustomGroups;
 use Meilisearch\Bundle\Tests\Entity\SelfNormalizable;
 use Meilisearch\Client;
 use Meilisearch\Endpoints\Indexes;
@@ -87,6 +88,7 @@ Importing for index Meilisearch\Bundle\Tests\Entity\Link
 Importing for index Meilisearch\Bundle\Tests\Entity\Page
 Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index (6 indexed since start)
 Importing for index Meilisearch\Bundle\Tests\Entity\SelfNormalizable
+Importing for index Meilisearch\Bundle\Tests\Entity\DummyCustomGroups
 Importing for index Meilisearch\Bundle\Tests\Entity\Post
 Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index (6 indexed since start)
 Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__aggregated index (6 indexed since start)
@@ -111,6 +113,7 @@ Cleared sf_phpunit__tags index of Meilisearch\Bundle\Tests\Entity\Tag
 Cleared sf_phpunit__tags index of Meilisearch\Bundle\Tests\Entity\Link
 Cleared sf_phpunit__pages index of Meilisearch\Bundle\Tests\Entity\Page
 Cleared sf_phpunit__self_normalizable index of Meilisearch\Bundle\Tests\Entity\SelfNormalizable
+Cleared sf_phpunit__dummy_custom_groups index of Meilisearch\Bundle\Tests\Entity\DummyCustomGroups
 Done!
 
 EOD, $clearOutput);
@@ -128,6 +131,7 @@ Deleted sf_phpunit__aggregated
 Deleted sf_phpunit__tags
 Deleted sf_phpunit__pages
 Deleted sf_phpunit__self_normalizable
+Deleted sf_phpunit__dummy_custom_groups
 Done!
 
 EOD, $clearOutput);
@@ -326,6 +330,7 @@ Creating index sf_phpunit__tags for Meilisearch\Bundle\Tests\Entity\Tag
 Creating index sf_phpunit__tags for Meilisearch\Bundle\Tests\Entity\Link
 Creating index sf_phpunit__pages for Meilisearch\Bundle\Tests\Entity\Page
 Creating index sf_phpunit__self_normalizable for Meilisearch\Bundle\Tests\Entity\SelfNormalizable
+Creating index sf_phpunit__dummy_custom_groups for Meilisearch\Bundle\Tests\Entity\DummyCustomGroups
 Creating index sf_phpunit__aggregated for Meilisearch\Bundle\Tests\Entity\Post
 Creating index sf_phpunit__aggregated for Meilisearch\Bundle\Tests\Entity\Tag
 Done!
@@ -394,5 +399,42 @@ EOD, $importOutput);
                 'self_normalized' => true,
             ],
         ], $this->client->index('sf_phpunit__self_normalizable')->getDocuments()->getResults());
+    }
+
+    public function testImportsDummyWithCustomGroups(): void
+    {
+        for ($i = 1; $i <= 2; ++$i) {
+            $this->entityManager->persist(new DummyCustomGroups($i, "Dummy $i", new \DateTimeImmutable('2024-04-04 07:32:0'.$i)));
+        }
+
+        $this->entityManager->flush();
+
+        $importCommand = $this->application->find('meili:import');
+        $importCommandTester = new CommandTester($importCommand);
+        $importCommandTester->execute(['--indices' => 'dummy_custom_groups']);
+
+        $importOutput = $importCommandTester->getDisplay();
+
+        $this->assertSame(<<<'EOD'
+Importing for index Meilisearch\Bundle\Tests\Entity\DummyCustomGroups
+Indexed a batch of 2 / 2 Meilisearch\Bundle\Tests\Entity\DummyCustomGroups entities into sf_phpunit__dummy_custom_groups index (2 indexed since start)
+Done!
+
+EOD, $importOutput);
+
+        self::assertSame([
+            [
+                'objectID' => 1,
+                'id' => 1,
+                'name' => 'Dummy 1',
+                'createdAt' => '2024-04-04T07:32:01+00:00',
+            ],
+            [
+                'objectID' => 2,
+                'id' => 2,
+                'name' => 'Dummy 2',
+                'createdAt' => '2024-04-04T07:32:02+00:00',
+            ],
+        ], $this->client->index('sf_phpunit__dummy_custom_groups')->getDocuments()->getResults());
     }
 }

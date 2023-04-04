@@ -25,7 +25,10 @@ final class SearchableEntity
 
     private ?NormalizerInterface $normalizer;
 
-    private bool $useSerializerGroups;
+    /**
+     * @var list<string>
+     */
+    private array $normalizationGroups;
 
     /** @var int|string */
     private $id;
@@ -47,7 +50,7 @@ final class SearchableEntity
         $this->entity = $entity;
         $this->entityMetadata = $entityMetadata;
         $this->normalizer = $normalizer;
-        $this->useSerializerGroups = isset($extra['useSerializerGroup']) && $extra['useSerializerGroup'];
+        $this->normalizationGroups = $extra['normalizationGroups'] ?? [];
 
         $this->setId();
     }
@@ -66,8 +69,8 @@ final class SearchableEntity
             'fieldsMapping' => $this->entityMetadata->fieldMappings,
         ];
 
-        if ($this->useSerializerGroups) {
-            $context['groups'] = [Searchable::NORMALIZATION_GROUP];
+        if (count($this->normalizationGroups) > 0) {
+            $context['groups'] = $this->normalizationGroups;
         }
 
         if ($this->entity instanceof NormalizableInterface && null !== $this->normalizer) {

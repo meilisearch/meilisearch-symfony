@@ -36,3 +36,7 @@ meilisearch:
             enable_serializer_groups: true
         -   name: self_normalizable
             class: 'Meilisearch\Bundle\Tests\Entity\SelfNormalizable'
+        -   name: dummy_custom_groups
+            class: 'Meilisearch\Bundle\Tests\Entity\DummyCustomGroups'
+            enable_serializer_groups: true
+            serializer_groups: ['public', 'private']

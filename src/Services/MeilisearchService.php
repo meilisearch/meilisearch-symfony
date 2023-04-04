@@ -257,7 +257,7 @@ final class MeilisearchService implements SearchService
 
         /** @var array $indexDetails */
         foreach ($this->configuration->get('indices') as $indexDetails) {
-            $mapping[$indexDetails['class']] = $indexDetails['enable_serializer_groups'];
+            $mapping[$indexDetails['class']] = $indexDetails['enable_serializer_groups'] ? $indexDetails['serializer_groups'] : [];
         }
         $this->classToSerializerGroup = $mapping;
     }
@@ -320,7 +320,7 @@ final class MeilisearchService implements SearchService
                     $entity,
                     $objectManager->getClassMetadata($entityClassName),
                     $this->normalizer,
-                    ['useSerializerGroup' => $this->canUseSerializerGroup($entityClassName)]
+                    ['normalizationGroups' => $this->getNormalizationGroups($entityClassName)]
                 );
             }
 
@@ -330,7 +330,12 @@ final class MeilisearchService implements SearchService
         return $batch;
     }
 
-    private function canUseSerializerGroup(string $className): bool
+    /**
+     * @param class-string $className
+     *
+     * @return list<string>
+     */
+    private function getNormalizationGroups(string $className): array
     {
         return $this->classToSerializerGroup[$className];
     }
