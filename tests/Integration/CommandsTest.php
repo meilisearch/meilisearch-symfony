@@ -74,25 +74,25 @@ class CommandsTest extends BaseKernelTestCase
 
         $this->assertSame(<<<'EOD'
 Importing for index Meilisearch\Bundle\Tests\Entity\Post
-Indexed 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index
-Indexed 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__aggregated index
+Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index (6 indexed since start)
+Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__aggregated index (6 indexed since start)
 Settings updated.
 Settings updated.
 Settings updated.
 Importing for index Meilisearch\Bundle\Tests\Entity\Comment
 Importing for index Meilisearch\Bundle\Tests\Entity\Tag
-Indexed 6 / 6 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__tags index
-Indexed 6 / 6 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__aggregated index
+Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__tags index (6 indexed since start)
+Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__aggregated index (6 indexed since start)
 Importing for index Meilisearch\Bundle\Tests\Entity\Link
 Importing for index Meilisearch\Bundle\Tests\Entity\Page
-Indexed 6 / 6 Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index
+Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index (6 indexed since start)
 Importing for index Meilisearch\Bundle\Tests\Entity\SelfNormalizable
 Importing for index Meilisearch\Bundle\Tests\Entity\Post
-Indexed 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index
-Indexed 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__aggregated index
+Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index (6 indexed since start)
+Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__aggregated index (6 indexed since start)
 Importing for index Meilisearch\Bundle\Tests\Entity\Tag
-Indexed 6 / 6 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__tags index
-Indexed 6 / 6 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__aggregated index
+Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__tags index (6 indexed since start)
+Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__aggregated index (6 indexed since start)
 Done!
 
 EOD, $importOutput);
@@ -150,12 +150,12 @@ EOD, $clearOutput);
 
         $this->assertSame(<<<'EOD'
 Importing for index Meilisearch\Bundle\Tests\Entity\Page
-Indexed 2 / 2 Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index
-Indexed 2 / 2 Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index
-Indexed 2 / 2 Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index
-Indexed 2 / 2 Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index
-Indexed 2 / 2 Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index
-Indexed 1 / 1 Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index
+Indexed a batch of 2 / 2 Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index (2 indexed since start)
+Indexed a batch of 2 / 2 Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index (4 indexed since start)
+Indexed a batch of 2 / 2 Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index (6 indexed since start)
+Indexed a batch of 2 / 2 Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index (8 indexed since start)
+Indexed a batch of 2 / 2 Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index (10 indexed since start)
+Indexed a batch of 1 / 1 Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index (11 indexed since start)
 Done!
 
 EOD, $importOutput);
@@ -176,7 +176,7 @@ EOD, $importOutput);
         $output = $importCommandTester->getDisplay();
 
         $this->assertStringContainsString('Importing for index Meilisearch\Bundle\Tests\Entity\Page', $output);
-        $this->assertStringContainsString('Indexed '.$i.' / '.$i.' Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index', $output);
+        $this->assertStringContainsString('Indexed a batch of '.$i.' / '.$i.' Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index ('.$i.' indexed since start)', $output);
         $this->assertStringContainsString('Done!', $output);
         $this->assertSame(0, $return);
 
@@ -197,7 +197,7 @@ EOD, $importOutput);
         $output = $importCommandTester->getDisplay();
 
         $this->assertStringContainsString('Importing for index Meilisearch\Bundle\Tests\Entity\Page', $output);
-        $this->assertStringContainsString('Indexed '.$i.' / '.$i.' Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index', $output);
+        $this->assertStringContainsString('Indexed a batch of '.$i.' / '.$i.' Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index ('.$i.' indexed since start)', $output);
         $this->assertStringContainsString('Done!', $output);
         $this->assertSame(0, $return);
     }
@@ -221,8 +221,8 @@ EOD, $importOutput);
 
         $output = $commandTester->getDisplay();
         $this->assertStringContainsString('Importing for index Meilisearch\Bundle\Tests\Entity\Tag', $output);
-        $this->assertStringContainsString('Indexed '.$i.' / '.$i.' Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__tags index', $output);
-        $this->assertStringContainsString('Indexed 2 / 2 Meilisearch\Bundle\Tests\Entity\Link entities into sf_phpunit__tags index', $output);
+        $this->assertStringContainsString('Indexed a batch of '.$i.' / '.$i.' Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__tags index ('.$i.' indexed since start)', $output);
+        $this->assertStringContainsString('Indexed a batch of 2 / 2 Meilisearch\Bundle\Tests\Entity\Link entities into sf_phpunit__tags index (2 indexed since start)', $output);
         $this->assertStringContainsString('Done!', $output);
 
         /** @var SearchResult $searchResult */
@@ -245,7 +245,30 @@ EOD, $importOutput);
 
         $output = $commandTester->getDisplay();
         $this->assertStringContainsString('Importing for index Meilisearch\Bundle\Tests\Entity\Post', $output);
-        $this->assertStringContainsString('Indexed '.$i.' / '.$i.' Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__'.self::$indexName.' index', $output);
+        $this->assertStringContainsString('Indexed a batch of '.$i.' / '.$i.' Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__'.self::$indexName.' index ('.$i.' indexed since start)', $output);
+        $this->assertStringContainsString('Done!', $output);
+        $this->assertSame(0, $return);
+    }
+
+    public function testSearchImportWithSkipBatches(): void
+    {
+        for ($i = 0; $i < 10; ++$i) {
+            $this->createPage($i);
+        }
+
+        $command = $this->application->find('meili:import');
+        $commandTester = new CommandTester($command);
+        $return = $commandTester->execute([
+            '--indices' => 'pages',
+            '--batch-size' => '3',
+            '--skip-batches' => '2',
+        ]);
+
+        $output = $commandTester->getDisplay();
+        $this->assertStringContainsString('Importing for index Meilisearch\Bundle\Tests\Entity\Page', $output);
+        $this->assertStringContainsString('Skipping first 2 batches (6 records)', $output);
+        $this->assertStringContainsString('Indexed a batch of 3 / 3 Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index (3 indexed since start)', $output);
+        $this->assertStringContainsString('Indexed a batch of 1 / 1 Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index (4 indexed since start)', $output);
         $this->assertStringContainsString('Done!', $output);
         $this->assertSame(0, $return);
     }
@@ -264,7 +287,7 @@ EOD, $importOutput);
 
         $output = $commandTester->getDisplay();
         $this->assertStringContainsString('Importing for index Meilisearch\Bundle\Tests\Entity\Post', $output);
-        $this->assertStringContainsString('Indexed '.$i.' / '.$i.' Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__'.self::$indexName.' index', $output);
+        $this->assertStringContainsString('Indexed a batch of '.$i.' / '.$i.' Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__'.self::$indexName.' index ('.$i.' indexed since start)', $output);
         $this->assertStringContainsString('Done!', $output);
         $this->assertSame(0, $return);
 
@@ -283,7 +306,7 @@ EOD, $importOutput);
 
         $output = $commandTester->getDisplay();
         $this->assertStringContainsString('Importing for index Meilisearch\Bundle\Tests\Entity\Post', $output);
-        $this->assertStringContainsString('Indexed '.$i.' / '.$i.' Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__'.self::$indexName.' index', $output);
+        $this->assertStringContainsString('Indexed a batch of '.$i.' / '.$i.' Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__'.self::$indexName.' index ('.$i.' indexed since start)', $output);
         $this->assertStringContainsString('Done!', $output);
         $this->assertSame(0, $return);
     }
@@ -352,7 +375,7 @@ EOD, $createOutput);
 
         $this->assertSame(<<<'EOD'
 Importing for index Meilisearch\Bundle\Tests\Entity\SelfNormalizable
-Indexed 2 / 2 Meilisearch\Bundle\Tests\Entity\SelfNormalizable entities into sf_phpunit__self_normalizable index
+Indexed a batch of 2 / 2 Meilisearch\Bundle\Tests\Entity\SelfNormalizable entities into sf_phpunit__self_normalizable index (2 indexed since start)
 Done!
 
 EOD, $importOutput);

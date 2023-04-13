@@ -56,6 +56,13 @@ final class MeilisearchImportCommand extends IndexCommand
             )
             ->addOption('batch-size', null, InputOption::VALUE_REQUIRED)
             ->addOption(
+                'skip-batches',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Skip the first N batches and start importing from the N+1 batch',
+                0
+            )
+            ->addOption(
                 'response-timeout',
                 't',
                 InputOption::VALUE_REQUIRED,
@@ -86,7 +93,7 @@ final class MeilisearchImportCommand extends IndexCommand
         }
 
         $entitiesToIndex = array_unique($indexes->all(), SORT_REGULAR);
-        $batchSize = $input->getOption('batch-size');
+        $batchSize = $input->getOption('batch-size') ?? '';
         $batchSize = ctype_digit($batchSize) ? (int) $batchSize : $config->get('batchSize');
         $responseTimeout = ((int) $input->getOption('response-timeout')) ?: self::DEFAULT_RESPONSE_TIMEOUT;
 
@@ -97,29 +104,47 @@ final class MeilisearchImportCommand extends IndexCommand
                 continue;
             }
 
+            $totalIndexed = 0;
+
             $manager = $this->managerRegistry->getManagerForClass($entityClassName);
             $repository = $manager->getRepository($entityClassName);
+            $classMetadata = $manager->getClassMetadata($entityClassName);
+            $entityIdentifiers = $classMetadata->getIdentifierFieldNames();
+            $sortByIdentifiersParam = array_combine($entityIdentifiers, array_fill(0, count($entityIdentifiers), 'ASC'));
 
             $output->writeln('<info>Importing for index '.$entityClassName.'</info>');
 
-            $page = 0;
+            $page = max(0, (int) $input->getOption('skip-batches'));
+
+            if ($page > 0) {
+                $output->writeln(
+                    sprintf(
+                        '<info>Skipping first <comment>%d</comment> batches (<comment>%d</comment> records)</info>',
+                        $page,
+                        $page * $batchSize,
+                    )
+                );
+            }
+
             do {
                 $entities = $repository->findBy(
                     [],
-                    null,
+                    $sortByIdentifiersParam,
                     $batchSize,
                     $batchSize * $page
                 );
 
                 $responses = $this->formatIndexingResponse($this->searchService->index($manager, $entities), $responseTimeout);
+                $totalIndexed += count($entities);
                 foreach ($responses as $indexName => $numberOfRecords) {
                     $output->writeln(
                         sprintf(
-                            'Indexed <comment>%s / %s</comment> %s entities into %s index',
+                            'Indexed a batch of <comment>%d / %d</comment> %s entities into %s index (%d indexed since start)',
                             $numberOfRecords,
                             count($entities),
                             $entityClassName,
-                            '<info>'.$indexName.'</info>'
+                            '<info>'.$indexName.'</info>',
+                            $totalIndexed,
                         )
                     );
                 }

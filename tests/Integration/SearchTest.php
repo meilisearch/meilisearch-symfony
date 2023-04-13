@@ -69,10 +69,10 @@ class SearchTest extends BaseKernelTestCase
 
         $this->assertStringContainsString('Importing for index Meilisearch\Bundle\Tests\Entity\Post', $output);
         $this->assertStringContainsString('Importing for index Meilisearch\Bundle\Tests\Entity\Tag', $output);
-        $this->assertStringContainsString('Indexed '.$i.' / '.$i.' Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index', $output);
-        $this->assertStringContainsString('Indexed '.$i.' / '.$i.' Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__'.self::$indexName.' index', $output);
-        $this->assertStringContainsString('Indexed 1 / 1 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__tags index', $output);
-        $this->assertStringContainsString('Indexed 1 / 1 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__'.self::$indexName.' index', $output);
+        $this->assertStringContainsString('Indexed a batch of '.$i.' / '.$i.' Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index ('.$i.' indexed since start)', $output);
+        $this->assertStringContainsString('Indexed a batch of '.$i.' / '.$i.' Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__'.self::$indexName.' index ('.$i.' indexed since start)', $output);
+        $this->assertStringContainsString('Indexed a batch of 1 / 1 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__tags index (1 indexed since start)', $output);
+        $this->assertStringContainsString('Indexed a batch of 1 / 1 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__'.self::$indexName.' index (1 indexed since start)', $output);
         $this->assertStringContainsString('Done!', $output);
 
         $searchTerm = 'Test';
