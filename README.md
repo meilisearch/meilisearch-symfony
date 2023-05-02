@@ -17,7 +17,7 @@
   <a href="https://packagist.org/packages/meilisearch/search-bundle"><img src="https://img.shields.io/packagist/v/meilisearch/search-bundle" alt="Latest Stable Version"></a>
   <a href="https://github.com/meilisearch/meilisearch-symfony/actions"><img src="https://github.com/meilisearch/meilisearch-symfony/workflows/Tests/badge.svg" alt="Test"></a>
   <a href="https://github.com/meilisearch/meilisearch-symfony/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-informational" alt="License"></a>
-  <a href="https://app.bors.tech/repositories/29020"><img src="https://bors.tech/images/badge_small.svg" alt="Bors enabled"></a>
+  <a href="https://ms-bors.herokuapp.com/repositories/64"><img src="https://bors.tech/images/badge_small.svg" alt="Bors enabled"></a>
 </p>
 
 <p align="center">⚡ The Meilisearch bundle for Symfony</p>
