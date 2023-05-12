@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Meilisearch\Bundle\Tests\Integration;
 
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Meilisearch\Bundle\EventListener\DoctrineEventSubscriber;
 use Meilisearch\Bundle\Tests\BaseKernelTestCase;
 use Meilisearch\Bundle\Tests\Entity\SelfNormalizable;
 use Meilisearch\Client;
@@ -394,5 +396,37 @@ EOD, $importOutput);
                 'self_normalized' => true,
             ],
         ], $this->client->index('sf_phpunit__self_normalizable')->getDocuments()->getResults());
+    }
+
+    public function testIndexingConsistencyFromCommandAndDoctrineListener(): void
+    {
+        $this->createPage(1);
+
+        $importCommand = $this->application->find('meili:import');
+        $importCommandTester = new CommandTester($importCommand);
+        $importCommandTester->execute(['--indices' => 'pages']);
+
+        $this->client->waitForTask($this->client->getTasks()->getResults()[0]['uid']);
+
+        $page2 = $this->createPage(2);
+        $eventArgs = new LifecycleEventArgs($page2, $this->entityManager);
+
+        $subscriber = new DoctrineEventSubscriber($this->searchService, []);
+        $subscriber->postPersist($eventArgs);
+
+        $this->client->waitForTask($this->client->getTasks()->getResults()[0]['uid']);
+
+        self::assertSame([
+            [
+                'objectID' => '1',
+                'title' => 'Test Page',
+                'content' => 'Test content page',
+            ],
+            [
+                'objectID' => '2',
+                'title' => 'Test Page',
+                'content' => 'Test content page',
+            ],
+        ], $this->client->index('sf_phpunit__pages')->getDocuments()->getResults());
     }
 }
