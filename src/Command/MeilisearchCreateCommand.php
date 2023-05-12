@@ -42,10 +42,7 @@ final class MeilisearchCreateCommand extends IndexCommand
             ->addOption('indices', 'i', InputOption::VALUE_OPTIONAL, 'Comma-separated list of index names');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $indexes = $this->getEntitiesFromArgs($input, $output);
-
+    private function entitiesToIndex($indexes) {
         foreach ($indexes as $key => $index) {
             $entityClassName = $index['class'];
             if (is_subclass_of($entityClassName, Aggregator::class)) {
@@ -61,7 +58,13 @@ final class MeilisearchCreateCommand extends IndexCommand
             }
         }
 
-        $entitiesToIndex = array_unique($indexes->all(), SORT_REGULAR);
+        return array_unique($indexes->all(), SORT_REGULAR);
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $indexes = $this->getEntitiesFromArgs($input, $output);
+        $entitiesToIndex = $this->entitiesToIndex($indexes);
 
         /** @var array $index */
         foreach ($entitiesToIndex as $index) {
