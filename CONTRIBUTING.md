@@ -61,6 +61,8 @@ composer lint:check
 composer lint:fix
 # PHPstan
 composer phpstan
+# PHPMD
+composer phpmd
 ```
 
 ### Using the Docker Environment

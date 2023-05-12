@@ -29,6 +29,7 @@
   "require-dev": {
     "doctrine/annotations": "^2.0",
     "doctrine/orm": "^2.9",
+    "phpmd/phpmd": "^2.13",
     "matthiasnoback/symfony-dependency-injection-test": "^4.3",
     "nyholm/psr7": "^1.5.1",
     "php-cs-fixer/shim": "^3.14",
@@ -62,6 +63,7 @@
     }
   },
   "scripts": {
+    "phpmd": "./vendor/bin/phpmd src text phpmd.xml",
     "phpstan": "./vendor/bin/phpstan --memory-limit=1G --ansi",
     "test:unit": "./vendor/bin/phpunit --colors=always --verbose",
     "test:unit:coverage": "XDEBUG_MODE=coverage ./vendor/bin/phpunit --colors=always --coverage-html=tests/coverage",
