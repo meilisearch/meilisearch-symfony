@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace Meilisearch\Bundle;
 
+//
+/**
+ * This class was extracted from illuminate.
+ * This will suppress all the PMD warnings in this class.
+ *
+ * @SuppressWarnings(PHPMD)
+ */
 final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
 {
     /**
