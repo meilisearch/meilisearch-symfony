@@ -42,7 +42,8 @@ final class MeilisearchCreateCommand extends IndexCommand
             ->addOption('indices', 'i', InputOption::VALUE_OPTIONAL, 'Comma-separated list of index names');
     }
 
-    private function entitiesToIndex($indexes) {
+    private function entitiesToIndex($indexes)
+    {
         foreach ($indexes as $key => $index) {
             $entityClassName = $index['class'];
             if (is_subclass_of($entityClassName, Aggregator::class)) {

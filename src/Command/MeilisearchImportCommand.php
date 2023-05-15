@@ -110,7 +110,7 @@ final class MeilisearchImportCommand extends IndexCommand
             $repository = $manager->getRepository($entityClassName);
             $classMetadata = $manager->getClassMetadata($entityClassName);
             $entityIdentifiers = $classMetadata->getIdentifierFieldNames();
-            $sortByAttrsParam = array_combine($entityIdentifiers, array_fill(0, count($entityIdentifiers), 'ASC'));
+            $sortByAttrs = array_combine($entityIdentifiers, array_fill(0, count($entityIdentifiers), 'ASC'));
 
             $output->writeln('<info>Importing for index '.$entityClassName.'</info>');
 
@@ -129,7 +129,7 @@ final class MeilisearchImportCommand extends IndexCommand
             do {
                 $entities = $repository->findBy(
                     [],
-                    $sortByAttrsParam,
+                    $sortByAttrs,
                     $batchSize,
                     $batchSize * $page
                 );
