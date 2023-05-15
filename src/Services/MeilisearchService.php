@@ -30,7 +30,7 @@ final class MeilisearchService implements SearchService
     private array $searchableEntities;
     private array $entitiesAggregators;
     private array $aggregators;
-    private array $classToSerializerGroupMapping;
+    private array $classToSerializerGroup;
     private array $indexIfMapping;
 
     public function __construct(NormalizerInterface $normalizer, Engine $engine, array $configuration)
@@ -42,7 +42,7 @@ final class MeilisearchService implements SearchService
 
         $this->setSearchableEntities();
         $this->setAggregatorsAndEntitiesAggregators();
-        $this->setClassToSerializerGroupMapping();
+        $this->setClassToSerializerGroup();
         $this->setIndexIfMapping();
     }
 
@@ -84,26 +84,26 @@ final class MeilisearchService implements SearchService
         $searchable = is_array($searchable) ? $searchable : [$searchable];
         $searchable = array_merge($searchable, $this->getAggregatorsFromEntities($objectManager, $searchable));
 
-        $searchableToBeIndexed = array_filter(
+        $dataToIndex = array_filter(
             $searchable,
             fn ($entity) => $this->isSearchable($entity)
         );
 
-        $searchableToBeRemoved = [];
-        foreach ($searchableToBeIndexed as $key => $entity) {
+        $dataToRemove = [];
+        foreach ($dataToIndex as $key => $entity) {
             if (!$this->shouldBeIndexed($entity)) {
-                unset($searchableToBeIndexed[$key]);
-                $searchableToBeRemoved[] = $entity;
+                unset($dataToIndex[$key]);
+                $dataToRemove[] = $entity;
             }
         }
 
-        if (count($searchableToBeRemoved) > 0) {
-            $this->remove($objectManager, $searchableToBeRemoved);
+        if (count($dataToRemove) > 0) {
+            $this->remove($objectManager, $dataToRemove);
         }
 
         return $this->makeSearchServiceResponseFrom(
             $objectManager,
-            $searchableToBeIndexed,
+            $dataToIndex,
             fn ($chunk) => $this->engine->index($chunk)
         );
     }
@@ -165,17 +165,17 @@ final class MeilisearchService implements SearchService
                 throw new ObjectIdNotFoundException(sprintf('There is no "%s" key in the result.', self::RESULT_KEY_OBJECTID));
             }
 
+            $documentId = $hit[self::RESULT_KEY_OBJECTID];
+            $entityClass = $className;
+
             if (in_array($className, $this->aggregators, true)) {
                 $objectId = $hit[self::RESULT_KEY_OBJECTID];
                 $entityClass = $className::getEntityClassFromObjectId($objectId);
-                $id = $className::getEntityIdFromObjectId($objectId);
-            } else {
-                $id = $hit[self::RESULT_KEY_OBJECTID];
-                $entityClass = $className;
+                $documentId = $className::getEntityIdFromObjectId($objectId);
             }
 
             $repo = $objectManager->getRepository($entityClass);
-            $entity = $repo->find($id);
+            $entity = $repo->find($documentId);
 
             if (null !== $entity) {
                 $results[] = $entity;
@@ -251,7 +251,7 @@ final class MeilisearchService implements SearchService
         $this->aggregators = array_unique($this->aggregators);
     }
 
-    private function setClassToSerializerGroupMapping(): void
+    private function setClassToSerializerGroup(): void
     {
         $mapping = [];
 
@@ -259,7 +259,7 @@ final class MeilisearchService implements SearchService
         foreach ($this->configuration->get('indices') as $indexDetails) {
             $mapping[$indexDetails['class']] = $indexDetails['enable_serializer_groups'];
         }
-        $this->classToSerializerGroupMapping = $mapping;
+        $this->classToSerializerGroup = $mapping;
     }
 
     private function setIndexIfMapping(): void
@@ -332,7 +332,7 @@ final class MeilisearchService implements SearchService
 
     private function canUseSerializerGroup(string $className): bool
     {
-        return $this->classToSerializerGroupMapping[$className];
+        return $this->classToSerializerGroup[$className];
     }
 
     private function assertIsSearchable(string $className): void

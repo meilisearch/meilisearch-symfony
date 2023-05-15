@@ -38,12 +38,14 @@ final class MeilisearchClearCommand extends IndexCommand
         foreach ($indexToClear as $index) {
             $indexName = $index['name'];
             $className = $index['class'];
+            $msg = "Cleared <info>$indexName</info> index of <comment>$className</comment>";
             $array = $this->searchService->clear($className);
+
             if ('failed' === $array['status']) {
-                $output->writeln('<error>Index <info>'.$indexName.'</info>  couldn\'t be cleared</error>');
-            } else {
-                $output->writeln('Cleared <info>'.$indexName.'</info> index of <comment>'.$className.'</comment>');
+                $msg = "<error>Index <info>$indexName</info>  couldn\'t be cleared</error>";
             }
+
+            $output->writeln($msg);
         }
 
         if (0 === count($indexToClear)) {
