@@ -80,4 +80,6 @@ jobs:
         continue-on-error: true
 
       - name: PHPstan
-        run: composer phpstan
+        run: |
+          vendor/bin/simple-phpunit --version
+          composer phpstan

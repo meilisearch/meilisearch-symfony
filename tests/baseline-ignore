@@ -1,0 +1,5 @@
+%Method "ArrayAccess::offsetGet\(\)" might add "mixed" as a native return type declaration in the future. Do the same in implementation "Meilisearch\\Contracts\\Data" now to avoid errors or add an explicit @return annotation to suppress this message.%
+%The "Symfony\\Component\\HttpClient\\HttplugClient" class implements "Http\\Client\\HttpClient" that is deprecated since version 2.4, use Psr\\Http\\Client\\ClientInterface instead; see https://www.php-fig.org/psr/psr-18/%
+%The "Symfony\\Component\\HttpClient\\HttplugClient" class implements "Http\\Message\\RequestFactory" that is deprecated since version 1.1, use Psr\\Http\\Message\\RequestFactoryInterface instead.%
+%The "Symfony\\Component\\HttpClient\\HttplugClient" class implements "Http\\Message\\StreamFactory" that is deprecated since version 1.1, use Psr\\Http\\Message\\StreamFactoryInterface instead.%
+%The "Symfony\\Component\\HttpClient\\HttplugClient" class implements "Http\\Message\\UriFactory" that is deprecated since version 1.1, use Psr\\Http\\Message\\UriFactoryInterface instead.%

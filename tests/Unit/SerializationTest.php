@@ -44,7 +44,7 @@ class SerializationTest extends KernelTestCase
             $post,
             $postMeta,
             static::getContainer()->get('serializer'),
-            ['useSerializerGroup' => true]
+            ['normalizationGroups' => [Searchable::NORMALIZATION_GROUP]]
         );
 
         $expected = [
