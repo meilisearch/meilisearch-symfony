@@ -15,16 +15,21 @@ interface SearchService
     public const RESULT_KEY_OBJECTID = 'objectID';
 
     /**
-     * @param string|object $className
+     * @param class-string|object $className
      */
     public function isSearchable($className): bool;
 
+    /**
+     * @return list<class-string>
+     */
     public function getSearchable(): array;
 
     public function getConfiguration(): Collection;
 
     /**
      * Get the index name for the given `$className`.
+     *
+     * @param class-string $className
      */
     public function searchableAs(string $className): string;
 
@@ -32,12 +37,25 @@ interface SearchService
 
     public function remove(ObjectManager $objectManager, $searchable): array;
 
+    /**
+     * @param class-string $className
+     */
     public function clear(string $className): array;
 
+    /**
+     * @param class-string $className
+     */
     public function delete(string $className): ?array;
 
     public function deleteByIndexName(string $indexName): ?array;
 
+    /**
+     * @template T of object
+     *
+     * @param class-string<T> $className
+     *
+     * @return list<T>
+     */
     public function search(
         ObjectManager $objectManager,
         string $className,
@@ -49,6 +67,8 @@ interface SearchService
      * Get the raw search result.
      *
      * @see https://docs.meilisearch.com/reference/api/search.html#response
+     *
+     * @param class-string $className
      */
     public function rawSearch(
         string $className,
@@ -56,5 +76,10 @@ interface SearchService
         array $searchParams = []
     ): array;
 
+    /**
+     * @param class-string $className
+     *
+     * @return int<0, max>
+     */
     public function count(string $className, string $query = '', array $searchParams = []): int;
 }
