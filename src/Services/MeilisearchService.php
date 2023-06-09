@@ -46,9 +46,6 @@ final class MeilisearchService implements SearchService
         $this->setIndexIfMapping();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isSearchable($className): bool
     {
         if (is_object($className)) {
@@ -68,9 +65,6 @@ final class MeilisearchService implements SearchService
         return $this->configuration;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function searchableAs(string $className): string
     {
         $indexes = new Collection($this->getConfiguration()->get('indices'));
@@ -185,9 +179,6 @@ final class MeilisearchService implements SearchService
         return $results;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rawSearch(
         string $className,
         string $query = '',

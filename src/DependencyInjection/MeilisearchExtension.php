@@ -19,9 +19,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 final class MeilisearchExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../../config'));
@@ -39,7 +36,12 @@ final class MeilisearchExtension extends Extension
         $container->setParameter('meili_symfony_version', MeilisearchBundle::qualifiedVersion());
 
         if (\count($doctrineEvents = $config['doctrineSubscribedEvents']) > 0) {
-            $container->getDefinition('search.search_indexer_subscriber')->setArgument(1, $doctrineEvents);
+            $subscriber = $container->getDefinition('search.search_indexer_subscriber');
+
+            foreach ($doctrineEvents as $event) {
+                $subscriber->addTag('doctrine.event_listener', ['event' => $event]);
+                $subscriber->addTag('doctrine_mongodb.odm.event_listener', ['event' => $event]);
+            }
         } else {
             $container->removeDefinition('search.search_indexer_subscriber');
         }

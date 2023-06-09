@@ -88,8 +88,6 @@ class Tag implements NormalizableInterface
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @throws ExceptionInterface
      */
     public function normalize(NormalizerInterface $normalizer, $format = null, array $context = []): array
