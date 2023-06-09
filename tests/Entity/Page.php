@@ -27,7 +27,7 @@ class Page
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'NONE')]
     #[ORM\Column(type: Types::OBJECT)]
-    private $id = null;
+    private $id;
 
     /**
      * @ORM\Column(type="string", nullable=true)

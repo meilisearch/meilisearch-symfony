@@ -14,9 +14,6 @@ class ConfigurationTest extends KernelTestCase
 {
     /**
      * @dataProvider dataTestConfigurationTree
-     *
-     * @param mixed $inputConfig
-     * @param mixed $expectedConfig
      */
     public function testConfigurationTree($inputConfig, $expectedConfig): void
     {

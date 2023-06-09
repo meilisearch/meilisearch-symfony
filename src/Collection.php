@@ -17,9 +17,6 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
      */
     private array $items;
 
-    /**
-     * @param mixed $items
-     */
     public function __construct($items = [])
     {
         $this->items = $this->getArrayableItems($items);
@@ -30,12 +27,6 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
         return $this->items;
     }
 
-    /**
-     * @param mixed $key
-     * @param mixed $default
-     *
-     * @return mixed
-     */
     public function get($key, $default = null)
     {
         if (array_key_exists($key, $this->items)) {
@@ -151,10 +142,6 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
 
     /**
      * Get the first item from the collection passing the given truth test.
-     *
-     * @param mixed $default
-     *
-     * @return mixed
      */
     public function first(callable $callback = null, $default = null)
     {
@@ -181,27 +168,18 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
      * Get the first item by the given key value pair.
      *
      * @param string $key
-     * @param mixed  $operator
-     * @param mixed  $value
-     *
-     * @return mixed
      */
     public function firstWhere($key, $operator = null, $value = null)
     {
         return $this->first($this->operatorForWhere(...func_get_args()));
     }
 
-    /**
-     * @param mixed $offset
-     */
     public function offsetExists($offset): bool
     {
         return isset($this->items[$offset]);
     }
 
     /**
-     * @param mixed $offset
-     *
      * @return mixed
      */
     #[\ReturnTypeWillChange]
@@ -210,10 +188,6 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
         return $this->items[$offset];
     }
 
-    /**
-     * @param mixed $offset
-     * @param mixed $value
-     */
     public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
@@ -223,9 +197,6 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
         }
     }
 
-    /**
-     * @param mixed $offset
-     */
     public function offsetUnset($offset): void
     {
         unset($this->items[$offset]);
@@ -241,9 +212,6 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
         return new \ArrayIterator($this->items);
     }
 
-    /**
-     * @param mixed $items
-     */
     private function getArrayableItems($items): array
     {
         if (is_array($items)) {
@@ -269,9 +237,6 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
         return (array) $items;
     }
 
-    /**
-     * @param mixed $value
-     */
     private function useAsCallable($value): bool
     {
         return !is_string($value) && is_callable($value);
@@ -292,11 +257,7 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
     }
 
     /**
-     * @param mixed                 $target
      * @param string|array|int|null $key
-     * @param mixed                 $default
-     *
-     * @return mixed
      */
     private static function getDeepData($target, $key, $default = null)
     {
@@ -358,9 +319,6 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
         return array_merge([], ...$results);
     }
 
-    /**
-     * @param mixed $value
-     */
     public static function accessible($value): bool
     {
         return is_array($value) || $value instanceof \ArrayAccess;
@@ -381,10 +339,7 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
         return array_key_exists($key, $array);
     }
 
-    /**
-     * @param mixed $value
-     */
-    private function operatorForWhere(string $key, ?string $operator = null, $value = null): \Closure
+    private function operatorForWhere(string $key, string $operator = null, $value = null): \Closure
     {
         if (1 === func_num_args()) {
             $value = true;

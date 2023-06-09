@@ -3,3 +3,8 @@
 %The "Symfony\\Component\\HttpClient\\HttplugClient" class implements "Http\\Message\\RequestFactory" that is deprecated since version 1.1, use Psr\\Http\\Message\\RequestFactoryInterface instead.%
 %The "Symfony\\Component\\HttpClient\\HttplugClient" class implements "Http\\Message\\StreamFactory" that is deprecated since version 1.1, use Psr\\Http\\Message\\StreamFactoryInterface instead.%
 %The "Symfony\\Component\\HttpClient\\HttplugClient" class implements "Http\\Message\\UriFactory" that is deprecated since version 1.1, use Psr\\Http\\Message\\UriFactoryInterface instead.%
+%Doctrine\\DBAL\\Platforms\\AbstractPlatform::usesSequenceEmulatedIdentityColumns is deprecated. \(AbstractPlatform.php:\d+ called by ClassMetadataFactory.php:\d+, https://github.com/doctrine/dbal/pull/5513, package doctrine/dbal\)%
+%Column::setCustomSchemaOptions\(\) is deprecated. Use setPlatformOptions\(\) instead. \(Column.php:\d+ called by Column.php:\d+, https://github.com/doctrine/dbal/pull/5476, package doctrine/dbal\)%
+%SqlitePlatform::canEmulateSchemas\(\) is deprecated. \(SqlitePlatform.php:\d+ called by SchemaTool.php:\d+, https://github.com/doctrine/dbal/pull/4805, package doctrine/dbal\)%
+%Doctrine\\DBAL\\Schema\\Table::getPrimaryKeyColumns is deprecated. Use getPrimaryKey\(\) and Index::getColumns\(\) instead. \(Table.php:\d+ called by Table.php:\d+, https://github.com/doctrine/dbal/pull/5731, package doctrine/dbal\)%
+%The annotation mapping driver is deprecated and will be removed in Doctrine ORM 3.0, please migrate to the attribute or XML driver. \(AnnotationDriver.php:\d+ called by getDoctrine_Orm_DefaultAnnotationMetadataDriverService.php:20, https://github.com/doctrine/orm/issues/10098, package doctrine/orm\)%

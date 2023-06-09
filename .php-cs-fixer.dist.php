@@ -16,6 +16,7 @@ $config->setRules([
                 'import_functions' => false,
                 'import_constants' => false,
             ],
+            'no_superfluous_phpdoc_tags' => false,
         ]
 )
     ->setRiskyAllowed(true)

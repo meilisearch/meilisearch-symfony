@@ -12,9 +12,6 @@
                  class="Meilisearch\Bundle\EventListener\DoctrineEventSubscriber"
                  public="true">
             <argument type="service" id="search.service"/>
-            <argument type="collection"/> <!-- doctrine subscribed events -->
-            <tag name="doctrine.event_subscriber"/>
-            <tag name="doctrine_mongodb.odm.event_subscriber"/>
         </service>
 
         <service id="search.client" class="Meilisearch\Client" public="true" lazy="true">
