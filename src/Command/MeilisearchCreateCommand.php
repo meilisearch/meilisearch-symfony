@@ -9,6 +9,7 @@ use Meilisearch\Bundle\Exception\InvalidSettingName;
 use Meilisearch\Bundle\Exception\TaskException;
 use Meilisearch\Bundle\Model\Aggregator;
 use Meilisearch\Bundle\SearchService;
+use Meilisearch\Bundle\SettingsProvider;
 use Meilisearch\Client;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -42,7 +43,7 @@ final class MeilisearchCreateCommand extends IndexCommand
             ->addOption('indices', 'i', InputOption::VALUE_OPTIONAL, 'Comma-separated list of index names');
     }
 
-    private function entitiesToIndex($indexes)
+    private function entitiesToIndex($indexes): array
     {
         foreach ($indexes as $key => $index) {
             $entityClassName = $index['class'];
@@ -85,16 +86,26 @@ final class MeilisearchCreateCommand extends IndexCommand
                 foreach ($index['settings'] as $variable => $value) {
                     $method = sprintf('update%s', ucfirst($variable));
 
-                    if (false === method_exists($indexInstance, $method)) {
+                    if (!method_exists($indexInstance, $method)) {
                         throw new InvalidSettingName(sprintf('Invalid setting name: "%s"', $variable));
                     }
 
+                    if (isset($value['_service']) && $value['_service'] instanceof SettingsProvider) {
+                        $value = $value['_service']();
+                    }
+
+                    // Update
                     $task = $indexInstance->{$method}($value);
+
+                    // Get task information using uid
+                    $indexInstance->waitForTask($task['taskUid']);
                     $task = $indexInstance->getTask($task['taskUid']);
 
                     if ('failed' === $task['status']) {
                         throw new TaskException($task['error']);
                     }
+
+                    $output->writeln('<info>Settings updated of "'.$index['name'].'".</info>');
                 }
             }
         }

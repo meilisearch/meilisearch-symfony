@@ -6,6 +6,7 @@ namespace Meilisearch\Bundle\Tests\Integration;
 
 use Meilisearch\Bundle\Tests\BaseKernelTestCase;
 use Meilisearch\Bundle\Tests\Entity\DummyCustomGroups;
+use Meilisearch\Bundle\Tests\Entity\DynamicSettings;
 use Meilisearch\Bundle\Tests\Entity\SelfNormalizable;
 use Meilisearch\Client;
 use Meilisearch\Endpoints\Indexes;
@@ -77,9 +78,9 @@ class CommandsTest extends BaseKernelTestCase
 Importing for index Meilisearch\Bundle\Tests\Entity\Post
 Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index (6 indexed since start)
 Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__aggregated index (6 indexed since start)
-Settings updated.
-Settings updated.
-Settings updated.
+Settings updated of "sf_phpunit__posts".
+Settings updated of "sf_phpunit__posts".
+Settings updated of "sf_phpunit__posts".
 Importing for index Meilisearch\Bundle\Tests\Entity\Comment
 Importing for index Meilisearch\Bundle\Tests\Entity\Tag
 Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__tags index (6 indexed since start)
@@ -89,6 +90,11 @@ Importing for index Meilisearch\Bundle\Tests\Entity\Page
 Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index (6 indexed since start)
 Importing for index Meilisearch\Bundle\Tests\Entity\SelfNormalizable
 Importing for index Meilisearch\Bundle\Tests\Entity\DummyCustomGroups
+Importing for index Meilisearch\Bundle\Tests\Entity\DynamicSettings
+Settings updated of "sf_phpunit__dynamic_settings".
+Settings updated of "sf_phpunit__dynamic_settings".
+Settings updated of "sf_phpunit__dynamic_settings".
+Settings updated of "sf_phpunit__dynamic_settings".
 Importing for index Meilisearch\Bundle\Tests\Entity\Post
 Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index (6 indexed since start)
 Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__aggregated index (6 indexed since start)
@@ -114,6 +120,7 @@ Cleared sf_phpunit__tags index of Meilisearch\Bundle\Tests\Entity\Link
 Cleared sf_phpunit__pages index of Meilisearch\Bundle\Tests\Entity\Page
 Cleared sf_phpunit__self_normalizable index of Meilisearch\Bundle\Tests\Entity\SelfNormalizable
 Cleared sf_phpunit__dummy_custom_groups index of Meilisearch\Bundle\Tests\Entity\DummyCustomGroups
+Cleared sf_phpunit__dynamic_settings index of Meilisearch\Bundle\Tests\Entity\DynamicSettings
 Done!
 
 EOD, $clearOutput);
@@ -132,6 +139,7 @@ Deleted sf_phpunit__tags
 Deleted sf_phpunit__pages
 Deleted sf_phpunit__self_normalizable
 Deleted sf_phpunit__dummy_custom_groups
+Deleted sf_phpunit__dynamic_settings
 Done!
 
 EOD, $clearOutput);
@@ -325,12 +333,20 @@ EOD, $importOutput);
 
         $this->assertSame(<<<'EOD'
 Creating index sf_phpunit__posts for Meilisearch\Bundle\Tests\Entity\Post
+Settings updated of "sf_phpunit__posts".
+Settings updated of "sf_phpunit__posts".
+Settings updated of "sf_phpunit__posts".
 Creating index sf_phpunit__comments for Meilisearch\Bundle\Tests\Entity\Comment
 Creating index sf_phpunit__tags for Meilisearch\Bundle\Tests\Entity\Tag
 Creating index sf_phpunit__tags for Meilisearch\Bundle\Tests\Entity\Link
 Creating index sf_phpunit__pages for Meilisearch\Bundle\Tests\Entity\Page
 Creating index sf_phpunit__self_normalizable for Meilisearch\Bundle\Tests\Entity\SelfNormalizable
 Creating index sf_phpunit__dummy_custom_groups for Meilisearch\Bundle\Tests\Entity\DummyCustomGroups
+Creating index sf_phpunit__dynamic_settings for Meilisearch\Bundle\Tests\Entity\DynamicSettings
+Settings updated of "sf_phpunit__dynamic_settings".
+Settings updated of "sf_phpunit__dynamic_settings".
+Settings updated of "sf_phpunit__dynamic_settings".
+Settings updated of "sf_phpunit__dynamic_settings".
 Creating index sf_phpunit__aggregated for Meilisearch\Bundle\Tests\Entity\Post
 Creating index sf_phpunit__aggregated for Meilisearch\Bundle\Tests\Entity\Tag
 Done!
@@ -350,6 +366,9 @@ EOD, $createOutput);
 
         $this->assertSame(<<<'EOD'
 Creating index sf_phpunit__posts for Meilisearch\Bundle\Tests\Entity\Post
+Settings updated of "sf_phpunit__posts".
+Settings updated of "sf_phpunit__posts".
+Settings updated of "sf_phpunit__posts".
 Done!
 
 EOD, $createOutput);
@@ -436,5 +455,56 @@ EOD, $importOutput);
                 'createdAt' => '2024-04-04T07:32:02+00:00',
             ],
         ], $this->client->index('sf_phpunit__dummy_custom_groups')->getDocuments()->getResults());
+    }
+
+    /**
+     * @testWith ["meili:create"]
+     *           ["meili:import"]
+     */
+    public function testImportWithDynamicSettings(string $command): void
+    {
+        for ($i = 0; $i <= 5; ++$i) {
+            $this->entityManager->persist(new DynamicSettings($i, "Dynamic $i"));
+        }
+
+        $this->entityManager->flush();
+
+        $importCommand = $this->application->find($command);
+        $importCommandTester = new CommandTester($importCommand);
+        $importCommandTester->execute(['--indices' => 'dynamic_settings']);
+
+        $importOutput = $importCommandTester->getDisplay();
+
+        if ('meili:import' === $command) {
+            $this->assertSame(<<<'EOD'
+Importing for index Meilisearch\Bundle\Tests\Entity\DynamicSettings
+Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\DynamicSettings entities into sf_phpunit__dynamic_settings index (6 indexed since start)
+Settings updated of "sf_phpunit__dynamic_settings".
+Settings updated of "sf_phpunit__dynamic_settings".
+Settings updated of "sf_phpunit__dynamic_settings".
+Settings updated of "sf_phpunit__dynamic_settings".
+Done!
+
+EOD, $importOutput);
+        } else {
+            $this->assertSame(<<<'EOD'
+Creating index sf_phpunit__dynamic_settings for Meilisearch\Bundle\Tests\Entity\DynamicSettings
+Settings updated of "sf_phpunit__dynamic_settings".
+Settings updated of "sf_phpunit__dynamic_settings".
+Settings updated of "sf_phpunit__dynamic_settings".
+Settings updated of "sf_phpunit__dynamic_settings".
+Done!
+
+EOD, $importOutput);
+        }
+
+        $settings = $this->get('search.client')->index('sf_phpunit__dynamic_settings')->getSettings();
+
+        $getSetting = static fn ($value) => $value instanceof \IteratorAggregate ? iterator_to_array($value) : $value;
+
+        self::assertSame(['publishedAt', 'title'], $getSetting($settings['filterableAttributes']));
+        self::assertSame(['title'], $getSetting($settings['searchableAttributes']));
+        self::assertSame(['a', 'n', 'the'], $getSetting($settings['stopWords']));
+        self::assertSame(['fantastic' => ['great'], 'great' => ['fantastic']], $getSetting($settings['synonyms']));
     }
 }
