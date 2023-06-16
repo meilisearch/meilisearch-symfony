@@ -19,7 +19,7 @@ class MeilisearchExtensionTest extends AbstractExtensionTestCase
     {
         $this->load();
 
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument('search.client', '$clientAgents', ['%meili_symfony_version%']);
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument('meilisearch.client', '$clientAgents', ['%meili_symfony_version%']);
     }
 
     public function testHasMeilisearchVersionFromConstantAfterLoad(): void

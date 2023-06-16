@@ -36,7 +36,7 @@ class SearchTest extends BaseKernelTestCase
     {
         parent::setUp();
 
-        $this->client = $this->get('search.client');
+        $this->client = $this->get('meilisearch.client');
         $this->objectManager = $this->get('doctrine')->getManager();
         $this->index = $this->client->index($this->getPrefix().self::$indexName);
         $this->application = new Application(self::createKernel());

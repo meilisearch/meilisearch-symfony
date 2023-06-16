@@ -4,17 +4,20 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <defaults autowire="true" autoconfigure="true"/>
+        <defaults autowire="true" autoconfigure="true" />
 
         <prototype namespace="Meilisearch\Bundle\Command\" resource="../src/Command" />
 
-        <service id="search.search_indexer_subscriber"
+        <service id="meilisearch.search_indexer_subscriber"
                  class="Meilisearch\Bundle\EventListener\DoctrineEventSubscriber"
                  public="true">
-            <argument type="service" id="search.service"/>
+            <argument type="service" id="meilisearch.service" />
+        </service>
+        <service id="search.search_indexer_subscriber" alias="meilisearch.search_indexer_subscriber">
+            <deprecated package="meilisearch/search-bundle" version="0.14">The "%alias_id%" service alias is deprecated. Use "meilisearch.search_indexer_subscriber" instead.</deprecated>
         </service>
 
-        <service id="search.client" class="Meilisearch\Client" public="true" lazy="true">
+        <service id="meilisearch.client" class="Meilisearch\Client" public="true" lazy="true">
             <argument key="$url">%meili_url%</argument>
             <argument key="$apiKey">%meili_api_key%</argument>
             <argument key="$httpClient" type="service" id="psr18.http_client" on-invalid="ignore" />
@@ -22,8 +25,14 @@
                 <argument>%meili_symfony_version%</argument>
             </argument>
         </service>
+        <service id="search.client" alias="meilisearch.client" public="true">
+            <deprecated package="meilisearch/search-bundle" version="0.14">The "%alias_id%" service alias is deprecated. Use "meilisearch.client" instead.</deprecated>
+        </service>
 
-        <service id="Meilisearch\Client" alias="search.client"/>
-        <service id="Meilisearch\Bundle\SearchService" alias="search.service"/>
+        <service id="Meilisearch\Client" alias="meilisearch.client" public="true" />
+        <service id="search.client" alias="meilisearch.client" public="true">
+            <deprecated package="meilisearch/search-bundle" version="0.14">The "%alias_id%" service alias is deprecated. Use "meilisearch.client" instead.</deprecated>
+        </service>
+        <service id="Meilisearch\Bundle\SearchService" alias="meilisearch.service" />
     </services>
 </container>

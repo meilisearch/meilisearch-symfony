@@ -40,24 +40,25 @@ final class MeilisearchExtension extends Extension
         $container->setParameter('meili_symfony_version', MeilisearchBundle::qualifiedVersion());
 
         if (\count($doctrineEvents = $config['doctrineSubscribedEvents']) > 0) {
-            $subscriber = $container->getDefinition('search.search_indexer_subscriber');
+            $subscriber = $container->getDefinition('meilisearch.search_indexer_subscriber');
 
             foreach ($doctrineEvents as $event) {
                 $subscriber->addTag('doctrine.event_listener', ['event' => $event]);
                 $subscriber->addTag('doctrine_mongodb.odm.event_listener', ['event' => $event]);
             }
         } else {
-            $container->removeDefinition('search.search_indexer_subscriber');
+            $container->removeDefinition('meilisearch.search_indexer_subscriber');
         }
 
-        $engineDefinition = new Definition(Engine::class, [new Reference('search.client')]);
+        $engineDefinition = new Definition(Engine::class, [new Reference('meilisearch.client')]);
 
         $searchDefinition = (new Definition(
             MeilisearchService::class,
             [new Reference($config['serializer']), $engineDefinition, $config]
         ));
 
-        $container->setDefinition('search.service', $searchDefinition->setPublic(true));
+        $container->setDefinition('meilisearch.service', $searchDefinition->setPublic(true));
+        $container->setAlias('search.service', 'meilisearch.service')->setPublic(true);
     }
 
     /**

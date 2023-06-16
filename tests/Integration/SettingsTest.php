@@ -37,7 +37,7 @@ class SettingsTest extends BaseKernelTestCase
     {
         parent::setUp();
 
-        $this->client = $this->get('search.client');
+        $this->client = $this->get('meilisearch.client');
         $this->application = new Application(self::$kernel);
     }
 
