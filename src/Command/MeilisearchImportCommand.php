@@ -13,6 +13,7 @@ use Meilisearch\Bundle\SearchService;
 use Meilisearch\Bundle\SettingsProvider;
 use Meilisearch\Client;
 use Meilisearch\Exceptions\TimeOutException;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -48,7 +49,6 @@ final class MeilisearchImportCommand extends IndexCommand
     protected function configure(): void
     {
         $this
-            ->setDescription(self::getDefaultDescription())
             ->addOption('indices', 'i', InputOption::VALUE_OPTIONAL, 'Comma-separated list of index names')
             ->addOption(
                 'update-settings',
@@ -189,7 +189,7 @@ final class MeilisearchImportCommand extends IndexCommand
 
         $output->writeln('<info>Done!</info>');
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**
