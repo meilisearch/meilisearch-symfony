@@ -29,6 +29,8 @@ jobs:
             sf-version: '6.1.*'
           - php-version: '8.2'
             sf-version: '6.2.*'
+          - php-version: '8.2'
+            sf-version: '6.3.*'
 
     name: integration-tests (PHP ${{ matrix.php-version }}) (Symfony ${{ matrix.sf-version }})
     steps:
