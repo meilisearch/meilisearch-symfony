@@ -9,25 +9,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Class MeilisearchClearCommand.
- */
 final class MeilisearchClearCommand extends IndexCommand
 {
-    public static function getDefaultName(): string
-    {
-        return 'meili:clear';
-    }
-
-    public static function getDefaultDescription(): string
-    {
-        return 'Clear the index documents';
-    }
+    protected static $defaultName = 'meili:clear';
+    protected static $defaultDescription = 'Clear the index documents';
 
     protected function configure(): void
     {
-        $this
-            ->addOption('indices', 'i', InputOption::VALUE_OPTIONAL, 'Comma-separated list of index names');
+        $this->addOption('indices', 'i', InputOption::VALUE_OPTIONAL, 'Comma-separated list of index names');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

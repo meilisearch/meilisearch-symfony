@@ -18,12 +18,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Class MeilisearchImportCommand.
- */
 final class MeilisearchImportCommand extends IndexCommand
 {
     private const DEFAULT_RESPONSE_TIMEOUT = 5000;
+
+    protected static $defaultName = 'meili:import';
+    protected static $defaultDescription = 'Import given entity into search engine';
 
     protected Client $searchClient;
     protected ManagerRegistry $managerRegistry;
@@ -34,16 +34,6 @@ final class MeilisearchImportCommand extends IndexCommand
 
         $this->managerRegistry = $managerRegistry;
         $this->searchClient = $searchClient;
-    }
-
-    public static function getDefaultName(): string
-    {
-        return 'meili:import';
-    }
-
-    public static function getDefaultDescription(): string
-    {
-        return 'Import given entity into search engine';
     }
 
     protected function configure(): void

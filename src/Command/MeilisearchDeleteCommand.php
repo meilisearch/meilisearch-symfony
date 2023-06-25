@@ -11,25 +11,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Class MeilisearchDeleteCommand.
- */
 final class MeilisearchDeleteCommand extends IndexCommand
 {
-    public static function getDefaultName(): string
-    {
-        return 'meili:delete';
-    }
 
-    public static function getDefaultDescription(): string
-    {
-        return 'Delete the indexes';
-    }
+    protected static $defaultName = 'meili:delete';
+    protected static $defaultDescription = 'Delete the indexes';
 
     protected function configure(): void
     {
-        $this
-            ->addOption('indices', 'i', InputOption::VALUE_OPTIONAL, 'Comma-separated list of index names');
+        $this->addOption('indices', 'i', InputOption::VALUE_OPTIONAL, 'Comma-separated list of index names');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

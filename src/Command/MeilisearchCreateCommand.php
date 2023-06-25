@@ -20,6 +20,9 @@ final class MeilisearchCreateCommand extends IndexCommand
 {
     private Client $searchClient;
 
+    protected static $defaultName = 'meili:create';
+    protected static $defaultDescription = 'Create indexes';
+
     public function __construct(SearchService $searchService, Client $searchClient)
     {
         parent::__construct($searchService);
@@ -27,20 +30,9 @@ final class MeilisearchCreateCommand extends IndexCommand
         $this->searchClient = $searchClient;
     }
 
-    public static function getDefaultName(): string
-    {
-        return 'meili:create';
-    }
-
-    public static function getDefaultDescription(): string
-    {
-        return 'Create indexes';
-    }
-
     protected function configure(): void
     {
-        $this
-            ->addOption('indices', 'i', InputOption::VALUE_OPTIONAL, 'Comma-separated list of index names');
+        $this->addOption('indices', 'i', InputOption::VALUE_OPTIONAL, 'Comma-separated list of index names');
     }
 
     private function entitiesToIndex($indexes): array

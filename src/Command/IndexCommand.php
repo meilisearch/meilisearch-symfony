@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class IndexCommand.
+ * Base command class all commands extends.
  */
 abstract class IndexCommand extends Command
 {
