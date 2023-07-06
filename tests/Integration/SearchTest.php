@@ -29,8 +29,6 @@ class SearchTest extends BaseKernelTestCase
     protected Indexes $index;
 
     /**
-     * {@inheritDoc}
-     *
      * @throws ApiException
      * @throws \Exception
      */

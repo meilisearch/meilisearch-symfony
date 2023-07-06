@@ -55,7 +55,7 @@ class SettingsTest extends BaseKernelTestCase
         $settings = $this->client->index($index)->getSettings();
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Settings updated.', $output);
+        $this->assertStringContainsString('Settings updated of "sf_phpunit__posts".', $output);
         $this->assertNotEmpty($settings['stopWords']);
         $this->assertEquals(['a', 'an', 'the'], $settings['stopWords']);
 

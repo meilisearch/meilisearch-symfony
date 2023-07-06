@@ -4,24 +4,16 @@ declare(strict_types=1);
 
 namespace Meilisearch\Bundle\EventListener;
 
-use Doctrine\Common\EventSubscriber;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Meilisearch\Bundle\SearchService;
 
-final class DoctrineEventSubscriber implements EventSubscriber
+final class DoctrineEventSubscriber
 {
     private SearchService $searchService;
-    private array $subscribedEvents;
 
-    public function __construct(SearchService $searchService, array $subscribedEvents)
+    public function __construct(SearchService $searchService)
     {
         $this->searchService = $searchService;
-        $this->subscribedEvents = $subscribedEvents;
-    }
-
-    public function getSubscribedEvents(): array
-    {
-        return $this->subscribedEvents;
     }
 
     public function postUpdate(LifecycleEventArgs $args): void

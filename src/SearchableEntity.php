@@ -43,7 +43,7 @@ final class SearchableEntity
         string $indexUid,
         $entity,
         ClassMetadata $entityMetadata,
-        ?NormalizerInterface $normalizer = null,
+        NormalizerInterface $normalizer = null,
         array $extra = []
     ) {
         $this->indexUid = $indexUid;

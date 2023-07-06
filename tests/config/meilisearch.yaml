@@ -40,3 +40,18 @@ meilisearch:
             class: 'Meilisearch\Bundle\Tests\Entity\DummyCustomGroups'
             enable_serializer_groups: true
             serializer_groups: ['public', 'private']
+        -   name: dynamic_settings
+            class: 'Meilisearch\Bundle\Tests\Entity\DynamicSettings'
+            settings:
+                filterableAttributes:
+                    _service: '@Meilisearch\Bundle\Tests\Integration\Fixtures\FilterableAttributes'
+                searchableAttributes:
+                    _service: '@Meilisearch\Bundle\Tests\Integration\Fixtures\SearchableAttributes'
+                stopWords:
+                    _service: '@Meilisearch\Bundle\Tests\Integration\Fixtures\StopWords'
+                synonyms:
+                    _service: '@Meilisearch\Bundle\Tests\Integration\Fixtures\Synonyms'
+
+services:
+    Meilisearch\Bundle\Tests\Integration\Fixtures\:
+        resource: '../Integration/Fixtures/'

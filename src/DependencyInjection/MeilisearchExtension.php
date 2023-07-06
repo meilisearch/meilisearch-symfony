@@ -19,9 +19,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 final class MeilisearchExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../../config'));
@@ -34,12 +31,21 @@ final class MeilisearchExtension extends Extension
             $config['prefix'] = $container->getParameter('kernel.environment').'_';
         }
 
+        foreach ($config['indices'] as $index => $indice) {
+            $config['indices'][$index]['settings'] = $this->findReferences($config['indices'][$index]['settings']);
+        }
+
         $container->setParameter('meili_url', $config['url'] ?? null);
         $container->setParameter('meili_api_key', $config['api_key'] ?? null);
         $container->setParameter('meili_symfony_version', MeilisearchBundle::qualifiedVersion());
 
         if (\count($doctrineEvents = $config['doctrineSubscribedEvents']) > 0) {
-            $container->getDefinition('search.search_indexer_subscriber')->setArgument(1, $doctrineEvents);
+            $subscriber = $container->getDefinition('search.search_indexer_subscriber');
+
+            foreach ($doctrineEvents as $event) {
+                $subscriber->addTag('doctrine.event_listener', ['event' => $event]);
+                $subscriber->addTag('doctrine_mongodb.odm.event_listener', ['event' => $event]);
+            }
         } else {
             $container->removeDefinition('search.search_indexer_subscriber');
         }
@@ -52,5 +58,23 @@ final class MeilisearchExtension extends Extension
         ));
 
         $container->setDefinition('search.service', $searchDefinition->setPublic(true));
+    }
+
+    /**
+     * @param array<mixed, mixed> $settings
+     *
+     * @return array<mixed, mixed>
+     */
+    private function findReferences(array $settings): array
+    {
+        foreach ($settings as $key => $value) {
+            if (is_array($value)) {
+                $settings[$key] = $this->findReferences($value);
+            } elseif ('_service' === substr((string) $key, -8) || str_starts_with((string) $value, '@') || 'service' === $key) {
+                $settings[$key] = new Reference(ltrim($value, '@'));
+            }
+        }
+
+        return $settings;
     }
 }

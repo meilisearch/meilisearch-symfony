@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Meilisearch\Bundle\Tests\Integration\EventListener;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Meilisearch\Bundle\EventListener\DoctrineEventSubscriber;
 use Meilisearch\Bundle\Tests\BaseKernelTestCase;
 use Meilisearch\Bundle\Tests\Entity\Page;
@@ -35,7 +35,7 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $eventArgs = new LifecycleEventArgs($post, $this->entityManager);
 
-        $subscriber = new DoctrineEventSubscriber($this->searchService, []);
+        $subscriber = new DoctrineEventSubscriber($this->searchService);
         $subscriber->postPersist($eventArgs);
 
         $this->waitForAllTasks();
@@ -53,7 +53,7 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $eventArgs = new LifecycleEventArgs($page, $this->entityManager);
 
-        $subscriber = new DoctrineEventSubscriber($this->searchService, []);
+        $subscriber = new DoctrineEventSubscriber($this->searchService);
         $subscriber->postPersist($eventArgs);
 
         $this->waitForAllTasks();
@@ -74,7 +74,7 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $eventArgs = new LifecycleEventArgs($post, $this->entityManager);
 
-        $subscriber = new DoctrineEventSubscriber($this->searchService, []);
+        $subscriber = new DoctrineEventSubscriber($this->searchService);
         $subscriber->postUpdate($eventArgs);
 
         $this->waitForAllTasks();
@@ -92,7 +92,7 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $eventArgs = new LifecycleEventArgs($page, $this->entityManager);
 
-        $subscriber = new DoctrineEventSubscriber($this->searchService, []);
+        $subscriber = new DoctrineEventSubscriber($this->searchService);
         $subscriber->postUpdate($eventArgs);
 
         $this->waitForAllTasks();
@@ -113,7 +113,7 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $eventArgs = new LifecycleEventArgs($post, $this->entityManager);
 
-        $subscriber = new DoctrineEventSubscriber($this->searchService, []);
+        $subscriber = new DoctrineEventSubscriber($this->searchService);
         $subscriber->postPersist($eventArgs);
 
         $this->waitForAllTasks();
@@ -138,7 +138,7 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $eventArgs = new LifecycleEventArgs($page, $this->entityManager);
 
-        $subscriber = new DoctrineEventSubscriber($this->searchService, []);
+        $subscriber = new DoctrineEventSubscriber($this->searchService);
         $subscriber->postPersist($eventArgs);
 
         $this->waitForAllTasks();

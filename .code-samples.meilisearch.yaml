@@ -1,15 +1,12 @@
 landing_getting_started_1: |-
-    ```yml
-    # Configure your entities by adding them in config/packages/meilisearch.yaml
-    meilisearch:
-        url: 'http://127.0.0.1:7700'
-        api_key: 'masterKey'
-        indices:
-            - name: movies
-              class: App\Entity\Movie
-    ```
+    // # Configure your entities by adding them in config/packages/meilisearch.yaml
+    // meilisearch:
+    //    url: 'http://127.0.0.1:7700'
+    //    api_key: 'masterKey'
+    //    indices:
+    //        - name: movies
+    //          class: App\Entity\Movie
 
-    ```php
     <?php
     // src/Controller/MoviesController.php
     namespace App\Controller;
@@ -40,4 +37,3 @@ landing_getting_started_1: |-
             //...
         }
     }
-    ```

@@ -27,9 +27,21 @@ final class MeilisearchService implements SearchService
     private Engine $engine;
     private Collection $configuration;
     private PropertyAccessor $propertyAccessor;
+    /**
+     * @var list<class-string>
+     */
     private array $searchableEntities;
+    /**
+     * @var array<class-string, list<class-string>>
+     */
     private array $entitiesAggregators;
+    /**
+     * @var list<class-string<Aggregator>>
+     */
     private array $aggregators;
+    /**
+     * @var array<class-string, array<string>>
+     */
     private array $classToSerializerGroup;
     private array $indexIfMapping;
 
@@ -46,9 +58,6 @@ final class MeilisearchService implements SearchService
         $this->setIndexIfMapping();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isSearchable($className): bool
     {
         if (is_object($className)) {
@@ -68,9 +77,6 @@ final class MeilisearchService implements SearchService
         return $this->configuration;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function searchableAs(string $className): string
     {
         $indexes = new Collection($this->getConfiguration()->get('indices'));
@@ -185,9 +191,6 @@ final class MeilisearchService implements SearchService
         return $results;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rawSearch(
         string $className,
         string $query = '',

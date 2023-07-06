@@ -10,7 +10,9 @@ use Meilisearch\Bundle\Exception\InvalidSettingName;
 use Meilisearch\Bundle\Exception\TaskException;
 use Meilisearch\Bundle\Model\Aggregator;
 use Meilisearch\Bundle\SearchService;
+use Meilisearch\Bundle\SettingsProvider;
 use Meilisearch\Client;
+use Meilisearch\Exceptions\TimeOutException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -155,8 +157,13 @@ final class MeilisearchImportCommand extends IndexCommand
                     $indexInstance = $this->searchClient->index($index['name']);
                     foreach ($index['settings'] as $variable => $value) {
                         $method = sprintf('update%s', ucfirst($variable));
-                        if (false === method_exists($indexInstance, $method)) {
+
+                        if (!method_exists($indexInstance, $method)) {
                             throw new InvalidSettingName(sprintf('Invalid setting name: "%s"', $variable));
+                        }
+
+                        if (isset($value['_service']) && $value['_service'] instanceof SettingsProvider) {
+                            $value = $value['_service']();
                         }
 
                         // Update
@@ -168,9 +175,9 @@ final class MeilisearchImportCommand extends IndexCommand
 
                         if ('failed' === $task['status']) {
                             throw new TaskException($task['error']);
-                        } else {
-                            $output->writeln('<info>Settings updated.</info>');
                         }
+
+                        $output->writeln('<info>Settings updated of "'.$index['name'].'".</info>');
                     }
                 }
 
@@ -185,7 +192,7 @@ final class MeilisearchImportCommand extends IndexCommand
         return 0;
     }
 
-    /*
+    /**
      * @throws TimeOutException
      */
     private function formatIndexingResponse(array $batch, int $responseTimeout): array
