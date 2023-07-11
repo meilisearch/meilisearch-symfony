@@ -13,6 +13,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class MeilisearchDeleteCommand extends IndexCommand
 {
+    public static function getDefaultName(): string
+    {
+        return self::$defaultName;
+    }
+
+    public static function getDefaultDescription(): string
+    {
+        return self::$defaultDescription;
+    }
+
     protected static $defaultName = 'meili:delete';
     protected static $defaultDescription = 'Delete the indexes';
 

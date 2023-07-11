@@ -30,6 +30,16 @@ final class MeilisearchCreateCommand extends IndexCommand
         $this->searchClient = $searchClient;
     }
 
+    public static function getDefaultName(): string
+    {
+        return self::$defaultName;
+    }
+
+    public static function getDefaultDescription(): string
+    {
+        return self::$defaultDescription;
+    }
+
     protected function configure(): void
     {
         $this->addOption('indices', 'i', InputOption::VALUE_OPTIONAL, 'Comma-separated list of index names');

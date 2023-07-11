@@ -14,6 +14,16 @@ final class MeilisearchClearCommand extends IndexCommand
     protected static $defaultName = 'meili:clear';
     protected static $defaultDescription = 'Clear the index documents';
 
+    public static function getDefaultName(): string
+    {
+        return self::$defaultName;
+    }
+
+    public static function getDefaultDescription(): string
+    {
+        return self::$defaultDescription;
+    }
+
     protected function configure(): void
     {
         $this->addOption('indices', 'i', InputOption::VALUE_OPTIONAL, 'Comma-separated list of index names');
