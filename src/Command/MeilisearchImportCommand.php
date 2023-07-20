@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Meilisearch\Bundle\Command;
 
-use Doctrine\Persistence\ManagerRegistry;
 use Meilisearch\Bundle\Collection;
+use Meilisearch\Bundle\DataProvider\DataProviderRegistryInterface;
 use Meilisearch\Bundle\EventListener\ConsoleOutputSubscriber;
 use Meilisearch\Bundle\Exception\TaskException;
 use Meilisearch\Bundle\Model\Aggregator;
-use Meilisearch\Bundle\SearchService;
+use Meilisearch\Bundle\SearchManagerInterface;
 use Meilisearch\Bundle\Services\SettingsUpdater;
 use Meilisearch\Client;
 use Meilisearch\Exceptions\TimeOutException;
@@ -25,19 +25,14 @@ final class MeilisearchImportCommand extends IndexCommand
 {
     private const TEMP_INDEX_PREFIX = '_tmp_';
 
-    private Client $searchClient;
-    private ManagerRegistry $managerRegistry;
-    private SettingsUpdater $settingsUpdater;
-    private EventDispatcherInterface $eventDispatcher;
-
-    public function __construct(SearchService $searchService, ManagerRegistry $managerRegistry, Client $searchClient, SettingsUpdater $settingsUpdater, EventDispatcherInterface $eventDispatcher)
-    {
-        parent::__construct($searchService);
-
-        $this->managerRegistry = $managerRegistry;
-        $this->searchClient = $searchClient;
-        $this->settingsUpdater = $settingsUpdater;
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(
+        SearchManagerInterface $searchManager,
+        private readonly Client $searchClient,
+        private readonly SettingsUpdater $settingsUpdater,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly DataProviderRegistryInterface $dataProviderRegistry,
+    ) {
+        parent::__construct($searchManager);
     }
 
     protected function configure(): void
@@ -81,8 +76,12 @@ final class MeilisearchImportCommand extends IndexCommand
 
         $indexes = $this->getEntitiesFromArgs($input, $output);
         $entitiesToIndex = $this->entitiesToIndex($indexes);
-        $config = $this->searchService->getConfiguration();
+        $config = $this->searchManager->getConfiguration();
+        $updateSettings = $input->getOption('update-settings');
+        $batchSize = $input->getOption('batch-size') ?? '';
+        $batchSize = \is_string($batchSize) && ctype_digit($batchSize) ? (int) $batchSize : $config->get('batchSize');
         $swapIndices = $input->getOption('swap-indices');
+        $responseTimeout = ((int) $input->getOption('response-timeout')) ?: self::DEFAULT_RESPONSE_TIMEOUT;
         $initialPrefix = $config['prefix'] ?? '';
         $prefix = null;
 
@@ -91,26 +90,15 @@ final class MeilisearchImportCommand extends IndexCommand
             $config['prefix'] = $prefix.($config['prefix'] ?? '');
         }
 
-        $updateSettings = $input->getOption('update-settings');
-        $batchSize = $input->getOption('batch-size') ?? '';
-        $batchSize = ctype_digit($batchSize) ? (int) $batchSize : $config->get('batchSize');
-        $responseTimeout = ((int) $input->getOption('response-timeout')) ?: self::DEFAULT_RESPONSE_TIMEOUT;
-
         /** @var array $index */
         foreach ($entitiesToIndex as $index) {
             $entityClassName = $index['class'];
 
-            if (!$this->searchService->isSearchable($entityClassName)) {
+            if (!$this->searchManager->isSearchable($entityClassName)) {
                 continue;
             }
 
             $totalIndexed = 0;
-
-            $manager = $this->managerRegistry->getManagerForClass($entityClassName);
-            $repository = $manager->getRepository($entityClassName);
-            $classMetadata = $manager->getClassMetadata($entityClassName);
-            $entityIdentifiers = $classMetadata->getIdentifierFieldNames();
-            $sortByAttrs = array_combine($entityIdentifiers, array_fill(0, \count($entityIdentifiers), 'ASC'));
 
             $output->writeln('<info>Importing for index '.$entityClassName.'</info>');
 
@@ -130,22 +118,26 @@ final class MeilisearchImportCommand extends IndexCommand
                 );
             }
 
-            do {
-                $entities = $repository->findBy(
-                    [],
-                    $sortByAttrs,
-                    $batchSize,
-                    $batchSize * $page
-                );
+            $dataProvider = $this->dataProviderRegistry->getDataProvider($index['name'], $index['class']);
 
-                $responses = $this->formatIndexingResponse($this->searchService->index($manager, $entities), $responseTimeout);
-                $totalIndexed += \count($entities);
+            do {
+                $objects = $dataProvider->provide($batchSize, $batchSize * $page);
+
+                if ([] === $objects) {
+                    $dataProvider->cleanup();
+
+                    break;
+                }
+
+                $responses = $this->formatIndexingResponse($this->searchManager->index($objects), $responseTimeout);
+                $totalIndexed += \count($objects);
+
                 foreach ($responses as $indexName => $numberOfRecords) {
                     $output->writeln(
                         \sprintf(
                             'Indexed a batch of <comment>%d / %d</comment> %s entities into %s index (%d indexed since start)',
                             $numberOfRecords,
-                            \count($entities),
+                            \count($objects),
                             $entityClassName,
                             '<info>'.$indexName.'</info>',
                             $totalIndexed,
@@ -153,12 +145,10 @@ final class MeilisearchImportCommand extends IndexCommand
                     );
                 }
 
-                $manager->clear();
+                $dataProvider->cleanup();
 
                 ++$page;
-            } while (\count($entities) >= $batchSize);
-
-            $manager->clear();
+            } while (\count($objects) >= $batchSize);
         }
 
         if ($swapIndices) {
@@ -181,13 +171,9 @@ final class MeilisearchImportCommand extends IndexCommand
 
         foreach ($batch as $chunk) {
             foreach ($chunk as $indexName => $apiResponse) {
-                if (!\array_key_exists($indexName, $formattedResponse)) {
-                    $formattedResponse[$indexName] = 0;
-                }
-
+                $formattedResponse[$indexName] ??= 0;
                 $indexInstance = $this->searchClient->index($indexName);
 
-                // Get task information using uid
                 $indexInstance->waitForTask($apiResponse['taskUid'], $responseTimeout);
                 $task = $indexInstance->getTask($apiResponse['taskUid']);
 
@@ -248,7 +234,7 @@ final class MeilisearchImportCommand extends IndexCommand
 
         // delete temp indexes
         foreach ($indexPairs as $pair) {
-            $this->searchService->deleteByIndexName($pair[0]);
+            $this->searchManager->deleteByIndexName($pair[0]);
             $output->writeln('<info>Deleted '.$pair[0].'</info>');
         }
     }

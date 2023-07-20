@@ -23,15 +23,23 @@ final class AggregatorTest extends BaseKernelTestCase
 
     public function testGetEntityClassFromObjectID(): void
     {
+        self::assertSame(Post::class, ContentAggregator::getEntityClassFromObjectID(Post::class.'::123'));
+    }
+
+    public function testGetEntityClassFromObjectIDWithUnknownEntityThrows(): void
+    {
         $this->expectException(EntityNotFoundInObjectID::class);
+
         EmptyAggregator::getEntityClassFromObjectID('test');
     }
 
-    public function testConstructor(): void
+    public function testConstructorThrowsWithMoreThanOnePrimaryKey(): void
     {
-        $this->expectException(InvalidEntityForAggregator::class);
         $post = new Post();
-        new ContentAggregator($post, ['objectId', 'url']);
+
+        $this->expectException(InvalidEntityForAggregator::class);
+
+        new ContentAggregator($post, ['objectId', 'url'], 'objectId');
     }
 
     public function testAggregatorProxyClass(): void
@@ -47,7 +55,7 @@ final class AggregatorTest extends BaseKernelTestCase
 
         $proxy = $this->entityManager->getReference(Post::class, $postId);
         $this->assertInstanceOf(Proxy::class, $proxy);
-        $contentAggregator = new ContentAggregator($proxy, ['objectId']);
+        $contentAggregator = new ContentAggregator($proxy, ['objectId'], 'objectId');
 
         /** @var Serializer $serializer */
         $serializer = $this->get('serializer');
@@ -55,6 +63,39 @@ final class AggregatorTest extends BaseKernelTestCase
         $serializedData = $contentAggregator->normalize($serializer);
 
         $this->assertNotEmpty($serializedData);
-        $this->assertEquals('objectId', $serializedData['objectID']);
+        $this->assertEquals('objectId', $serializedData['objectId']);
+    }
+
+    public function testAggregatorNormalization(): void
+    {
+        $this->entityManager->persist($post = new Post());
+        $this->entityManager->flush();
+
+        $contentAggregator = new ContentAggregator($post, [$post->getId()]);
+
+        /** @var Serializer $serializer */
+        $serializer = $this->get('serializer');
+
+        $serializedData = $contentAggregator->normalize($serializer);
+
+        $this->assertNotEmpty($serializedData);
+        $this->assertSame((string) $post->getId(), $serializedData['objectID']);
+        $this->assertSame($post->getId(), $serializedData['id']);
+    }
+
+    public function testAggregatorCustomPrimaryKey(): void
+    {
+        $this->entityManager->persist($post = new Post());
+        $this->entityManager->flush();
+
+        $contentAggregator = new ContentAggregator($post, [$post->getId()], 'id');
+
+        /** @var Serializer $serializer */
+        $serializer = $this->get('serializer');
+
+        $serializedData = $contentAggregator->normalize($serializer);
+
+        $this->assertNotEmpty($serializedData);
+        $this->assertSame($post->getId(), $serializedData['id']);
     }
 }
