@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Meilisearch\Bundle\DependencyInjection;
 
+use Meilisearch\Bundle\DataProvider\OrmEntityProvider;
 use Meilisearch\Bundle\MeilisearchBundle;
+use Meilisearch\Bundle\Model\Aggregator;
 use Meilisearch\Bundle\Services\UnixTimestampNormalizer;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
@@ -28,14 +31,16 @@ final class MeilisearchExtension extends Extension
             $config['prefix'] = $container->getParameter('kernel.environment').'_';
         }
 
+        $container->setParameter('meili_url', $config['url'] ?? null);
+        $container->setParameter('meili_api_key', $config['api_key'] ?? null);
+        $container->setParameter('meili_symfony_version', MeilisearchBundle::qualifiedVersion());
+
         foreach ($config['indices'] as $index => $indice) {
             $config['indices'][$index]['prefixed_name'] = $config['prefix'].$indice['name'];
             $config['indices'][$index]['settings'] = $this->findReferences($config['indices'][$index]['settings']);
         }
 
-        $container->setParameter('meili_url', $config['url'] ?? null);
-        $container->setParameter('meili_api_key', $config['api_key'] ?? null);
-        $container->setParameter('meili_symfony_version', MeilisearchBundle::qualifiedVersion());
+        $this->registerDataProviders($container, $config);
 
         if (\count($doctrineEvents = $config['doctrineSubscribedEvents']) > 0) {
             $subscriber = $container->getDefinition('meilisearch.search_indexer_subscriber');
@@ -58,15 +63,19 @@ final class MeilisearchExtension extends Extension
             ->replaceArgument(0, new Reference($config['serializer']))
             ->replaceArgument(2, $config);
 
+        $container->findDefinition('meilisearch.manager')
+            ->replaceArgument(0, new Reference($config['serializer']))
+            ->replaceArgument(4, $config);
+
         if (Kernel::VERSION_ID >= 70100) {
             $container->removeDefinition(UnixTimestampNormalizer::class);
         }
     }
 
     /**
-     * @param array<mixed, mixed> $settings
+     * @param array<mixed> $settings
      *
-     * @return array<mixed, mixed>
+     * @return array<mixed>
      */
     private function findReferences(array $settings): array
     {
@@ -79,5 +88,50 @@ final class MeilisearchExtension extends Extension
         }
 
         return $settings;
+    }
+
+    private function registerDataProviders(ContainerBuilder $container, array $config): void
+    {
+        foreach ($config['indices'] as $indice) {
+            $indexName = $indice['name'];
+            $class = $indice['class'];
+
+            if (null !== $indice['data_provider']) {
+                if ($container->hasDefinition($indice['data_provider'])) {
+                    $container
+                        ->findDefinition($indice['data_provider'])
+                        ->addTag('meilisearch.data_provider', [
+                            'index' => $indexName,
+                            'class' => $class,
+                        ]);
+                }
+
+                continue;
+            }
+
+            if ('orm' === $indice['type']) {
+                if (is_subclass_of($class, Aggregator::class)) {
+                    foreach ($class::getEntities() as $aggregatedClass) {
+                        $this->registerOrmProvider($container, $indexName, $aggregatedClass);
+                    }
+                } else {
+                    $this->registerOrmProvider($container, $indexName, $class);
+                }
+            }
+        }
+    }
+
+    private function registerOrmProvider(ContainerBuilder $container, string $indexName, string $class): void
+    {
+        $definitionId = \sprintf('meilisearch.data_provider.%s_%s', $indexName, hash('xxh32', $class));
+
+        $definition = new Definition(OrmEntityProvider::class, [new Reference('doctrine'), $class]);
+
+        $definition->addTag('meilisearch.data_provider', [
+            'index' => $indexName,
+            'class' => $class,
+        ]);
+
+        $container->setDefinition($definitionId, $definition);
     }
 }
