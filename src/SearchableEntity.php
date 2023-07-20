@@ -12,6 +12,9 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
+/**
+ * @deprecated Since 0.16, use `Meilisearch\Bundle\SearchableObject` instead.
+ */
 final class SearchableEntity
 {
     private string $indexUid;
@@ -77,11 +80,11 @@ final class SearchableEntity
         }
 
         if ($this->entity instanceof NormalizableInterface && null !== $this->normalizer) {
-            return $this->entity->normalize($this->normalizer, Searchable::NORMALIZATION_FORMAT, $context);
+            return $this->entity->normalize($this->normalizer, SearchableObject::NORMALIZATION_FORMAT, $context);
         }
 
         if (null !== $this->normalizer) {
-            return $this->normalizer->normalize($this->entity, Searchable::NORMALIZATION_FORMAT, $context);
+            return $this->normalizer->normalize($this->entity, SearchableObject::NORMALIZATION_FORMAT, $context);
         }
 
         return [];

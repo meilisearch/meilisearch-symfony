@@ -10,16 +10,13 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class ConsoleOutputSubscriber implements EventSubscriberInterface
 {
-    private OutputStyle $io;
-
-    public function __construct(OutputStyle $io)
+    public function __construct(private readonly OutputStyle $output)
     {
-        $this->io = $io;
     }
 
     public function afterSettingsUpdate(SettingsUpdatedEvent $event): void
     {
-        $this->io->writeln('<info>Setting "'.$event->getSetting().'" updated of "'.$event->getIndex().'".</info>');
+        $this->output->writeln('<info>Setting "'.$event->getSetting().'" updated of "'.$event->getIndex().'".</info>');
     }
 
     public static function getSubscribedEvents(): array

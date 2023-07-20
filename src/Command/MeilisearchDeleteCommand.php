@@ -29,7 +29,7 @@ final class MeilisearchDeleteCommand extends IndexCommand
             $indexName = $index['prefixed_name'];
 
             try {
-                $this->searchService->deleteByIndexName($indexName);
+                $this->searchManager->deleteByIndexName($indexName);
             } catch (ApiException $e) {
                 $output->writeln('Cannot delete '.$indexName.': '.$e->getMessage());
 

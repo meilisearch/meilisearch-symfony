@@ -20,7 +20,7 @@ final class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $this->waitForAllTasks();
 
-        $result = $this->searchService->search($this->entityManager, Post::class, $post->getTitle());
+        $result = $this->searchManager->search(Post::class, $post->getTitle());
 
         $this->assertCount(1, $result);
         $this->assertSame($post->getId(), $result[0]->getId());
@@ -35,7 +35,7 @@ final class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $this->waitForAllTasks();
 
-        $result = $this->searchService->search($this->entityManager, Page::class, $page->getTitle());
+        $result = $this->searchManager->search(Page::class, $page->getTitle());
 
         $this->assertCount(1, $result);
         $this->assertEquals(new DummyObjectId(1), $result[0]->getId());
@@ -56,7 +56,7 @@ final class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $this->waitForAllTasks();
 
-        $result = $this->searchService->search($this->entityManager, Post::class, 'better');
+        $result = $this->searchManager->search(Post::class, 'better');
 
         $this->assertCount(1, $result);
         $this->assertSame($post->getId(), $result[0]->getId());
@@ -78,7 +78,7 @@ final class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $this->waitForAllTasks();
 
-        $result = $this->searchService->search($this->entityManager, Page::class, 'better');
+        $result = $this->searchManager->search(Page::class, 'better');
 
         $this->assertCount(1, $result);
         $this->assertEquals(new DummyObjectId(1), $result[0]->getId());
@@ -94,7 +94,7 @@ final class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $this->waitForAllTasks();
 
-        $result = $this->searchService->search($this->entityManager, Post::class, $post->getTitle());
+        $result = $this->searchManager->search(Post::class, $post->getTitle());
 
         $this->assertCount(1, $result);
         $this->assertSame($post->getId(), $result[0]->getId());
@@ -104,7 +104,7 @@ final class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $this->waitForAllTasks();
 
-        $result = $this->searchService->search($this->entityManager, Post::class, $post->getTitle());
+        $result = $this->searchManager->search(Post::class, $post->getTitle());
 
         $this->assertCount(0, $result);
     }
@@ -118,7 +118,7 @@ final class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $this->waitForAllTasks();
 
-        $result = $this->searchService->search($this->entityManager, Page::class, $page->getTitle());
+        $result = $this->searchManager->search(Page::class, $page->getTitle());
 
         $this->assertCount(1, $result);
         $this->assertEquals($page->getId(), $result[0]->getId());
@@ -128,7 +128,7 @@ final class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
         $this->waitForAllTasks();
 
-        $result = $this->searchService->search($this->entityManager, Page::class, $page->getTitle());
+        $result = $this->searchManager->search(Page::class, $page->getTitle());
 
         $this->assertCount(0, $result);
     }

@@ -7,6 +7,7 @@ namespace Meilisearch\Bundle\Tests\Integration;
 use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ObjectManager;
 use Meilisearch\Bundle\Tests\BaseKernelTestCase;
+use Meilisearch\Bundle\Tests\Entity\Car;
 use Meilisearch\Bundle\Tests\Entity\Post;
 use Meilisearch\Bundle\Tests\Entity\Tag;
 use Meilisearch\Endpoints\Indexes;
@@ -68,15 +69,17 @@ final class SearchTest extends BaseKernelTestCase
         $this->assertStringContainsString('Indexed a batch of 1 / 1 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__'.self::$indexName.' index (1 indexed since start)', $output);
         $this->assertStringContainsString('Done!', $output);
 
+        $this->waitForAllTasks();
+
         $searchTerm = 'Test';
 
-        $results = $this->searchService->search($this->objectManager, Post::class, $searchTerm);
+        $results = $this->searchManager->search(Post::class, $searchTerm);
         $this->assertCount(5, $results);
 
         $resultTitles = array_map(static fn (Post $post) => $post->getTitle(), $results);
         $this->assertEqualsCanonicalizing($testDataTitles, $resultTitles);
 
-        $results = $this->searchService->rawSearch(Post::class, $searchTerm);
+        $results = $this->searchManager->rawSearch(Post::class, $searchTerm);
 
         $this->assertCount(5, $results['hits']);
         $resultTitles = array_map(static fn (array $hit) => $hit['title'], $results['hits']);
@@ -85,7 +88,7 @@ final class SearchTest extends BaseKernelTestCase
         $this->assertCount(5, $results['hits']);
         $this->assertSame(5, $results['nbHits']);
 
-        $results = $this->searchService->search($this->objectManager, Tag::class, $searchTerm);
+        $results = $this->searchManager->search(Tag::class, $searchTerm);
         $this->assertCount(1, $results);
     }
 
@@ -109,9 +112,9 @@ final class SearchTest extends BaseKernelTestCase
             '--indices' => $this->index->getUid(),
         ]);
 
-        $searchTerm = 'Test';
+        $this->waitForAllTasks();
 
-        $results = $this->searchService->search($this->objectManager, Post::class, $searchTerm, ['page' => 2, 'hitsPerPage' => 2]);
+        $results = $this->searchManager->search(Post::class, 'Test', ['page' => 2, 'hitsPerPage' => 2]);
         $this->assertCount(2, $results);
 
         $resultTitles = array_map(static fn (Post $post) => $post->getTitle(), $results);
@@ -132,8 +135,31 @@ final class SearchTest extends BaseKernelTestCase
             '--indices' => $this->index->getUid(),
         ]);
 
-        $results = $this->searchService->search($this->objectManager, Post::class, 'test');
+        $this->waitForAllTasks();
+
+        $results = $this->searchManager->search(Post::class, 'test');
 
         $this->assertCount(12, $results);
+    }
+
+    public function testCars(): void
+    {
+        $this->entityManager->persist(new Car('Audi A8', 2010));
+        $this->entityManager->persist(new Car('Audi A8', 2012));
+        $this->entityManager->persist(new Car('Audi A8', 2014));
+
+        $this->entityManager->flush();
+
+        $command = $this->application->find('meilisearch:import');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            '--indices' => 'cars',
+        ]);
+
+        $this->waitForAllTasks();
+
+        $results = $this->searchManager->search(Car::class, 'Audi');
+
+        $this->assertCount(3, $results);
     }
 }

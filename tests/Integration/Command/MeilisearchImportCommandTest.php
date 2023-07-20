@@ -180,8 +180,8 @@ EOD, $output);
 
         $this->assertSame(<<<'EOD'
 Importing for index Meilisearch\Bundle\Tests\Entity\Tag
-Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__tags index (6 indexed since start)
 Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__aggregated index (6 indexed since start)
+Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__tags index (6 indexed since start)
 Importing for index Meilisearch\Bundle\Tests\Entity\Link
 Indexed a batch of 2 / 2 Meilisearch\Bundle\Tests\Entity\Link entities into sf_phpunit__tags index (2 indexed since start)
 Done!

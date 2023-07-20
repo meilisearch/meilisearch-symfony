@@ -24,11 +24,9 @@ final class ConfigurationTest extends KernelTestCase
     }
 
     /**
-     * @param mixed $value
-     *
      * @dataProvider dataTestSettingsDynamicCheckerInvalid
      */
-    public function testSettingsDynamicCheckerInvalid($value): void
+    public function testSettingsDynamicCheckerInvalid(mixed $value): void
     {
         $this->assertConfigurationIsInvalid([
             'meilisearch' => [
@@ -44,11 +42,9 @@ final class ConfigurationTest extends KernelTestCase
     }
 
     /**
-     * @param mixed $value
-     *
      * @dataProvider dataTestSettingsDynamicCheckerValid
      */
-    public function testSettingsDynamicCheckerValid($value): void
+    public function testSettingsDynamicCheckerValid(mixed $value): void
     {
         $this->assertConfigurationIsValid([
             'meilisearch' => [
@@ -136,6 +132,10 @@ final class ConfigurationTest extends KernelTestCase
                         'serializer_groups' => ['searchable'],
                         'index_if' => null,
                         'settings' => [],
+                        'type' => 'orm',
+                        'data_provider' => null,
+                        'id_normalizer' => 'meilisearch.identifier.default_id_normalizer',
+                        'primary_key' => 'objectID',
                     ],
                     1 => [
                         'name' => 'tags',
@@ -144,6 +144,10 @@ final class ConfigurationTest extends KernelTestCase
                         'serializer_groups' => ['searchable'],
                         'index_if' => null,
                         'settings' => [],
+                        'type' => 'orm',
+                        'data_provider' => null,
+                        'id_normalizer' => 'meilisearch.identifier.default_id_normalizer',
+                        'primary_key' => 'objectID',
                     ],
                 ],
             ],
@@ -184,7 +188,12 @@ final class ConfigurationTest extends KernelTestCase
                         'class' => 'App\Entity\Post',
                         'enable_serializer_groups' => false,
                         'serializer_groups' => ['searchable'],
-                        'index_if' => null, 'settings' => [],
+                        'index_if' => null,
+                        'settings' => [],
+                        'type' => 'orm',
+                        'data_provider' => null,
+                        'id_normalizer' => 'meilisearch.identifier.default_id_normalizer',
+                        'primary_key' => 'objectID',
                     ],
                     [
                         'name' => 'items',
@@ -193,6 +202,10 @@ final class ConfigurationTest extends KernelTestCase
                         'serializer_groups' => ['searchable'],
                         'index_if' => null,
                         'settings' => [],
+                        'type' => 'orm',
+                        'data_provider' => null,
+                        'id_normalizer' => 'meilisearch.identifier.default_id_normalizer',
+                        'primary_key' => 'objectID',
                     ],
                 ],
                 'nbResults' => 20,
@@ -228,7 +241,12 @@ final class ConfigurationTest extends KernelTestCase
                         'class' => 'App\Entity\Post',
                         'enable_serializer_groups' => true,
                         'serializer_groups' => ['post.public', 'post.private'],
-                        'index_if' => null, 'settings' => [],
+                        'index_if' => null,
+                        'settings' => [],
+                        'type' => 'orm',
+                        'data_provider' => null,
+                        'id_normalizer' => 'meilisearch.identifier.default_id_normalizer',
+                        'primary_key' => 'objectID',
                     ],
                 ],
                 'nbResults' => 20,
@@ -267,6 +285,10 @@ final class ConfigurationTest extends KernelTestCase
                         'settings' => [
                             'distinctAttribute' => ['product_id'],
                         ],
+                        'type' => 'orm',
+                        'data_provider' => null,
+                        'id_normalizer' => 'meilisearch.identifier.default_id_normalizer',
+                        'primary_key' => 'objectID',
                     ],
                 ],
                 'nbResults' => 20,
@@ -305,6 +327,10 @@ final class ConfigurationTest extends KernelTestCase
                         'settings' => [
                             'proximityPrecision' => ['byWord'],
                         ],
+                        'type' => 'orm',
+                        'data_provider' => null,
+                        'id_normalizer' => 'meilisearch.identifier.default_id_normalizer',
+                        'primary_key' => 'objectID',
                     ],
                 ],
                 'nbResults' => 20,
@@ -330,6 +356,87 @@ final class ConfigurationTest extends KernelTestCase
                 'serializer' => 'serializer',
                 'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
                 'http_client' => 'acme.http_client',
+            ],
+        ];
+
+        yield 'custom primary key' => [
+            'inputConfig' => [
+                'meilisearch' => [
+                    'prefix' => 'sf_',
+                    'indices' => [
+                        ['name' => 'posts', 'class' => 'App\Entity\Post', 'primary_key' => 'postId'],
+                        ['name' => 'tags', 'class' => 'App\Entity\Tag', 'primary_key' => 'tagId'],
+                    ],
+                ],
+            ],
+            'expectedConfig' => [
+                'url' => 'http://localhost:7700',
+                'prefix' => 'sf_',
+                'nbResults' => 20,
+                'batchSize' => 500,
+                'serializer' => 'serializer',
+                'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
+                'http_client' => 'psr18.http_client',
+                'indices' => [
+                    0 => [
+                        'name' => 'posts',
+                        'class' => 'App\Entity\Post',
+                        'enable_serializer_groups' => false,
+                        'serializer_groups' => ['searchable'],
+                        'index_if' => null,
+                        'settings' => [],
+                        'type' => 'orm',
+                        'data_provider' => null,
+                        'id_normalizer' => 'meilisearch.identifier.default_id_normalizer',
+                        'primary_key' => 'postId',
+                    ],
+                    1 => [
+                        'name' => 'tags',
+                        'class' => 'App\Entity\Tag',
+                        'enable_serializer_groups' => false,
+                        'serializer_groups' => ['searchable'],
+                        'index_if' => null,
+                        'settings' => [],
+                        'type' => 'orm',
+                        'data_provider' => null,
+                        'id_normalizer' => 'meilisearch.identifier.default_id_normalizer',
+                        'primary_key' => 'tagId',
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'custom id normalizer' => [
+            'inputConfig' => [
+                'meilisearch' => [
+                    'prefix' => 'sf_',
+                    'indices' => [
+                        ['name' => 'posts', 'class' => 'App\Entity\Post', 'primary_key' => 'postId', 'id_normalizer' => 'acme.id_normalizer'],
+                    ],
+                ],
+            ],
+            'expectedConfig' => [
+                'url' => 'http://localhost:7700',
+                'prefix' => 'sf_',
+                'nbResults' => 20,
+                'batchSize' => 500,
+                'serializer' => 'serializer',
+                'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
+                'http_client' => 'psr18.http_client',
+                'indices' => [
+                    0 => [
+                        'name' => 'posts',
+                        'class' => 'App\Entity\Post',
+                        'enable_serializer_groups' => false,
+                        'serializer_groups' => ['searchable'],
+                        'index_if' => null,
+                        'settings' => [],
+                        'type' => 'orm',
+                        'data_provider' => null,
+                        'id_normalizer' => 'acme.id_normalizer',
+                        'primary_key' => 'postId',
+                    ],
+                ],
             ],
         ];
     }

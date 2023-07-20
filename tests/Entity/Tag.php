@@ -6,7 +6,7 @@ namespace Meilisearch\Bundle\Tests\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Meilisearch\Bundle\Searchable;
+use Meilisearch\Bundle\SearchableObject;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -87,7 +87,7 @@ class Tag implements NormalizableInterface
      */
     public function normalize(NormalizerInterface $normalizer, $format = null, array $context = []): array
     {
-        if (Searchable::NORMALIZATION_FORMAT === $format) {
+        if (SearchableObject::NORMALIZATION_FORMAT === $format) {
             return [
                 'id' => $this->id,
                 'name' => 'this test is correct',
