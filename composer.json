@@ -64,7 +64,7 @@
   },
   "scripts": {
     "phpmd": "./vendor/bin/phpmd src text phpmd.xml",
-    "phpstan": "./vendor/bin/phpstan --memory-limit=1G --ansi",
+    "phpstan": "./vendor/bin/phpstan",
     "test:unit": "SYMFONY_DEPRECATIONS_HELPER='ignoreFile=./tests/baseline-ignore' ./vendor/bin/simple-phpunit --colors=always --verbose",
     "test:unit:coverage": "SYMFONY_DEPRECATIONS_HELPER='ignoreFile=./tests/baseline-ignore' XDEBUG_MODE=coverage ./vendor/bin/simple-phpunit --colors=always --coverage-html=tests/coverage",
     "lint:check": "./vendor/bin/php-cs-fixer fix -v --using-cache=no --dry-run",
