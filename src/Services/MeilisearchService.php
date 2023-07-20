@@ -14,12 +14,16 @@ use Meilisearch\Bundle\Entity\Aggregator;
 use Meilisearch\Bundle\Exception\ObjectIdNotFoundException;
 use Meilisearch\Bundle\Exception\SearchHitsNotFoundException;
 use Meilisearch\Bundle\SearchableEntity;
+use Meilisearch\Bundle\SearchManagerInterface;
 use Meilisearch\Bundle\SearchService;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
+/**
+ * @deprecated Since 0.16, use `Meilisearch\Bundle\Services\MeilisearchManager` instead.
+ */
 final class MeilisearchService implements SearchService
 {
     private NormalizerInterface $normalizer;
@@ -43,13 +47,15 @@ final class MeilisearchService implements SearchService
      */
     private array $classToSerializerGroup;
     private array $indexIfMapping;
+    private ?SearchManagerInterface $manager;
 
-    public function __construct(NormalizerInterface $normalizer, Engine $engine, array $configuration, ?PropertyAccessorInterface $propertyAccessor = null)
+    public function __construct(NormalizerInterface $normalizer, Engine $engine, array $configuration, ?PropertyAccessorInterface $propertyAccessor = null, ?SearchManagerInterface $manager = null)
     {
         $this->normalizer = $normalizer;
         $this->engine = $engine;
         $this->configuration = new Collection($configuration);
         $this->propertyAccessor = $propertyAccessor ?? PropertyAccess::createPropertyAccessor();
+        $this->manager = $manager;
 
         $this->setSearchableEntities();
         $this->setAggregatorsAndEntitiesAggregators();
@@ -59,11 +65,20 @@ final class MeilisearchService implements SearchService
 
     public function isSearchable($className): bool
     {
+        trigger_deprecation('meilisearch/meilisearch-symfony', '0.16', 'Using `Meilisearch\Bundle\Services\MeilisearchService::isSearchable()` is deprecated. Use `Meilisearch\Bundle\Services\MeilisearchManager::isSearchable()` instead.');
+
+        if (null !== $this->manager) {
+            return $this->manager->isSearchable($className);
+        }
+
         $className = $this->getBaseClassName($className);
 
         return \in_array($className, $this->searchableEntities, true);
     }
 
+    /**
+     * @deprecated without replacement
+     */
     public function getSearchable(): array
     {
         return $this->searchableEntities;
@@ -71,11 +86,23 @@ final class MeilisearchService implements SearchService
 
     public function getConfiguration(): Collection
     {
+        trigger_deprecation('meilisearch/meilisearch-symfony', '0.16', 'Using `Meilisearch\Bundle\Services\MeilisearchService::getConfiguration()` is deprecated. Use `Meilisearch\Bundle\Services\MeilisearchManager::getConfiguration()` instead.');
+
+        if (null !== $this->manager) {
+            return $this->manager->getConfiguration();
+        }
+
         return $this->configuration;
     }
 
     public function searchableAs(string $className): string
     {
+        trigger_deprecation('meilisearch/meilisearch-symfony', '0.16', 'Using `Meilisearch\Bundle\Services\MeilisearchService::searchableAs()` is deprecated. Use `Meilisearch\Bundle\Services\MeilisearchManager::searchableAs()` instead.');
+
+        if (null !== $this->manager) {
+            return $this->manager->searchableAs($className);
+        }
+
         $className = $this->getBaseClassName($className);
 
         $indexes = new Collection($this->getConfiguration()->get('indices'));
@@ -86,6 +113,12 @@ final class MeilisearchService implements SearchService
 
     public function index(ObjectManager $objectManager, $searchable): array
     {
+        trigger_deprecation('meilisearch/meilisearch-symfony', '0.16', 'Passing `Doctrine\Persistence\ObjectManager` to index() is deprecated. Use `Meilisearch\Bundle\Services\MeilisearchManager::index()` instead.');
+
+        if (null !== $this->manager) {
+            return $this->manager->index($searchable);
+        }
+
         $searchable = \is_array($searchable) ? $searchable : [$searchable];
         $searchable = array_merge($searchable, $this->getAggregatorsFromEntities($objectManager, $searchable));
 
@@ -115,6 +148,12 @@ final class MeilisearchService implements SearchService
 
     public function remove(ObjectManager $objectManager, $searchable): array
     {
+        trigger_deprecation('meilisearch/meilisearch-symfony', '0.16', 'Passing `Doctrine\Persistence\ObjectManager` to remove() is deprecated. Use `Meilisearch\Bundle\Services\MeilisearchManager::remove()` instead.');
+
+        if (null !== $this->manager) {
+            return $this->manager->remove($searchable);
+        }
+
         $searchable = \is_array($searchable) ? $searchable : [$searchable];
         $searchable = array_merge($searchable, $this->getAggregatorsFromEntities($objectManager, $searchable));
 
@@ -132,6 +171,12 @@ final class MeilisearchService implements SearchService
 
     public function clear(string $className): array
     {
+        trigger_deprecation('meilisearch/meilisearch-symfony', '0.16', 'Using `Meilisearch\Bundle\Services\MeilisearchService::clear()` is deprecated. Use `Meilisearch\Bundle\Services\MeilisearchManager::clear()` instead.');
+
+        if (null !== $this->manager) {
+            return $this->manager->clear($className);
+        }
+
         $this->assertIsSearchable($className);
 
         return $this->engine->clear($this->searchableAs($className));
@@ -139,11 +184,23 @@ final class MeilisearchService implements SearchService
 
     public function deleteByIndexName(string $indexName): array
     {
+        trigger_deprecation('meilisearch/meilisearch-symfony', '0.16', 'Using `Meilisearch\Bundle\Services\MeilisearchService::deleteByIndexName()` is deprecated. Use `Meilisearch\Bundle\Services\MeilisearchManager::deleteByIndexName()` instead.');
+
+        if (null !== $this->manager) {
+            return $this->manager->deleteByIndexName($indexName);
+        }
+
         return $this->engine->delete($indexName);
     }
 
     public function delete(string $className): array
     {
+        trigger_deprecation('meilisearch/meilisearch-symfony', '0.16', 'Using `Meilisearch\Bundle\Services\MeilisearchService::delete()` is deprecated. Use `Meilisearch\Bundle\Services\MeilisearchManager::delete()` instead.');
+
+        if (null !== $this->manager) {
+            return $this->manager->delete($className);
+        }
+
         $this->assertIsSearchable($className);
 
         return $this->engine->delete($this->searchableAs($className));
@@ -155,9 +212,15 @@ final class MeilisearchService implements SearchService
         string $query = '',
         array $searchParams = []
     ): array {
+        trigger_deprecation('meilisearch/meilisearch-symfony', '0.16', 'Passing `Doctrine\Persistence\ObjectManager` to search() is deprecated. Use `Meilisearch\Bundle\Services\MeilisearchManager::search()` instead.');
+
+        if (null !== $this->manager) {
+            return $this->manager->search($className, $query, $searchParams);
+        }
+
         $this->assertIsSearchable($className);
 
-        $ids = $this->engine->search($query, $this->searchableAs($className), $searchParams + ['limit' => $this->configuration['nbResults']]);
+        $ids = $this->engine->search($query, $this->searchableAs($className), $searchParams + ['limit' => $this->configuration->get('nbResults')]);
         $results = [];
 
         // Check if the engine returns results in "hits" key
@@ -195,6 +258,12 @@ final class MeilisearchService implements SearchService
         string $query = '',
         array $searchParams = []
     ): array {
+        trigger_deprecation('meilisearch/meilisearch-symfony', '0.16', 'Using `Meilisearch\Bundle\Services\MeilisearchService::rawSearch()` is deprecated. Use `Meilisearch\Bundle\Services\MeilisearchManager::rawSearch()` instead.');
+
+        if (null !== $this->manager) {
+            return $this->manager->rawSearch($className, $query, $searchParams);
+        }
+
         $this->assertIsSearchable($className);
 
         return $this->engine->search($query, $this->searchableAs($className), $searchParams);
@@ -202,11 +271,20 @@ final class MeilisearchService implements SearchService
 
     public function count(string $className, string $query = '', array $searchParams = []): int
     {
+        trigger_deprecation('meilisearch/meilisearch-symfony', '0.16', 'Using `Meilisearch\Bundle\Services\MeilisearchService::count()` is deprecated. Use `Meilisearch\Bundle\Services\MeilisearchManager::count()` instead.');
+
+        if (null !== $this->manager) {
+            return $this->manager->count($className, $query, $searchParams);
+        }
+
         $this->assertIsSearchable($className);
 
         return $this->engine->count($query, $this->searchableAs($className), $searchParams);
     }
 
+    /**
+     * @deprecated without replacement
+     */
     public function shouldBeIndexed(object $entity): bool
     {
         $className = $this->getBaseClassName($entity);
@@ -265,8 +343,8 @@ final class MeilisearchService implements SearchService
                         $this->entitiesAggregators[$entityClass] = [];
                     }
 
-                    $this->entitiesAggregators[$entityClass][] = $index['class'];
-                    $this->aggregators[] = $index['class'];
+                    $this->entitiesAggregators[$entityClass][] = (string) $index['class'];
+                    $this->aggregators[] = (string) $index['class'];
                 }
             }
         }

@@ -9,6 +9,9 @@ use Meilisearch\Bundle\Exception\InvalidEntityForAggregator;
 use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
+/**
+ * @phpstan-consistent-constructor
+ */
 abstract class Aggregator implements NormalizableInterface
 {
     /**
@@ -20,16 +23,17 @@ abstract class Aggregator implements NormalizableInterface
 
     /**
      * Holds a doctrine {@ORM\Entity} or {@ODM\Document} object.
-     *
-     * @var object
      */
-    protected $entity;
+    protected object $entity;
 
     /**
-     * @param object $entity
+     * @param string $primaryKey defaults to `objectID` for backwards compatibility
      */
-    public function __construct($entity, array $entityIdentifierValues)
-    {
+    public function __construct(
+        object $entity,
+        array $entityIdentifierValues,
+        protected readonly string $primaryKey = 'objectID',
+    ) {
         $this->entity = $entity;
 
         if (\count($entityIdentifierValues) > 1) {
@@ -75,6 +79,6 @@ abstract class Aggregator implements NormalizableInterface
 
     public function normalize(NormalizerInterface $normalizer, ?string $format = null, array $context = []): array
     {
-        return array_merge(['objectID' => $this->objectID], $normalizer->normalize($this->entity, $format, $context));
+        return array_merge([$this->primaryKey => $this->objectID], $normalizer->normalize($this->entity, $format, $context));
     }
 }
