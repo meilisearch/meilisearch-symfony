@@ -1,0 +1,80 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block toolbar %}
+    {% set _data = collector.meilisearch %}
+    {% if _data is not null %}
+        {% set icon %}
+            {{ include('@Meilisearch/DataCollector/meilisearch.svg') }}
+            <span class="sf-toolbar-value">Meilisearch</span>
+        {% endset %}
+        {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: 'meilisearch' }) }}
+    {% endif %}
+{% endblock %}
+
+{% block menu %}
+    {% set _data = collector.meilisearch %}
+    <span class="label{{ _data is null ? ' disabled' }}">
+        <span class="icon">
+            {{ include('@Meilisearch/DataCollector/meilisearch.svg') }}
+        </span>
+        <strong>Meilisearch</strong>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    <h2>Meilisearch</h2>
+    {% set _data = collector.meilisearch %}
+    {% if _data is not null %}
+        <div class="sf-tabs">
+            {% for _name, _d in _data %}
+                <div class="tab">
+                    <h3 class="tab-title">{{ _name|title }}</h3>
+                    <div class="tab-content">
+                        <div class="metrics">
+                            <div class="metric">
+                                <span class="value">{{ '%.0f'|format(_d._duration) }} <span class="unit">ms</span></span>
+                                <span class="label">Total execution time</span>
+                            </div>
+                            <div class="metric">
+                                <span class="value">{{ '%.2f'|format(_d._memory / 1024 / 1024) }} <span class="unit">MB</span></span>
+                                <span class="label">Peak memory usage</span>
+                            </div>
+                        </div>
+                        <h3>Params</h3>
+                        <table>
+                            {% for _pk, _pv in _d._params %}
+                                <tr>
+                                    <td>{{ _pk }}</td>
+                                    <td>{{ profiler_dump(_pv) }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                        <h3>Result</h3>
+                        <table>
+                            {% for _rk, _rv in _d._results %}
+                                <tr>
+                                    <td>{{ _rk }}</td>
+                                    <td>{{ profiler_dump(_rv) }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <p class="help">
+            You can also see the HTTP Client & Performance{% if constant('Symfony\\Component\\HttpKernel\\Kernel::VERSION') >= '6.1.0' %} & Serializer{% endif %} tabs to learn more.
+        </p>
+    {% else %}
+        <div class="empty">
+            <p>No Meilisearch data collected.</p>
+        </div>
+    {% endif %}
+    <p>
+        <a href="https://www.meilisearch.com/docs">Read Meilisearch documentation</a>
+        <br />
+        <a href="https://github.com/meilisearch/meilisearch-php">Read Meilisearch PHP SDK documentation</a>
+        <br />
+        <a href="https://github.com/meilisearch/meilisearch-symfony">Read Meilisearch Symfony bundle documentation</a>
+    </p>
+{% endblock %}

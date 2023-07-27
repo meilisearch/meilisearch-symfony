@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Meilisearch\Bundle\DependencyInjection;
 
+use Meilisearch\Bundle\DataCollector\MeilisearchDataCollector;
+use Meilisearch\Bundle\Debug\TraceableMeilisearchService;
 use Meilisearch\Bundle\Engine;
 use Meilisearch\Bundle\MeilisearchBundle;
+use Meilisearch\Bundle\SearchService;
 use Meilisearch\Bundle\Services\MeilisearchService;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -59,6 +62,20 @@ final class MeilisearchExtension extends Extension
 
         $container->setDefinition('meilisearch.service', $searchDefinition->setPublic(true));
         $container->setAlias('search.service', 'meilisearch.service')->setPublic(true);
+
+        if ($container->getParameter('kernel.debug')) {
+            $container->register('debug.meilisearch.service', TraceableMeilisearchService::class)
+                ->setDecoratedService(SearchService::class)
+                ->addArgument(new Reference('debug.meilisearch.service.inner'))
+                ->addArgument(new Reference('debug.stopwatch'))
+            ;
+            $container->register('data_collector.meilisearch', MeilisearchDataCollector::class)
+                ->addArgument(new Reference('debug.meilisearch.service'))
+                ->addTag('data_collector', [
+                    'id' => 'meilisearch',
+                    'template' => '@Meilisearch/DataCollector/meilisearch.html.twig',
+                ]);
+        }
     }
 
     /**
