@@ -60,7 +60,7 @@ final class Configuration implements ConfigurationInterface
                                 ->defaultNull()
                             ->end()
                             ->arrayNode('settings')
-                                ->info('Configure indices settings, see: https://docs.meilisearch.com/guides/advanced_guides/settings.html')
+                                ->info('Configure indices settings, see: https://www.meilisearch.com/docs/reference/api/settings')
                                 ->arrayPrototype()
                                     ->variablePrototype()->end()
                                 ->end()
