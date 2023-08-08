@@ -34,7 +34,7 @@ class CommandsTest extends BaseKernelTestCase
     {
         parent::setUp();
 
-        $this->client = $this->get('search.client');
+        $this->client = $this->get('meilisearch.client');
         $this->index = $this->client->index($this->getPrefix().self::$indexName);
         $this->application = new Application(self::createKernel());
     }
@@ -498,7 +498,7 @@ Done!
 EOD, $importOutput);
         }
 
-        $settings = $this->get('search.client')->index('sf_phpunit__dynamic_settings')->getSettings();
+        $settings = $this->get('meilisearch.client')->index('sf_phpunit__dynamic_settings')->getSettings();
 
         $getSetting = static fn ($value) => $value instanceof \IteratorAggregate ? iterator_to_array($value) : $value;
 

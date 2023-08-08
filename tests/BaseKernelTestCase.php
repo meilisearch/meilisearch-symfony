@@ -29,7 +29,7 @@ abstract class BaseKernelTestCase extends KernelTestCase
         self::bootKernel();
 
         $this->entityManager = $this->get('doctrine.orm.entity_manager');
-        $this->searchService = $this->get('search.service');
+        $this->searchService = $this->get('meilisearch.service');
 
         $metaData = $this->entityManager->getMetadataFactory()->getAllMetadata();
         $tool = new SchemaTool($this->entityManager);
