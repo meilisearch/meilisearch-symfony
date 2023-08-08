@@ -5,6 +5,8 @@ framework:
     annotations: true
     serializer:
         enable_annotations: true
+    router:
+        utf8: true
 
 doctrine:
     dbal:
