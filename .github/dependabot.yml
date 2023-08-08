@@ -8,8 +8,8 @@ updates:
       time: "04:00"
     open-pull-requests-limit: 10
     labels:
-    - dependencies
-    - skip-changelog
+      - dependencies
+      - skip-changelog
     rebase-strategy: disabled
 
   - package-ecosystem: "github-actions"
