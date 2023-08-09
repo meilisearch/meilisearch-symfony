@@ -14,9 +14,6 @@ use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-/**
- * Class MeilisearchExtension.
- */
 final class MeilisearchExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void

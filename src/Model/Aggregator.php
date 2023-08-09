@@ -9,9 +9,6 @@ use Meilisearch\Bundle\Exception\InvalidEntityForAggregator;
 use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-/**
- * Class Aggregator.
- */
 abstract class Aggregator implements NormalizableInterface
 {
     /**
@@ -29,8 +26,6 @@ abstract class Aggregator implements NormalizableInterface
     protected $entity;
 
     /**
-     * Aggregator constructor.
-     *
      * @param object $entity
      */
     public function __construct($entity, array $entityIdentifierValues)

@@ -17,9 +17,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Class MeilisearchImportCommand.
- */
 final class MeilisearchImportCommand extends IndexCommand
 {
     private const DEFAULT_RESPONSE_TIMEOUT = 5000;
