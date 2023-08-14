@@ -6,9 +6,6 @@ namespace Meilisearch\Bundle;
 
 use Doctrine\Persistence\ObjectManager;
 
-/**
- * Interface SearchService.
- */
 interface SearchService
 {
     public const RESULT_KEY_HITS = 'hits';

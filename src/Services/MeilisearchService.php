@@ -18,9 +18,6 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-/**
- * Class MeilisearchService.
- */
 final class MeilisearchService implements SearchService
 {
     private NormalizerInterface $normalizer;
