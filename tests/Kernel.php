@@ -31,7 +31,6 @@ class Kernel extends HttpKernel
         } else {
             $loader->load(__DIR__.'/config/config_php7.yaml');
         }
-        $loader->load(__DIR__.'/../config/services.xml');
         $loader->load(__DIR__.'/config/meilisearch.yaml');
 
         if (defined(ConnectionFactory::class.'::DEFAULT_SCHEME_MAP')) {

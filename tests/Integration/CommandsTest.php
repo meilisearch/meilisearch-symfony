@@ -8,7 +8,6 @@ use Meilisearch\Bundle\Tests\BaseKernelTestCase;
 use Meilisearch\Bundle\Tests\Entity\DummyCustomGroups;
 use Meilisearch\Bundle\Tests\Entity\DynamicSettings;
 use Meilisearch\Bundle\Tests\Entity\SelfNormalizable;
-use Meilisearch\Client;
 use Meilisearch\Endpoints\Indexes;
 use Meilisearch\Exceptions\ApiException;
 use Meilisearch\Search\SearchResult;
@@ -22,7 +21,6 @@ class CommandsTest extends BaseKernelTestCase
 {
     private static string $indexName = 'posts';
 
-    protected Client $client;
     protected Application $application;
     protected Indexes $index;
 
@@ -34,7 +32,6 @@ class CommandsTest extends BaseKernelTestCase
     {
         parent::setUp();
 
-        $this->client = $this->get('meilisearch.client');
         $this->index = $this->client->index($this->getPrefix().self::$indexName);
         $this->application = new Application(self::createKernel());
     }

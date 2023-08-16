@@ -19,14 +19,14 @@ class DependencyInjectionTest extends AbstractExtensionTestCase
 
     public function testHasMeilisearchVersionDefinitionAfterLoad(): void
     {
-        $this->load();
+        $this->load(['url' => 'http://meilisearch:7700', 'api_key' => null]);
 
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument('meilisearch.client', '$clientAgents', ['%meili_symfony_version%']);
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument('meilisearch.client', 4, [MeilisearchBundle::qualifiedVersion()]);
     }
 
     public function testHasMeilisearchVersionFromConstantAfterLoad(): void
     {
-        $this->load();
+        $this->load(['url' => 'http://meilisearch:7700', 'api_key' => null]);
 
         $this->assertContainerBuilderHasParameter('meili_symfony_version', MeilisearchBundle::qualifiedVersion());
     }

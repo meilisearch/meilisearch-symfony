@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Meilisearch\Bundle\DependencyInjection;
 
-use Meilisearch\Bundle\Engine;
 use Meilisearch\Bundle\MeilisearchBundle;
-use Meilisearch\Bundle\Services\MeilisearchService;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -47,15 +44,14 @@ final class MeilisearchExtension extends Extension
             $container->removeDefinition('meilisearch.search_indexer_subscriber');
         }
 
-        $engineDefinition = new Definition(Engine::class, [new Reference('meilisearch.client')]);
+        $container->findDefinition('meilisearch.client')
+            ->replaceArgument(0, $config['url'])
+            ->replaceArgument(1, $config['api_key'])
+            ->replaceArgument(4, [MeilisearchBundle::qualifiedVersion()]);
 
-        $searchDefinition = (new Definition(
-            MeilisearchService::class,
-            [new Reference($config['serializer']), $engineDefinition, $config]
-        ));
-
-        $container->setDefinition('meilisearch.service', $searchDefinition->setPublic(true));
-        $container->setAlias('search.service', 'meilisearch.service')->setPublic(true);
+        $container->findDefinition('meilisearch.service')
+            ->replaceArgument(0, new Reference($config['serializer']))
+            ->replaceArgument(2, $config);
     }
 
     /**

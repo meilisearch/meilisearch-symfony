@@ -9,7 +9,6 @@ use Doctrine\Persistence\ObjectManager;
 use Meilisearch\Bundle\Tests\BaseKernelTestCase;
 use Meilisearch\Bundle\Tests\Entity\Post;
 use Meilisearch\Bundle\Tests\Entity\Tag;
-use Meilisearch\Client;
 use Meilisearch\Endpoints\Indexes;
 use Meilisearch\Exceptions\ApiException;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -22,7 +21,6 @@ class SearchTest extends BaseKernelTestCase
 {
     private static string $indexName = 'aggregated';
 
-    protected Client $client;
     protected Connection $connection;
     protected ObjectManager $objectManager;
     protected Application $application;
