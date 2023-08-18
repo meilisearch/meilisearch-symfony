@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle;
 
 use Doctrine\Persistence\ObjectManager;
+use Meilisearch\Bundle\Contracts\SearchQuery;
 
 interface SearchService
 {
@@ -59,6 +60,13 @@ interface SearchService
         string $query = '',
         array $searchParams = []
     ): array;
+
+    /**
+     * @param list<SearchQuery> $queries
+     *
+     * @return array<non-empty-string, list<object>>
+     */
+    public function multiSearch(ObjectManager $objectManager, array $queries): array;
 
     /**
      * Get the raw search result.

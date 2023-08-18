@@ -7,6 +7,7 @@ namespace Meilisearch\Bundle\Services;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Persistence\ObjectManager;
 use Meilisearch\Bundle\Collection;
+use Meilisearch\Bundle\Contracts\SearchQuery;
 use Meilisearch\Bundle\Engine;
 use Meilisearch\Bundle\Entity\Aggregator;
 use Meilisearch\Bundle\Exception\ObjectIdNotFoundException;
@@ -188,6 +189,42 @@ final class MeilisearchService implements SearchService
         return $results;
     }
 
+    public function multiSearch(ObjectManager $objectManager, array $queries): array
+    {
+        $prefix = $this->configuration->get('prefix');
+        $indices = $this->configuration->get('indices');
+
+        //        $response = $this->engine->multiSearch(array_map(function (SearchQuery $query) use ($prefix, $indices) {
+        //            $this->assertIsSearchable($query->getClassName());
+        //
+        //            return $query->toEngineQuery($prefix, $indices);
+        //        }, $queries));
+        $response = $this->engine->multiSearch(array_map(static fn (SearchQuery $query) => $query->toEngineQuery($prefix, $indices), $queries));
+        $results = [];
+
+        foreach ($response['results'] as $indexResponse) {
+            $indexResults = [];
+            $className = $this->getClassNameFromIndex($indexResponse['indexUid']);
+
+            foreach ($indexResponse['hits'] as $hit) {
+                if (!isset($hit[self::RESULT_KEY_OBJECTID])) {
+                    throw new ObjectIdNotFoundException(sprintf('There is no "%s" key in the multi search "%s" result.', self::RESULT_KEY_OBJECTID, $indexResponse['indexUid']));
+                }
+
+                $repo = $objectManager->getRepository($className);
+                $entity = $repo->find($hit['objectID']);
+
+                if (null !== $entity) {
+                    $indexResults[] = $entity;
+                }
+            }
+
+            $results[$className] = $indexResults;
+        }
+
+        return $results;
+    }
+
     public function rawSearch(
         string $className,
         string $query = '',
@@ -345,5 +382,21 @@ final class MeilisearchService implements SearchService
         if (!$this->isSearchable($className)) {
             throw new Exception('Class '.$className.' is not searchable.');
         }
+    }
+
+    /**
+     * @return class-string
+     */
+    private function getClassNameFromIndex(string $index): string
+    {
+        $prefix = $this->configuration->get('prefix');
+
+        foreach ($this->configuration->get('indices') as $indice) {
+            if ("$prefix{$indice['name']}" === $index) {
+                return $indice['class'];
+            }
+        }
+
+        throw new Exception(sprintf('Cannot find searchable class for "%s" index.', $index));
     }
 }

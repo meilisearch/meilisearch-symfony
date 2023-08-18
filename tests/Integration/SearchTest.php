@@ -6,7 +6,9 @@ namespace Meilisearch\Bundle\Tests\Integration;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ObjectManager;
+use Meilisearch\Bundle\Contracts\SearchQuery;
 use Meilisearch\Bundle\Tests\BaseKernelTestCase;
+use Meilisearch\Bundle\Tests\Entity\Comment;
 use Meilisearch\Bundle\Tests\Entity\Post;
 use Meilisearch\Bundle\Tests\Entity\Tag;
 use Meilisearch\Endpoints\Indexes;
@@ -14,9 +16,6 @@ use Meilisearch\Exceptions\ApiException;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-/**
- * Class SearchTest.
- */
 class SearchTest extends BaseKernelTestCase
 {
     private static string $indexName = 'aggregated';
@@ -115,8 +114,44 @@ class SearchTest extends BaseKernelTestCase
         $this->assertEqualsCanonicalizing(array_slice($testDataTitles, 2, 2), $resultTitles);
     }
 
-    protected function tearDown(): void
+    public function testMultiSearch(): void
     {
-        parent::tearDown();
+        $posts = [];
+        $comments = [];
+
+        for ($i = 0; $i < 5; ++$i) {
+            $post = new Post(['title' => $i < 2 ? "Test post $i" : "Good post $i"]);
+            if ($i < 2) {
+                $posts[] = $post;
+            }
+
+            $this->entityManager->persist($post);
+
+            $comment = new Comment();
+            $comment->setPost($post);
+            $comment->setContent($i < 2 ? "Test comment $i" : "Good comment $i");
+            if ($i < 2) {
+                $comments[] = $comment;
+            }
+
+            $this->entityManager->persist($comment);
+        }
+
+        $this->entityManager->flush();
+
+        $firstTask = $this->client->getTasks()->getResults()[0];
+        $this->client->waitForTask($firstTask['uid']);
+
+        $result = $this->searchService->multiSearch($this->entityManager, [
+            (new SearchQuery(Post::class))
+                ->setQuery('test'),
+            (new SearchQuery(Comment::class))
+                ->setQuery('test'),
+        ]);
+
+        self::assertEquals([
+            Post::class => $posts,
+            Comment::class => $comments,
+        ], $result);
     }
 }
