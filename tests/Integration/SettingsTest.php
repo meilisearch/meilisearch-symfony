@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle\Tests\Integration;
 
 use Meilisearch\Bundle\Tests\BaseKernelTestCase;
-use Meilisearch\Client;
 use Meilisearch\Contracts\Index\TypoTolerance;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -27,7 +26,6 @@ class SettingsTest extends BaseKernelTestCase
             'exactness',
         ];
 
-    protected Client $client;
     protected Application $application;
 
     /**
@@ -37,7 +35,6 @@ class SettingsTest extends BaseKernelTestCase
     {
         parent::setUp();
 
-        $this->client = $this->get('meilisearch.client');
         $this->application = new Application(self::$kernel);
     }
 

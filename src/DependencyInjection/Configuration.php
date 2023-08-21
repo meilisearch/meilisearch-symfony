@@ -17,10 +17,10 @@ final class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('url')->end()
+                ->scalarNode('url')->defaultValue('http://localhost:7700')->end()
                 ->scalarNode('api_key')->end()
                 ->scalarNode('prefix')
-                    ->defaultValue(null)
+                    ->defaultNull()
                 ->end()
                 ->scalarNode('nbResults')
                     ->defaultValue(20)
