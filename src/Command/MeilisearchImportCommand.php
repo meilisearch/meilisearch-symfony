@@ -34,7 +34,7 @@ final class MeilisearchImportCommand extends IndexCommand
 
     public static function getDefaultName(): string
     {
-        return 'meili:import';
+        return 'meilisearch:import|meili:import';
     }
 
     public static function getDefaultDescription(): string

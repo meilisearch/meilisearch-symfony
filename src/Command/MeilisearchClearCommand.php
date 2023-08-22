@@ -12,7 +12,7 @@ final class MeilisearchClearCommand extends IndexCommand
 {
     public static function getDefaultName(): string
     {
-        return 'meili:clear';
+        return 'meilisearch:clear|meili:clear';
     }
 
     public static function getDefaultDescription(): string

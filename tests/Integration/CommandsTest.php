@@ -14,9 +14,6 @@ use Meilisearch\Search\SearchResult;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-/**
- * Class CommandsTest.
- */
 class CommandsTest extends BaseKernelTestCase
 {
     private static string $indexName = 'posts';
@@ -40,7 +37,7 @@ class CommandsTest extends BaseKernelTestCase
     {
         $unknownIndexName = 'test';
 
-        $command = $this->application->find('meili:clear');
+        $command = $this->application->find('meilisearch:clear');
         $commandTester = new CommandTester($command);
 
         $commandTester->execute([
@@ -65,7 +62,7 @@ class CommandsTest extends BaseKernelTestCase
             $this->createTag(['id' => $i]);
         }
 
-        $importCommand = $this->application->find('meili:import');
+        $importCommand = $this->application->find('meilisearch:import');
         $importCommandTester = new CommandTester($importCommand);
         $importCommandTester->execute([]);
 
@@ -102,7 +99,7 @@ Done!
 
 EOD, $importOutput);
 
-        $clearCommand = $this->application->find('meili:clear');
+        $clearCommand = $this->application->find('meilisearch:clear');
         $clearCommandTester = new CommandTester($clearCommand);
         $clearCommandTester->execute([]);
 
@@ -122,7 +119,7 @@ Done!
 
 EOD, $clearOutput);
 
-        $clearCommand = $this->application->find('meili:delete');
+        $clearCommand = $this->application->find('meilisearch:delete');
         $clearCommandTester = new CommandTester($clearCommand);
         $clearCommandTester->execute([]);
 
@@ -148,7 +145,7 @@ EOD, $clearOutput);
             $this->createPage($i);
         }
 
-        $importCommand = $this->application->find('meili:import');
+        $importCommand = $this->application->find('meilisearch:import');
         $importCommandTester = new CommandTester($importCommand);
         $importCommandTester->execute([
             '--indices' => 'pages',
@@ -176,7 +173,7 @@ EOD, $importOutput);
             $this->createPage($i);
         }
 
-        $importCommand = $this->application->find('meili:import');
+        $importCommand = $this->application->find('meilisearch:import');
         $importCommandTester = new CommandTester($importCommand);
         $return = $importCommandTester->execute([
             '--indices' => 'pages',
@@ -197,7 +194,7 @@ EOD, $importOutput);
         }
 
         // test if it will work with a bad option
-        $importCommand = $this->application->find('meili:import');
+        $importCommand = $this->application->find('meilisearch:import');
         $importCommandTester = new CommandTester($importCommand);
         $return = $importCommandTester->execute([
             '--indices' => 'pages',
@@ -222,7 +219,7 @@ EOD, $importOutput);
         $this->createLink(['id' => 60, 'isSponsored' => true]);
         $this->createLink(['id' => 61, 'isSponsored' => true]);
 
-        $command = $this->application->find('meili:import');
+        $command = $this->application->find('meilisearch:import');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             '--indices' => 'tags',
@@ -246,7 +243,7 @@ EOD, $importOutput);
             $this->createPost();
         }
 
-        $command = $this->application->find('meili:import');
+        $command = $this->application->find('meilisearch:import');
         $commandTester = new CommandTester($command);
         $return = $commandTester->execute([
             '--indices' => $this->index->getUid(),
@@ -265,7 +262,7 @@ EOD, $importOutput);
             $this->createPage($i);
         }
 
-        $command = $this->application->find('meili:import');
+        $command = $this->application->find('meilisearch:import');
         $commandTester = new CommandTester($command);
         $return = $commandTester->execute([
             '--indices' => 'pages',
@@ -288,7 +285,7 @@ EOD, $importOutput);
             $this->createPost();
         }
 
-        $command = $this->application->find('meili:import');
+        $command = $this->application->find('meilisearch:import');
         $commandTester = new CommandTester($command);
         $return = $commandTester->execute([
             '--indices' => $this->index->getUid(), // This is the already prefixed name
@@ -307,7 +304,7 @@ EOD, $importOutput);
             $this->createPost();
         }
 
-        $command = $this->application->find('meili:import');
+        $command = $this->application->find('meilisearch:import');
         $commandTester = new CommandTester($command);
         $return = $commandTester->execute([
             '--indices' => self::$indexName, // This is the already prefixed name
@@ -322,7 +319,7 @@ EOD, $importOutput);
 
     public function testSearchCreateWithoutIndices(): void
     {
-        $createCommand = $this->application->find('meili:create');
+        $createCommand = $this->application->find('meilisearch:create');
         $createCommandTester = new CommandTester($createCommand);
         $createCommandTester->execute([]);
 
@@ -353,7 +350,7 @@ EOD, $createOutput);
 
     public function testSearchCreateWithIndices(): void
     {
-        $createCommand = $this->application->find('meili:create');
+        $createCommand = $this->application->find('meilisearch:create');
         $createCommandTester = new CommandTester($createCommand);
         $createCommandTester->execute([
             '--indices' => 'posts',
@@ -373,7 +370,7 @@ EOD, $createOutput);
 
     public function testCreateExecuteIndexCreation(): void
     {
-        $createCommand = $this->application->find('meili:create');
+        $createCommand = $this->application->find('meilisearch:create');
         $createCommandTester = new CommandTester($createCommand);
         $createCommandTester->execute([]);
 
@@ -388,7 +385,7 @@ EOD, $createOutput);
 
         $this->entityManager->flush();
 
-        $importCommand = $this->application->find('meili:import');
+        $importCommand = $this->application->find('meilisearch:import');
         $importCommandTester = new CommandTester($importCommand);
         $importCommandTester->execute(['--indices' => 'self_normalizable']);
 
@@ -425,7 +422,7 @@ EOD, $importOutput);
 
         $this->entityManager->flush();
 
-        $importCommand = $this->application->find('meili:import');
+        $importCommand = $this->application->find('meilisearch:import');
         $importCommandTester = new CommandTester($importCommand);
         $importCommandTester->execute(['--indices' => 'dummy_custom_groups']);
 
@@ -455,8 +452,8 @@ EOD, $importOutput);
     }
 
     /**
-     * @testWith ["meili:create"]
-     *           ["meili:import"]
+     * @testWith ["meilisearch:create"]
+     *           ["meilisearch:import"]
      */
     public function testImportWithDynamicSettings(string $command): void
     {
@@ -472,7 +469,7 @@ EOD, $importOutput);
 
         $importOutput = $importCommandTester->getDisplay();
 
-        if ('meili:import' === $command) {
+        if ('meilisearch:import' === $command) {
             $this->assertSame(<<<'EOD'
 Importing for index Meilisearch\Bundle\Tests\Entity\DynamicSettings
 Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\DynamicSettings entities into sf_phpunit__dynamic_settings index (6 indexed since start)
@@ -503,5 +500,18 @@ EOD, $importOutput);
         self::assertSame(['title'], $getSetting($settings['searchableAttributes']));
         self::assertSame(['a', 'n', 'the'], $getSetting($settings['stopWords']));
         self::assertSame(['fantastic' => ['great'], 'great' => ['fantastic']], $getSetting($settings['synonyms']));
+    }
+
+    /**
+     * @testWith ["meilisearch:clear", ["meili:clear"]]
+     *           ["meilisearch:create", ["meili:create"]]
+     *           ["meilisearch:delete", ["meili:delete"]]
+     *           ["meilisearch:import", ["meili:import"]]
+     */
+    public function testAliases(string $command, array $expectedAliases): void
+    {
+        $command = $this->application->find($command);
+
+        self::assertSame($expectedAliases, $command->getAliases());
     }
 }

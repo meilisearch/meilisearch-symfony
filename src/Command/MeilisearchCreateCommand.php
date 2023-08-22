@@ -28,7 +28,7 @@ final class MeilisearchCreateCommand extends IndexCommand
 
     public static function getDefaultName(): string
     {
-        return 'meili:create';
+        return 'meilisearch:create|meili:create';
     }
 
     public static function getDefaultDescription(): string

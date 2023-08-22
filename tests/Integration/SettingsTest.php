@@ -42,7 +42,7 @@ class SettingsTest extends BaseKernelTestCase
     {
         $index = $this->getPrefix().self::$indexName;
 
-        $command = $this->application->find('meili:import');
+        $command = $this->application->find('meilisearch:import');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             '--indices' => $index,

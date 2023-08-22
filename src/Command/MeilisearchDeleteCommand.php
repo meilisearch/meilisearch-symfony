@@ -14,7 +14,7 @@ final class MeilisearchDeleteCommand extends IndexCommand
 {
     public static function getDefaultName(): string
     {
-        return 'meili:delete';
+        return 'meilisearch:delete|meili:delete';
     }
 
     public static function getDefaultDescription(): string
