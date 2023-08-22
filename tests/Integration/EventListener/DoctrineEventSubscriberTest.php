@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle\Tests\Integration\EventListener;
 
 use Meilisearch\Bundle\Tests\BaseKernelTestCase;
+use Meilisearch\Bundle\Tests\Entity\ObjectId\DummyObjectId;
 use Meilisearch\Bundle\Tests\Entity\Page;
 use Meilisearch\Bundle\Tests\Entity\Post;
 
@@ -31,7 +32,7 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
         $result = $this->searchService->search($this->entityManager, Page::class, $page->getTitle());
 
         $this->assertCount(1, $result);
-        $this->assertEquals($page->getId(), $result[0]->getId());
+        $this->assertEquals(new DummyObjectId(1), $result[0]->getId());
     }
 
     public function testPostUpdate(): void
@@ -68,7 +69,7 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
         $result = $this->searchService->search($this->entityManager, Page::class, 'better');
 
         $this->assertCount(1, $result);
-        $this->assertEquals($page->getId(), $result[0]->getId());
+        $this->assertEquals(new DummyObjectId(1), $result[0]->getId());
         $this->assertSame('Better page', $result[0]->getTitle());
     }
 
