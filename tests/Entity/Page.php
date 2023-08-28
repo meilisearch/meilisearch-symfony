@@ -22,11 +22,11 @@ class Page
      *
      * @ORM\GeneratedValue(strategy="NONE")
      *
-     * @ORM\Column(type="object")
+     * @ORM\Column(type="dummy_object_id")
      */
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'NONE')]
-    #[ORM\Column(type: Types::OBJECT)]
+    #[ORM\Column(type: 'dummy_object_id')]
     private $id;
 
     /**

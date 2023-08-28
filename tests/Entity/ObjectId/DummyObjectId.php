@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Meilisearch\Bundle\Tests\Entity\ObjectId;
 
-class DummyObjectId
+final class DummyObjectId
 {
     private int $id;
 
@@ -13,7 +13,12 @@ class DummyObjectId
         $this->id = $id;
     }
 
-    public function __toString()
+    public function toInt(): int
+    {
+        return $this->id;
+    }
+
+    public function __toString(): string
     {
         return (string) $this->id;
     }
