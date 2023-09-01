@@ -55,7 +55,7 @@ class SearchTest extends BaseKernelTestCase
 
         $this->createTag(['id' => 99]);
 
-        $command = $this->application->find('meili:import');
+        $command = $this->application->find('meilisearch:import');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             '--indices' => $this->index->getUid(),
@@ -100,7 +100,7 @@ class SearchTest extends BaseKernelTestCase
             $testDataTitles[] = $this->createPost()->getTitle();
         }
 
-        $command = $this->application->find('meili:import');
+        $command = $this->application->find('meilisearch:import');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             '--indices' => $this->index->getUid(),
