@@ -15,6 +15,14 @@ jobs:
     # Will still run for each push to bump-meilisearch-v*
     if: github.event_name != 'pull_request' || !startsWith(github.base_ref, 'bump-meilisearch-v')
     runs-on: ubuntu-latest
+    services:
+      meilisearch:
+        image: getmeili/meilisearch:latest
+        ports:
+          - 7700:7700
+        env:
+          MEILI_MASTER_KEY: masterKey
+          MEILI_NO_ANALYTICS: true
     strategy:
       matrix:
         php-version: ['7.4', '8.0', '8.1', '8.2']
@@ -50,8 +58,6 @@ jobs:
         if: matrix.php-version != '7.4'
         run: |
            composer remove --dev doctrine/annotations
-      - name: Meilisearch setup with Docker
-        run: docker run -d -p 7700:7700 getmeili/meilisearch:latest meilisearch --master-key=masterKey --no-analytics
       - name: Run test suite
         run: composer test:unit
 
@@ -83,3 +89,13 @@ jobs:
         run: |
           vendor/bin/simple-phpunit --version
           composer phpstan
+
+  yaml-lint:
+    name: Yaml linting check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Yaml lint check
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          config_file: .yamllint.yml

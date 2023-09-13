@@ -10,9 +10,6 @@ use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-/**
- * Class SearchableEntity.
- */
 final class SearchableEntity
 {
     private string $indexUid;
@@ -34,8 +31,6 @@ final class SearchableEntity
     private $id;
 
     /**
-     * SearchableEntity constructor.
-     *
      * @param object                $entity
      * @param ClassMetadata<object> $entityMetadata
      */

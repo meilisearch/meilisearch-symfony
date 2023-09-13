@@ -19,7 +19,7 @@ class EngineTest extends BaseKernelTestCase
     {
         parent::setUp();
 
-        $this->engine = new Engine($this->get('search.client'));
+        $this->engine = new Engine($this->get('meilisearch.client'));
     }
 
     /**

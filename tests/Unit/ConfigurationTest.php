@@ -32,6 +32,7 @@ class ConfigurationTest extends KernelTestCase
             'test empty config for default value' => [
                 [],
                 [
+                    'url' => 'http://localhost:7700',
                     'prefix' => null,
                     'nbResults' => 20,
                     'batchSize' => 500,
@@ -42,11 +43,13 @@ class ConfigurationTest extends KernelTestCase
             ],
             'Simple config' => [
                 [
+                    'url' => 'http://meilisearch:7700',
                     'prefix' => 'sf_',
                     'nbResults' => 40,
                     'batchSize' => 100,
                 ],
                 [
+                    'url' => 'http://meilisearch:7700',
                     'prefix' => 'sf_',
                     'nbResults' => 40,
                     'batchSize' => 100,
@@ -69,6 +72,7 @@ class ConfigurationTest extends KernelTestCase
                     ],
                 ],
                 [
+                    'url' => 'http://localhost:7700',
                     'prefix' => 'sf_',
                     'nbResults' => 20,
                     'batchSize' => 500,
@@ -119,6 +123,7 @@ class ConfigurationTest extends KernelTestCase
                     'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
                 ],
                 [
+                    'url' => 'http://localhost:7700',
                     'prefix' => 'sf_',
                     'indices' => [
                         [
@@ -158,6 +163,7 @@ class ConfigurationTest extends KernelTestCase
                     ],
                 ],
                 [
+                    'url' => 'http://localhost:7700',
                     'prefix' => 'sf_',
                     'indices' => [
                         [

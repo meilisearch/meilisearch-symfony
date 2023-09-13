@@ -15,18 +15,15 @@ use Meilisearch\Bundle\SearchableEntity;
 use Meilisearch\Bundle\SearchService;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-/**
- * Class MeilisearchService.
- */
 final class MeilisearchService implements SearchService
 {
     private NormalizerInterface $normalizer;
     private Engine $engine;
     private Collection $configuration;
-    private PropertyAccessor $propertyAccessor;
+    private PropertyAccessorInterface $propertyAccessor;
     /**
      * @var list<class-string>
      */
@@ -45,12 +42,12 @@ final class MeilisearchService implements SearchService
     private array $classToSerializerGroup;
     private array $indexIfMapping;
 
-    public function __construct(NormalizerInterface $normalizer, Engine $engine, array $configuration)
+    public function __construct(NormalizerInterface $normalizer, Engine $engine, array $configuration, PropertyAccessorInterface $propertyAccessor = null)
     {
         $this->normalizer = $normalizer;
         $this->engine = $engine;
         $this->configuration = new Collection($configuration);
-        $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $this->propertyAccessor = $propertyAccessor ?? PropertyAccess::createPropertyAccessor();
 
         $this->setSearchableEntities();
         $this->setAggregatorsAndEntitiesAggregators();

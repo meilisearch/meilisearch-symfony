@@ -22,7 +22,7 @@ final class MeilisearchImportCommand extends IndexCommand
 {
     private const DEFAULT_RESPONSE_TIMEOUT = 5000;
 
-    protected static $defaultName = 'meili:import';
+    protected static $defaultName = 'meilisearch:import|meili:import';
     protected static $defaultDescription = 'Import given entity into search engine';
 
     protected Client $searchClient;

@@ -20,7 +20,7 @@ final class MeilisearchCreateCommand extends IndexCommand
 {
     private Client $searchClient;
 
-    protected static $defaultName = 'meili:create';
+    protected static $defaultName = 'meilisearch:create|meili:create';
     protected static $defaultDescription = 'Create indexes';
 
     public function __construct(SearchService $searchService, Client $searchClient)

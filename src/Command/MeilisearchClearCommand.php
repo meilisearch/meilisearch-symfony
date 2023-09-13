@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class MeilisearchClearCommand extends IndexCommand
 {
-    protected static $defaultName = 'meili:clear';
+    protected static $defaultName = 'meilisearch:clear|meili:clear';
     protected static $defaultDescription = 'Clear the index documents';
 
     public static function getDefaultName(): string

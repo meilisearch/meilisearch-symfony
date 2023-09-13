@@ -9,7 +9,6 @@ use Doctrine\Persistence\ObjectManager;
 use Meilisearch\Bundle\Tests\BaseKernelTestCase;
 use Meilisearch\Bundle\Tests\Entity\Post;
 use Meilisearch\Bundle\Tests\Entity\Tag;
-use Meilisearch\Client;
 use Meilisearch\Endpoints\Indexes;
 use Meilisearch\Exceptions\ApiException;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -22,7 +21,6 @@ class SearchTest extends BaseKernelTestCase
 {
     private static string $indexName = 'aggregated';
 
-    protected Client $client;
     protected Connection $connection;
     protected ObjectManager $objectManager;
     protected Application $application;
@@ -36,7 +34,7 @@ class SearchTest extends BaseKernelTestCase
     {
         parent::setUp();
 
-        $this->client = $this->get('search.client');
+        $this->client = $this->get('meilisearch.client');
         $this->objectManager = $this->get('doctrine')->getManager();
         $this->index = $this->client->index($this->getPrefix().self::$indexName);
         $this->application = new Application(self::createKernel());
@@ -57,7 +55,7 @@ class SearchTest extends BaseKernelTestCase
 
         $this->createTag(['id' => 99]);
 
-        $command = $this->application->find('meili:import');
+        $command = $this->application->find('meilisearch:import');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             '--indices' => $this->index->getUid(),
@@ -102,7 +100,7 @@ class SearchTest extends BaseKernelTestCase
             $testDataTitles[] = $this->createPost()->getTitle();
         }
 
-        $command = $this->application->find('meili:import');
+        $command = $this->application->find('meilisearch:import');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             '--indices' => $this->index->getUid(),

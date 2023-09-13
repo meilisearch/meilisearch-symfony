@@ -23,7 +23,7 @@ final class MeilisearchDeleteCommand extends IndexCommand
         return self::$defaultDescription;
     }
 
-    protected static $defaultName = 'meili:delete';
+    protected static $defaultName = 'meilisearch:delete|meili:delete';
     protected static $defaultDescription = 'Delete the indexes';
 
     protected function configure(): void

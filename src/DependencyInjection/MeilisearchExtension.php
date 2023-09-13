@@ -4,19 +4,13 @@ declare(strict_types=1);
 
 namespace Meilisearch\Bundle\DependencyInjection;
 
-use Meilisearch\Bundle\Engine;
 use Meilisearch\Bundle\MeilisearchBundle;
-use Meilisearch\Bundle\Services\MeilisearchService;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-/**
- * Class MeilisearchExtension.
- */
 final class MeilisearchExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
@@ -40,24 +34,24 @@ final class MeilisearchExtension extends Extension
         $container->setParameter('meili_symfony_version', MeilisearchBundle::qualifiedVersion());
 
         if (\count($doctrineEvents = $config['doctrineSubscribedEvents']) > 0) {
-            $subscriber = $container->getDefinition('search.search_indexer_subscriber');
+            $subscriber = $container->getDefinition('meilisearch.search_indexer_subscriber');
 
             foreach ($doctrineEvents as $event) {
                 $subscriber->addTag('doctrine.event_listener', ['event' => $event]);
                 $subscriber->addTag('doctrine_mongodb.odm.event_listener', ['event' => $event]);
             }
         } else {
-            $container->removeDefinition('search.search_indexer_subscriber');
+            $container->removeDefinition('meilisearch.search_indexer_subscriber');
         }
 
-        $engineDefinition = new Definition(Engine::class, [new Reference('search.client')]);
+        $container->findDefinition('meilisearch.client')
+            ->replaceArgument(0, $config['url'])
+            ->replaceArgument(1, $config['api_key'])
+            ->replaceArgument(4, [MeilisearchBundle::qualifiedVersion()]);
 
-        $searchDefinition = (new Definition(
-            MeilisearchService::class,
-            [new Reference($config['serializer']), $engineDefinition, $config]
-        ));
-
-        $container->setDefinition('search.service', $searchDefinition->setPublic(true));
+        $container->findDefinition('meilisearch.service')
+            ->replaceArgument(0, new Reference($config['serializer']))
+            ->replaceArgument(2, $config);
     }
 
     /**

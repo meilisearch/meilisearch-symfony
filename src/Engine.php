@@ -7,9 +7,6 @@ namespace Meilisearch\Bundle;
 use Meilisearch\Client;
 use Meilisearch\Exceptions\ApiException;
 
-/**
- * Class Engine.
- */
 final class Engine
 {
     private Client $client;
@@ -104,7 +101,7 @@ final class Engine
     /**
      * Clear the records of an index.
      * This method enables you to delete an index’s contents (records).
-     * Will fail if the index does not exists.
+     * Will fail if the index does not exist.
      *
      * @throws ApiException
      */

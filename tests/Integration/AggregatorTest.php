@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Meilisearch\Bundle\Tests\Integration;
 
+use Doctrine\Persistence\Proxy;
 use Meilisearch\Bundle\Exception\EntityNotFoundInObjectID;
 use Meilisearch\Bundle\Exception\InvalidEntityForAggregator;
 use Meilisearch\Bundle\Tests\BaseKernelTestCase;
@@ -35,11 +36,10 @@ class AggregatorTest extends BaseKernelTestCase
     public function testAggregatorProxyClass(): void
     {
         $this->createPost();
+        $this->entityManager->clear();
 
-        $postMetadata = $this->entityManager->getClassMetadata(Post::class);
-        $this->entityManager->getProxyFactory()->generateProxyClasses([$postMetadata]);
-
-        $proxy = $this->entityManager->getProxyFactory()->getProxy($postMetadata->getName(), ['id' => 1]);
+        $proxy = $this->entityManager->getReference(Post::class, 1);
+        $this->assertInstanceOf(Proxy::class, $proxy);
         $contentAggregator = new ContentAggregator($proxy, ['objectId']);
 
         /** @var Serializer $serializer */

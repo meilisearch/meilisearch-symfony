@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
+namespace Meilisearch\Bundle\Tests\Integration;
+
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Meilisearch\Bundle\DependencyInjection\MeilisearchExtension;
 use Meilisearch\Bundle\MeilisearchBundle;
 
-class MeilisearchExtensionTest extends AbstractExtensionTestCase
+class DependencyInjectionTest extends AbstractExtensionTestCase
 {
     protected function getContainerExtensions(): array
     {
@@ -17,14 +19,14 @@ class MeilisearchExtensionTest extends AbstractExtensionTestCase
 
     public function testHasMeilisearchVersionDefinitionAfterLoad(): void
     {
-        $this->load();
+        $this->load(['url' => 'http://meilisearch:7700', 'api_key' => null]);
 
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument('search.client', '$clientAgents', ['%meili_symfony_version%']);
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument('meilisearch.client', 4, [MeilisearchBundle::qualifiedVersion()]);
     }
 
     public function testHasMeilisearchVersionFromConstantAfterLoad(): void
     {
-        $this->load();
+        $this->load(['url' => 'http://meilisearch:7700', 'api_key' => null]);
 
         $this->assertContainerBuilderHasParameter('meili_symfony_version', MeilisearchBundle::qualifiedVersion());
     }

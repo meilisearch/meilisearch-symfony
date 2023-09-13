@@ -17,10 +17,10 @@ final class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('url')->end()
+                ->scalarNode('url')->defaultValue('http://localhost:7700')->end()
                 ->scalarNode('api_key')->end()
                 ->scalarNode('prefix')
-                    ->defaultValue(null)
+                    ->defaultNull()
                 ->end()
                 ->scalarNode('nbResults')
                     ->defaultValue(20)
@@ -60,7 +60,7 @@ final class Configuration implements ConfigurationInterface
                                 ->defaultNull()
                             ->end()
                             ->arrayNode('settings')
-                                ->info('Configure indices settings, see: https://docs.meilisearch.com/guides/advanced_guides/settings.html')
+                                ->info('Configure indices settings, see: https://www.meilisearch.com/docs/reference/api/settings')
                                 ->arrayPrototype()
                                     ->variablePrototype()->end()
                                 ->end()
