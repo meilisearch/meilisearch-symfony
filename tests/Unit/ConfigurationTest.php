@@ -180,6 +180,40 @@ class ConfigurationTest extends KernelTestCase
                     'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
                 ],
             ],
+            'distinct attribute' => [
+                [
+                    'prefix' => 'sf_',
+                    'indices' => [
+                        [
+                            'name' => 'items',
+                            'class' => 'App\Entity\Post',
+                            'settings' => [
+                                'distinctAttribute' => 'product_id',
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'url' => 'http://localhost:7700',
+                    'prefix' => 'sf_',
+                    'indices' => [
+                        [
+                            'name' => 'items',
+                            'class' => 'App\Entity\Post',
+                            'enable_serializer_groups' => false,
+                            'serializer_groups' => ['searchable'],
+                            'index_if' => null,
+                            'settings' => [
+                                'distinctAttribute' => ['product_id'],
+                            ],
+                        ],
+                    ],
+                    'nbResults' => 20,
+                    'batchSize' => 500,
+                    'serializer' => 'serializer',
+                    'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
+                ],
+            ],
         ];
     }
 }

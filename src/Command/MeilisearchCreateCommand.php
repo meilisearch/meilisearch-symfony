@@ -92,6 +92,8 @@ final class MeilisearchCreateCommand extends IndexCommand
 
                     if (isset($value['_service']) && $value['_service'] instanceof SettingsProvider) {
                         $value = $value['_service']();
+                    } elseif ('distinctAttribute' === $variable && is_array($value)) {
+                        $value = $value[0] ?? null;
                     }
 
                     // Update
