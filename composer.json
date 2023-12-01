@@ -42,7 +42,7 @@
     "phpunit/php-code-coverage": "^9.2.26",
     "symfony/doctrine-bridge": "^4.4 || ^5.0 || ^6.0",
     "symfony/http-client": "^4.4 || ^5.0 || ^6.0",
-    "symfony/phpunit-bridge": "^4.4 || ^5.0 || ^6.0",
+    "symfony/phpunit-bridge": "^7.0.0",
     "symfony/yaml": "^4.4 || ^5.0 || ^6.0"
   },
   "autoload": {
