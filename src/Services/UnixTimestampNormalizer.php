@@ -23,4 +23,11 @@ final class UnixTimestampNormalizer implements NormalizerInterface
     {
         return $data instanceof \DateTimeInterface && true === ($context['meilisearch'] ?? null);
     }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            \DateTimeInterface::class => true, // @codeCoverageIgnore
+        ];
+    }
 }
