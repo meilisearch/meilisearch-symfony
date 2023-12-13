@@ -18,10 +18,6 @@ class SerializationTest extends KernelTestCase
     public function testSimpleEntityToSearchableArray(): void
     {
         $datetime = new \DateTime();
-        $dateNormalizer = static::getContainer()->get('serializer.normalizer.datetime');
-        // This way we can test that DateTime's are serialized with DateTimeNormalizer
-        // And not the default ObjectNormalizer
-        $serializedDateTime = $dateNormalizer->normalize($datetime, Searchable::NORMALIZATION_FORMAT);
 
         $post = new Post(
             [
@@ -51,12 +47,12 @@ class SerializationTest extends KernelTestCase
             'id' => 12,
             'title' => 'a simple post',
             'content' => 'some text',
-            'publishedAt' => $serializedDateTime,
+            'publishedAt' => (int) $datetime->format('U'),
             'comments' => [
                 [
                     'id' => null,
                     'content' => 'a great comment',
-                    'publishedAt' => $serializedDateTime,
+                    'publishedAt' => (int) $datetime->format('U'),
                 ],
             ],
         ];
