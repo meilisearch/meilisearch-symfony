@@ -13,7 +13,7 @@ final class UnixTimestampNormalizer implements NormalizerInterface
      */
     public function normalize(mixed $object, string $format = null, array $context = []): int
     {
-        return (int) $object->format('U');
+        return $object->getTimestamp();
     }
 
     public function supportsNormalization(mixed $data, string $format = null, array $context = []): bool

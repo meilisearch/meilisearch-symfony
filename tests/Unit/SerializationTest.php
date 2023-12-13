@@ -47,12 +47,12 @@ class SerializationTest extends KernelTestCase
             'id' => 12,
             'title' => 'a simple post',
             'content' => 'some text',
-            'publishedAt' => (int) $datetime->format('U'),
+            'publishedAt' => $datetime->getTimestamp(),
             'comments' => [
                 [
                     'id' => null,
                     'content' => 'a great comment',
-                    'publishedAt' => (int) $datetime->format('U'),
+                    'publishedAt' => $datetime->getTimestamp(),
                 ],
             ],
         ];
