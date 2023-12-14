@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle;
 
 use Meilisearch\Client;
+use Meilisearch\Contracts\SearchQuery;
 use Meilisearch\Exceptions\ApiException;
 
 final class Engine
@@ -131,6 +132,14 @@ final class Engine
         }
 
         return $this->client->index($indexUid)->rawSearch($query, $searchParams);
+    }
+
+    /**
+     * @param list<SearchQuery> $queries
+     */
+    public function multiSearch(array $queries): array
+    {
+        return $this->client->multiSearch($queries);
     }
 
     /**
