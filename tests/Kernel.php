@@ -6,6 +6,7 @@ namespace Meilisearch\Bundle\Tests;
 
 use Doctrine\Bundle\DoctrineBundle\ConnectionFactory;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Doctrine\ORM\Configuration;
 use Meilisearch\Bundle\MeilisearchBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -37,6 +38,15 @@ class Kernel extends HttpKernel
             $container->prependExtensionConfig('doctrine', [
                 'orm' => [
                     'report_fields_where_declared' => true,
+                ],
+            ]);
+        }
+
+        // @phpstan-ignore-next-line
+        if (method_exists(Configuration::class, 'setLazyGhostObjectEnabled') && Kernel::VERSION_ID >= 60100) {
+            $container->prependExtensionConfig('doctrine', [
+                'orm' => [
+                    'enable_lazy_ghost_objects' => true,
                 ],
             ]);
         }
