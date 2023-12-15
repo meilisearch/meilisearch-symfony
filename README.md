@@ -50,7 +50,7 @@ Say goodbye to server deployment and manual updates with [Meilisearch Cloud](htt
 
 * **Require** PHP 7.4 and later.
 * **Compatible** with Symfony 4.0 and later.
-* **Support** Doctrine ORM and Doctrine MongoDB.
+* **Support** Doctrine ORM.
 
 ## 🤖 Compatibility with Meilisearch
 
