@@ -66,5 +66,9 @@
             <argument type="service" id="meilisearch.client" />
             <tag name="console.command" />
         </service>
+
+        <service id="Meilisearch\Bundle\Services\UnixTimestampNormalizer">
+            <tag name="serializer.normalizer" />
+        </service>
     </services>
 </container>
