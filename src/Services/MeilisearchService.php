@@ -155,7 +155,7 @@ final class MeilisearchService implements SearchService
     ): array {
         $this->assertIsSearchable($className);
 
-        $ids = $this->engine->search($query, $this->searchableAs($className), $searchParams);
+        $ids = $this->engine->search($query, $this->searchableAs($className), $searchParams + ['limit' => $this->configuration['nbResults']]);
         $results = [];
 
         // Check if the engine returns results in "hits" key
