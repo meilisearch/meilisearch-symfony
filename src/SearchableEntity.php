@@ -61,6 +61,7 @@ final class SearchableEntity
     public function getSearchableArray(): array
     {
         $context = [
+            'meilisearch' => true,
             'fieldsMapping' => $this->entityMetadata->fieldMappings,
         ];
 

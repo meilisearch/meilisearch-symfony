@@ -440,13 +440,13 @@ EOD, $importOutput);
                 'objectID' => 1,
                 'id' => 1,
                 'name' => 'Dummy 1',
-                'createdAt' => '2024-04-04T07:32:01+00:00',
+                'createdAt' => 1712215921,
             ],
             [
                 'objectID' => 2,
                 'id' => 2,
                 'name' => 'Dummy 2',
-                'createdAt' => '2024-04-04T07:32:02+00:00',
+                'createdAt' => 1712215922,
             ],
         ], $this->client->index('sf_phpunit__dummy_custom_groups')->getDocuments()->getResults());
     }
