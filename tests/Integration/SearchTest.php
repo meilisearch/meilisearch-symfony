@@ -10,7 +10,6 @@ use Meilisearch\Bundle\Tests\BaseKernelTestCase;
 use Meilisearch\Bundle\Tests\Entity\Post;
 use Meilisearch\Bundle\Tests\Entity\Tag;
 use Meilisearch\Endpoints\Indexes;
-use Meilisearch\Exceptions\ApiException;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -26,10 +25,6 @@ class SearchTest extends BaseKernelTestCase
     protected Application $application;
     protected Indexes $index;
 
-    /**
-     * @throws ApiException
-     * @throws \Exception
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -115,8 +110,20 @@ class SearchTest extends BaseKernelTestCase
         $this->assertEqualsCanonicalizing(array_slice($testDataTitles, 2, 2), $resultTitles);
     }
 
-    protected function tearDown(): void
+    public function testSearchNbResults(): void
     {
-        parent::tearDown();
+        for ($i = 0; $i < 15; ++$i) {
+            $this->createPost();
+        }
+
+        $command = $this->application->find('meilisearch:import');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            '--indices' => $this->index->getUid(),
+        ]);
+
+        $results = $this->searchService->search($this->objectManager, Post::class, 'test');
+
+        $this->assertCount(12, $results);
     }
 }
