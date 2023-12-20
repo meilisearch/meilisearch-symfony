@@ -24,11 +24,11 @@ jobs:
           MEILI_MASTER_KEY: masterKey
           MEILI_NO_ANALYTICS: true
     strategy:
+      # only TEMP
+      fail-fast: false
       matrix:
         php-version: ['7.4', '8.0', '8.1', '8.2', '8.3']
         include:
-          - php-version: '7.4'
-            sf-version: '4.4.*'
           - php-version: '7.4'
             sf-version: '5.4.*'
           - php-version: '8.0'
@@ -59,7 +59,7 @@ jobs:
       - name: Install dependencies
         env:
           SYMFONY_REQUIRE: ${{ matrix.sf-version }}
-        run: composer install --prefer-dist --no-progress --quiet
+        run: composer install --prefer-dist --no-progress
       - name: "Remove doctrine/annotations"
         if: matrix.php-version != '7.4'
         run: |

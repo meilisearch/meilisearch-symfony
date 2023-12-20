@@ -49,8 +49,10 @@ Say goodbye to server deployment and manual updates with [Meilisearch Cloud](htt
 ## 📝 Requirements
 
 * **Require** PHP 7.4 and later.
-* **Compatible** with Symfony 4.0 and later.
+* **Compatible** with Symfony 5.4 and later.
 * **Support** Doctrine ORM.
+
+For support of older versions, see older versions of this bundle.
 
 ## 🤖 Compatibility with Meilisearch
 
