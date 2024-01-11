@@ -26,6 +26,7 @@ final class MeilisearchExtension extends Extension
         }
 
         foreach ($config['indices'] as $index => $indice) {
+            $config['indices'][$index]['prefixed_name'] = $config['prefix'].$indice['name'];
             $config['indices'][$index]['settings'] = $this->findReferences($config['indices'][$index]['settings']);
         }
 

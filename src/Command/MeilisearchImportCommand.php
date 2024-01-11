@@ -6,30 +6,34 @@ namespace Meilisearch\Bundle\Command;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Meilisearch\Bundle\Collection;
-use Meilisearch\Bundle\Exception\InvalidSettingName;
+use Meilisearch\Bundle\EventListener\ConsoleOutputSubscriber;
 use Meilisearch\Bundle\Exception\TaskException;
 use Meilisearch\Bundle\Model\Aggregator;
 use Meilisearch\Bundle\SearchService;
-use Meilisearch\Bundle\SettingsProvider;
+use Meilisearch\Bundle\Services\SettingsUpdater;
 use Meilisearch\Client;
 use Meilisearch\Exceptions\TimeOutException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class MeilisearchImportCommand extends IndexCommand
 {
-    private const DEFAULT_RESPONSE_TIMEOUT = 5000;
+    private Client $searchClient;
+    private ManagerRegistry $managerRegistry;
+    private SettingsUpdater $settingsUpdater;
+    private EventDispatcherInterface $eventDispatcher;
 
-    protected Client $searchClient;
-    protected ManagerRegistry $managerRegistry;
-
-    public function __construct(SearchService $searchService, ManagerRegistry $managerRegistry, Client $searchClient)
+    public function __construct(SearchService $searchService, ManagerRegistry $managerRegistry, Client $searchClient, SettingsUpdater $settingsUpdater, EventDispatcherInterface $eventDispatcher)
     {
         parent::__construct($searchService);
 
         $this->managerRegistry = $managerRegistry;
         $this->searchClient = $searchClient;
+        $this->settingsUpdater = $settingsUpdater;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public static function getDefaultName(): string
@@ -50,8 +54,9 @@ final class MeilisearchImportCommand extends IndexCommand
             ->addOption(
                 'update-settings',
                 null,
-                InputOption::VALUE_NONE,
-                'Update settings related to indices to the search engine'
+                InputOption::VALUE_NEGATABLE,
+                'Update settings related to indices to the search engine',
+                true
             )
             ->addOption('batch-size', null, InputOption::VALUE_REQUIRED)
             ->addOption(
@@ -73,25 +78,12 @@ final class MeilisearchImportCommand extends IndexCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->eventDispatcher->addSubscriber(new ConsoleOutputSubscriber(new SymfonyStyle($input, $output)));
+
         $indexes = $this->getEntitiesFromArgs($input, $output);
+        $entitiesToIndex = $this->entitiesToIndex($indexes);
         $config = $this->searchService->getConfiguration();
-
-        foreach ($indexes as $key => $index) {
-            $entityClassName = $index['class'];
-            if (is_subclass_of($entityClassName, Aggregator::class)) {
-                $indexes->forget($key);
-
-                $indexes = new Collection(array_merge(
-                    $indexes->all(),
-                    array_map(
-                        fn ($entity) => ['class' => $entity],
-                        $entityClassName::getEntities()
-                    )
-                ));
-            }
-        }
-
-        $entitiesToIndex = array_unique($indexes->all(), SORT_REGULAR);
+        $updateSettings = $input->getOption('update-settings');
         $batchSize = $input->getOption('batch-size') ?? '';
         $batchSize = ctype_digit($batchSize) ? (int) $batchSize : $config->get('batchSize');
         $responseTimeout = ((int) $input->getOption('response-timeout')) ?: self::DEFAULT_RESPONSE_TIMEOUT;
@@ -99,6 +91,7 @@ final class MeilisearchImportCommand extends IndexCommand
         /** @var array $index */
         foreach ($entitiesToIndex as $index) {
             $entityClassName = $index['class'];
+
             if (!$this->searchService->isSearchable($entityClassName)) {
                 continue;
             }
@@ -148,36 +141,8 @@ final class MeilisearchImportCommand extends IndexCommand
                     );
                 }
 
-                if (isset($index['settings'])
-                    && is_array($index['settings'])
-                    && count($index['settings']) > 0) {
-                    $indexInstance = $this->searchClient->index($index['name']);
-                    foreach ($index['settings'] as $variable => $value) {
-                        $method = sprintf('update%s', ucfirst($variable));
-
-                        if (!method_exists($indexInstance, $method)) {
-                            throw new InvalidSettingName(sprintf('Invalid setting name: "%s"', $variable));
-                        }
-
-                        if (isset($value['_service']) && $value['_service'] instanceof SettingsProvider) {
-                            $value = $value['_service']();
-                        } elseif ('distinctAttribute' === $variable && is_array($value)) {
-                            $value = $value[0] ?? null;
-                        }
-
-                        // Update
-                        $task = $indexInstance->{$method}($value);
-
-                        // Get task information using uid
-                        $indexInstance->waitForTask($task['taskUid'], $responseTimeout);
-                        $task = $indexInstance->getTask($task['taskUid']);
-
-                        if ('failed' === $task['status']) {
-                            throw new TaskException($task['error']);
-                        }
-
-                        $output->writeln('<info>Settings updated of "'.$index['name'].'".</info>');
-                    }
+                if ($updateSettings) {
+                    $this->settingsUpdater->update($index['prefixed_name'], $responseTimeout);
                 }
 
                 ++$page;
@@ -219,5 +184,28 @@ final class MeilisearchImportCommand extends IndexCommand
         }
 
         return $formattedResponse;
+    }
+
+    private function entitiesToIndex($indexes): array
+    {
+        foreach ($indexes as $key => $index) {
+            $entityClassName = $index['class'];
+
+            if (!is_subclass_of($entityClassName, Aggregator::class)) {
+                continue;
+            }
+
+            $indexes->forget($key);
+
+            $indexes = new Collection(array_merge(
+                $indexes->all(),
+                array_map(
+                    static fn ($entity) => ['name' => $index['name'], 'prefixed_name' => $index['prefixed_name'], 'class' => $entity],
+                    $entityClassName::getEntities()
+                )
+            ));
+        }
+
+        return array_unique($indexes->all(), SORT_REGULAR);
     }
 }

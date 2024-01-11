@@ -139,6 +139,27 @@ Done!
 EOD, $clearOutput);
     }
 
+    public function testImportWithoutUpdatingSettings(): void
+    {
+        for ($i = 0; $i <= 5; ++$i) {
+            $this->createPost();
+        }
+
+        $importCommand = $this->application->find('meilisearch:import');
+        $importCommandTester = new CommandTester($importCommand);
+        $importCommandTester->execute(['--indices' => 'posts', '--no-update-settings' => true]);
+
+        $importOutput = $importCommandTester->getDisplay();
+
+        $this->assertSame(<<<'EOD'
+Importing for index Meilisearch\Bundle\Tests\Entity\Post
+Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index (6 indexed since start)
+Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__aggregated index (6 indexed since start)
+Done!
+
+EOD, $importOutput);
+    }
+
     public function testSearchImportWithCustomBatchSize(): void
     {
         for ($i = 0; $i <= 10; ++$i) {
@@ -317,15 +338,20 @@ EOD, $importOutput);
         $this->assertSame(0, $return);
     }
 
-    public function testSearchCreateWithoutIndices(): void
+    /**
+     * @testWith [false]
+     *           [true]
+     */
+    public function testSearchCreateWithoutIndices(bool $updateSettings): void
     {
         $createCommand = $this->application->find('meilisearch:create');
         $createCommandTester = new CommandTester($createCommand);
-        $createCommandTester->execute([]);
+        $createCommandTester->execute($updateSettings ? [] : ['--no-update-settings' => true]);
 
         $createOutput = $createCommandTester->getDisplay();
 
-        $this->assertSame(<<<'EOD'
+        if ($updateSettings) {
+            $this->assertSame(<<<'EOD'
 Creating index sf_phpunit__posts for Meilisearch\Bundle\Tests\Entity\Post
 Settings updated of "sf_phpunit__posts".
 Settings updated of "sf_phpunit__posts".
@@ -346,6 +372,22 @@ Creating index sf_phpunit__aggregated for Meilisearch\Bundle\Tests\Entity\Tag
 Done!
 
 EOD, $createOutput);
+        } else {
+            $this->assertSame(<<<'EOD'
+Creating index sf_phpunit__posts for Meilisearch\Bundle\Tests\Entity\Post
+Creating index sf_phpunit__comments for Meilisearch\Bundle\Tests\Entity\Comment
+Creating index sf_phpunit__tags for Meilisearch\Bundle\Tests\Entity\Tag
+Creating index sf_phpunit__tags for Meilisearch\Bundle\Tests\Entity\Link
+Creating index sf_phpunit__pages for Meilisearch\Bundle\Tests\Entity\Page
+Creating index sf_phpunit__self_normalizable for Meilisearch\Bundle\Tests\Entity\SelfNormalizable
+Creating index sf_phpunit__dummy_custom_groups for Meilisearch\Bundle\Tests\Entity\DummyCustomGroups
+Creating index sf_phpunit__dynamic_settings for Meilisearch\Bundle\Tests\Entity\DynamicSettings
+Creating index sf_phpunit__aggregated for Meilisearch\Bundle\Tests\Entity\Post
+Creating index sf_phpunit__aggregated for Meilisearch\Bundle\Tests\Entity\Tag
+Done!
+
+EOD, $createOutput);
+        }
     }
 
     public function testSearchCreateWithIndices(): void
@@ -374,7 +416,7 @@ EOD, $createOutput);
         $createCommandTester = new CommandTester($createCommand);
         $createCommandTester->execute([]);
 
-        $this->assertEquals($this->client->getTasks()->getResults()[0]['type'], 'indexCreation');
+        $this->assertSame($this->client->getTasks()->getResults()[0]['type'], 'indexCreation');
     }
 
     public function testImportsSelfNormalizable(): void

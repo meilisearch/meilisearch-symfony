@@ -44,6 +44,13 @@
         </service>
         <service id="Meilisearch\Bundle\SearchService" alias="meilisearch.service" />
 
+        <service id="meilisearch.settings_updater" class="Meilisearch\Bundle\Services\SettingsUpdater">
+            <argument type="service" id="meilisearch.service" />
+            <argument type="service" id="meilisearch.client" />
+            <argument type="service" id="event_dispatcher" />
+        </service>
+        <service id="Meilisearch\Bundle\Services\SettingsUpdater" alias="meilisearch.settings_updater" />
+
         <service id="Meilisearch\Bundle\Command\MeilisearchClearCommand">
             <argument type="service" id="meilisearch.service" />
             <tag name="console.command" />
@@ -52,6 +59,8 @@
         <service id="Meilisearch\Bundle\Command\MeilisearchCreateCommand">
             <argument type="service" id="meilisearch.service" />
             <argument type="service" id="meilisearch.client" />
+            <argument type="service" id="meilisearch.settings_updater" />
+            <argument type="service" id="event_dispatcher" />
             <tag name="console.command" />
         </service>
 
@@ -64,6 +73,8 @@
             <argument type="service" id="meilisearch.service" />
             <argument type="service" id="doctrine" />
             <argument type="service" id="meilisearch.client" />
+            <argument type="service" id="meilisearch.settings_updater" />
+            <argument type="service" id="event_dispatcher" />
             <tag name="console.command" />
         </service>
 
