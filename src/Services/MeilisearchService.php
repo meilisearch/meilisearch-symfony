@@ -57,9 +57,7 @@ final class MeilisearchService implements SearchService
 
     public function isSearchable($className): bool
     {
-        if (is_object($className)) {
-            $className = ClassUtils::getClass($className);
-        }
+        $className = $this->getBaseClassName($className);
 
         return in_array($className, $this->searchableEntities, true);
     }
@@ -76,6 +74,8 @@ final class MeilisearchService implements SearchService
 
     public function searchableAs(string $className): string
     {
+        $className = $this->getBaseClassName($className);
+
         $indexes = new Collection($this->getConfiguration()->get('indices'));
         $index = $indexes->firstWhere('class', $className);
 
@@ -207,7 +207,8 @@ final class MeilisearchService implements SearchService
 
     public function shouldBeIndexed(object $entity): bool
     {
-        $className = ClassUtils::getClass($entity);
+        $className = $this->getBaseClassName($entity);
+
         $propertyPath = $this->indexIfMapping[$className];
 
         if (null !== $propertyPath) {
@@ -219,6 +220,21 @@ final class MeilisearchService implements SearchService
         }
 
         return true;
+    }
+
+    private function getBaseClassName($object_or_class): string
+    {
+        foreach ($this->searchableEntities as $class) {
+            if (is_a($object_or_class, $class, true)) {
+                return $class;
+            }
+        }
+
+        if (is_object($object_or_class)) {
+            return ClassUtils::getClass($object_or_class);
+        }
+
+        return $object_or_class;
     }
 
     private function setSearchableEntities(): void
@@ -313,7 +329,7 @@ final class MeilisearchService implements SearchService
         foreach (array_chunk($entities, $this->configuration->get('batchSize')) as $chunk) {
             $searchableEntitiesChunk = [];
             foreach ($chunk as $entity) {
-                $entityClassName = ClassUtils::getClass($entity);
+                $entityClassName = $this->getBaseClassName($entity);
 
                 $searchableEntitiesChunk[] = new SearchableEntity(
                     $this->searchableAs($entityClassName),
