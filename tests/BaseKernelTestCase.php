@@ -42,7 +42,7 @@ abstract class BaseKernelTestCase extends KernelTestCase
         $this->cleanUp();
     }
 
-    protected function createPost(int $id = null): Post
+    protected function createPost(?int $id = null): Post
     {
         $post = new Post();
         $post->setTitle('Test Post');
@@ -83,7 +83,7 @@ abstract class BaseKernelTestCase extends KernelTestCase
         );
     }
 
-    protected function createComment(int $id = null): Comment
+    protected function createComment(?int $id = null): Comment
     {
         $post = new Post(['title' => 'What a post!']);
         $comment = new Comment();
@@ -101,7 +101,7 @@ abstract class BaseKernelTestCase extends KernelTestCase
         return $comment;
     }
 
-    protected function createImage(int $id = null): Image
+    protected function createImage(?int $id = null): Image
     {
         $image = new Image();
         $image->setUrl('https://docs.meilisearch.com/logo.png');

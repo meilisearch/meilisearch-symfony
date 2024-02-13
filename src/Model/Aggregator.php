@@ -73,7 +73,7 @@ abstract class Aggregator implements NormalizableInterface
         throw new EntityNotFoundInObjectID("Entity class from ObjectID $objectId not found.");
     }
 
-    public function normalize(NormalizerInterface $normalizer, string $format = null, array $context = []): array
+    public function normalize(NormalizerInterface $normalizer, ?string $format = null, array $context = []): array
     {
         return array_merge(['objectID' => $this->objectID], $normalizer->normalize($this->entity, $format, $context));
     }

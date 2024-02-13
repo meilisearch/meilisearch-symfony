@@ -42,7 +42,7 @@ final class MeilisearchService implements SearchService
     private array $classToSerializerGroup;
     private array $indexIfMapping;
 
-    public function __construct(NormalizerInterface $normalizer, Engine $engine, array $configuration, PropertyAccessorInterface $propertyAccessor = null)
+    public function __construct(NormalizerInterface $normalizer, Engine $engine, array $configuration, ?PropertyAccessorInterface $propertyAccessor = null)
     {
         $this->normalizer = $normalizer;
         $this->engine = $engine;
