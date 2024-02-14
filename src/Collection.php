@@ -65,7 +65,7 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
      *
      * @return static
      */
-    public function filter(callable $callback = null)
+    public function filter(?callable $callback = null)
     {
         if (null !== $callback) {
             return new self(array_filter($this->items, $callback, ARRAY_FILTER_USE_BOTH));
@@ -143,7 +143,7 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
     /**
      * Get the first item from the collection passing the given truth test.
      */
-    public function first(callable $callback = null, $default = null)
+    public function first(?callable $callback = null, $default = null)
     {
         if (is_null($callback)) {
             if (empty($this->items)) {
@@ -339,7 +339,7 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
         return array_key_exists($key, $array);
     }
 
-    private function operatorForWhere(string $key, string $operator = null, $value = null): \Closure
+    private function operatorForWhere(string $key, ?string $operator = null, $value = null): \Closure
     {
         if (1 === func_num_args()) {
             $value = true;

@@ -9,6 +9,9 @@ on:
       - staging
       - main
 
+env:
+  fail-fast: true
+
 jobs:
   integration-tests:
     # Will not run if the event is a PR to bump-meilisearch-v* (so a pre-release PR)
@@ -24,27 +27,24 @@ jobs:
           MEILI_MASTER_KEY: masterKey
           MEILI_NO_ANALYTICS: true
     strategy:
-      # only TEMP
-      fail-fast: false
       matrix:
-        php-version: ['7.4', '8.0', '8.1', '8.2', '8.3']
-        include:
+        php-version: ['7.4', '8.1', '8.2', '8.3']
+        sf-version: ['5.4.*', '6.4.*', '7.0.*']
+        exclude:
           - php-version: '7.4'
-            sf-version: '5.4.*'
-          - php-version: '8.0'
-            sf-version: '6.0.*'
-          - php-version: '8.1'
-            sf-version: '6.0.*'
-          - php-version: '8.1'
-            sf-version: '6.1.*'
-          - php-version: '8.2'
-            sf-version: '6.2.*'
-          - php-version: '8.3'
-            sf-version: '6.3.*'
-          - php-version: '8.3'
             sf-version: '6.4.*'
-          - php-version: '8.3'
+          - php-version: '7.4'
             sf-version: '7.0.*'
+          - php-version: '8.1'
+            sf-version: '5.4.*'
+          - php-version: '8.1'
+            sf-version: '7.0.*'
+          - php-version: '8.2'
+            sf-version: '5.4.*'
+          - php-version: '8.3'
+            sf-version: '5.4.*'
+          - php-version: '8.3'
+            sf-version: '5.4.*'
 
     name: integration-tests (PHP ${{ matrix.php-version }}) (Symfony ${{ matrix.sf-version }})
     steps:
@@ -76,7 +76,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
+          php-version: 8.3
 
       - name: Validate composer.json and composer.lock
         run: composer validate

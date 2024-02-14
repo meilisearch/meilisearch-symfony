@@ -50,5 +50,13 @@ class Kernel extends HttpKernel
                 ],
             ]);
         }
+
+        // @phpstan-ignore-next-line
+        if (Kernel::VERSION_ID >= 60400) {
+            $container->prependExtensionConfig('framework', [
+                'handle_all_throwables' => true,
+                'php_errors' => ['log' => true],
+            ]);
+        }
     }
 }
