@@ -15,6 +15,7 @@
 </h4>
 
 <p align="center">
+  <a href="https://codecov.io/gh/meilisearch/meilisearch-symfony/branch/main"><img src="https://codecov.io/gh/meilisearch/meilisearch-symfony/branch/main/graph/badge.svg" alt="Codecov coverage"></a>
   <a href="https://packagist.org/packages/meilisearch/search-bundle"><img src="https://img.shields.io/packagist/v/meilisearch/search-bundle" alt="Latest Stable Version"></a>
   <a href="https://github.com/meilisearch/meilisearch-symfony/actions"><img src="https://github.com/meilisearch/meilisearch-symfony/workflows/Tests/badge.svg" alt="Test"></a>
   <a href="https://github.com/meilisearch/meilisearch-symfony/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-informational" alt="License"></a>

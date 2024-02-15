@@ -29,24 +29,24 @@ jobs:
     strategy:
       matrix:
         php-version: ['7.4', '8.1', '8.2', '8.3']
-        sf-version: ['5.4.*', '6.4.*', '7.0.*']
+        sf-version: ['5.4', '6.4', '7.0']
         exclude:
           - php-version: '7.4'
-            sf-version: '6.4.*'
+            sf-version: '6.4'
           - php-version: '7.4'
-            sf-version: '7.0.*'
+            sf-version: '7.0'
           - php-version: '8.1'
-            sf-version: '5.4.*'
+            sf-version: '5.4'
           - php-version: '8.1'
-            sf-version: '7.0.*'
+            sf-version: '7.0'
           - php-version: '8.2'
-            sf-version: '5.4.*'
+            sf-version: '5.4'
           - php-version: '8.3'
-            sf-version: '5.4.*'
+            sf-version: '5.4'
           - php-version: '8.3'
-            sf-version: '5.4.*'
+            sf-version: '5.4'
 
-    name: integration-tests (PHP ${{ matrix.php-version }}) (Symfony ${{ matrix.sf-version }})
+    name: integration-tests (PHP ${{ matrix.php-version }}) (Symfony ${{ matrix.sf-version }}.*)
     steps:
       - uses: actions/checkout@v4
       - name: Install PHP
@@ -58,14 +58,19 @@ jobs:
         run: composer validate
       - name: Install dependencies
         env:
-          SYMFONY_REQUIRE: ${{ matrix.sf-version }}
+          SYMFONY_REQUIRE: '${{ matrix.sf-version }}.*'
         run: composer install --prefer-dist --no-progress
-      - name: "Remove doctrine/annotations"
+      - name: Remove doctrine/annotations
         if: matrix.php-version != '7.4'
         run: |
            composer remove --dev doctrine/annotations
       - name: Run test suite
-        run: composer test:unit
+        run: composer test:unit -- --coverage-clover coverage.xml
+      - name: Upload coverage file
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'phpunit-${{ matrix.php-version }}-${{ matrix.sf-version }}-coverage'
+          path: 'coverage.xml'
 
   code-style:
     runs-on: ubuntu-latest
@@ -105,3 +110,25 @@ jobs:
         uses: ibiqlik/action-yamllint@v3
         with:
           config_file: .yamllint.yml
+
+  upload-coverage:
+    name: Upload coverage to Codecov
+    runs-on: ubuntu-latest
+    needs:
+      - integration-tests
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Download coverage files
+        uses: actions/download-artifact@v4
+        with:
+          path: reports
+
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          directory: reports
