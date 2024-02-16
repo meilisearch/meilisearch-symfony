@@ -12,8 +12,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class IndexCommand extends Command
 {
-    private string $prefix;
+    protected const DEFAULT_RESPONSE_TIMEOUT = 5000;
+
     protected SearchService $searchService;
+
+    private string $prefix;
 
     public function __construct(SearchService $searchService)
     {
