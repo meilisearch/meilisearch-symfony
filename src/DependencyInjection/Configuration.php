@@ -64,8 +64,12 @@ final class Configuration implements ConfigurationInterface
                                 ->beforeNormalization()
                                     ->always()
                                     ->then(static function (array $value) {
-                                        if (isset($value['distinctAttribute']) && !is_array($value['distinctAttribute'])) {
-                                            $value['distinctAttribute'] = (array) $value['distinctAttribute'];
+                                        $stringSettings = ['distinctAttribute', 'proximityPrecision'];
+
+                                        foreach ($stringSettings as $setting) {
+                                            if (isset($value[$setting]) && !is_array($value[$setting])) {
+                                                $value[$setting] = (array) $value[$setting];
+                                            }
                                         }
 
                                         return $value;
