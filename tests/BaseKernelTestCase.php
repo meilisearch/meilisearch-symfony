@@ -10,6 +10,7 @@ use Meilisearch\Bundle\Collection;
 use Meilisearch\Bundle\SearchableEntity;
 use Meilisearch\Bundle\SearchService;
 use Meilisearch\Bundle\Tests\Entity\Comment;
+use Meilisearch\Bundle\Tests\Entity\ExternalLink;
 use Meilisearch\Bundle\Tests\Entity\Image;
 use Meilisearch\Bundle\Tests\Entity\Link;
 use Meilisearch\Bundle\Tests\Entity\ObjectId\DummyObjectId;
@@ -148,7 +149,7 @@ abstract class BaseKernelTestCase extends KernelTestCase
 
     protected function createLink(array $properties = []): Link
     {
-        $link = new Link();
+        $link = new ExternalLink();
         $link->setName('Meilisearch Test Link');
 
         if (count($properties) > 0) {
