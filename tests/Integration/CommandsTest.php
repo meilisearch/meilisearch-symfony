@@ -80,6 +80,7 @@ Importing for index Meilisearch\Bundle\Tests\Entity\Tag
 Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__tags index (6 indexed since start)
 Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__aggregated index (6 indexed since start)
 Importing for index Meilisearch\Bundle\Tests\Entity\Link
+Importing for index Meilisearch\Bundle\Tests\Entity\ContentItem
 Importing for index Meilisearch\Bundle\Tests\Entity\Page
 Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Page entities into sf_phpunit__pages index (6 indexed since start)
 Importing for index Meilisearch\Bundle\Tests\Entity\SelfNormalizable
@@ -111,6 +112,7 @@ Cleared sf_phpunit__comments index of Meilisearch\Bundle\Tests\Entity\Comment
 Cleared sf_phpunit__aggregated index of Meilisearch\Bundle\Tests\Entity\ContentAggregator
 Cleared sf_phpunit__tags index of Meilisearch\Bundle\Tests\Entity\Tag
 Cleared sf_phpunit__tags index of Meilisearch\Bundle\Tests\Entity\Link
+Cleared sf_phpunit__discriminator_map index of Meilisearch\Bundle\Tests\Entity\ContentItem
 Cleared sf_phpunit__pages index of Meilisearch\Bundle\Tests\Entity\Page
 Cleared sf_phpunit__self_normalizable index of Meilisearch\Bundle\Tests\Entity\SelfNormalizable
 Cleared sf_phpunit__dummy_custom_groups index of Meilisearch\Bundle\Tests\Entity\DummyCustomGroups
@@ -130,6 +132,7 @@ Deleted sf_phpunit__posts
 Deleted sf_phpunit__comments
 Deleted sf_phpunit__aggregated
 Deleted sf_phpunit__tags
+Deleted sf_phpunit__discriminator_map
 Deleted sf_phpunit__pages
 Deleted sf_phpunit__self_normalizable
 Deleted sf_phpunit__dummy_custom_groups
@@ -359,6 +362,7 @@ Settings updated of "sf_phpunit__posts".
 Creating index sf_phpunit__comments for Meilisearch\Bundle\Tests\Entity\Comment
 Creating index sf_phpunit__tags for Meilisearch\Bundle\Tests\Entity\Tag
 Creating index sf_phpunit__tags for Meilisearch\Bundle\Tests\Entity\Link
+Creating index sf_phpunit__discriminator_map for Meilisearch\Bundle\Tests\Entity\ContentItem
 Creating index sf_phpunit__pages for Meilisearch\Bundle\Tests\Entity\Page
 Creating index sf_phpunit__self_normalizable for Meilisearch\Bundle\Tests\Entity\SelfNormalizable
 Creating index sf_phpunit__dummy_custom_groups for Meilisearch\Bundle\Tests\Entity\DummyCustomGroups
@@ -378,6 +382,7 @@ Creating index sf_phpunit__posts for Meilisearch\Bundle\Tests\Entity\Post
 Creating index sf_phpunit__comments for Meilisearch\Bundle\Tests\Entity\Comment
 Creating index sf_phpunit__tags for Meilisearch\Bundle\Tests\Entity\Tag
 Creating index sf_phpunit__tags for Meilisearch\Bundle\Tests\Entity\Link
+Creating index sf_phpunit__discriminator_map for Meilisearch\Bundle\Tests\Entity\ContentItem
 Creating index sf_phpunit__pages for Meilisearch\Bundle\Tests\Entity\Page
 Creating index sf_phpunit__self_normalizable for Meilisearch\Bundle\Tests\Entity\SelfNormalizable
 Creating index sf_phpunit__dummy_custom_groups for Meilisearch\Bundle\Tests\Entity\DummyCustomGroups

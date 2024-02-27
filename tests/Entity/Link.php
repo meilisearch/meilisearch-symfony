@@ -12,18 +12,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @ORM\Entity
- *
- * @ORM\InheritanceType("JOINED")
- *
- * @ORM\DiscriminatorColumn(name="type", type="integer")
- *
- * @ORM\DiscriminatorMap({1 = ExternalLink::class, 2 = InternalLink::class})
  */
 #[ORM\Entity]
-#[ORM\InheritanceType('JOINED')]
-#[ORM\DiscriminatorColumn(name: 'type', type: 'integer')]
-#[ORM\DiscriminatorMap([1 => ExternalLink::class, 2 => InternalLink::class])]
-abstract class Link implements NormalizableInterface
+class Link implements NormalizableInterface
 {
     /**
      * @ORM\Id

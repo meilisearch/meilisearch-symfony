@@ -10,6 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  */
 #[ORM\Entity]
-class ExternalLink extends Link
+class Podcast extends ContentItem
 {
 }

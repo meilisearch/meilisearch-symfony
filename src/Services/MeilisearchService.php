@@ -222,19 +222,24 @@ final class MeilisearchService implements SearchService
         return true;
     }
 
-    private function getBaseClassName($object_or_class): string
+    /**
+     * @param object|class-string $objectOrClass
+     *
+     * @return class-string
+     */
+    private function getBaseClassName($objectOrClass): string
     {
         foreach ($this->searchableEntities as $class) {
-            if (is_a($object_or_class, $class, true)) {
+            if (is_a($objectOrClass, $class, true)) {
                 return $class;
             }
         }
 
-        if (is_object($object_or_class)) {
-            return ClassUtils::getClass($object_or_class);
+        if (is_object($objectOrClass)) {
+            return ClassUtils::getClass($objectOrClass);
         }
 
-        return $object_or_class;
+        return $objectOrClass;
     }
 
     private function setSearchableEntities(): void

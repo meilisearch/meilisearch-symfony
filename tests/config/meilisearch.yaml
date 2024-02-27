@@ -31,6 +31,8 @@ meilisearch:
     - name: tags
       class: 'Meilisearch\Bundle\Tests\Entity\Link'
       index_if: isSponsored
+    - name: discriminator_map
+      class: 'Meilisearch\Bundle\Tests\Entity\ContentItem'
     - name: pages
       class: 'Meilisearch\Bundle\Tests\Entity\Page'
       enable_serializer_groups: true
