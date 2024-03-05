@@ -9,11 +9,13 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Meilisearch\Bundle\Collection;
 use Meilisearch\Bundle\SearchableEntity;
 use Meilisearch\Bundle\SearchService;
+use Meilisearch\Bundle\Tests\Entity\Article;
 use Meilisearch\Bundle\Tests\Entity\Comment;
 use Meilisearch\Bundle\Tests\Entity\Image;
 use Meilisearch\Bundle\Tests\Entity\Link;
 use Meilisearch\Bundle\Tests\Entity\ObjectId\DummyObjectId;
 use Meilisearch\Bundle\Tests\Entity\Page;
+use Meilisearch\Bundle\Tests\Entity\Podcast;
 use Meilisearch\Bundle\Tests\Entity\Post;
 use Meilisearch\Bundle\Tests\Entity\Tag;
 use Meilisearch\Client;
@@ -114,6 +116,34 @@ abstract class BaseKernelTestCase extends KernelTestCase
         $this->entityManager->flush();
 
         return $image;
+    }
+
+    protected function createArticle(?int $id = null): Article
+    {
+        $article = new Article();
+        $article->setTitle('Test Article');
+        if (null !== $id) {
+            $article->setId($id);
+        }
+
+        $this->entityManager->persist($article);
+        $this->entityManager->flush();
+
+        return $article;
+    }
+
+    protected function createPodcast(?int $id = null): Podcast
+    {
+        $podcast = new Podcast();
+        $podcast->setTitle('Test Podcast');
+        if (null !== $id) {
+            $podcast->setId($id);
+        }
+
+        $this->entityManager->persist($podcast);
+        $this->entityManager->flush();
+
+        return $podcast;
     }
 
     protected function createSearchableImage(): SearchableEntity
