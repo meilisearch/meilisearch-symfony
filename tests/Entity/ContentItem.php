@@ -25,9 +25,12 @@ abstract class ContentItem
     /**
      * @ORM\Id
      *
+     * @ORM\GeneratedValue
+     *
      * @ORM\Column(type="integer")
      */
     #[ORM\Id]
+    #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER)]
     private int $id;
 

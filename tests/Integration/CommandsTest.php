@@ -163,6 +163,30 @@ Done!
 EOD, $importOutput);
     }
 
+    public function testImportContentItem(): void
+    {
+        for ($i = 0; $i <= 5; ++$i) {
+            $this->createArticle();
+        }
+
+        for ($i = 0; $i <= 5; ++$i) {
+            $this->createPodcast();
+        }
+
+        $importCommand = $this->application->find('meilisearch:import');
+        $importCommandTester = new CommandTester($importCommand);
+        $importCommandTester->execute(['--indices' => 'discriminator_map', '--no-update-settings' => true]);
+
+        $importOutput = $importCommandTester->getDisplay();
+
+        $this->assertSame(<<<'EOD'
+Importing for index Meilisearch\Bundle\Tests\Entity\ContentItem
+Indexed a batch of 12 / 12 Meilisearch\Bundle\Tests\Entity\ContentItem entities into sf_phpunit__discriminator_map index (12 indexed since start)
+Done!
+
+EOD, $importOutput);
+    }
+
     public function testSearchImportWithCustomBatchSize(): void
     {
         for ($i = 0; $i <= 10; ++$i) {
