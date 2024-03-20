@@ -25,3 +25,5 @@ doctrine:
                 dir: '%kernel.project_dir%/tests/Entity'
                 prefix: 'Meilisearch\Bundle\Tests\Entity'
                 alias: App
+        controller_resolver:
+            auto_mapping: false
