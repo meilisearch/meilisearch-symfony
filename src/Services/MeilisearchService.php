@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Meilisearch\Bundle\Services;
 
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\Proxy\DefaultProxyClassNameResolver;
 use Doctrine\Persistence\ObjectManager;
 use Meilisearch\Bundle\Collection;
@@ -17,8 +18,6 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
-use function class_exists;
 
 final class MeilisearchService implements SearchService
 {
@@ -375,14 +374,13 @@ final class MeilisearchService implements SearchService
         static $resolver;
 
         $resolver ??= (function () {
-
             // Doctrine ORM v3+ compatibility
-            if (class_exists(DefaultProxyClassNameResolver::class)) {
+            if (\class_exists(DefaultProxyClassNameResolver::class)) {
                 return fn (object $object) => DefaultProxyClassNameResolver::getClass($object);
             }
 
             // Legacy Doctrine ORM compatibility
-            return fn (object $object) => \Doctrine\Common\Util\ClassUtils::getClass($object);
+            return fn (object $object) => ClassUtils::getClass($object);
         })();
 
         return $resolver($object);
