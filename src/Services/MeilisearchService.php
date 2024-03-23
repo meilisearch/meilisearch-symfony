@@ -380,7 +380,7 @@ final class MeilisearchService implements SearchService
             }
 
             // Legacy Doctrine ORM compatibility
-            return fn (object $object) => ClassUtils::getClass($object);
+            return fn (object $object) => ClassUtils::getClass($object); // @codeCoverageIgnore
         })();
 
         return $resolver($object);
