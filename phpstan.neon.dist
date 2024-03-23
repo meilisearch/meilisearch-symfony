@@ -5,3 +5,5 @@ parameters:
 	paths:
 		- src
 		- tests
+	ignoreErrors:
+		- '#Call to static method getClass\(\) on an unknown class Doctrine\\Common\\Util\\ClassUtils#'
