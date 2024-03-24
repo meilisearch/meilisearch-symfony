@@ -29,7 +29,7 @@
   },
   "require-dev": {
     "doctrine/annotations": "^2.0",
-    "doctrine/orm": "^2.9",
+    "doctrine/orm": "^2.9|^3.0",
     "matthiasnoback/symfony-dependency-injection-test": "^4.3 || ^5.0",
     "nyholm/psr7": "^1.5.1",
     "php-cs-fixer/shim": "^3.14",

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle\Services;
 
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\Proxy\DefaultProxyClassNameResolver;
 use Doctrine\Persistence\ObjectManager;
 use Meilisearch\Bundle\Collection;
 use Meilisearch\Bundle\Engine;
@@ -236,7 +237,7 @@ final class MeilisearchService implements SearchService
         }
 
         if (is_object($objectOrClass)) {
-            return ClassUtils::getClass($objectOrClass);
+            return self::resolveClass($objectOrClass);
         }
 
         return $objectOrClass;
@@ -306,7 +307,7 @@ final class MeilisearchService implements SearchService
         $aggregators = [];
 
         foreach ($entities as $entity) {
-            $entityClassName = ClassUtils::getClass($entity);
+            $entityClassName = self::resolveClass($entity);
             if (array_key_exists($entityClassName, $this->entitiesAggregators)) {
                 foreach ($this->entitiesAggregators[$entityClassName] as $aggregator) {
                     $aggregators[] = new $aggregator(
@@ -366,5 +367,22 @@ final class MeilisearchService implements SearchService
         if (!$this->isSearchable($className)) {
             throw new Exception('Class '.$className.' is not searchable.');
         }
+    }
+
+    private static function resolveClass(object $object): string
+    {
+        static $resolver;
+
+        $resolver ??= (function () {
+            // Doctrine ORM v3+ compatibility
+            if (\class_exists(DefaultProxyClassNameResolver::class)) {
+                return fn (object $object) => DefaultProxyClassNameResolver::getClass($object);
+            }
+
+            // Legacy Doctrine ORM compatibility
+            return fn (object $object) => ClassUtils::getClass($object); // @codeCoverageIgnore
+        })();
+
+        return $resolver($object);
     }
 }

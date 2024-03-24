@@ -28,7 +28,9 @@ final class DummyObjectIdType extends Type
         }
 
         if (!\is_string($value) && !is_int($value)) {
-            throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'string', 'int', DummyObjectId::class]);
+            $actualType = \get_debug_type($value);
+            $possibleTypes = ['null', 'string', 'int', self::class];
+            throw new ConversionException(\sprintf("Could not convert PHP value '%s' of type '%s' to type '%s'. Expected one of the following types: %s", $value, $actualType, $this->getName(), \implode(', ', $possibleTypes)));
         }
 
         return new DummyObjectId((int) $value);
@@ -48,7 +50,9 @@ final class DummyObjectIdType extends Type
         }
 
         if (!\is_string($value) && !is_int($value)) {
-            throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'string', 'int', DummyObjectId::class]);
+            $actualType = \get_debug_type($value);
+            $possibleTypes = ['null', 'string', 'int', self::class];
+            throw new ConversionException(\sprintf("Could not convert PHP value '%s' of type '%s' to type '%s'. Expected one of the following types: %s", $value, $actualType, $this->getName(), \implode(', ', $possibleTypes)));
         }
 
         return (int) $value;
