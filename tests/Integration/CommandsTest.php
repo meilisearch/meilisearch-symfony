@@ -75,6 +75,7 @@ Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_p
 Settings updated of "sf_phpunit__posts".
 Settings updated of "sf_phpunit__posts".
 Settings updated of "sf_phpunit__posts".
+Settings updated of "sf_phpunit__posts".
 Importing for index Meilisearch\Bundle\Tests\Entity\Comment
 Importing for index Meilisearch\Bundle\Tests\Entity\Tag
 Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Tag entities into sf_phpunit__tags index (6 indexed since start)
@@ -383,6 +384,7 @@ Creating index sf_phpunit__posts for Meilisearch\Bundle\Tests\Entity\Post
 Settings updated of "sf_phpunit__posts".
 Settings updated of "sf_phpunit__posts".
 Settings updated of "sf_phpunit__posts".
+Settings updated of "sf_phpunit__posts".
 Creating index sf_phpunit__comments for Meilisearch\Bundle\Tests\Entity\Comment
 Creating index sf_phpunit__tags for Meilisearch\Bundle\Tests\Entity\Tag
 Creating index sf_phpunit__tags for Meilisearch\Bundle\Tests\Entity\Link
@@ -431,6 +433,7 @@ EOD, $createOutput);
 
         $this->assertSame(<<<'EOD'
 Creating index sf_phpunit__posts for Meilisearch\Bundle\Tests\Entity\Post
+Settings updated of "sf_phpunit__posts".
 Settings updated of "sf_phpunit__posts".
 Settings updated of "sf_phpunit__posts".
 Settings updated of "sf_phpunit__posts".

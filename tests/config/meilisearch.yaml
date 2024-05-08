@@ -11,6 +11,7 @@ meilisearch:
       settings:
         stopWords: ['the', 'a', 'an']
         filterableAttributes: ['title', 'publishedAt']
+        searchCutoffMs: 1500
         typoTolerance:
           enabled: true
           disableOnAttributes: ['title']

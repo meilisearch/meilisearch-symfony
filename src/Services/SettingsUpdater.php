@@ -58,7 +58,7 @@ final class SettingsUpdater
 
             if (isset($value['_service']) && $value['_service'] instanceof SettingsProvider) {
                 $value = $value['_service']();
-            } elseif (('distinctAttribute' === $variable || 'proximityPrecision' === $variable) && is_array($value)) {
+            } elseif (('distinctAttribute' === $variable || 'proximityPrecision' === $variable || 'searchCutoffMs' === $variable) && is_array($value)) {
                 $value = $value[0] ?? null;
             }
 
