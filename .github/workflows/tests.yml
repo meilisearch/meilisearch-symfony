@@ -29,16 +29,20 @@ jobs:
     strategy:
       matrix:
         php-version: ['7.4', '8.1', '8.2', '8.3']
-        sf-version: ['5.4', '6.4', '7.0']
+        sf-version: ['5.4', '6.4', '7.0', '7.1']
         exclude:
           - php-version: '7.4'
             sf-version: '6.4'
           - php-version: '7.4'
             sf-version: '7.0'
+          - php-version: '7.4'
+            sf-version: '7.1'
           - php-version: '8.1'
             sf-version: '5.4'
           - php-version: '8.1'
             sf-version: '7.0'
+          - php-version: '8.1'
+            sf-version: '7.1'
           - php-version: '8.2'
             sf-version: '5.4'
           - php-version: '8.3'
@@ -48,24 +52,32 @@ jobs:
 
     name: integration-tests (PHP ${{ matrix.php-version }}) (Symfony ${{ matrix.sf-version }}.*)
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          tools: composer:v2, flex
+          tools: composer, flex
+
       - name: Validate composer.json and composer.lock
         run: composer validate
-      - name: Install dependencies
-        env:
-          SYMFONY_REQUIRE: '${{ matrix.sf-version }}.*'
-        run: composer install --prefer-dist --no-progress
+
       - name: Remove doctrine/annotations
         if: matrix.php-version != '7.4'
-        run: |
-           composer remove --dev doctrine/annotations
+        run: sed -i '/doctrine\/annotations/d' composer.json
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@v3
+        env:
+          SYMFONY_REQUIRE: ${{ matrix.sf-version }}.*
+        with:
+          dependency-versions: 'highest'
+
       - name: Run test suite
         run: composer test:unit -- --coverage-clover coverage.xml
+
       - name: Upload coverage file
         uses: actions/upload-artifact@v4
         with:
@@ -87,7 +99,12 @@ jobs:
         run: composer validate
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --quiet
+        uses: ramsey/composer-install@v3
+        env:
+          SYMFONY_REQUIRE: 7.1.*
+        with:
+          composer-options: '--no-progress --quiet'
+          dependency-versions: 'highest'
 
       - name: PHP CS Fixer
         run: composer lint:check
@@ -96,7 +113,7 @@ jobs:
         run: composer phpmd
         continue-on-error: true
 
-      - name: PHPstan
+      - name: PHPStan
         run: |
           vendor/bin/simple-phpunit --version
           composer phpstan

@@ -6,7 +6,9 @@ namespace Meilisearch\Bundle;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -67,6 +69,11 @@ final class SearchableEntity
 
         if (count($this->normalizationGroups) > 0) {
             $context['groups'] = $this->normalizationGroups;
+        }
+
+        if (Kernel::VERSION_ID >= 70100) {
+            $context[DateTimeNormalizer::FORMAT_KEY] = 'U';
+            $context[DateTimeNormalizer::CAST_KEY] = 'int';
         }
 
         if ($this->entity instanceof NormalizableInterface && null !== $this->normalizer) {

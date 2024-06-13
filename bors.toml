@@ -4,7 +4,9 @@ status = [
     'integration-tests (PHP 8.2) (Symfony 6.4.*)',
     'integration-tests (PHP 8.3) (Symfony 6.4.*)',
     'integration-tests (PHP 8.2) (Symfony 7.0.*)',
+    'integration-tests (PHP 8.2) (Symfony 7.1.*)',
     'integration-tests (PHP 8.3) (Symfony 7.0.*)',
+    'integration-tests (PHP 8.3) (Symfony 7.1.*)',
     'Code style'
 ]
 # 1 hour timeout
