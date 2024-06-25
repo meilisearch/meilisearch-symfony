@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle\DependencyInjection;
 
 use Meilisearch\Bundle\MeilisearchBundle;
+use Meilisearch\Bundle\Services\UnixTimestampNormalizer;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\HttpKernel\Kernel;
 
 final class MeilisearchExtension extends Extension
 {
@@ -53,6 +55,10 @@ final class MeilisearchExtension extends Extension
         $container->findDefinition('meilisearch.service')
             ->replaceArgument(0, new Reference($config['serializer']))
             ->replaceArgument(2, $config);
+
+        if (Kernel::VERSION_ID >= 70100) {
+            $container->removeDefinition(UnixTimestampNormalizer::class);
+        }
     }
 
     /**
