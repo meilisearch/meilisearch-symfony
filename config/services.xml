@@ -78,6 +78,13 @@
             <tag name="console.command" />
         </service>
 
+        <service id="Meilisearch\Bundle\Command\MeilisearchUpdateSettingsCommand">
+            <argument type="service" id="meilisearch.service" />
+            <argument type="service" id="meilisearch.settings_updater" />
+            <argument type="service" id="event_dispatcher" />
+            <tag name="console.command" />
+        </service>
+
         <service id="Meilisearch\Bundle\Services\UnixTimestampNormalizer">
             <tag name="serializer.normalizer" />
         </service>
