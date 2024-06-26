@@ -19,7 +19,7 @@ final class ConsoleOutputSubscriber implements EventSubscriberInterface
 
     public function afterSettingsUpdate(SettingsUpdatedEvent $event): void
     {
-        $this->io->writeln('<info>Settings updated of "'.$event->getIndex().'".</info>');
+        $this->io->writeln('<info>Setting "'.$event->getSetting().'" updated of "'.$event->getIndex().'".</info>');
     }
 
     public static function getSubscribedEvents(): array

@@ -338,10 +338,10 @@ EOD, $importOutput);
         $this->assertSame(<<<'EOD'
 Importing for index Meilisearch\Bundle\Tests\Entity\DynamicSettings
 Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\DynamicSettings entities into sf_phpunit__dynamic_settings index (6 indexed since start)
-Settings updated of "sf_phpunit__dynamic_settings".
-Settings updated of "sf_phpunit__dynamic_settings".
-Settings updated of "sf_phpunit__dynamic_settings".
-Settings updated of "sf_phpunit__dynamic_settings".
+Setting "filterableAttributes" updated of "sf_phpunit__dynamic_settings".
+Setting "searchableAttributes" updated of "sf_phpunit__dynamic_settings".
+Setting "stopWords" updated of "sf_phpunit__dynamic_settings".
+Setting "synonyms" updated of "sf_phpunit__dynamic_settings".
 Done!
 
 EOD, $importOutput);
@@ -354,6 +354,35 @@ EOD, $importOutput);
         self::assertSame(['title'], $getSetting($settings['searchableAttributes']));
         self::assertSame(['a', 'n', 'the'], $getSetting($settings['stopWords']));
         self::assertSame(['fantastic' => ['great'], 'great' => ['fantastic']], $getSetting($settings['synonyms']));
+    }
+
+    public function testImportUpdatesSettingsOnce(): void
+    {
+        for ($i = 0; $i <= 3; ++$i) {
+            $this->createPost();
+        }
+
+        $this->entityManager->flush();
+
+        $importCommand = $this->application->find('meilisearch:import');
+        $importCommandTester = new CommandTester($importCommand);
+        $importCommandTester->execute(['--indices' => 'posts', '--batch-size' => '2']);
+
+        $importOutput = $importCommandTester->getDisplay();
+
+        $this->assertSame(<<<'EOD'
+Importing for index Meilisearch\Bundle\Tests\Entity\Post
+Indexed a batch of 2 / 2 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index (2 indexed since start)
+Indexed a batch of 2 / 2 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__aggregated index (2 indexed since start)
+Indexed a batch of 2 / 2 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index (4 indexed since start)
+Indexed a batch of 2 / 2 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__aggregated index (4 indexed since start)
+Setting "stopWords" updated of "sf_phpunit__posts".
+Setting "filterableAttributes" updated of "sf_phpunit__posts".
+Setting "searchCutoffMs" updated of "sf_phpunit__posts".
+Setting "typoTolerance" updated of "sf_phpunit__posts".
+Done!
+
+EOD, $importOutput);
     }
 
     public function testAlias(): void

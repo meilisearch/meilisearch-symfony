@@ -44,10 +44,10 @@ final class MeilisearchCreateCommandTest extends BaseKernelTestCase
         if ($updateSettings) {
             $this->assertSame(<<<'EOD'
 Creating index sf_phpunit__posts for Meilisearch\Bundle\Tests\Entity\Post
-Settings updated of "sf_phpunit__posts".
-Settings updated of "sf_phpunit__posts".
-Settings updated of "sf_phpunit__posts".
-Settings updated of "sf_phpunit__posts".
+Setting "stopWords" updated of "sf_phpunit__posts".
+Setting "filterableAttributes" updated of "sf_phpunit__posts".
+Setting "searchCutoffMs" updated of "sf_phpunit__posts".
+Setting "typoTolerance" updated of "sf_phpunit__posts".
 Creating index sf_phpunit__comments for Meilisearch\Bundle\Tests\Entity\Comment
 Creating index sf_phpunit__tags for Meilisearch\Bundle\Tests\Entity\Tag
 Creating index sf_phpunit__tags for Meilisearch\Bundle\Tests\Entity\Link
@@ -56,10 +56,10 @@ Creating index sf_phpunit__pages for Meilisearch\Bundle\Tests\Entity\Page
 Creating index sf_phpunit__self_normalizable for Meilisearch\Bundle\Tests\Entity\SelfNormalizable
 Creating index sf_phpunit__dummy_custom_groups for Meilisearch\Bundle\Tests\Entity\DummyCustomGroups
 Creating index sf_phpunit__dynamic_settings for Meilisearch\Bundle\Tests\Entity\DynamicSettings
-Settings updated of "sf_phpunit__dynamic_settings".
-Settings updated of "sf_phpunit__dynamic_settings".
-Settings updated of "sf_phpunit__dynamic_settings".
-Settings updated of "sf_phpunit__dynamic_settings".
+Setting "filterableAttributes" updated of "sf_phpunit__dynamic_settings".
+Setting "searchableAttributes" updated of "sf_phpunit__dynamic_settings".
+Setting "stopWords" updated of "sf_phpunit__dynamic_settings".
+Setting "synonyms" updated of "sf_phpunit__dynamic_settings".
 Creating index sf_phpunit__aggregated for Meilisearch\Bundle\Tests\Entity\Post
 Creating index sf_phpunit__aggregated for Meilisearch\Bundle\Tests\Entity\Tag
 Done!
@@ -96,10 +96,10 @@ EOD, $createOutput);
 
         $this->assertSame(<<<'EOD'
 Creating index sf_phpunit__posts for Meilisearch\Bundle\Tests\Entity\Post
-Settings updated of "sf_phpunit__posts".
-Settings updated of "sf_phpunit__posts".
-Settings updated of "sf_phpunit__posts".
-Settings updated of "sf_phpunit__posts".
+Setting "stopWords" updated of "sf_phpunit__posts".
+Setting "filterableAttributes" updated of "sf_phpunit__posts".
+Setting "searchCutoffMs" updated of "sf_phpunit__posts".
+Setting "typoTolerance" updated of "sf_phpunit__posts".
 Done!
 
 EOD, $createOutput);
@@ -121,10 +121,10 @@ EOD, $createOutput);
 
         $this->assertSame(<<<'EOD'
 Creating index sf_phpunit__dynamic_settings for Meilisearch\Bundle\Tests\Entity\DynamicSettings
-Settings updated of "sf_phpunit__dynamic_settings".
-Settings updated of "sf_phpunit__dynamic_settings".
-Settings updated of "sf_phpunit__dynamic_settings".
-Settings updated of "sf_phpunit__dynamic_settings".
+Setting "filterableAttributes" updated of "sf_phpunit__dynamic_settings".
+Setting "searchableAttributes" updated of "sf_phpunit__dynamic_settings".
+Setting "stopWords" updated of "sf_phpunit__dynamic_settings".
+Setting "synonyms" updated of "sf_phpunit__dynamic_settings".
 Done!
 
 EOD, $importOutput);
