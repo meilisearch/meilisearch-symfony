@@ -9,28 +9,21 @@ use Meilisearch\Contracts\Index\TypoTolerance;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-/**
- * Class SettingsTest.
- */
 class SettingsTest extends BaseKernelTestCase
 {
     private static string $indexName = 'posts';
 
-    public const DEFAULT_RANKING_RULES
-        = [
-            'words',
-            'typo',
-            'proximity',
-            'attribute',
-            'sort',
-            'exactness',
-        ];
+    public const DEFAULT_RANKING_RULES = [
+        'words',
+        'typo',
+        'proximity',
+        'attribute',
+        'sort',
+        'exactness',
+    ];
 
     protected Application $application;
 
-    /**
-     * @throws \Exception
-     */
     public function setUp(): void
     {
         parent::setUp();
@@ -52,18 +45,22 @@ class SettingsTest extends BaseKernelTestCase
         $settings = $this->client->index($index)->getSettings();
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Settings updated of "sf_phpunit__posts".', $output);
-        $this->assertNotEmpty($settings['stopWords']);
+
+        $this->assertStringContainsString('Setting "stopWords" updated of "sf_phpunit__posts".', $output);
         $this->assertEquals(['a', 'an', 'the'], $settings['stopWords']);
 
-        $this->assertNotEmpty($settings['filterableAttributes']);
-        $this->assertEquals(['publishedAt', 'title'], $settings['filterableAttributes']);
+        $this->assertStringContainsString('Setting "searchCutoffMs" updated of "sf_phpunit__posts".', $output);
+        $this->assertEquals(1500, $settings['searchCutoffMs']);
 
+        $this->assertStringContainsString('Setting "filterableAttributes" updated of "sf_phpunit__posts".', $output);
+        $this->assertSame(['publishedAt', 'title'], $settings['filterableAttributes']);
+
+        $this->assertStringContainsString('Setting "typoTolerance" updated of "sf_phpunit__posts".', $output);
         $this->assertArrayHasKey('typoTolerance', $settings);
         $this->assertInstanceOf(TypoTolerance::class, $settings['typoTolerance']);
         $this->assertTrue($settings['typoTolerance']['enabled']);
-        $this->assertEquals(['title'], $settings['typoTolerance']['disableOnAttributes']);
-        $this->assertEquals(['york'], $settings['typoTolerance']['disableOnWords']);
-        $this->assertEquals(['oneTypo' => 5, 'twoTypos' => 9], $settings['typoTolerance']['minWordSizeForTypos']);
+        $this->assertSame(['title'], $settings['typoTolerance']['disableOnAttributes']);
+        $this->assertSame(['york'], $settings['typoTolerance']['disableOnWords']);
+        $this->assertSame(['oneTypo' => 5, 'twoTypos' => 9], $settings['typoTolerance']['minWordSizeForTypos']);
     }
 }
