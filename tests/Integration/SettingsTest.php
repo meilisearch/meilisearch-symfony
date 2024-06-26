@@ -47,10 +47,10 @@ class SettingsTest extends BaseKernelTestCase
         $output = $commandTester->getDisplay();
 
         $this->assertStringContainsString('Setting "stopWords" updated of "sf_phpunit__posts".', $output);
-        $this->assertEquals(['a', 'an', 'the'], $settings['stopWords']);
+        $this->assertSame(['a', 'an', 'the'], $settings['stopWords']);
 
         $this->assertStringContainsString('Setting "searchCutoffMs" updated of "sf_phpunit__posts".', $output);
-        $this->assertEquals(1500, $settings['searchCutoffMs']);
+        $this->assertSame(1500, $settings['searchCutoffMs']);
 
         $this->assertStringContainsString('Setting "filterableAttributes" updated of "sf_phpunit__posts".', $output);
         $this->assertSame(['publishedAt', 'title'], $settings['filterableAttributes']);
