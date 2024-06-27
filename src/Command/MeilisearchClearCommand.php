@@ -8,14 +8,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Class MeilisearchClearCommand.
- */
 final class MeilisearchClearCommand extends IndexCommand
 {
     public static function getDefaultName(): string
     {
-        return 'meili:clear';
+        return 'meilisearch:clear|meili:clear';
     }
 
     public static function getDefaultDescription(): string

@@ -4,13 +4,22 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <defaults autowire="true" autoconfigure="true" />
+        <service id="meilisearch.engine" class="Meilisearch\Bundle\Engine">
+            <argument type="service" id="meilisearch.client" />
+        </service>
 
-        <prototype namespace="Meilisearch\Bundle\Command\" resource="../src/Command" />
+        <!-- After bumping to Symfony >5.1 deeprecate public services into private services -->
+        <service id="meilisearch.service" class="Meilisearch\Bundle\Services\MeilisearchService" public="true">
+            <argument /><!-- After bumping to Symfony 5.1 use type="abstract" -->
+            <argument type="service" id="meilisearch.engine" />
+            <argument type="collection" /><!-- After bumping to Symfony 5.1 use type="abstract" -->
+            <argument type="service" id="property_accessor" />
+        </service>
+        <service id="search.service" alias="meilisearch.service" public="true">
+            <deprecated package="meilisearch/search-bundle" version="0.14">The "%alias_id%" service alias is deprecated. Use "meilisearch.service" instead.</deprecated>
+        </service>
 
-        <service id="meilisearch.search_indexer_subscriber"
-                 class="Meilisearch\Bundle\EventListener\DoctrineEventSubscriber"
-                 public="true">
+        <service id="meilisearch.search_indexer_subscriber" class="Meilisearch\Bundle\EventListener\DoctrineEventSubscriber" public="true">
             <argument type="service" id="meilisearch.service" />
         </service>
         <service id="search.search_indexer_subscriber" alias="meilisearch.search_indexer_subscriber">
@@ -18,12 +27,12 @@
         </service>
 
         <service id="meilisearch.client" class="Meilisearch\Client" public="true" lazy="true">
-            <argument key="$url">%meili_url%</argument>
-            <argument key="$apiKey">%meili_api_key%</argument>
-            <argument key="$httpClient" type="service" id="psr18.http_client" on-invalid="ignore" />
-            <argument key="$clientAgents" type="collection">
-                <argument>%meili_symfony_version%</argument>
-            </argument>
+            <argument /><!-- url -->
+            <argument /><!-- api key -->
+            <argument type="service" id="psr18.http_client" on-invalid="ignore" /><!-- http client -->
+            <argument>null</argument><!-- request factory -->
+            <argument /><!-- client agents -->
+            <argument>null</argument><!-- stream factory -->
         </service>
         <service id="search.client" alias="meilisearch.client" public="true">
             <deprecated package="meilisearch/search-bundle" version="0.14">The "%alias_id%" service alias is deprecated. Use "meilisearch.client" instead.</deprecated>
@@ -34,5 +43,43 @@
             <deprecated package="meilisearch/search-bundle" version="0.14">The "%alias_id%" service alias is deprecated. Use "meilisearch.client" instead.</deprecated>
         </service>
         <service id="Meilisearch\Bundle\SearchService" alias="meilisearch.service" />
+
+        <service id="meilisearch.settings_updater" class="Meilisearch\Bundle\Services\SettingsUpdater">
+            <argument type="service" id="meilisearch.service" />
+            <argument type="service" id="meilisearch.client" />
+            <argument type="service" id="event_dispatcher" />
+        </service>
+        <service id="Meilisearch\Bundle\Services\SettingsUpdater" alias="meilisearch.settings_updater" />
+
+        <service id="Meilisearch\Bundle\Command\MeilisearchClearCommand">
+            <argument type="service" id="meilisearch.service" />
+            <tag name="console.command" />
+        </service>
+
+        <service id="Meilisearch\Bundle\Command\MeilisearchCreateCommand">
+            <argument type="service" id="meilisearch.service" />
+            <argument type="service" id="meilisearch.client" />
+            <argument type="service" id="meilisearch.settings_updater" />
+            <argument type="service" id="event_dispatcher" />
+            <tag name="console.command" />
+        </service>
+
+        <service id="Meilisearch\Bundle\Command\MeilisearchDeleteCommand">
+            <argument type="service" id="meilisearch.service" />
+            <tag name="console.command" />
+        </service>
+
+        <service id="Meilisearch\Bundle\Command\MeilisearchImportCommand">
+            <argument type="service" id="meilisearch.service" />
+            <argument type="service" id="doctrine" />
+            <argument type="service" id="meilisearch.client" />
+            <argument type="service" id="meilisearch.settings_updater" />
+            <argument type="service" id="event_dispatcher" />
+            <tag name="console.command" />
+        </service>
+
+        <service id="Meilisearch\Bundle\Services\UnixTimestampNormalizer">
+            <tag name="serializer.normalizer" />
+        </service>
     </services>
 </container>

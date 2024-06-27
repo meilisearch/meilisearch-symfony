@@ -17,15 +17,15 @@ final class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('url')->end()
+                ->scalarNode('url')->defaultValue('http://localhost:7700')->end()
                 ->scalarNode('api_key')->end()
                 ->scalarNode('prefix')
-                    ->defaultValue(null)
+                    ->defaultNull()
                 ->end()
-                ->scalarNode('nbResults')
+                ->integerNode('nbResults')
                     ->defaultValue(20)
                 ->end()
-                ->scalarNode('batchSize')
+                ->integerNode('batchSize')
                     ->defaultValue(500)
                 ->end()
                 ->arrayNode('doctrineSubscribedEvents')
@@ -60,7 +60,21 @@ final class Configuration implements ConfigurationInterface
                                 ->defaultNull()
                             ->end()
                             ->arrayNode('settings')
-                                ->info('Configure indices settings, see: https://docs.meilisearch.com/guides/advanced_guides/settings.html')
+                                ->info('Configure indices settings, see: https://www.meilisearch.com/docs/reference/api/settings')
+                                ->beforeNormalization()
+                                    ->always()
+                                    ->then(static function (array $value) {
+                                        $stringSettings = ['distinctAttribute', 'proximityPrecision', 'searchCutoffMs'];
+
+                                        foreach ($stringSettings as $setting) {
+                                            if (isset($value[$setting]) && !is_array($value[$setting])) {
+                                                $value[$setting] = (array) $value[$setting];
+                                            }
+                                        }
+
+                                        return $value;
+                                    })
+                                ->end()
                                 ->arrayPrototype()
                                     ->variablePrototype()->end()
                                 ->end()

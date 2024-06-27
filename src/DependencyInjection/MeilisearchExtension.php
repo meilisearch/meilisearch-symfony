@@ -6,20 +6,16 @@ namespace Meilisearch\Bundle\DependencyInjection;
 
 use Meilisearch\Bundle\DataCollector\MeilisearchDataCollector;
 use Meilisearch\Bundle\Debug\TraceableMeilisearchService;
-use Meilisearch\Bundle\Engine;
 use Meilisearch\Bundle\MeilisearchBundle;
 use Meilisearch\Bundle\SearchService;
-use Meilisearch\Bundle\Services\MeilisearchService;
+use Meilisearch\Bundle\Services\UnixTimestampNormalizer;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\HttpKernel\Kernel;
 
-/**
- * Class MeilisearchExtension.
- */
 final class MeilisearchExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
@@ -35,6 +31,7 @@ final class MeilisearchExtension extends Extension
         }
 
         foreach ($config['indices'] as $index => $indice) {
+            $config['indices'][$index]['prefixed_name'] = $config['prefix'].$indice['name'];
             $config['indices'][$index]['settings'] = $this->findReferences($config['indices'][$index]['settings']);
         }
 
@@ -53,28 +50,30 @@ final class MeilisearchExtension extends Extension
             $container->removeDefinition('meilisearch.search_indexer_subscriber');
         }
 
-        $engineDefinition = new Definition(Engine::class, [new Reference('meilisearch.client')]);
+        $container->findDefinition('meilisearch.client')
+            ->replaceArgument(0, $config['url'])
+            ->replaceArgument(1, $config['api_key'])
+            ->replaceArgument(4, [MeilisearchBundle::qualifiedVersion()]);
 
-        $searchDefinition = (new Definition(
-            MeilisearchService::class,
-            [new Reference($config['serializer']), $engineDefinition, $config]
-        ));
-
-        $container->setDefinition('meilisearch.service', $searchDefinition->setPublic(true));
-        $container->setAlias('search.service', 'meilisearch.service')->setPublic(true);
+        $container->findDefinition('meilisearch.service')
+            ->replaceArgument(0, new Reference($config['serializer']))
+            ->replaceArgument(2, $config);
 
         if ($container->getParameter('kernel.debug')) {
             $container->register('debug.meilisearch.service', TraceableMeilisearchService::class)
                 ->setDecoratedService(SearchService::class)
                 ->addArgument(new Reference('debug.meilisearch.service.inner'))
-                ->addArgument(new Reference('debug.stopwatch'))
-            ;
+                ->addArgument(new Reference('debug.stopwatch'));
             $container->register('data_collector.meilisearch', MeilisearchDataCollector::class)
                 ->addArgument(new Reference('debug.meilisearch.service'))
                 ->addTag('data_collector', [
                     'id' => 'meilisearch',
                     'template' => '@Meilisearch/DataCollector/meilisearch.html.twig',
                 ]);
+        }
+
+        if (Kernel::VERSION_ID >= 70100) {
+            $container->removeDefinition(UnixTimestampNormalizer::class);
         }
     }
 

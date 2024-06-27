@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle\Services;
 
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\Proxy\DefaultProxyClassNameResolver;
 use Doctrine\Persistence\ObjectManager;
 use Meilisearch\Bundle\Collection;
 use Meilisearch\Bundle\Engine;
@@ -15,18 +16,15 @@ use Meilisearch\Bundle\SearchableEntity;
 use Meilisearch\Bundle\SearchService;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-/**
- * Class MeilisearchService.
- */
 final class MeilisearchService implements SearchService
 {
     private NormalizerInterface $normalizer;
     private Engine $engine;
     private Collection $configuration;
-    private PropertyAccessor $propertyAccessor;
+    private PropertyAccessorInterface $propertyAccessor;
     /**
      * @var list<class-string>
      */
@@ -45,12 +43,12 @@ final class MeilisearchService implements SearchService
     private array $classToSerializerGroup;
     private array $indexIfMapping;
 
-    public function __construct(NormalizerInterface $normalizer, Engine $engine, array $configuration)
+    public function __construct(NormalizerInterface $normalizer, Engine $engine, array $configuration, ?PropertyAccessorInterface $propertyAccessor = null)
     {
         $this->normalizer = $normalizer;
         $this->engine = $engine;
         $this->configuration = new Collection($configuration);
-        $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $this->propertyAccessor = $propertyAccessor ?? PropertyAccess::createPropertyAccessor();
 
         $this->setSearchableEntities();
         $this->setAggregatorsAndEntitiesAggregators();
@@ -60,9 +58,7 @@ final class MeilisearchService implements SearchService
 
     public function isSearchable($className): bool
     {
-        if (is_object($className)) {
-            $className = ClassUtils::getClass($className);
-        }
+        $className = $this->getBaseClassName($className);
 
         return in_array($className, $this->searchableEntities, true);
     }
@@ -79,6 +75,8 @@ final class MeilisearchService implements SearchService
 
     public function searchableAs(string $className): string
     {
+        $className = $this->getBaseClassName($className);
+
         $indexes = new Collection($this->getConfiguration()->get('indices'));
         $index = $indexes->firstWhere('class', $className);
 
@@ -158,7 +156,7 @@ final class MeilisearchService implements SearchService
     ): array {
         $this->assertIsSearchable($className);
 
-        $ids = $this->engine->search($query, $this->searchableAs($className), $searchParams);
+        $ids = $this->engine->search($query, $this->searchableAs($className), $searchParams + ['limit' => $this->configuration['nbResults']]);
         $results = [];
 
         // Check if the engine returns results in "hits" key
@@ -210,7 +208,8 @@ final class MeilisearchService implements SearchService
 
     public function shouldBeIndexed(object $entity): bool
     {
-        $className = ClassUtils::getClass($entity);
+        $className = $this->getBaseClassName($entity);
+
         $propertyPath = $this->indexIfMapping[$className];
 
         if (null !== $propertyPath) {
@@ -222,6 +221,26 @@ final class MeilisearchService implements SearchService
         }
 
         return true;
+    }
+
+    /**
+     * @param object|class-string $objectOrClass
+     *
+     * @return class-string
+     */
+    private function getBaseClassName($objectOrClass): string
+    {
+        foreach ($this->searchableEntities as $class) {
+            if (is_a($objectOrClass, $class, true)) {
+                return $class;
+            }
+        }
+
+        if (is_object($objectOrClass)) {
+            return self::resolveClass($objectOrClass);
+        }
+
+        return $objectOrClass;
     }
 
     private function setSearchableEntities(): void
@@ -288,7 +307,7 @@ final class MeilisearchService implements SearchService
         $aggregators = [];
 
         foreach ($entities as $entity) {
-            $entityClassName = ClassUtils::getClass($entity);
+            $entityClassName = self::resolveClass($entity);
             if (array_key_exists($entityClassName, $this->entitiesAggregators)) {
                 foreach ($this->entitiesAggregators[$entityClassName] as $aggregator) {
                     $aggregators[] = new $aggregator(
@@ -316,7 +335,7 @@ final class MeilisearchService implements SearchService
         foreach (array_chunk($entities, $this->configuration->get('batchSize')) as $chunk) {
             $searchableEntitiesChunk = [];
             foreach ($chunk as $entity) {
-                $entityClassName = ClassUtils::getClass($entity);
+                $entityClassName = $this->getBaseClassName($entity);
 
                 $searchableEntitiesChunk[] = new SearchableEntity(
                     $this->searchableAs($entityClassName),
@@ -348,5 +367,22 @@ final class MeilisearchService implements SearchService
         if (!$this->isSearchable($className)) {
             throw new Exception('Class '.$className.' is not searchable.');
         }
+    }
+
+    private static function resolveClass(object $object): string
+    {
+        static $resolver;
+
+        $resolver ??= (function () {
+            // Doctrine ORM v3+ compatibility
+            if (\class_exists(DefaultProxyClassNameResolver::class)) {
+                return fn (object $object) => DefaultProxyClassNameResolver::getClass($object);
+            }
+
+            // Legacy Doctrine ORM compatibility
+            return fn (object $object) => ClassUtils::getClass($object); // @codeCoverageIgnore
+        })();
+
+        return $resolver($object);
     }
 }

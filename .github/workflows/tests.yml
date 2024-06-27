@@ -9,68 +9,102 @@ on:
       - staging
       - main
 
+env:
+  fail-fast: true
+
 jobs:
   integration-tests:
     # Will not run if the event is a PR to bump-meilisearch-v* (so a pre-release PR)
     # Will still run for each push to bump-meilisearch-v*
     if: github.event_name != 'pull_request' || !startsWith(github.base_ref, 'bump-meilisearch-v')
     runs-on: ubuntu-latest
+    services:
+      meilisearch:
+        image: getmeili/meilisearch:latest
+        ports:
+          - 7700:7700
+        env:
+          MEILI_MASTER_KEY: masterKey
+          MEILI_NO_ANALYTICS: true
     strategy:
       matrix:
-        php-version: ['7.4', '8.0', '8.1', '8.2']
-        include:
+        php-version: ['7.4', '8.1', '8.2', '8.3']
+        sf-version: ['5.4', '6.4', '7.0', '7.1']
+        exclude:
           - php-version: '7.4'
-            sf-version: '4.4.*'
+            sf-version: '6.4'
           - php-version: '7.4'
-            sf-version: '5.4.*'
-          - php-version: '8.0'
-            sf-version: '6.0.*'
+            sf-version: '7.0'
+          - php-version: '7.4'
+            sf-version: '7.1'
           - php-version: '8.1'
-            sf-version: '6.0.*'
+            sf-version: '5.4'
           - php-version: '8.1'
-            sf-version: '6.1.*'
+            sf-version: '7.0'
+          - php-version: '8.1'
+            sf-version: '7.1'
           - php-version: '8.2'
-            sf-version: '6.2.*'
+            sf-version: '5.4'
+          - php-version: '8.3'
+            sf-version: '5.4'
+          - php-version: '8.3'
+            sf-version: '5.4'
 
-    name: integration-tests (PHP ${{ matrix.php-version }}) (Symfony ${{ matrix.sf-version }})
+    name: integration-tests (PHP ${{ matrix.php-version }}) (Symfony ${{ matrix.sf-version }}.*)
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          tools: composer:v2, flex
+          tools: composer, flex
+
       - name: Validate composer.json and composer.lock
         run: composer validate
-      - name: Install dependencies
-        env:
-          SYMFONY_REQUIRE: ${{ matrix.sf-version }}
-        run: composer install --prefer-dist --no-progress --quiet
-      - name: "Remove doctrine/annotations"
+
+      - name: Remove doctrine/annotations
         if: matrix.php-version != '7.4'
-        run: |
-           composer remove --dev doctrine/annotations
-      - name: Meilisearch setup with Docker
-        run: docker run -d -p 7700:7700 getmeili/meilisearch:latest meilisearch --master-key=masterKey --no-analytics
+        run: sed -i '/doctrine\/annotations/d' composer.json
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@v3
+        env:
+          SYMFONY_REQUIRE: ${{ matrix.sf-version }}.*
+        with:
+          dependency-versions: 'highest'
+
       - name: Run test suite
-        run: composer test:unit
+        run: composer test:unit -- --coverage-clover coverage.xml
+
+      - name: Upload coverage file
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'phpunit-${{ matrix.php-version }}-${{ matrix.sf-version }}-coverage'
+          path: 'coverage.xml'
 
   code-style:
     runs-on: ubuntu-latest
     name: 'Code style'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
+          php-version: 8.3
 
       - name: Validate composer.json and composer.lock
         run: composer validate
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --quiet
+        uses: ramsey/composer-install@v3
+        env:
+          SYMFONY_REQUIRE: 7.1.*
+        with:
+          composer-options: '--no-progress --quiet'
+          dependency-versions: 'highest'
 
       - name: PHP CS Fixer
         run: composer lint:check
@@ -79,7 +113,39 @@ jobs:
         run: composer phpmd
         continue-on-error: true
 
-      - name: PHPstan
+      - name: PHPStan
         run: |
           vendor/bin/simple-phpunit --version
           composer phpstan
+
+  yaml-lint:
+    name: Yaml linting check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Yaml lint check
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          config_file: .yamllint.yml
+
+  upload-coverage:
+    name: Upload coverage to Codecov
+    runs-on: ubuntu-latest
+    needs:
+      - integration-tests
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Download coverage files
+        uses: actions/download-artifact@v4
+        with:
+          path: reports
+
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          directory: reports

@@ -6,12 +6,9 @@ namespace Meilisearch\Bundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-/**
- * Class MeilisearchBundle.
- */
 final class MeilisearchBundle extends Bundle
 {
-    public const VERSION = '0.13.0';
+    public const VERSION = '0.15.2';
 
     public static function qualifiedVersion()
     {

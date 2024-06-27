@@ -1,8 +1,12 @@
 status = [
     'integration-tests (PHP 7.4) (Symfony 5.4.*)',
-    'integration-tests (PHP 8.0) (Symfony 6.0.*)',
-    'integration-tests (PHP 8.1) (Symfony 6.1.*)',
-    'integration-tests (PHP 8.2) (Symfony 6.2.*)',
+    'integration-tests (PHP 8.1) (Symfony 6.4.*)',
+    'integration-tests (PHP 8.2) (Symfony 6.4.*)',
+    'integration-tests (PHP 8.3) (Symfony 6.4.*)',
+    'integration-tests (PHP 8.2) (Symfony 7.0.*)',
+    'integration-tests (PHP 8.2) (Symfony 7.1.*)',
+    'integration-tests (PHP 8.3) (Symfony 7.0.*)',
+    'integration-tests (PHP 8.3) (Symfony 7.1.*)',
     'Code style'
 ]
 # 1 hour timeout

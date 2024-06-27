@@ -1,57 +1,60 @@
 meilisearch:
-    url: '%env(MEILISEARCH_URL)%'
-    api_key: '%env(MEILISEARCH_API_KEY)%'
-    prefix: '%env(MEILISEARCH_PREFIX)%_'
-    nbResults: 12
-    batchSize: 100
-    indices:
-        -   name: posts
-            class: 'Meilisearch\Bundle\Tests\Entity\Post'
-            enable_serializer_groups: true
-            settings:
-                stopWords: ['the', 'a', 'an']
-                filterableAttributes: ['title', 'publishedAt']
-                typoTolerance:
-                    enabled: true
-                    disableOnAttributes: ['title']
-                    disableOnWords: ['york']
-                    minWordSizeForTypos:
-                        oneTypo: 5
-                        twoTypos: 9
-        -   name: comments
-            class: 'Meilisearch\Bundle\Tests\Entity\Comment'
-        -   name: aggregated
-            class: 'Meilisearch\Bundle\Tests\Entity\ContentAggregator'
-            index_if: isVisible
-        -   name: tags
-            class: 'Meilisearch\Bundle\Tests\Entity\Tag'
-            index_if: isPublic
-        # Yes, we want to have links in the same index as tags
-        # We just set the same index name 'tags'
-        -   name: tags
-            class: 'Meilisearch\Bundle\Tests\Entity\Link'
-            index_if: isSponsored
-        -   name: pages
-            class: 'Meilisearch\Bundle\Tests\Entity\Page'
-            enable_serializer_groups: true
-        -   name: self_normalizable
-            class: 'Meilisearch\Bundle\Tests\Entity\SelfNormalizable'
-        -   name: dummy_custom_groups
-            class: 'Meilisearch\Bundle\Tests\Entity\DummyCustomGroups'
-            enable_serializer_groups: true
-            serializer_groups: ['public', 'private']
-        -   name: dynamic_settings
-            class: 'Meilisearch\Bundle\Tests\Entity\DynamicSettings'
-            settings:
-                filterableAttributes:
-                    _service: '@Meilisearch\Bundle\Tests\Integration\Fixtures\FilterableAttributes'
-                searchableAttributes:
-                    _service: '@Meilisearch\Bundle\Tests\Integration\Fixtures\SearchableAttributes'
-                stopWords:
-                    _service: '@Meilisearch\Bundle\Tests\Integration\Fixtures\StopWords'
-                synonyms:
-                    _service: '@Meilisearch\Bundle\Tests\Integration\Fixtures\Synonyms'
+  url: '%env(MEILISEARCH_URL)%'
+  api_key: '%env(MEILISEARCH_API_KEY)%'
+  prefix: '%env(MEILISEARCH_PREFIX)%_'
+  nbResults: 12
+  batchSize: 100
+  indices:
+    - name: posts
+      class: 'Meilisearch\Bundle\Tests\Entity\Post'
+      enable_serializer_groups: true
+      settings:
+        stopWords: ['the', 'a', 'an']
+        filterableAttributes: ['title', 'publishedAt']
+        searchCutoffMs: 1500
+        typoTolerance:
+          enabled: true
+          disableOnAttributes: ['title']
+          disableOnWords: ['york']
+          minWordSizeForTypos:
+            oneTypo: 5
+            twoTypos: 9
+    - name: comments
+      class: 'Meilisearch\Bundle\Tests\Entity\Comment'
+    - name: aggregated
+      class: 'Meilisearch\Bundle\Tests\Entity\ContentAggregator'
+      index_if: isVisible
+    - name: tags
+      class: 'Meilisearch\Bundle\Tests\Entity\Tag'
+      index_if: isPublic
+    # Yes, we want to have links in the same index as tags
+    # We just set the same index name 'tags'
+    - name: tags
+      class: 'Meilisearch\Bundle\Tests\Entity\Link'
+      index_if: isSponsored
+    - name: discriminator_map
+      class: 'Meilisearch\Bundle\Tests\Entity\ContentItem'
+    - name: pages
+      class: 'Meilisearch\Bundle\Tests\Entity\Page'
+      enable_serializer_groups: true
+    - name: self_normalizable
+      class: 'Meilisearch\Bundle\Tests\Entity\SelfNormalizable'
+    - name: dummy_custom_groups
+      class: 'Meilisearch\Bundle\Tests\Entity\DummyCustomGroups'
+      enable_serializer_groups: true
+      serializer_groups: ['public', 'private']
+    - name: dynamic_settings
+      class: 'Meilisearch\Bundle\Tests\Entity\DynamicSettings'
+      settings:
+        filterableAttributes:
+          _service: '@Meilisearch\Bundle\Tests\Integration\Fixtures\FilterableAttributes'
+        searchableAttributes:
+          _service: '@Meilisearch\Bundle\Tests\Integration\Fixtures\SearchableAttributes'
+        stopWords:
+          _service: '@Meilisearch\Bundle\Tests\Integration\Fixtures\StopWords'
+        synonyms:
+          _service: '@Meilisearch\Bundle\Tests\Integration\Fixtures\Synonyms'
 
 services:
-    Meilisearch\Bundle\Tests\Integration\Fixtures\:
-        resource: '../Integration/Fixtures/'
+  Meilisearch\Bundle\Tests\Integration\Fixtures\:
+    resource: '../Integration/Fixtures/'
