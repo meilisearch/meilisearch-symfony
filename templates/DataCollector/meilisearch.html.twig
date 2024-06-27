@@ -2,13 +2,12 @@
 
 {% block toolbar %}
     {% set _data = collector.meilisearch %}
-    {% if _data is not null %}
         {% set icon %}
             {{ include('@Meilisearch/DataCollector/meilisearch.svg') }}
+            {# @todo: change class if _data is not null #}
             <span class="sf-toolbar-value">Meilisearch</span>
         {% endset %}
         {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: 'meilisearch' }) }}
-    {% endif %}
 {% endblock %}
 
 {% block menu %}
