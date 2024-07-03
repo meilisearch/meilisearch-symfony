@@ -141,14 +141,14 @@ final class MeilisearchImportCommand extends IndexCommand
                     );
                 }
 
-                if ($updateSettings) {
-                    $this->settingsUpdater->update($index['prefixed_name'], $responseTimeout);
-                }
-
                 ++$page;
             } while (count($entities) >= $batchSize);
 
             $manager->clear();
+
+            if ($updateSettings) {
+                $this->settingsUpdater->update($index['prefixed_name'], $responseTimeout);
+            }
         }
 
         $output->writeln('<info>Done!</info>');

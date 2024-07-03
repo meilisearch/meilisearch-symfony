@@ -73,7 +73,7 @@ final class SettingsUpdater
                 throw new TaskException($task['error']);
             }
 
-            $this->eventDispatcher->dispatch(new SettingsUpdatedEvent($index['class'], $indexName));
+            $this->eventDispatcher->dispatch(new SettingsUpdatedEvent($index['class'], $indexName, $variable));
         }
     }
 }
