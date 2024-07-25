@@ -69,7 +69,7 @@ final class MeilisearchExtension extends Extension
     private function findReferences(array $settings): array
     {
         foreach ($settings as $key => $value) {
-            if (is_array($value)) {
+            if (\is_array($value)) {
                 $settings[$key] = $this->findReferences($value);
             } elseif ('_service' === substr((string) $key, -8) || str_starts_with((string) $value, '@') || 'service' === $key) {
                 $settings[$key] = new Reference(ltrim($value, '@'));

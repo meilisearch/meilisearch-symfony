@@ -163,7 +163,7 @@ abstract class BaseKernelTestCase extends KernelTestCase
         $tag = new Tag();
         $tag->setName('Meilisearch Test Tag');
 
-        if (count($properties) > 0) {
+        if (\count($properties) > 0) {
             foreach ($properties as $key => $value) {
                 $method = 'set'.ucfirst($key);
                 $tag->$method($value);
@@ -181,7 +181,7 @@ abstract class BaseKernelTestCase extends KernelTestCase
         $link = new Link();
         $link->setName('Meilisearch Test Link');
 
-        if (count($properties) > 0) {
+        if (\count($properties) > 0) {
             foreach ($properties as $key => $value) {
                 $method = 'set'.ucfirst($key);
                 $link->$method($value);
@@ -206,7 +206,7 @@ abstract class BaseKernelTestCase extends KernelTestCase
 
     protected function getFileName(string $indexName, string $type): string
     {
-        return sprintf('%s/%s.json', $indexName, $type);
+        return \sprintf('%s/%s.json', $indexName, $type);
     }
 
     protected function waitForAllTasks(): void

@@ -37,11 +37,11 @@ final class SettingsUpdater
     {
         $index = (new Collection($this->configuration->get('indices')))->firstWhere('prefixed_name', $indice);
 
-        if (!is_array($index)) {
+        if (!\is_array($index)) {
             throw new InvalidIndiceException($indice);
         }
 
-        if (!is_array($index['settings'] ?? null) || [] === $index['settings']) {
+        if (!\is_array($index['settings'] ?? null) || [] === $index['settings']) {
             return;
         }
 
@@ -50,15 +50,15 @@ final class SettingsUpdater
         $responseTimeout = $responseTimeout ?? self::DEFAULT_RESPONSE_TIMEOUT;
 
         foreach ($index['settings'] as $variable => $value) {
-            $method = sprintf('update%s', ucfirst($variable));
+            $method = \sprintf('update%s', ucfirst($variable));
 
             if (!method_exists($indexInstance, $method)) {
-                throw new InvalidSettingName(sprintf('Invalid setting name: "%s"', $variable));
+                throw new InvalidSettingName(\sprintf('Invalid setting name: "%s"', $variable));
             }
 
             if (isset($value['_service']) && $value['_service'] instanceof SettingsProvider) {
                 $value = $value['_service']();
-            } elseif (('distinctAttribute' === $variable || 'proximityPrecision' === $variable || 'searchCutoffMs' === $variable) && is_array($value)) {
+            } elseif (('distinctAttribute' === $variable || 'proximityPrecision' === $variable || 'searchCutoffMs' === $variable) && \is_array($value)) {
                 $value = $value[0] ?? null;
             }
 

@@ -32,7 +32,7 @@ abstract class Aggregator implements NormalizableInterface
     {
         $this->entity = $entity;
 
-        if (count($entityIdentifierValues) > 1) {
+        if (\count($entityIdentifierValues) > 1) {
             throw new InvalidEntityForAggregator("Aggregators don't support more than one primary key.");
         }
 
@@ -66,7 +66,7 @@ abstract class Aggregator implements NormalizableInterface
     {
         $type = explode('::', $objectId)[0];
 
-        if (in_array($type, static::getEntities(), true)) {
+        if (\in_array($type, static::getEntities(), true)) {
             return $type;
         }
 

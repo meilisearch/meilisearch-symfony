@@ -45,7 +45,7 @@ final class MeilisearchDeleteCommand extends IndexCommand
             $output->writeln('Deleted <info>'.$indexName.'</info>');
         }
 
-        if (0 === count($indexToDelete)) {
+        if (0 === \count($indexToDelete)) {
             $output->writeln('Cannot delete index. Not found.');
         }
 

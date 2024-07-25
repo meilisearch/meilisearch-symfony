@@ -29,7 +29,7 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
 
     public function get($key, $default = null)
     {
-        if (array_key_exists($key, $this->items)) {
+        if (\array_key_exists($key, $this->items)) {
             return $this->items[$key];
         }
 
@@ -123,7 +123,7 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
      */
     public function unique($key = null, bool $strict = false)
     {
-        if (is_null($key) && false === $strict) {
+        if (\is_null($key) && false === $strict) {
             return new self(array_unique($this->items, SORT_REGULAR));
         }
 
@@ -132,7 +132,7 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
         $exists = [];
 
         return $this->reject(function ($item, $key) use ($callback, $strict, &$exists) {
-            if (in_array($id = $callback($item, $key), $exists, $strict)) {
+            if (\in_array($id = $callback($item, $key), $exists, $strict)) {
                 return true;
             }
 
@@ -145,7 +145,7 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
      */
     public function first(?callable $callback = null, $default = null)
     {
-        if (is_null($callback)) {
+        if (\is_null($callback)) {
             if (empty($this->items)) {
                 return $default instanceof \Closure ? $default() : $default;
             }
@@ -171,7 +171,7 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
      */
     public function firstWhere($key, $operator = null, $value = null)
     {
-        return $this->first($this->operatorForWhere(...func_get_args()));
+        return $this->first($this->operatorForWhere(...\func_get_args()));
     }
 
     public function offsetExists($offset): bool
@@ -190,7 +190,7 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
 
     public function offsetSet($offset, $value): void
     {
-        if (is_null($offset)) {
+        if (\is_null($offset)) {
             $this->items[] = $value;
         } else {
             $this->items[$offset] = $value;
@@ -204,7 +204,7 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
 
     public function count(): int
     {
-        return count($this->items);
+        return \count($this->items);
     }
 
     public function getIterator(): \ArrayIterator
@@ -214,7 +214,7 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
 
     private function getArrayableItems($items): array
     {
-        if (is_array($items)) {
+        if (\is_array($items)) {
             return $items;
         }
 
@@ -239,7 +239,7 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
 
     private function useAsCallable($value): bool
     {
-        return !is_string($value) && is_callable($value);
+        return !\is_string($value) && \is_callable($value);
     }
 
     /**
@@ -261,23 +261,23 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
      */
     private static function getDeepData($target, $key, $default = null)
     {
-        if (is_null($key)) {
+        if (\is_null($key)) {
             return $target;
         }
 
-        $key = is_array($key) ? $key : explode('.', $key);
+        $key = \is_array($key) ? $key : explode('.', $key);
 
         foreach ($key as $i => $segment) {
             unset($key[$i]);
 
-            if (is_null($segment)) {
+            if (\is_null($segment)) {
                 return $target;
             }
 
             if ('*' === $segment) {
                 if ($target instanceof self) {
                     $target = $target->all();
-                } elseif (!is_array($target)) {
+                } elseif (!\is_array($target)) {
                     return $default instanceof \Closure ? $default() : $default;
                 }
 
@@ -287,12 +287,12 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
                     $result[] = self::getDeepData($item, $key);
                 }
 
-                return in_array('*', $key, true) ? self::arrayCollapse($result) : $result;
+                return \in_array('*', $key, true) ? self::arrayCollapse($result) : $result;
             }
 
             if (self::accessible($target) && self::existsInArray($target, $segment)) {
                 $target = $target[$segment];
-            } elseif (is_object($target) && isset($target->{$segment})) {
+            } elseif (\is_object($target) && isset($target->{$segment})) {
                 $target = $target->{$segment};
             } else {
                 return $default instanceof \Closure ? $default() : $default;
@@ -309,7 +309,7 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
         foreach ($array as $values) {
             if ($values instanceof self) {
                 $values = $values->all();
-            } elseif (!is_array($values)) {
+            } elseif (!\is_array($values)) {
                 continue;
             }
 
@@ -321,7 +321,7 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
 
     public static function accessible($value): bool
     {
-        return is_array($value) || $value instanceof \ArrayAccess;
+        return \is_array($value) || $value instanceof \ArrayAccess;
     }
 
     /**
@@ -336,18 +336,18 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
             return $array->offsetExists($key);
         }
 
-        return array_key_exists($key, $array);
+        return \array_key_exists($key, $array);
     }
 
     private function operatorForWhere(string $key, ?string $operator = null, $value = null): \Closure
     {
-        if (1 === func_num_args()) {
+        if (1 === \func_num_args()) {
             $value = true;
 
             $operator = '=';
         }
 
-        if (2 === func_num_args()) {
+        if (2 === \func_num_args()) {
             $value = $operator;
 
             $operator = '=';
@@ -356,10 +356,10 @@ final class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
         return static function ($item) use ($key, $operator, $value) {
             $retrieved = self::getDeepData($item, $key);
 
-            $strings = array_filter([$retrieved, $value], fn ($value) => is_string($value) || (is_object($value) && method_exists($value, '__toString')));
+            $strings = array_filter([$retrieved, $value], fn ($value) => \is_string($value) || (\is_object($value) && method_exists($value, '__toString')));
 
-            if (count($strings) < 2 && 1 === count(array_filter([$retrieved, $value], 'is_object'))) {
-                return in_array($operator, ['!=', '<>', '!==']);
+            if (\count($strings) < 2 && 1 === \count(array_filter([$retrieved, $value], 'is_object'))) {
+                return \in_array($operator, ['!=', '<>', '!==']);
             }
 
             switch ($operator) {

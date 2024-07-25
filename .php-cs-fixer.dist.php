@@ -14,6 +14,7 @@ return (new PhpCsFixer\Config())
     ->setRules([
         '@Symfony' => true,
         '@PHP80Migration:risky' => true,
+        'native_function_invocation' => ['include' => ['@compiler_optimized'], 'scope' => 'namespaced'],
         'global_namespace_import' => [
             'import_classes' => false,
             'import_functions' => false,

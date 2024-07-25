@@ -8,11 +8,11 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 final class MeilisearchBundle extends Bundle
 {
-    public const VERSION = '0.15.2';
+    public const VERSION = '0.15.3';
 
-    public static function qualifiedVersion()
+    public static function qualifiedVersion(): string
     {
-        return sprintf('Meilisearch Symfony (v%s)', MeilisearchBundle::VERSION);
+        return \sprintf('Meilisearch Symfony (v%s)', self::VERSION);
     }
 
     public function getPath(): string

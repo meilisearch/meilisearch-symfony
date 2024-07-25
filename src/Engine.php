@@ -143,7 +143,7 @@ final class Engine
 
     private function normalizeId($id)
     {
-        if (is_object($id) && method_exists($id, '__toString')) {
+        if (\is_object($id) && method_exists($id, '__toString')) {
             return (string) $id;
         }
 
