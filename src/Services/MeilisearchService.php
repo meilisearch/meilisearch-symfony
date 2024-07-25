@@ -60,7 +60,7 @@ final class MeilisearchService implements SearchService
     {
         $className = $this->getBaseClassName($className);
 
-        return in_array($className, $this->searchableEntities, true);
+        return \in_array($className, $this->searchableEntities, true);
     }
 
     public function getSearchable(): array
@@ -85,7 +85,7 @@ final class MeilisearchService implements SearchService
 
     public function index(ObjectManager $objectManager, $searchable): array
     {
-        $searchable = is_array($searchable) ? $searchable : [$searchable];
+        $searchable = \is_array($searchable) ? $searchable : [$searchable];
         $searchable = array_merge($searchable, $this->getAggregatorsFromEntities($objectManager, $searchable));
 
         $dataToIndex = array_filter(
@@ -101,7 +101,7 @@ final class MeilisearchService implements SearchService
             }
         }
 
-        if (count($dataToRemove) > 0) {
+        if (\count($dataToRemove) > 0) {
             $this->remove($objectManager, $dataToRemove);
         }
 
@@ -114,7 +114,7 @@ final class MeilisearchService implements SearchService
 
     public function remove(ObjectManager $objectManager, $searchable): array
     {
-        $searchable = is_array($searchable) ? $searchable : [$searchable];
+        $searchable = \is_array($searchable) ? $searchable : [$searchable];
         $searchable = array_merge($searchable, $this->getAggregatorsFromEntities($objectManager, $searchable));
 
         $searchable = array_filter(
@@ -161,18 +161,18 @@ final class MeilisearchService implements SearchService
 
         // Check if the engine returns results in "hits" key
         if (!isset($ids[self::RESULT_KEY_HITS])) {
-            throw new SearchHitsNotFoundException(sprintf('There is no "%s" key in the search results.', self::RESULT_KEY_HITS));
+            throw new SearchHitsNotFoundException(\sprintf('There is no "%s" key in the search results.', self::RESULT_KEY_HITS));
         }
 
         foreach ($ids[self::RESULT_KEY_HITS] as $hit) {
             if (!isset($hit[self::RESULT_KEY_OBJECTID])) {
-                throw new ObjectIdNotFoundException(sprintf('There is no "%s" key in the result.', self::RESULT_KEY_OBJECTID));
+                throw new ObjectIdNotFoundException(\sprintf('There is no "%s" key in the result.', self::RESULT_KEY_OBJECTID));
             }
 
             $documentId = $hit[self::RESULT_KEY_OBJECTID];
             $entityClass = $className;
 
-            if (in_array($className, $this->aggregators, true)) {
+            if (\in_array($className, $this->aggregators, true)) {
                 $objectId = $hit[self::RESULT_KEY_OBJECTID];
                 $entityClass = $className::getEntityClassFromObjectId($objectId);
                 $documentId = $className::getEntityIdFromObjectId($objectId);
@@ -236,7 +236,7 @@ final class MeilisearchService implements SearchService
             }
         }
 
-        if (is_object($objectOrClass)) {
+        if (\is_object($objectOrClass)) {
             return self::resolveClass($objectOrClass);
         }
 
@@ -308,7 +308,7 @@ final class MeilisearchService implements SearchService
 
         foreach ($entities as $entity) {
             $entityClassName = self::resolveClass($entity);
-            if (array_key_exists($entityClassName, $this->entitiesAggregators)) {
+            if (\array_key_exists($entityClassName, $this->entitiesAggregators)) {
                 foreach ($this->entitiesAggregators[$entityClassName] as $aggregator) {
                     $aggregators[] = new $aggregator(
                         $entity,
@@ -375,7 +375,7 @@ final class MeilisearchService implements SearchService
 
         $resolver ??= (function () {
             // Doctrine ORM v3+ compatibility
-            if (\class_exists(DefaultProxyClassNameResolver::class)) {
+            if (class_exists(DefaultProxyClassNameResolver::class)) {
                 return fn (object $object) => DefaultProxyClassNameResolver::getClass($object);
             }
 

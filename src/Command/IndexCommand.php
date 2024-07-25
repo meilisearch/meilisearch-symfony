@@ -42,7 +42,7 @@ abstract class IndexCommand extends Command
         $indexNames = new Collection();
 
         if ($indexList = $input->getOption('indices')) {
-            $list = \explode(',', $indexList);
+            $list = explode(',', $indexList);
             $indexNames = (new Collection($list))->transform(function (string $item): string {
                 // Check if the given index name already contains the prefix
                 if (!str_contains($item, $this->prefix)) {
@@ -53,7 +53,7 @@ abstract class IndexCommand extends Command
             });
         }
 
-        if (0 === count($indexNames) && 0 === count($indices)) {
+        if (0 === \count($indexNames) && 0 === \count($indices)) {
             $output->writeln(
                 '<comment>No indices specified. Please either specify indices using the cli option or YAML configuration.</comment>'
             );
@@ -61,8 +61,8 @@ abstract class IndexCommand extends Command
             return new Collection();
         }
 
-        if (count($indexNames) > 0) {
-            return $indices->reject(fn (array $item) => !in_array($item['name'], $indexNames->all(), true));
+        if (\count($indexNames) > 0) {
+            return $indices->reject(fn (array $item) => !\in_array($item['name'], $indexNames->all(), true));
         }
 
         return $indices;

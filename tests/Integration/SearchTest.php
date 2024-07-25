@@ -107,7 +107,7 @@ class SearchTest extends BaseKernelTestCase
         $this->assertCount(2, $results);
 
         $resultTitles = array_map(fn (Post $post) => $post->getTitle(), $results);
-        $this->assertEqualsCanonicalizing(array_slice($testDataTitles, 2, 2), $resultTitles);
+        $this->assertEqualsCanonicalizing(\array_slice($testDataTitles, 2, 2), $resultTitles);
     }
 
     public function testSearchNbResults(): void

@@ -102,7 +102,7 @@ final class MeilisearchImportCommand extends IndexCommand
             $repository = $manager->getRepository($entityClassName);
             $classMetadata = $manager->getClassMetadata($entityClassName);
             $entityIdentifiers = $classMetadata->getIdentifierFieldNames();
-            $sortByAttrs = array_combine($entityIdentifiers, array_fill(0, count($entityIdentifiers), 'ASC'));
+            $sortByAttrs = array_combine($entityIdentifiers, array_fill(0, \count($entityIdentifiers), 'ASC'));
 
             $output->writeln('<info>Importing for index '.$entityClassName.'</info>');
 
@@ -110,7 +110,7 @@ final class MeilisearchImportCommand extends IndexCommand
 
             if ($page > 0) {
                 $output->writeln(
-                    sprintf(
+                    \sprintf(
                         '<info>Skipping first <comment>%d</comment> batches (<comment>%d</comment> records)</info>',
                         $page,
                         $page * $batchSize,
@@ -127,13 +127,13 @@ final class MeilisearchImportCommand extends IndexCommand
                 );
 
                 $responses = $this->formatIndexingResponse($this->searchService->index($manager, $entities), $responseTimeout);
-                $totalIndexed += count($entities);
+                $totalIndexed += \count($entities);
                 foreach ($responses as $indexName => $numberOfRecords) {
                     $output->writeln(
-                        sprintf(
+                        \sprintf(
                             'Indexed a batch of <comment>%d / %d</comment> %s entities into %s index (%d indexed since start)',
                             $numberOfRecords,
-                            count($entities),
+                            \count($entities),
                             $entityClassName,
                             '<info>'.$indexName.'</info>',
                             $totalIndexed,
@@ -142,7 +142,7 @@ final class MeilisearchImportCommand extends IndexCommand
                 }
 
                 ++$page;
-            } while (count($entities) >= $batchSize);
+            } while (\count($entities) >= $batchSize);
 
             $manager->clear();
 
@@ -165,7 +165,7 @@ final class MeilisearchImportCommand extends IndexCommand
 
         foreach ($batch as $chunk) {
             foreach ($chunk as $indexName => $apiResponse) {
-                if (!array_key_exists($indexName, $formattedResponse)) {
+                if (!\array_key_exists($indexName, $formattedResponse)) {
                     $formattedResponse[$indexName] = 0;
                 }
 

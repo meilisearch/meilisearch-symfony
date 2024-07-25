@@ -67,7 +67,7 @@ final class SearchableEntity
             'fieldsMapping' => $this->entityMetadata->fieldMappings,
         ];
 
-        if (count($this->normalizationGroups) > 0) {
+        if (\count($this->normalizationGroups) > 0) {
             $context['groups'] = $this->normalizationGroups;
         }
 

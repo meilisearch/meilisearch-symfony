@@ -67,7 +67,7 @@ final class Configuration implements ConfigurationInterface
                                         $stringSettings = ['distinctAttribute', 'proximityPrecision', 'searchCutoffMs'];
 
                                         foreach ($stringSettings as $setting) {
-                                            if (isset($value[$setting]) && !is_array($value[$setting])) {
+                                            if (isset($value[$setting]) && !\is_array($value[$setting])) {
                                                 $value[$setting] = (array) $value[$setting];
                                             }
                                         }

@@ -45,7 +45,7 @@ final class MeilisearchClearCommand extends IndexCommand
             $output->writeln($msg);
         }
 
-        if (0 === count($indexToClear)) {
+        if (0 === \count($indexToClear)) {
             $output->writeln('Cannot clear index. Not found.');
         }
 
