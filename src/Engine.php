@@ -90,9 +90,12 @@ final class Engine
 
         $result = [];
         foreach ($data as $indexUid => $objects) {
-            $result[$indexUid] = $this->client
-                ->index($indexUid)
-                ->deleteDocument(reset($objects));
+            $result[$indexUid] = [];
+            foreach ($objects as $object) {
+                $result[$indexUid][] = $this->client
+                    ->index($indexUid)
+                    ->deleteDocument($object);
+            }
         }
 
         return $result;
