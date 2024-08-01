@@ -48,4 +48,25 @@ class EngineTest extends BaseKernelTestCase
             $this->assertInstanceOf(ApiException::class, $e);
         }
     }
+
+    public function testRemovingMultipleEntity(): void
+    {
+        $post1 = $this->createSearchablePost();
+        $post2 = $this->createSearchablePost();
+
+        $result = $this->engine->remove([$post1, $post2]);
+
+        $this->assertArrayHasKey('sf_phpunit__posts', $result);
+        $this->assertCount(2, $result['sf_phpunit__posts']);
+
+        $this->waitForAllTasks();
+
+        foreach ([$post1, $post2] as $post) {
+            $searchResult = $this->engine->search('', $post->getIndexUid(), []);
+
+            $this->assertArrayHasKey('hits', $searchResult);
+            $this->assertIsArray($searchResult['hits']);
+            $this->assertEmpty($searchResult['hits']);
+        }
+    }
 }
