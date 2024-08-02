@@ -11,25 +11,80 @@ on:
       - bump-meilisearch-v*
 
 jobs:
+  meilisearch-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Grep docker latest rc version of Meilisearch
+        id: grep-step
+        run: |
+          MEILISEARCH_VERSION=$(sh .github/scripts/get-latest-meilisearch-rc.sh)
+          echo $MEILISEARCH_VERSION
+          echo "version=$MEILISEARCH_VERSION" >> $GITHUB_OUTPUT
+    outputs:
+      version: ${{ steps.grep-step.outputs.version }}
+
   integration-tests:
     runs-on: ubuntu-latest
+    needs: ['meilisearch-version']
+    services:
+      meilisearch:
+        image: getmeili/meilisearch:${{ needs.meilisearch-version.outputs.version }}
+        ports:
+          - '7700:7700'
+        env:
+          MEILI_MASTER_KEY: masterKey
+          MEILI_NO_ANALYTICS: true
     strategy:
       matrix:
-        php-versions: ['7.4', '8.0']
-    name: integration-tests-against-rc (PHP ${{ matrix.php-versions }})
+        php-version: ['7.4', '8.1', '8.2', '8.3']
+        sf-version: ['5.4', '6.4', '7.0', '7.1']
+        exclude:
+          - php-version: '7.4'
+            sf-version: '6.4'
+          - php-version: '7.4'
+            sf-version: '7.0'
+          - php-version: '7.4'
+            sf-version: '7.1'
+          - php-version: '8.1'
+            sf-version: '5.4'
+          - php-version: '8.1'
+            sf-version: '7.0'
+          - php-version: '8.1'
+            sf-version: '7.1'
+          - php-version: '8.2'
+            sf-version: '5.4'
+          - php-version: '8.3'
+            sf-version: '5.4'
+          - php-version: '8.3'
+            sf-version: '5.4'
+
+    name: integration-tests-against-rc (PHP ${{ matrix.php-version }}) (Symfony ${{ matrix.sf-version }}.*)
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
+          tools: composer, flex
+
       - name: Validate composer.json and composer.lock
         run: composer validate
+
+      - name: Remove doctrine/annotations
+        if: matrix.php-version != '7.4'
+        run: sed -i '/doctrine\/annotations/d' composer.json
+
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --quiet
-      - name: Get the latest Meilisearch RC
-        run: echo "MEILISEARCH_VERSION=$(curl https://raw.githubusercontent.com/meilisearch/integration-guides/main/scripts/get-latest-meilisearch-rc.sh | bash)" >> $GITHUB_ENV
-      - name: Meilisearch (${{ env.MEILISEARCH_VERSION }}) setup with Docker
-        run: docker run -d -p 7700:7700 getmeili/meilisearch:${{ env.MEILISEARCH_VERSION }} meilisearch --master-key=masterKey --no-analytics
+        uses: ramsey/composer-install@v3
+        env:
+          SYMFONY_REQUIRE: ${{ matrix.sf-version }}.*
+        with:
+          dependency-versions: 'highest'
+
       - name: Run test suite
-        run: composer test:unit
+        run: composer test:unit -- --coverage-clover coverage.xml

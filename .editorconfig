@@ -12,7 +12,7 @@ indent_size              = 4
 max_line_length          = 120
 
 [*.{yml,yaml}]
-indent_size              = 4
+indent_size              = 2
 
 [*.json]
 indent_size              = 2
