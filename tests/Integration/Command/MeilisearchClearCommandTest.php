@@ -36,6 +36,7 @@ Cleared sf_phpunit__pages index of Meilisearch\Bundle\Tests\Entity\Page
 Cleared sf_phpunit__self_normalizable index of Meilisearch\Bundle\Tests\Entity\SelfNormalizable
 Cleared sf_phpunit__dummy_custom_groups index of Meilisearch\Bundle\Tests\Entity\DummyCustomGroups
 Cleared sf_phpunit__dynamic_settings index of Meilisearch\Bundle\Tests\Entity\DynamicSettings
+Cleared sf_phpunit__repository_methods index of Meilisearch\Bundle\Tests\Entity\RepositoryMethod
 Done!
 
 EOD, $commandTester->getDisplay());

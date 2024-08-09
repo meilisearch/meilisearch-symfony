@@ -391,4 +391,33 @@ EOD, $importOutput);
 
         self::assertSame(['meili:import'], $command->getAliases());
     }
+
+    public function testImportCustomRepositoryMethod(): void
+    {
+        $this->createRepositoryMethod(true);
+        $this->createRepositoryMethod(false);
+
+        $importCommand = $this->application->find('meilisearch:clear');
+        $importCommandTester = new CommandTester($importCommand);
+        $importCommandTester->execute(['--indices' => 'repository_methods']);
+
+        $importCommand = $this->application->find('meilisearch:import');
+        $importCommandTester = new CommandTester($importCommand);
+        $importCommandTester->execute(['--indices' => 'repository_methods']);
+
+        $importOutput = $importCommandTester->getDisplay();
+
+        $this->assertSame(<<<'EOD'
+Importing for index Meilisearch\Bundle\Tests\Entity\RepositoryMethod
+Indexed a batch of 1 / 1 Meilisearch\Bundle\Tests\Entity\RepositoryMethod entities into sf_phpunit__repository_methods index (1 indexed since start)
+Done!
+
+EOD, $importOutput);
+
+        /** @var SearchResult $searchResult */
+        $searchResult = $this->client->index($this->getPrefix().'repository_methods')->search(null);
+
+        $this->assertEquals(1, $searchResult->getHitsCount());
+        $this->assertTrue($searchResult->getHit(0)['filtered']);
+    }
 }

@@ -17,6 +17,7 @@ use Meilisearch\Bundle\Tests\Entity\ObjectId\DummyObjectId;
 use Meilisearch\Bundle\Tests\Entity\Page;
 use Meilisearch\Bundle\Tests\Entity\Podcast;
 use Meilisearch\Bundle\Tests\Entity\Post;
+use Meilisearch\Bundle\Tests\Entity\RepositoryMethod;
 use Meilisearch\Bundle\Tests\Entity\Tag;
 use Meilisearch\Client;
 use Meilisearch\Exceptions\ApiException;
@@ -192,6 +193,18 @@ abstract class BaseKernelTestCase extends KernelTestCase
         $this->entityManager->flush();
 
         return $link;
+    }
+
+    protected function createRepositoryMethod(bool $isFiltered): RepositoryMethod
+    {
+        $repositoryMethod = new RepositoryMethod();
+        $repositoryMethod->setName('Test');
+        $repositoryMethod->setIsFiltered($isFiltered);
+
+        $this->entityManager->persist($repositoryMethod);
+        $this->entityManager->flush();
+
+        return $repositoryMethod;
     }
 
     protected function getPrefix(): string
