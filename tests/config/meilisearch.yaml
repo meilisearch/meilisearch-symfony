@@ -54,6 +54,9 @@ meilisearch:
           _service: '@Meilisearch\Bundle\Tests\Integration\Fixtures\StopWords'
         synonyms:
           _service: '@Meilisearch\Bundle\Tests\Integration\Fixtures\Synonyms'
+    - name: repository_methods
+      class: 'Meilisearch\Bundle\Tests\Entity\RepositoryMethod'
+      repository_method: customRepositoryMethod
 
 services:
   Meilisearch\Bundle\Tests\Integration\Fixtures\:

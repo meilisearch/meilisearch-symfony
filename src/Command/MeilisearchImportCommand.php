@@ -99,10 +99,6 @@ final class MeilisearchImportCommand extends IndexCommand
             $totalIndexed = 0;
 
             $manager = $this->managerRegistry->getManagerForClass($entityClassName);
-            $repository = $manager->getRepository($entityClassName);
-            $classMetadata = $manager->getClassMetadata($entityClassName);
-            $entityIdentifiers = $classMetadata->getIdentifierFieldNames();
-            $sortByAttrs = array_combine($entityIdentifiers, array_fill(0, \count($entityIdentifiers), 'ASC'));
 
             $output->writeln('<info>Importing for index '.$entityClassName.'</info>');
 
@@ -119,12 +115,7 @@ final class MeilisearchImportCommand extends IndexCommand
             }
 
             do {
-                $entities = $repository->findBy(
-                    [],
-                    $sortByAttrs,
-                    $batchSize,
-                    $batchSize * $page
-                );
+                $entities = $this->getEntities($entityClassName, $batchSize, $page);
 
                 $responses = $this->formatIndexingResponse($this->searchService->index($manager, $entities), $responseTimeout);
                 $totalIndexed += \count($entities);
@@ -207,5 +198,34 @@ final class MeilisearchImportCommand extends IndexCommand
         }
 
         return array_unique($indexes->all(), SORT_REGULAR);
+    }
+
+    /**
+     * @param string $entityClassName
+     * @param int    $batchSize
+     * @param int    $page
+     *
+     * @return array
+     */
+    private function getEntities($entityClassName, $batchSize, $page): array
+    {
+        $manager = $this->managerRegistry->getManagerForClass($entityClassName);
+        $classMetadata = $manager->getClassMetadata($entityClassName);
+        $entityIdentifiers = $classMetadata->getIdentifierFieldNames();
+        $repository = $manager->getRepository($entityClassName);
+        $sortByAttrs = array_combine($entityIdentifiers, array_fill(0, \count($entityIdentifiers), 'ASC'));
+
+        $repositoryMethod = $this->searchService->getRepositoryMethod($entityClassName);
+
+        if (null === $repositoryMethod) {
+            return $repository->findBy(
+                [],
+                $sortByAttrs,
+                $batchSize,
+                $batchSize * $page
+            );
+        }
+
+        return $repository->$repositoryMethod($batchSize, $batchSize * $page);
     }
 }

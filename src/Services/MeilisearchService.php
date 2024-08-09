@@ -42,6 +42,7 @@ final class MeilisearchService implements SearchService
      */
     private array $classToSerializerGroup;
     private array $indexIfMapping;
+    private array $repositoryMethodMapping;
 
     public function __construct(NormalizerInterface $normalizer, Engine $engine, array $configuration, ?PropertyAccessorInterface $propertyAccessor = null)
     {
@@ -54,6 +55,7 @@ final class MeilisearchService implements SearchService
         $this->setAggregatorsAndEntitiesAggregators();
         $this->setClassToSerializerGroup();
         $this->setIndexIfMapping();
+        $this->setRepositoryMethodMapping();
     }
 
     public function isSearchable($className): bool
@@ -223,6 +225,11 @@ final class MeilisearchService implements SearchService
         return true;
     }
 
+    public function getRepositoryMethod(string $className): ?string
+    {
+        return $this->repositoryMethodMapping[$className] ?? null;
+    }
+
     /**
      * @param object|class-string $objectOrClass
      *
@@ -293,6 +300,17 @@ final class MeilisearchService implements SearchService
             $mapping[$indexDetails['class']] = $indexDetails['index_if'];
         }
         $this->indexIfMapping = $mapping;
+    }
+
+    private function setRepositoryMethodMapping(): void
+    {
+        $mapping = [];
+
+        /** @var array $indexDetails */
+        foreach ($this->configuration->get('indices') as $indexDetails) {
+            $mapping[$indexDetails['class']] = $indexDetails['repository_method'];
+        }
+        $this->repositoryMethodMapping = $mapping;
     }
 
     /**

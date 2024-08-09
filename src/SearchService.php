@@ -79,4 +79,9 @@ interface SearchService
      * @return int<0, max>
      */
     public function count(string $className, string $query = '', array $searchParams = []): int;
+
+    /**
+     * @param class-string $className
+     */
+    public function getRepositoryMethod(string $className): ?string;
 }
