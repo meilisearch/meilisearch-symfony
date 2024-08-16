@@ -37,7 +37,7 @@ Deleted sf_phpunit__pages
 Deleted sf_phpunit__self_normalizable
 Deleted sf_phpunit__dummy_custom_groups
 Deleted sf_phpunit__dynamic_settings
-Deleted sf_phpunit__repository_methods
+Deleted sf_phpunit__tickets
 Done!
 
 EOD, $clearOutput);

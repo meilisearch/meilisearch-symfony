@@ -30,6 +30,10 @@ final class MeilisearchExtension extends Extension
         foreach ($config['indices'] as $index => $indice) {
             $config['indices'][$index]['prefixed_name'] = $config['prefix'].$indice['name'];
             $config['indices'][$index]['settings'] = $this->findReferences($config['indices'][$index]['settings']);
+
+            if (null !== $config['indices'][$index]['data_provider']) {
+                $config['indices'][$index]['data_provider'] = new Reference($config['indices'][$index]['data_provider']);
+            }
         }
 
         $container->setParameter('meili_url', $config['url'] ?? null);

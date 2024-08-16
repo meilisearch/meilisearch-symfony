@@ -8,6 +8,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\Proxy\DefaultProxyClassNameResolver;
 use Doctrine\Persistence\ObjectManager;
 use Meilisearch\Bundle\Collection;
+use Meilisearch\Bundle\DataProvider\DataProvider;
 use Meilisearch\Bundle\Engine;
 use Meilisearch\Bundle\Entity\Aggregator;
 use Meilisearch\Bundle\Exception\ObjectIdNotFoundException;
@@ -42,7 +43,7 @@ final class MeilisearchService implements SearchService
      */
     private array $classToSerializerGroup;
     private array $indexIfMapping;
-    private array $repositoryMethodMapping;
+    private array $dataProviderMapping;
 
     public function __construct(NormalizerInterface $normalizer, Engine $engine, array $configuration, ?PropertyAccessorInterface $propertyAccessor = null)
     {
@@ -55,7 +56,7 @@ final class MeilisearchService implements SearchService
         $this->setAggregatorsAndEntitiesAggregators();
         $this->setClassToSerializerGroup();
         $this->setIndexIfMapping();
-        $this->setRepositoryMethodMapping();
+        $this->setDataProviderMapping();
     }
 
     public function isSearchable($className): bool
@@ -225,9 +226,9 @@ final class MeilisearchService implements SearchService
         return true;
     }
 
-    public function getRepositoryMethod(string $className): ?string
+    public function getDataProvider(string $indexName): ?DataProvider
     {
-        return $this->repositoryMethodMapping[$className] ?? null;
+        return $this->dataProviderMapping[$indexName] ?? null;
     }
 
     /**
@@ -302,15 +303,15 @@ final class MeilisearchService implements SearchService
         $this->indexIfMapping = $mapping;
     }
 
-    private function setRepositoryMethodMapping(): void
+    private function setDataProviderMapping(): void
     {
         $mapping = [];
 
         /** @var array $indexDetails */
         foreach ($this->configuration->get('indices') as $indexDetails) {
-            $mapping[$indexDetails['class']] = $indexDetails['repository_method'];
+            $mapping[$indexDetails['name']] = $indexDetails['data_provider'];
         }
-        $this->repositoryMethodMapping = $mapping;
+        $this->dataProviderMapping = $mapping;
     }
 
     /**

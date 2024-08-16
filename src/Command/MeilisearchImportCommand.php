@@ -6,6 +6,7 @@ namespace Meilisearch\Bundle\Command;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Meilisearch\Bundle\Collection;
+use Meilisearch\Bundle\DataProvider\DoctrineOrmDataProvider;
 use Meilisearch\Bundle\EventListener\ConsoleOutputSubscriber;
 use Meilisearch\Bundle\Exception\TaskException;
 use Meilisearch\Bundle\Model\Aggregator;
@@ -115,7 +116,7 @@ final class MeilisearchImportCommand extends IndexCommand
             }
 
             do {
-                $entities = $this->getEntities($entityClassName, $batchSize, $page);
+                $entities = $this->getEntities($index['name'], $entityClassName, $batchSize, $page);
 
                 $responses = $this->formatIndexingResponse($this->searchService->index($manager, $entities), $responseTimeout);
                 $totalIndexed += \count($entities);
@@ -201,31 +202,22 @@ final class MeilisearchImportCommand extends IndexCommand
     }
 
     /**
+     * @param string $prefixedIndexName
      * @param string $entityClassName
      * @param int    $batchSize
      * @param int    $page
      *
      * @return array
      */
-    private function getEntities($entityClassName, $batchSize, $page): array
+    private function getEntities($prefixedIndexName, $entityClassName, $batchSize, $page): array
     {
-        $manager = $this->managerRegistry->getManagerForClass($entityClassName);
-        $classMetadata = $manager->getClassMetadata($entityClassName);
-        $entityIdentifiers = $classMetadata->getIdentifierFieldNames();
-        $repository = $manager->getRepository($entityClassName);
-        $sortByAttrs = array_combine($entityIdentifiers, array_fill(0, \count($entityIdentifiers), 'ASC'));
+        $dataProvider = $this->searchService->getDataProvider($this->getIndexNameWithoutPrefix($prefixedIndexName));
 
-        $repositoryMethod = $this->searchService->getRepositoryMethod($entityClassName);
-
-        if (null === $repositoryMethod) {
-            return $repository->findBy(
-                [],
-                $sortByAttrs,
-                $batchSize,
-                $batchSize * $page
-            );
+        if (null === $dataProvider) {
+            $dataProvider = new DoctrineOrmDataProvider($this->managerRegistry);
+            $dataProvider->setEntityClassName($entityClassName);
         }
 
-        return $repository->$repositoryMethod($batchSize, $batchSize * $page);
+        return $dataProvider->getAll($batchSize, $batchSize * $page);
     }
 }

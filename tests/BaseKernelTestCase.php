@@ -17,8 +17,8 @@ use Meilisearch\Bundle\Tests\Entity\ObjectId\DummyObjectId;
 use Meilisearch\Bundle\Tests\Entity\Page;
 use Meilisearch\Bundle\Tests\Entity\Podcast;
 use Meilisearch\Bundle\Tests\Entity\Post;
-use Meilisearch\Bundle\Tests\Entity\RepositoryMethod;
 use Meilisearch\Bundle\Tests\Entity\Tag;
+use Meilisearch\Bundle\Tests\Entity\Ticket;
 use Meilisearch\Client;
 use Meilisearch\Exceptions\ApiException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -195,16 +195,14 @@ abstract class BaseKernelTestCase extends KernelTestCase
         return $link;
     }
 
-    protected function createRepositoryMethod(bool $isFiltered): RepositoryMethod
+    protected function createTicket(int $id, bool $sold): Ticket
     {
-        $repositoryMethod = new RepositoryMethod();
-        $repositoryMethod->setName('Test');
-        $repositoryMethod->setIsFiltered($isFiltered);
+        $ticket = new Ticket($id, str_pad((string) random_int(0, 1000000), 6, '0', STR_PAD_LEFT), $sold);
 
-        $this->entityManager->persist($repositoryMethod);
+        $this->entityManager->persist($ticket);
         $this->entityManager->flush();
 
-        return $repositoryMethod;
+        return $ticket;
     }
 
     protected function getPrefix(): string

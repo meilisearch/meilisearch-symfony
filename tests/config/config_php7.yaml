@@ -28,3 +28,7 @@ doctrine:
                 dir: '%kernel.project_dir%/tests/Entity'
                 prefix: 'Meilisearch\Bundle\Tests\Entity'
                 alias: App
+
+services:
+    Meilisearch\Bundle\Tests\DataProvider\TicketDataProvider:
+        arguments: [ '@doctrine' ]

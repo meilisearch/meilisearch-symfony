@@ -392,32 +392,33 @@ EOD, $importOutput);
         self::assertSame(['meili:import'], $command->getAliases());
     }
 
-    public function testImportCustomRepositoryMethod(): void
+    public function testImportDataProvider(): void
     {
-        $this->createRepositoryMethod(true);
-        $this->createRepositoryMethod(false);
+        $this->createTicket(1, true);
+        $this->createTicket(2, false);
 
         $importCommand = $this->application->find('meilisearch:clear');
         $importCommandTester = new CommandTester($importCommand);
-        $importCommandTester->execute(['--indices' => 'repository_methods']);
+        $importCommandTester->execute(['--indices' => 'tickets']);
 
         $importCommand = $this->application->find('meilisearch:import');
         $importCommandTester = new CommandTester($importCommand);
-        $importCommandTester->execute(['--indices' => 'repository_methods']);
+        $importCommandTester->execute(['--indices' => 'tickets']);
 
         $importOutput = $importCommandTester->getDisplay();
 
         $this->assertSame(<<<'EOD'
-Importing for index Meilisearch\Bundle\Tests\Entity\RepositoryMethod
-Indexed a batch of 1 / 1 Meilisearch\Bundle\Tests\Entity\RepositoryMethod entities into sf_phpunit__repository_methods index (1 indexed since start)
+Importing for index Meilisearch\Bundle\Tests\Entity\Ticket
+Indexed a batch of 1 / 1 Meilisearch\Bundle\Tests\Entity\Ticket entities into sf_phpunit__tickets index (1 indexed since start)
 Done!
 
 EOD, $importOutput);
 
         /** @var SearchResult $searchResult */
-        $searchResult = $this->client->index($this->getPrefix().'repository_methods')->search(null);
+        $searchResult = $this->client->index($this->getPrefix().'tickets')->search(null);
 
         $this->assertEquals(1, $searchResult->getHitsCount());
-        $this->assertTrue($searchResult->getHit(0)['filtered']);
+        $this->assertEquals(2, $searchResult->getHit(0)['id']);
+        $this->assertFalse($searchResult->getHit(0)['sold']);
     }
 }

@@ -59,7 +59,7 @@ final class Configuration implements ConfigurationInterface
                                 ->info('Property accessor path (like method or property name) used to decide if an entry should be indexed.')
                                 ->defaultNull()
                             ->end()
-                            ->scalarNode('repository_method')
+                            ->scalarNode('data_provider')
                                 ->info('Method of the entity repository called when the meilisearch:import command is invoked.')
                                 ->defaultNull()
                             ->end()

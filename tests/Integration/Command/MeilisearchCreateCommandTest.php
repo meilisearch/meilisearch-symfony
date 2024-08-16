@@ -60,7 +60,7 @@ Setting "filterableAttributes" updated of "sf_phpunit__dynamic_settings".
 Setting "searchableAttributes" updated of "sf_phpunit__dynamic_settings".
 Setting "stopWords" updated of "sf_phpunit__dynamic_settings".
 Setting "synonyms" updated of "sf_phpunit__dynamic_settings".
-Creating index sf_phpunit__repository_methods for Meilisearch\Bundle\Tests\Entity\RepositoryMethod
+Creating index sf_phpunit__tickets for Meilisearch\Bundle\Tests\Entity\Ticket
 Creating index sf_phpunit__aggregated for Meilisearch\Bundle\Tests\Entity\Post
 Creating index sf_phpunit__aggregated for Meilisearch\Bundle\Tests\Entity\Tag
 Done!
@@ -77,7 +77,7 @@ Creating index sf_phpunit__pages for Meilisearch\Bundle\Tests\Entity\Page
 Creating index sf_phpunit__self_normalizable for Meilisearch\Bundle\Tests\Entity\SelfNormalizable
 Creating index sf_phpunit__dummy_custom_groups for Meilisearch\Bundle\Tests\Entity\DummyCustomGroups
 Creating index sf_phpunit__dynamic_settings for Meilisearch\Bundle\Tests\Entity\DynamicSettings
-Creating index sf_phpunit__repository_methods for Meilisearch\Bundle\Tests\Entity\RepositoryMethod
+Creating index sf_phpunit__tickets for Meilisearch\Bundle\Tests\Entity\Ticket
 Creating index sf_phpunit__aggregated for Meilisearch\Bundle\Tests\Entity\Post
 Creating index sf_phpunit__aggregated for Meilisearch\Bundle\Tests\Entity\Tag
 Done!
