@@ -7,12 +7,13 @@
         <service id="meilisearch.engine" class="Meilisearch\Bundle\Engine">
             <argument type="service" id="meilisearch.client" />
         </service>
+        <service id="Meilisearch\Bundle\Engine" alias="meilisearch.engine" />
 
         <!-- After bumping to Symfony >5.1 deeprecate public services into private services -->
         <service id="meilisearch.service" class="Meilisearch\Bundle\Services\MeilisearchService" public="true">
-            <argument /><!-- After bumping to Symfony 5.1 use type="abstract" -->
+            <argument type="abstract">normalizer</argument>
             <argument type="service" id="meilisearch.engine" />
-            <argument type="collection" /><!-- After bumping to Symfony 5.1 use type="abstract" -->
+            <argument type="abstract">configuration</argument>
             <argument type="service" id="property_accessor" />
         </service>
         <service id="search.service" alias="meilisearch.service" public="true">
