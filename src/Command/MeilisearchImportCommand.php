@@ -176,7 +176,7 @@ final class MeilisearchImportCommand extends IndexCommand
                 $task = $indexInstance->getTask($apiResponse['taskUid']);
 
                 if ('failed' === $task['status']) {
-                    throw new TaskException($task['error']);
+                    throw new TaskException($task['error']['message']);
                 }
 
                 $formattedResponse[$indexName] += $task['details']['indexedDocuments'];
