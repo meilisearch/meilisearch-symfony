@@ -141,6 +141,8 @@ final class MeilisearchImportCommand extends IndexCommand
                     );
                 }
 
+                $manager->clear();
+
                 ++$page;
             } while (\count($entities) >= $batchSize);
 
