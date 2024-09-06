@@ -70,7 +70,7 @@ final class SettingsUpdater
             $task = $indexInstance->getTask($task['taskUid']);
 
             if ('failed' === $task['status']) {
-                throw new TaskException($task['error']);
+                throw new TaskException($task['error']['message']);
             }
 
             $this->eventDispatcher->dispatch(new SettingsUpdatedEvent($index['class'], $indexName, $variable));
