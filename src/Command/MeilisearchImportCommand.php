@@ -6,6 +6,7 @@ namespace Meilisearch\Bundle\Command;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Meilisearch\Bundle\Collection;
+use Meilisearch\Bundle\DataProvider\DoctrineOrmDataProvider;
 use Meilisearch\Bundle\EventListener\ConsoleOutputSubscriber;
 use Meilisearch\Bundle\Exception\TaskException;
 use Meilisearch\Bundle\Model\Aggregator;
@@ -99,10 +100,6 @@ final class MeilisearchImportCommand extends IndexCommand
             $totalIndexed = 0;
 
             $manager = $this->managerRegistry->getManagerForClass($entityClassName);
-            $repository = $manager->getRepository($entityClassName);
-            $classMetadata = $manager->getClassMetadata($entityClassName);
-            $entityIdentifiers = $classMetadata->getIdentifierFieldNames();
-            $sortByAttrs = array_combine($entityIdentifiers, array_fill(0, \count($entityIdentifiers), 'ASC'));
 
             $output->writeln('<info>Importing for index '.$entityClassName.'</info>');
 
@@ -119,12 +116,7 @@ final class MeilisearchImportCommand extends IndexCommand
             }
 
             do {
-                $entities = $repository->findBy(
-                    [],
-                    $sortByAttrs,
-                    $batchSize,
-                    $batchSize * $page
-                );
+                $entities = $this->getEntities($index['name'], $entityClassName, $batchSize, $page);
 
                 $responses = $this->formatIndexingResponse($this->searchService->index($manager, $entities), $responseTimeout);
                 $totalIndexed += \count($entities);
@@ -209,5 +201,25 @@ final class MeilisearchImportCommand extends IndexCommand
         }
 
         return array_unique($indexes->all(), SORT_REGULAR);
+    }
+
+    /**
+     * @param string $prefixedIndexName
+     * @param string $entityClassName
+     * @param int    $batchSize
+     * @param int    $page
+     *
+     * @return array
+     */
+    private function getEntities($prefixedIndexName, $entityClassName, $batchSize, $page): array
+    {
+        $dataProvider = $this->searchService->getDataProvider($this->getIndexNameWithoutPrefix($prefixedIndexName));
+
+        if (null === $dataProvider) {
+            $dataProvider = new DoctrineOrmDataProvider($this->managerRegistry);
+            $dataProvider->setEntityClassName($entityClassName);
+        }
+
+        return $dataProvider->getAll($batchSize, $batchSize * $page);
     }
 }

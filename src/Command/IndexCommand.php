@@ -36,6 +36,11 @@ abstract class IndexCommand extends Command
             });
     }
 
+    protected function getIndexNameWithoutPrefix(string $prefixedIndexName): string
+    {
+        return preg_replace(\sprintf('/^%s/', preg_quote($this->prefix)), '', $prefixedIndexName) ?? $prefixedIndexName;
+    }
+
     protected function getEntitiesFromArgs(InputInterface $input, OutputInterface $output): Collection
     {
         $indices = $this->getIndices();

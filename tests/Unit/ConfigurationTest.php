@@ -62,12 +62,18 @@ class ConfigurationTest extends KernelTestCase
                 [
                     'prefix' => 'sf_',
                     'indices' => [
-                        ['name' => 'posts', 'class' => 'App\Entity\Post', 'index_if' => null],
+                        [
+                            'name' => 'posts',
+                            'class' => 'App\Entity\Post',
+                            'index_if' => null,
+                            'data_provider' => null,
+                        ],
                         [
                             'name' => 'tags',
                             'class' => 'App\Entity\Tag',
                             'enable_serializer_groups' => true,
                             'index_if' => null,
+                            'data_provider' => null,
                         ],
                     ],
                 ],
@@ -86,6 +92,7 @@ class ConfigurationTest extends KernelTestCase
                             'serializer_groups' => ['searchable'],
                             'index_if' => null,
                             'settings' => [],
+                            'data_provider' => null,
                         ],
                         1 => [
                             'name' => 'tags',
@@ -94,6 +101,7 @@ class ConfigurationTest extends KernelTestCase
                             'serializer_groups' => ['searchable'],
                             'index_if' => null,
                             'settings' => [],
+                            'data_provider' => null,
                         ],
                     ],
                 ],
@@ -108,6 +116,7 @@ class ConfigurationTest extends KernelTestCase
                             'enable_serializer_groups' => false,
                             'index_if' => null,
                             'settings' => [],
+                            'data_provider' => null,
                         ],
                         [
                             'name' => 'items',
@@ -115,6 +124,7 @@ class ConfigurationTest extends KernelTestCase
                             'enable_serializer_groups' => false,
                             'index_if' => null,
                             'settings' => [],
+                            'data_provider' => null,
                         ],
                     ],
                     'nbResults' => 20,
@@ -131,7 +141,9 @@ class ConfigurationTest extends KernelTestCase
                             'class' => 'App\Entity\Post',
                             'enable_serializer_groups' => false,
                             'serializer_groups' => ['searchable'],
-                            'index_if' => null, 'settings' => [],
+                            'index_if' => null,
+                            'settings' => [],
+                            'data_provider' => null,
                         ],
                         [
                             'name' => 'items',
@@ -140,6 +152,7 @@ class ConfigurationTest extends KernelTestCase
                             'serializer_groups' => ['searchable'],
                             'index_if' => null,
                             'settings' => [],
+                            'data_provider' => null,
                         ],
                     ],
                     'nbResults' => 20,
@@ -159,6 +172,7 @@ class ConfigurationTest extends KernelTestCase
                             'serializer_groups' => ['post.public', 'post.private'],
                             'index_if' => null,
                             'settings' => [],
+                            'data_provider' => null,
                         ],
                     ],
                 ],
@@ -171,7 +185,9 @@ class ConfigurationTest extends KernelTestCase
                             'class' => 'App\Entity\Post',
                             'enable_serializer_groups' => true,
                             'serializer_groups' => ['post.public', 'post.private'],
-                            'index_if' => null, 'settings' => [],
+                            'index_if' => null,
+                            'settings' => [],
+                            'data_provider' => null,
                         ],
                     ],
                     'nbResults' => 20,
@@ -206,6 +222,7 @@ class ConfigurationTest extends KernelTestCase
                             'settings' => [
                                 'distinctAttribute' => ['product_id'],
                             ],
+                            'data_provider' => null,
                         ],
                     ],
                     'nbResults' => 20,
@@ -240,6 +257,38 @@ class ConfigurationTest extends KernelTestCase
                             'settings' => [
                                 'proximityPrecision' => ['byWord'],
                             ],
+                            'data_provider' => null,
+                        ],
+                    ],
+                    'nbResults' => 20,
+                    'batchSize' => 500,
+                    'serializer' => 'serializer',
+                    'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
+                ],
+            ],
+            'custom data provider' => [
+                [
+                    'prefix' => 'sf_',
+                    'indices' => [
+                        [
+                            'name' => 'items',
+                            'class' => 'App\Entity\Post',
+                            'data_provider' => 'Meilisearch\Bundle\Tests\DataProvider\TicketDataProvider',
+                        ],
+                    ],
+                ],
+                [
+                    'url' => 'http://localhost:7700',
+                    'prefix' => 'sf_',
+                    'indices' => [
+                        [
+                            'name' => 'items',
+                            'class' => 'App\Entity\Post',
+                            'enable_serializer_groups' => false,
+                            'serializer_groups' => ['searchable'],
+                            'index_if' => null,
+                            'settings' => [],
+                            'data_provider' => 'Meilisearch\Bundle\Tests\DataProvider\TicketDataProvider',
                         ],
                     ],
                     'nbResults' => 20,

@@ -18,6 +18,7 @@ use Meilisearch\Bundle\Tests\Entity\Page;
 use Meilisearch\Bundle\Tests\Entity\Podcast;
 use Meilisearch\Bundle\Tests\Entity\Post;
 use Meilisearch\Bundle\Tests\Entity\Tag;
+use Meilisearch\Bundle\Tests\Entity\Ticket;
 use Meilisearch\Client;
 use Meilisearch\Exceptions\ApiException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -192,6 +193,16 @@ abstract class BaseKernelTestCase extends KernelTestCase
         $this->entityManager->flush();
 
         return $link;
+    }
+
+    protected function createTicket(int $id, bool $sold): Ticket
+    {
+        $ticket = new Ticket($id, str_pad((string) random_int(0, 1000000), 6, '0', STR_PAD_LEFT), $sold);
+
+        $this->entityManager->persist($ticket);
+        $this->entityManager->flush();
+
+        return $ticket;
     }
 
     protected function getPrefix(): string

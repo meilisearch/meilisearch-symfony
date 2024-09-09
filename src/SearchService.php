@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle;
 
 use Doctrine\Persistence\ObjectManager;
+use Meilisearch\Bundle\DataProvider\DataProvider;
 
 interface SearchService
 {
@@ -79,4 +80,6 @@ interface SearchService
      * @return int<0, max>
      */
     public function count(string $className, string $query = '', array $searchParams = []): int;
+
+    public function getDataProvider(string $indexName): ?DataProvider;
 }
