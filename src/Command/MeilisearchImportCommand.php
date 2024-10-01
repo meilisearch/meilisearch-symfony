@@ -21,6 +21,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class MeilisearchImportCommand extends IndexCommand
 {
+    private const TEMP_INDEX_PREFIX = '_tmp_';
+
     private Client $searchClient;
     private ManagerRegistry $managerRegistry;
     private SettingsUpdater $settingsUpdater;
@@ -73,6 +75,19 @@ final class MeilisearchImportCommand extends IndexCommand
                 'Timeout (in ms) to get response from the search engine',
                 self::DEFAULT_RESPONSE_TIMEOUT
             )
+            ->addOption(
+                'swap-indices',
+                null,
+                InputOption::VALUE_NONE,
+                'Import to temporary indices and use index swap to prevent downtime'
+            )
+            ->addOption(
+                'temp-index-prefix',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Prefix for temporary indices',
+                self::TEMP_INDEX_PREFIX
+            )
         ;
     }
 
@@ -83,6 +98,15 @@ final class MeilisearchImportCommand extends IndexCommand
         $indexes = $this->getEntitiesFromArgs($input, $output);
         $entitiesToIndex = $this->entitiesToIndex($indexes);
         $config = $this->searchService->getConfiguration();
+        $swapIndices = $input->getOption('swap-indices');
+        $initialPrefix = $config['prefix'] ?? '';
+        $prefix = null;
+
+        if ($swapIndices) {
+            $prefix = $input->getOption('temp-index-prefix') ?? self::TEMP_INDEX_PREFIX;
+            $config['prefix'] = $prefix.($config['prefix'] ?? '');
+        }
+
         $updateSettings = $input->getOption('update-settings');
         $batchSize = $input->getOption('batch-size') ?? '';
         $batchSize = ctype_digit($batchSize) ? (int) $batchSize : $config->get('batchSize');
@@ -149,8 +173,14 @@ final class MeilisearchImportCommand extends IndexCommand
             $manager->clear();
 
             if ($updateSettings) {
-                $this->settingsUpdater->update($index['prefixed_name'], $responseTimeout);
+                $this->settingsUpdater->update($index['prefixed_name'], $responseTimeout, $prefix ? $prefix.$index['prefixed_name'] : null);
             }
+        }
+
+        if ($swapIndices) {
+            $this->swapIndices($indexes, $prefix, $output);
+
+            $config['prefix'] = $initialPrefix;
         }
 
         $output->writeln('<info>Done!</info>');
@@ -209,5 +239,33 @@ final class MeilisearchImportCommand extends IndexCommand
         }
 
         return array_unique($indexes->all(), SORT_REGULAR);
+    }
+
+    private function swapIndices(Collection $indexes, string $prefix, OutputInterface $output): void
+    {
+        $indexPairs = [];
+
+        foreach ($indexes as $index) {
+            $tempIndex = $index;
+            $tempIndex['name'] = $prefix.$tempIndex['name'];
+            $pair = [$tempIndex['name'], $index['name']];
+
+            // Indexes must be declared only once during a swap
+            if (!\in_array($pair, $indexPairs, true)) {
+                $indexPairs[] = $pair;
+            }
+        }
+
+        // swap indexes
+        $output->writeln('<info>Swapping indices...</info>');
+        $this->searchClient->swapIndexes($indexPairs);
+        $output->writeln('<info>Indices swapped.</info>');
+        $output->writeln('<info>Deleting temporary indices...</info>');
+
+        // delete temp indexes
+        foreach ($indexPairs as $pair) {
+            $this->searchService->deleteByIndexName($pair[0]);
+            $output->writeln('<info>Deleted '.$pair[0].'</info>');
+        }
     }
 }
