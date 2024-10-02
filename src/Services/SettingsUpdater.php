@@ -45,7 +45,7 @@ final class SettingsUpdater
             return;
         }
 
-        $indexName = $prefixedName ?: $index['prefixed_name'];
+        $indexName = $prefixedName ?? $index['prefixed_name'];
         $indexInstance = $this->searchClient->index($indexName);
         $responseTimeout = $responseTimeout ?? self::DEFAULT_RESPONSE_TIMEOUT;
 

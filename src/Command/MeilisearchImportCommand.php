@@ -81,13 +81,6 @@ final class MeilisearchImportCommand extends IndexCommand
                 InputOption::VALUE_NONE,
                 'Import to temporary indices and use index swap to prevent downtime'
             )
-            ->addOption(
-                'temp-index-prefix',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Prefix for temporary indices',
-                self::TEMP_INDEX_PREFIX
-            )
         ;
     }
 
@@ -103,7 +96,7 @@ final class MeilisearchImportCommand extends IndexCommand
         $prefix = null;
 
         if ($swapIndices) {
-            $prefix = $input->getOption('temp-index-prefix') ?? self::TEMP_INDEX_PREFIX;
+            $prefix = self::TEMP_INDEX_PREFIX;
             $config['prefix'] = $prefix.($config['prefix'] ?? '');
         }
 
