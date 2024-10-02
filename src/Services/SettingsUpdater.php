@@ -33,7 +33,7 @@ final class SettingsUpdater
      * @param non-empty-string  $indice
      * @param positive-int|null $responseTimeout
      */
-    public function update(string $indice, ?int $responseTimeout = null): void
+    public function update(string $indice, ?int $responseTimeout = null, ?string $prefixedName = null): void
     {
         $index = (new Collection($this->configuration->get('indices')))->firstWhere('prefixed_name', $indice);
 
@@ -45,7 +45,7 @@ final class SettingsUpdater
             return;
         }
 
-        $indexName = $index['prefixed_name'];
+        $indexName = $prefixedName ?? $index['prefixed_name'];
         $indexInstance = $this->searchClient->index($indexName);
         $responseTimeout = $responseTimeout ?? self::DEFAULT_RESPONSE_TIMEOUT;
 

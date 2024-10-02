@@ -391,4 +391,27 @@ EOD, $importOutput);
 
         self::assertSame(['meili:import'], $command->getAliases());
     }
+
+    public function testImportingIndexWithSwap(): void
+    {
+        for ($i = 0; $i <= 5; ++$i) {
+            $this->createPost();
+        }
+
+        $command = $this->application->find('meilisearch:import');
+        $commandTester = new CommandTester($command);
+        $return = $commandTester->execute([
+            '--swap-indices' => true,
+        ]);
+
+        $output = $commandTester->getDisplay();
+        $this->assertStringContainsString('Importing for index Meilisearch\Bundle\Tests\Entity\Post', $output);
+        $this->assertStringContainsString('Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into _tmp_sf_phpunit__'.self::$indexName.' index (6 indexed since start)', $output);
+        $this->assertStringContainsString('Swapping indices...', $output);
+        $this->assertStringContainsString('Indices swapped.', $output);
+        $this->assertStringContainsString('Deleting temporary indices...', $output);
+        $this->assertStringContainsString('Deleted _tmp_sf_phpunit__'.self::$indexName, $output);
+        $this->assertStringContainsString('Done!', $output);
+        $this->assertSame(0, $return);
+    }
 }
