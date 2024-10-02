@@ -406,7 +406,7 @@ EOD, $importOutput);
 
         $output = $commandTester->getDisplay();
         $this->assertStringContainsString('Importing for index Meilisearch\Bundle\Tests\Entity\Post', $output);
-        $this->assertStringContainsString('Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into _tmp_sf_phpunit__'.self::$indexName.' index ('.$i.' indexed since start)', $output);
+        $this->assertStringContainsString('Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into _tmp_sf_phpunit__'.self::$indexName.' index (6 indexed since start)', $output);
         $this->assertStringContainsString('Swapping indices...', $output);
         $this->assertStringContainsString('Indices swapped.', $output);
         $this->assertStringContainsString('Deleting temporary indices...', $output);
