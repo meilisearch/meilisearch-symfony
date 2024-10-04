@@ -21,21 +21,20 @@ final class Engine
      * This method allows you to create records on your index by sending one or more objects.
      * Each object contains a set of attributes and values, which represents a full record on an index.
      *
-     * @param array|SearchableEntity $searchableEntities
+     * @param array<SearchableEntity>|SearchableEntity $searchableEntities
      *
      * @throws ApiException
      */
     public function index($searchableEntities): array
     {
         if ($searchableEntities instanceof SearchableEntity) {
-            /** @var SearchableEntity[] $searchableEntities */
             $searchableEntities = [$searchableEntities];
         }
 
         $data = [];
         foreach ($searchableEntities as $entity) {
             $searchableArray = $entity->getSearchableArray();
-            if (null === $searchableArray || 0 === \count($searchableArray)) {
+            if ([] === $searchableArray) {
                 continue;
             }
 
@@ -62,18 +61,16 @@ final class Engine
      * Remove objects from an index using their object UIDs.
      * This method enables you to remove one or more objects from an index.
      *
-     * @param array|SearchableEntity $searchableEntities
+     * @param array<SearchableEntity>|SearchableEntity $searchableEntities
      */
     public function remove($searchableEntities): array
     {
         if ($searchableEntities instanceof SearchableEntity) {
-            /** @var SearchableEntity[] $searchableEntities */
             $searchableEntities = [$searchableEntities];
         }
 
         $data = [];
 
-        /** @var SearchableEntity $entity */
         foreach ($searchableEntities as $entity) {
             $searchableArray = $entity->getSearchableArray();
             if (0 === \count($searchableArray)) {
@@ -111,9 +108,8 @@ final class Engine
     public function clear(string $indexUid): array
     {
         $index = $this->client->index($indexUid);
-        $task = $index->deleteAllDocuments();
 
-        return $task;
+        return $index->deleteAllDocuments();
     }
 
     /**
@@ -129,11 +125,7 @@ final class Engine
      */
     public function search(string $query, string $indexUid, array $searchParams): array
     {
-        if ('' === $query) {
-            $query = null;
-        }
-
-        return $this->client->index($indexUid)->rawSearch($query, $searchParams);
+        return $this->client->index($indexUid)->rawSearch('' !== $query ? $query : null, $searchParams);
     }
 
     /**
