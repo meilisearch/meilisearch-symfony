@@ -33,7 +33,7 @@ final class MeilisearchClearCommand extends IndexCommand
 
         /** @var array<string, mixed> $index */
         foreach ($indexToClear as $index) {
-            $indexName = $index['name'];
+            $indexName = $index['prefixed_name'];
             $className = $index['class'];
             $msg = "Cleared <info>$indexName</info> index of <comment>$className</comment>";
             $array = $this->searchService->clear($className);
