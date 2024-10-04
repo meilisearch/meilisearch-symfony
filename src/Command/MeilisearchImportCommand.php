@@ -211,7 +211,7 @@ final class MeilisearchImportCommand extends IndexCommand
         return $formattedResponse;
     }
 
-    private function entitiesToIndex($indexes): array
+    private function entitiesToIndex(Collection $indexes): array
     {
         foreach ($indexes as $key => $index) {
             $entityClassName = $index['class'];
@@ -240,7 +240,7 @@ final class MeilisearchImportCommand extends IndexCommand
 
         foreach ($indexes as $index) {
             $tempIndex = $index;
-            $tempIndex['name'] = $prefix.$tempIndex['name'];
+            $tempIndex['name'] = $prefix.$tempIndex['prefixed_name'];
             $pair = [$tempIndex['name'], $index['name']];
 
             // Indexes must be declared only once during a swap

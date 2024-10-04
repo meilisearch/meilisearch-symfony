@@ -26,19 +26,9 @@ abstract class IndexCommand extends Command
         parent::__construct();
     }
 
-    protected function getIndices(): Collection
-    {
-        return (new Collection($this->searchService->getConfiguration()->get('indices')))
-            ->transform(function (array $item) {
-                $item['name'] = $this->prefix.$item['name'];
-
-                return $item;
-            });
-    }
-
     protected function getEntitiesFromArgs(InputInterface $input, OutputInterface $output): Collection
     {
-        $indices = $this->getIndices();
+        $indices = new Collection($this->searchService->getConfiguration()->get('indices'));
         $indexNames = new Collection();
 
         if ($indexList = $input->getOption('indices')) {
@@ -62,7 +52,7 @@ abstract class IndexCommand extends Command
         }
 
         if (\count($indexNames) > 0) {
-            return $indices->reject(fn (array $item) => !\in_array($item['name'], $indexNames->all(), true));
+            return $indices->reject(fn (array $item) => !\in_array($item['prefixed_name'], $indexNames->all(), true));
         }
 
         return $indices;

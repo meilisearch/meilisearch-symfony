@@ -77,7 +77,7 @@ final class MeilisearchUpdateSettingsCommand extends IndexCommand
         return 0;
     }
 
-    private function entitiesToIndex($indexes): array
+    private function entitiesToIndex(Collection $indexes): array
     {
         foreach ($indexes as $key => $index) {
             $entityClassName = $index['class'];

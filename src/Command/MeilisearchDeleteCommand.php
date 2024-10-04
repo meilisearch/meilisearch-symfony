@@ -35,13 +35,16 @@ final class MeilisearchDeleteCommand extends IndexCommand
 
         /** @var array<string, mixed> $index */
         foreach ($indexToDelete as $index) {
-            $indexName = $index['name'];
+            $indexName = $index['prefixed_name'];
+
             try {
                 $this->searchService->deleteByIndexName($indexName);
             } catch (ApiException $e) {
                 $output->writeln('Cannot delete '.$indexName.': '.$e->getMessage());
+
                 continue;
             }
+
             $output->writeln('Deleted <info>'.$indexName.'</info>');
         }
 

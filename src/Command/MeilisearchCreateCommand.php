@@ -80,13 +80,15 @@ final class MeilisearchCreateCommand extends IndexCommand
                 continue;
             }
 
-            $output->writeln('<info>Creating index '.$index['name'].' for '.$entityClassName.'</info>');
+            $indexName = $index['prefixed_name'];
 
-            $task = $this->searchClient->createIndex($index['name']);
+            $output->writeln('<info>Creating index '.$indexName.' for '.$entityClassName.'</info>');
+
+            $task = $this->searchClient->createIndex($indexName);
             $this->searchClient->waitForTask($task['taskUid'], $responseTimeout);
 
             if ($updateSettings) {
-                $this->settingsUpdater->update($index['name'], $responseTimeout);
+                $this->settingsUpdater->update($indexName, $responseTimeout);
             }
         }
 
@@ -95,7 +97,7 @@ final class MeilisearchCreateCommand extends IndexCommand
         return 0;
     }
 
-    private function entitiesToIndex($indexes): array
+    private function entitiesToIndex(Collection $indexes): array
     {
         foreach ($indexes as $key => $index) {
             $entityClassName = $index['class'];
