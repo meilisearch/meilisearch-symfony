@@ -6,6 +6,7 @@ namespace Meilisearch\Bundle\Tests\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Meilisearch\Bundle\Tests\Entity\ObjectId\DummyObjectId;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -27,36 +28,41 @@ class Page
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'NONE')]
     #[ORM\Column(type: 'dummy_object_id')]
-    private $id;
+    private DummyObjectId $id;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      *
      * @Groups({"searchable"})
      */
-    #[ORM\Column(type: Types::STRING, nullable: true)]
+    #[ORM\Column(type: Types::STRING)]
     #[Groups('searchable')]
-    private ?string $title = null;
+    private string $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      *
      * @Groups({"searchable"})
      */
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(type: Types::TEXT)]
     #[Groups('searchable')]
-    private ?string $content = null;
+    private string $content;
 
-    public function getId()
+    public function __construct(DummyObjectId $id, string $title = 'Test page', string $content = 'Test content page')
+    {
+        $this->id = $id;
+        $this->title = $title;
+        $this->content = $content;
+    }
+
+    public function getId(): DummyObjectId
     {
         return $this->id;
     }
 
-    public function setId($id): self
+    public function setTitle(string $title): void
     {
-        $this->id = $id;
-
-        return $this;
+        $this->title = $title;
     }
 
     public function getTitle(): ?string
@@ -64,22 +70,8 @@ class Page
         return $this->title;
     }
 
-    public function setTitle(?string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
     public function getContent(): ?string
     {
         return $this->content;
-    }
-
-    public function setContent(?string $content): self
-    {
-        $this->content = $content;
-
-        return $this;
     }
 }

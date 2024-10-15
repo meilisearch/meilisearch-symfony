@@ -32,35 +32,26 @@ abstract class ContentItem
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER)]
-    private int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string")
      */
     #[ORM\Column(type: Types::STRING)]
-    private string $title = 'Title';
+    private string $title;
 
-    public function getId(): int
+    public function __construct(string $title = 'Title')
     {
-        return $this->id;
+        $this->title = $title;
     }
 
-    public function setId(int $id): self
+    public function getId(): ?int
     {
-        $this->id = $id;
-
-        return $this;
+        return $this->id;
     }
 
     public function getTitle(): string
     {
         return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
     }
 }

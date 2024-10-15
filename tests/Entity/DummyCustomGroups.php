@@ -19,6 +19,8 @@ class DummyCustomGroups
      *
      * @ORM\Column(type="integer")
      *
+     * @ORM\GeneratedValue("NONE")
+     *
      * @Groups("public")
      */
     #[ORM\Id]

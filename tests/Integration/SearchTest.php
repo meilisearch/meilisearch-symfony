@@ -13,10 +13,7 @@ use Meilisearch\Endpoints\Indexes;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-/**
- * Class SearchTest.
- */
-class SearchTest extends BaseKernelTestCase
+final class SearchTest extends BaseKernelTestCase
 {
     private static string $indexName = 'aggregated';
 
@@ -45,10 +42,15 @@ class SearchTest extends BaseKernelTestCase
         $testDataTitles = [];
 
         for ($i = 0; $i < 5; ++$i) {
-            $testDataTitles[] = $this->createPost()->getTitle();
+            $post = new Post('Test Post', 'Test content post');
+
+            $this->entityManager->persist($post);
+
+            $testDataTitles[] = $post->getTitle();
         }
 
-        $this->createTag(['id' => 99]);
+        $this->entityManager->persist(new Tag(99));
+        $this->entityManager->flush();
 
         $command = $this->application->find('meilisearch:import');
         $commandTester = new CommandTester($command);
@@ -71,13 +73,13 @@ class SearchTest extends BaseKernelTestCase
         $results = $this->searchService->search($this->objectManager, Post::class, $searchTerm);
         $this->assertCount(5, $results);
 
-        $resultTitles = array_map(fn (Post $post) => $post->getTitle(), $results);
+        $resultTitles = array_map(static fn (Post $post) => $post->getTitle(), $results);
         $this->assertEqualsCanonicalizing($testDataTitles, $resultTitles);
 
         $results = $this->searchService->rawSearch(Post::class, $searchTerm);
 
         $this->assertCount(5, $results['hits']);
-        $resultTitles = array_map(fn (array $hit) => $hit['title'], $results['hits']);
+        $resultTitles = array_map(static fn (array $hit) => $hit['title'], $results['hits']);
         $this->assertEqualsCanonicalizing($testDataTitles, $resultTitles);
 
         $this->assertCount(5, $results['hits']);
@@ -92,8 +94,14 @@ class SearchTest extends BaseKernelTestCase
         $testDataTitles = [];
 
         for ($i = 0; $i < 5; ++$i) {
-            $testDataTitles[] = $this->createPost()->getTitle();
+            $post = new Post('Test Post', 'Test content post');
+
+            $this->entityManager->persist($post);
+
+            $testDataTitles[] = $post->getTitle();
         }
+
+        $this->entityManager->flush();
 
         $command = $this->application->find('meilisearch:import');
         $commandTester = new CommandTester($command);
@@ -106,15 +114,17 @@ class SearchTest extends BaseKernelTestCase
         $results = $this->searchService->search($this->objectManager, Post::class, $searchTerm, ['page' => 2, 'hitsPerPage' => 2]);
         $this->assertCount(2, $results);
 
-        $resultTitles = array_map(fn (Post $post) => $post->getTitle(), $results);
+        $resultTitles = array_map(static fn (Post $post) => $post->getTitle(), $results);
         $this->assertEqualsCanonicalizing(\array_slice($testDataTitles, 2, 2), $resultTitles);
     }
 
     public function testSearchNbResults(): void
     {
         for ($i = 0; $i < 15; ++$i) {
-            $this->createPost();
+            $this->entityManager->persist(new Post("Test Post $i", "Test content post $i"));
         }
+
+        $this->entityManager->flush();
 
         $command = $this->application->find('meilisearch:import');
         $commandTester = new CommandTester($command);

@@ -20,17 +20,17 @@ class Tag implements NormalizableInterface
     /**
      * @ORM\Id
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer")
      */
     #[ORM\Id]
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
-    private ?int $id;
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $id;
 
     /**
      * @ORM\Column(type="string")
      */
     #[ORM\Column(type: Types::STRING)]
-    private string $name = '';
+    private string $name;
 
     /**
      * @ORM\Column(type="smallint")
@@ -41,26 +41,21 @@ class Tag implements NormalizableInterface
     private bool $public = true;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime_immutable")
      */
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private \DateTimeInterface $publishedAt;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    private \DateTimeImmutable $publishedAt;
 
-    public function __construct()
+    public function __construct(int $id, string $name = '')
     {
-        $this->publishedAt = new \DateTime();
+        $this->id = $id;
+        $this->name = $name;
+        $this->publishedAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function setId(?int $id): Tag
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     public function getName(): string

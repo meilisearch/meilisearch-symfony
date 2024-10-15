@@ -9,11 +9,14 @@ use Meilisearch\Bundle\Tests\Entity\ObjectId\DummyObjectId;
 use Meilisearch\Bundle\Tests\Entity\Page;
 use Meilisearch\Bundle\Tests\Entity\Post;
 
-class DoctrineEventSubscriberTest extends BaseKernelTestCase
+final class DoctrineEventSubscriberTest extends BaseKernelTestCase
 {
     public function testPostPersist(): void
     {
-        $post = $this->createPost();
+        $post = new Post('Test Post');
+
+        $this->entityManager->persist($post);
+        $this->entityManager->flush();
 
         $this->waitForAllTasks();
 
@@ -25,7 +28,10 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
     public function testPostPersistWithObjectId(): void
     {
-        $page = $this->createPage(1);
+        $page = new Page(new DummyObjectId(1));
+
+        $this->entityManager->persist($page);
+        $this->entityManager->flush();
 
         $this->waitForAllTasks();
 
@@ -37,7 +43,10 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
     public function testPostUpdate(): void
     {
-        $post = $this->createPost();
+        $post = new Post();
+
+        $this->entityManager->persist($post);
+        $this->entityManager->flush();
 
         $this->waitForAllTasks();
 
@@ -56,7 +65,10 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
     public function testPostUpdateWithObjectId(): void
     {
-        $page = $this->createPage(1);
+        $page = new Page(new DummyObjectId(1));
+
+        $this->entityManager->persist($page);
+        $this->entityManager->flush();
 
         $this->waitForAllTasks();
 
@@ -75,7 +87,10 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
     public function testPreRemove(): void
     {
-        $post = $this->createPost();
+        $post = new Post('Test Post');
+
+        $this->entityManager->persist($post);
+        $this->entityManager->flush();
 
         $this->waitForAllTasks();
 
@@ -96,7 +111,10 @@ class DoctrineEventSubscriberTest extends BaseKernelTestCase
 
     public function testPreRemoveWithObjectId(): void
     {
-        $page = $this->createPage(1);
+        $page = new Page(new DummyObjectId(1));
+
+        $this->entityManager->persist($page);
+        $this->entityManager->flush();
 
         $this->waitForAllTasks();
 

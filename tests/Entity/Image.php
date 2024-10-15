@@ -23,7 +23,7 @@ class Image
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER)]
-    private ?int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string")
@@ -31,9 +31,9 @@ class Image
     #[ORM\Column(type: Types::STRING)]
     private string $url;
 
-    public function __construct()
+    public function __construct(string $url = 'https://docs.meilisearch.com/logo.png')
     {
-        $this->url = 'https://docs.meilisearch.com/logo.png';
+        $this->url = $url;
     }
 
     public function getId(): ?int
@@ -41,23 +41,9 @@ class Image
         return $this->id;
     }
 
-    public function setId(?int $id): Image
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
     public function getUrl(): string
     {
         return $this->url;
-    }
-
-    public function setUrl(string $url): Image
-    {
-        $this->url = $url;
-
-        return $this;
     }
 
     public function isPublic(): bool

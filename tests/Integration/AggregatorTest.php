@@ -13,7 +13,7 @@ use Meilisearch\Bundle\Tests\Entity\EmptyAggregator;
 use Meilisearch\Bundle\Tests\Entity\Post;
 use Symfony\Component\Serializer\Serializer;
 
-class AggregatorTest extends BaseKernelTestCase
+final class AggregatorTest extends BaseKernelTestCase
 {
     public function testGetEntities(): void
     {
@@ -35,10 +35,12 @@ class AggregatorTest extends BaseKernelTestCase
 
     public function testAggregatorProxyClass(): void
     {
-        $this->createPost();
+        $this->entityManager->persist($post = new Post());
+        $this->entityManager->flush();
+        $postId = $post->getId();
         $this->entityManager->clear();
 
-        $proxy = $this->entityManager->getReference(Post::class, 1);
+        $proxy = $this->entityManager->getReference(Post::class, $postId);
         $this->assertInstanceOf(Proxy::class, $proxy);
         $contentAggregator = new ContentAggregator($proxy, ['objectId']);
 
@@ -46,6 +48,7 @@ class AggregatorTest extends BaseKernelTestCase
         $serializer = $this->get('serializer');
 
         $serializedData = $contentAggregator->normalize($serializer);
+
         $this->assertNotEmpty($serializedData);
         $this->assertEquals('objectId', $serializedData['objectID']);
     }
