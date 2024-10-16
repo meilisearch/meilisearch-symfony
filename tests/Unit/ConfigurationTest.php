@@ -39,6 +39,7 @@ final class ConfigurationTest extends KernelTestCase
                 'batchSize' => 500,
                 'serializer' => 'serializer',
                 'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
+                'http_client' => 'psr18.http_client',
                 'indices' => [],
             ],
         ];
@@ -59,6 +60,7 @@ final class ConfigurationTest extends KernelTestCase
                 'batchSize' => 100,
                 'serializer' => 'serializer',
                 'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
+                'http_client' => 'psr18.http_client',
                 'indices' => [],
             ],
         ];
@@ -85,6 +87,7 @@ final class ConfigurationTest extends KernelTestCase
                 'batchSize' => 500,
                 'serializer' => 'serializer',
                 'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
+                'http_client' => 'psr18.http_client',
                 'indices' => [
                     0 => [
                         'name' => 'posts',
@@ -156,6 +159,7 @@ final class ConfigurationTest extends KernelTestCase
                 'batchSize' => 500,
                 'serializer' => 'serializer',
                 'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
+                'http_client' => 'psr18.http_client',
             ],
         ];
 
@@ -191,6 +195,7 @@ final class ConfigurationTest extends KernelTestCase
                 'batchSize' => 500,
                 'serializer' => 'serializer',
                 'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
+                'http_client' => 'psr18.http_client',
             ],
         ];
 
@@ -228,6 +233,7 @@ final class ConfigurationTest extends KernelTestCase
                 'batchSize' => 500,
                 'serializer' => 'serializer',
                 'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
+                'http_client' => 'psr18.http_client',
             ],
         ];
 
@@ -265,6 +271,25 @@ final class ConfigurationTest extends KernelTestCase
                 'batchSize' => 500,
                 'serializer' => 'serializer',
                 'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
+                'http_client' => 'psr18.http_client',
+            ],
+        ];
+
+        yield 'custom http client' => [
+            'inputConfig' => [
+                'meilisearch' => [
+                    'http_client' => 'acme.http_client',
+                ],
+            ],
+            'expectedConfig' => [
+                'url' => 'http://localhost:7700',
+                'prefix' => null,
+                'indices' => [],
+                'nbResults' => 20,
+                'batchSize' => 500,
+                'serializer' => 'serializer',
+                'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
+                'http_client' => 'acme.http_client',
             ],
         ];
     }

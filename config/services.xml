@@ -28,11 +28,11 @@
         </service>
 
         <service id="meilisearch.client" class="Meilisearch\Client" public="true" lazy="true">
-            <argument /><!-- url -->
-            <argument /><!-- api key -->
-            <argument type="service" id="psr18.http_client" on-invalid="ignore" /><!-- http client -->
+            <argument type="abstract">url defined in MeilisearchExtension</argument>
+            <argument type="abstract">api key defined in MeilisearchExtension</argument>
+            <argument type="abstract">http client defined in MeilisearchExtension</argument>
             <argument>null</argument><!-- request factory -->
-            <argument /><!-- client agents -->
+            <argument type="abstract">client agents defined in MeilisearchExtension</argument>
             <argument>null</argument><!-- stream factory -->
         </service>
         <service id="search.client" alias="meilisearch.client" public="true">
