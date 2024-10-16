@@ -28,7 +28,7 @@ class Comment
      */
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[ORM\Column(type: Types::INTEGER)]
     #[Groups('searchable')]
     private ?int $id = null;
 
@@ -39,41 +39,31 @@ class Comment
      */
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Post $post = null;
+    private Post $post;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="text")
      *
      * @Groups({"searchable"})
      */
     #[ORM\Column(type: Types::TEXT)]
     #[Groups('searchable')]
-    private $content;
+    private string $content;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime_immutable")
      *
      * @Groups({"searchable"})
      */
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[Groups('searchable')]
-    private $publishedAt;
+    private \DateTimeImmutable $publishedAt;
 
-    /**
-     * Comment constructor.
-     *
-     * @param array<string, mixed> $attributes
-     */
-    public function __construct(array $attributes = [])
+    public function __construct(Post $post, string $content, ?\DateTimeImmutable $publishedAt = null)
     {
-        $this->id = $attributes['id'] ?? null;
-        $this->content = $attributes['content'] ?? null;
-        $this->publishedAt = $attributes['publishedAt'] ?? new \DateTime();
-        $this->post = $attributes['post'] ?? null;
+        $this->post = $post;
+        $this->content = $content;
+        $this->publishedAt = $publishedAt ?? new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -81,46 +71,25 @@ class Comment
         return $this->id;
     }
 
-    public function setId(?int $id): Comment
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    public function getContent(): ?string
+    public function getContent(): string
     {
         return $this->content;
     }
 
-    public function setContent(?string $content): Comment
+    public function setContent(string $content): Comment
     {
         $this->content = $content;
 
         return $this;
     }
 
-    public function getPublishedAt(): \DateTime
+    public function getPublishedAt(): \DateTimeImmutable
     {
         return $this->publishedAt;
-    }
-
-    public function setPublishedAt(\DateTime $publishedAt): Comment
-    {
-        $this->publishedAt = $publishedAt;
-
-        return $this;
     }
 
     public function getPost(): ?Post
     {
         return $this->post;
-    }
-
-    public function setPost(Post $post): Comment
-    {
-        $this->post = $post;
-
-        return $this;
     }
 }

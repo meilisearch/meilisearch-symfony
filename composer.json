@@ -33,6 +33,7 @@
   "require-dev": {
     "doctrine/annotations": "^2.0.0",
     "doctrine/orm": "^2.12 || ^3.0",
+    "matthiasnoback/symfony-config-test": "^4.3 || ^5.2",
     "matthiasnoback/symfony-dependency-injection-test": "^4.3 || ^5.0",
     "nyholm/psr7": "^1.8.1",
     "php-cs-fixer/shim": "^3.58.1",

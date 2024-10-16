@@ -8,7 +8,7 @@ use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Meilisearch\Bundle\DependencyInjection\MeilisearchExtension;
 use Meilisearch\Bundle\MeilisearchBundle;
 
-class DependencyInjectionTest extends AbstractExtensionTestCase
+final class DependencyInjectionTest extends AbstractExtensionTestCase
 {
     protected function getContainerExtensions(): array
     {

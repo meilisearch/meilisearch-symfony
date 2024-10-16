@@ -20,6 +20,8 @@ class SelfNormalizable implements NormalizableInterface
      * @ORM\Id
      *
      * @ORM\Column(type="integer")
+     *
+     * @ORM\GeneratedValue("NONE")
      */
     #[ORM\Id]
     #[ORM\Column(type: Types::INTEGER)]

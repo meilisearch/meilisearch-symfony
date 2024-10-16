@@ -6,7 +6,7 @@ namespace Meilisearch\Bundle\Tests\Integration\Fixtures;
 
 use Meilisearch\Bundle\SettingsProvider;
 
-class StopWords implements SettingsProvider
+final class StopWords implements SettingsProvider
 {
     public function __invoke(): array
     {

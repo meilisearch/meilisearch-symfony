@@ -4,62 +4,68 @@ declare(strict_types=1);
 
 namespace Meilisearch\Bundle\Tests\Unit;
 
+use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;
 use Meilisearch\Bundle\DependencyInjection\Configuration;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-/**
- * Class ConfigurationTest.
- */
-class ConfigurationTest extends KernelTestCase
+final class ConfigurationTest extends KernelTestCase
 {
+    use ConfigurationTestCaseTrait;
+
     /**
+     * @param array<mixed> $inputConfig
+     * @param array<mixed> $expectedConfig
+     *
      * @dataProvider dataTestConfigurationTree
      */
-    public function testConfigurationTree($inputConfig, $expectedConfig): void
+    public function testValidConfig(array $inputConfig, array $expectedConfig): void
     {
-        $configuration = new Configuration();
-
-        $node = $configuration->getConfigTreeBuilder()->buildTree();
-        $normalizedConfig = $node->normalize($inputConfig);
-        $finalizedConfig = $node->finalize($normalizedConfig);
-
-        $this->assertEquals($expectedConfig, $finalizedConfig);
+        $this->assertProcessedConfigurationEquals($inputConfig, $expectedConfig);
     }
 
-    public function dataTestConfigurationTree(): array
+    /**
+     * @return iterable<array{inputConfig: array<mixed>, expectedConfig: array<mixed>}>
+     */
+    public static function dataTestConfigurationTree(): iterable
     {
-        return [
-            'test empty config for default value' => [
-                [],
-                [
-                    'url' => 'http://localhost:7700',
-                    'prefix' => null,
-                    'nbResults' => 20,
-                    'batchSize' => 500,
-                    'serializer' => 'serializer',
-                    'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
-                    'indices' => [],
-                ],
+        yield 'test empty config for default value' => [
+            'inputConfig' => [
+                'meilisearch' => [],
             ],
-            'Simple config' => [
-                [
+            'expectedConfig' => [
+                'url' => 'http://localhost:7700',
+                'prefix' => null,
+                'nbResults' => 20,
+                'batchSize' => 500,
+                'serializer' => 'serializer',
+                'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
+                'indices' => [],
+            ],
+        ];
+
+        yield 'simple config' => [
+            'inputConfig' => [
+                'meilisearch' => [
                     'url' => 'http://meilisearch:7700',
                     'prefix' => 'sf_',
                     'nbResults' => 40,
                     'batchSize' => 100,
                 ],
-                [
-                    'url' => 'http://meilisearch:7700',
-                    'prefix' => 'sf_',
-                    'nbResults' => 40,
-                    'batchSize' => 100,
-                    'serializer' => 'serializer',
-                    'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
-                    'indices' => [],
-                ],
             ],
-            'Index config' => [
-                [
+            'expectedConfig' => [
+                'url' => 'http://meilisearch:7700',
+                'prefix' => 'sf_',
+                'nbResults' => 40,
+                'batchSize' => 100,
+                'serializer' => 'serializer',
+                'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
+                'indices' => [],
+            ],
+        ];
+
+        yield 'index config' => [
+            'inputConfig' => [
+                'meilisearch' => [
                     'prefix' => 'sf_',
                     'indices' => [
                         ['name' => 'posts', 'class' => 'App\Entity\Post', 'index_if' => null],
@@ -71,35 +77,38 @@ class ConfigurationTest extends KernelTestCase
                         ],
                     ],
                 ],
-                [
-                    'url' => 'http://localhost:7700',
-                    'prefix' => 'sf_',
-                    'nbResults' => 20,
-                    'batchSize' => 500,
-                    'serializer' => 'serializer',
-                    'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
-                    'indices' => [
-                        0 => [
-                            'name' => 'posts',
-                            'class' => 'App\Entity\Post',
-                            'enable_serializer_groups' => false,
-                            'serializer_groups' => ['searchable'],
-                            'index_if' => null,
-                            'settings' => [],
-                        ],
-                        1 => [
-                            'name' => 'tags',
-                            'class' => 'App\Entity\Tag',
-                            'enable_serializer_groups' => true,
-                            'serializer_groups' => ['searchable'],
-                            'index_if' => null,
-                            'settings' => [],
-                        ],
+            ],
+            'expectedConfig' => [
+                'url' => 'http://localhost:7700',
+                'prefix' => 'sf_',
+                'nbResults' => 20,
+                'batchSize' => 500,
+                'serializer' => 'serializer',
+                'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
+                'indices' => [
+                    0 => [
+                        'name' => 'posts',
+                        'class' => 'App\Entity\Post',
+                        'enable_serializer_groups' => false,
+                        'serializer_groups' => ['searchable'],
+                        'index_if' => null,
+                        'settings' => [],
+                    ],
+                    1 => [
+                        'name' => 'tags',
+                        'class' => 'App\Entity\Tag',
+                        'enable_serializer_groups' => true,
+                        'serializer_groups' => ['searchable'],
+                        'index_if' => null,
+                        'settings' => [],
                     ],
                 ],
             ],
-            'same index for multiple models' => [
-                [
+        ];
+
+        yield 'same index for multiple models' => [
+            'inputConfig' => [
+                'meilisearch' => [
                     'prefix' => 'sf_',
                     'indices' => [
                         [
@@ -113,31 +122,6 @@ class ConfigurationTest extends KernelTestCase
                             'name' => 'items',
                             'class' => 'App\Entity\Tag',
                             'enable_serializer_groups' => false,
-                            'index_if' => null,
-                            'settings' => [],
-                        ],
-                    ],
-                    'nbResults' => 20,
-                    'batchSize' => 500,
-                    'serializer' => 'serializer',
-                    'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
-                ],
-                [
-                    'url' => 'http://localhost:7700',
-                    'prefix' => 'sf_',
-                    'indices' => [
-                        [
-                            'name' => 'items',
-                            'class' => 'App\Entity\Post',
-                            'enable_serializer_groups' => false,
-                            'serializer_groups' => ['searchable'],
-                            'index_if' => null, 'settings' => [],
-                        ],
-                        [
-                            'name' => 'items',
-                            'class' => 'App\Entity\Tag',
-                            'enable_serializer_groups' => false,
-                            'serializer_groups' => ['searchable'],
                             'index_if' => null,
                             'settings' => [],
                         ],
@@ -148,22 +132,36 @@ class ConfigurationTest extends KernelTestCase
                     'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
                 ],
             ],
-            'Custom serializer groups' => [
-                [
-                    'prefix' => 'sf_',
-                    'indices' => [
-                        [
-                            'name' => 'items',
-                            'class' => 'App\Entity\Post',
-                            'enable_serializer_groups' => true,
-                            'serializer_groups' => ['post.public', 'post.private'],
-                            'index_if' => null,
-                            'settings' => [],
-                        ],
+            'expectedConfig' => [
+                'url' => 'http://localhost:7700',
+                'prefix' => 'sf_',
+                'indices' => [
+                    [
+                        'name' => 'items',
+                        'class' => 'App\Entity\Post',
+                        'enable_serializer_groups' => false,
+                        'serializer_groups' => ['searchable'],
+                        'index_if' => null, 'settings' => [],
+                    ],
+                    [
+                        'name' => 'items',
+                        'class' => 'App\Entity\Tag',
+                        'enable_serializer_groups' => false,
+                        'serializer_groups' => ['searchable'],
+                        'index_if' => null,
+                        'settings' => [],
                     ],
                 ],
-                [
-                    'url' => 'http://localhost:7700',
+                'nbResults' => 20,
+                'batchSize' => 500,
+                'serializer' => 'serializer',
+                'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
+            ],
+        ];
+
+        yield 'custom serializer groups' => [
+            'inputConfig' => [
+                'meilisearch' => [
                     'prefix' => 'sf_',
                     'indices' => [
                         [
@@ -171,17 +169,34 @@ class ConfigurationTest extends KernelTestCase
                             'class' => 'App\Entity\Post',
                             'enable_serializer_groups' => true,
                             'serializer_groups' => ['post.public', 'post.private'],
-                            'index_if' => null, 'settings' => [],
+                            'index_if' => null,
+                            'settings' => [],
                         ],
                     ],
-                    'nbResults' => 20,
-                    'batchSize' => 500,
-                    'serializer' => 'serializer',
-                    'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
                 ],
             ],
-            'distinct attribute' => [
-                [
+            'expectedConfig' => [
+                'url' => 'http://localhost:7700',
+                'prefix' => 'sf_',
+                'indices' => [
+                    [
+                        'name' => 'items',
+                        'class' => 'App\Entity\Post',
+                        'enable_serializer_groups' => true,
+                        'serializer_groups' => ['post.public', 'post.private'],
+                        'index_if' => null, 'settings' => [],
+                    ],
+                ],
+                'nbResults' => 20,
+                'batchSize' => 500,
+                'serializer' => 'serializer',
+                'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
+            ],
+        ];
+
+        yield 'distinct attribute' => [
+            'inputConfig' => [
+                'meilisearch' => [
                     'prefix' => 'sf_',
                     'indices' => [
                         [
@@ -193,29 +208,32 @@ class ConfigurationTest extends KernelTestCase
                         ],
                     ],
                 ],
-                [
-                    'url' => 'http://localhost:7700',
-                    'prefix' => 'sf_',
-                    'indices' => [
-                        [
-                            'name' => 'items',
-                            'class' => 'App\Entity\Post',
-                            'enable_serializer_groups' => false,
-                            'serializer_groups' => ['searchable'],
-                            'index_if' => null,
-                            'settings' => [
-                                'distinctAttribute' => ['product_id'],
-                            ],
+            ],
+            'expectedConfig' => [
+                'url' => 'http://localhost:7700',
+                'prefix' => 'sf_',
+                'indices' => [
+                    [
+                        'name' => 'items',
+                        'class' => 'App\Entity\Post',
+                        'enable_serializer_groups' => false,
+                        'serializer_groups' => ['searchable'],
+                        'index_if' => null,
+                        'settings' => [
+                            'distinctAttribute' => ['product_id'],
                         ],
                     ],
-                    'nbResults' => 20,
-                    'batchSize' => 500,
-                    'serializer' => 'serializer',
-                    'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
                 ],
+                'nbResults' => 20,
+                'batchSize' => 500,
+                'serializer' => 'serializer',
+                'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
             ],
-            'proximity precision' => [
-                [
+        ];
+
+        yield 'proximity precision' => [
+            'inputConfig' => [
+                'meilisearch' => [
                     'prefix' => 'sf_',
                     'indices' => [
                         [
@@ -227,27 +245,32 @@ class ConfigurationTest extends KernelTestCase
                         ],
                     ],
                 ],
-                [
-                    'url' => 'http://localhost:7700',
-                    'prefix' => 'sf_',
-                    'indices' => [
-                        [
-                            'name' => 'items',
-                            'class' => 'App\Entity\Post',
-                            'enable_serializer_groups' => false,
-                            'serializer_groups' => ['searchable'],
-                            'index_if' => null,
-                            'settings' => [
-                                'proximityPrecision' => ['byWord'],
-                            ],
+            ],
+            'expectedConfig' => [
+                'url' => 'http://localhost:7700',
+                'prefix' => 'sf_',
+                'indices' => [
+                    [
+                        'name' => 'items',
+                        'class' => 'App\Entity\Post',
+                        'enable_serializer_groups' => false,
+                        'serializer_groups' => ['searchable'],
+                        'index_if' => null,
+                        'settings' => [
+                            'proximityPrecision' => ['byWord'],
                         ],
                     ],
-                    'nbResults' => 20,
-                    'batchSize' => 500,
-                    'serializer' => 'serializer',
-                    'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
                 ],
+                'nbResults' => 20,
+                'batchSize' => 500,
+                'serializer' => 'serializer',
+                'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
             ],
         ];
+    }
+
+    protected function getConfiguration(): Configuration
+    {
+        return new Configuration();
     }
 }

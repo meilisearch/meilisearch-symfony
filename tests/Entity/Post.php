@@ -27,7 +27,6 @@ class Post
      * @ORM\Column(type="integer")
      *
      * @Groups({"searchable"})
-     * ^ Note that Groups work on private properties
      */
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -39,11 +38,10 @@ class Post
      * @ORM\Column(type="string", nullable=true)
      *
      * @Groups({"searchable"})
-     * ^ Note that Groups work on private properties
      */
     #[ORM\Column(type: Types::STRING, nullable: true)]
     #[Groups('searchable')]
-    private ?string $title = null;
+    private ?string $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -52,45 +50,42 @@ class Post
      */
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups('searchable')]
-    private ?string $content = null;
+    private ?string $content;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime_immutable")
      *
      * @Groups({"searchable"})
      */
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[Groups('searchable')]
-    private ?\DateTime $publishedAt = null;
+    private \DateTimeImmutable $publishedAt;
 
     /**
      * @var Collection<int, Comment>
      *
      * @ORM\OneToMany(
-     *      targetEntity="Comment",
-     *      mappedBy="post",
-     *      orphanRemoval=true
+     *     targetEntity="Comment",
+     *     mappedBy="post",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      *
      * @ORM\OrderBy({"publishedAt": "DESC"})
      *
      * @Groups({"searchable"})
      */
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'post', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'post', cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['publishedAt' => 'DESC'])]
     #[Groups('searchable')]
-    private $comments;
+    private Collection $comments;
 
-    /**
-     * Post constructor.
-     */
-    public function __construct(array $attributes = [])
+    public function __construct(?string $title = null, ?string $content = null, ?\DateTimeImmutable $publishedAt = null)
     {
-        $this->id = $attributes['id'] ?? null;
-        $this->title = $attributes['title'] ?? null;
-        $this->content = $attributes['content'] ?? null;
-        $this->publishedAt = $attributes['publishedAt'] ?? new \DateTime();
-        $this->comments = new ArrayCollection($attributes['comments'] ?? []);
+        $this->title = $title;
+        $this->content = $content;
+        $this->publishedAt = $publishedAt ?? new \DateTimeImmutable();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -98,11 +93,9 @@ class Post
         return $this->id;
     }
 
-    public function setId(?int $id): Post
+    public function setTitle(string $title): void
     {
-        $this->id = $id;
-
-        return $this;
+        $this->title = $title;
     }
 
     /**
@@ -113,59 +106,29 @@ class Post
         return $this->title;
     }
 
-    public function setTitle(?string $title): Post
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
     public function getContent(): ?string
     {
         return $this->content;
     }
 
-    public function setContent(?string $content): Post
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
     /**
      * @Groups({"searchable"})
      */
-    public function getPublishedAt(): ?\DateTime
+    public function getPublishedAt(): \DateTimeImmutable
     {
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(?\DateTime $publishedAt): Post
-    {
-        $this->publishedAt = $publishedAt;
-
-        return $this;
-    }
-
-    public function getComments(): ?Collection
+    public function getComments(): Collection
     {
         return $this->comments;
     }
 
     public function addComment(Comment $comment): Post
     {
-        $comment->setPost($this);
         if (!$this->comments->contains($comment)) {
             $this->comments->add($comment);
         }
-
-        return $this;
-    }
-
-    public function removeComment(Comment $comment): Post
-    {
-        $comment->setPost($this);
-        $this->comments->removeElement($comment);
 
         return $this;
     }

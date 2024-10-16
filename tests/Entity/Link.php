@@ -29,30 +29,31 @@ class Link implements NormalizableInterface
      * @ORM\Column(type="string")
      */
     #[ORM\Column(type: Types::STRING)]
-    private string $name = 'Test link';
+    private string $name;
 
     /**
      * @ORM\Column(type="string")
      */
     #[ORM\Column(type: Types::STRING)]
-    private string $url = 'https://docs.meilisearch.com';
+    private string $url;
 
     /**
      * @ORM\Column(type="boolean", options={"default"=false})
      */
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
-    private bool $isSponsored = false;
+    private bool $isSponsored;
+
+    public function __construct(int $id, string $name = 'Test link', string $url = 'https://docs.meilisearch.com', bool $isSponsored = false)
+    {
+        $this->id = $id;
+        $this->name = $name;
+        $this->url = $url;
+        $this->isSponsored = $isSponsored;
+    }
 
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function setId(int $id): Link
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     public function getName(): string
@@ -60,35 +61,14 @@ class Link implements NormalizableInterface
         return $this->name;
     }
 
-    public function setName(string $name): Link
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
     public function getUrl(): string
     {
         return $this->url;
     }
 
-    public function setUrl(string $url): Link
-    {
-        $this->url = $url;
-
-        return $this;
-    }
-
     public function isSponsored(): bool
     {
         return $this->isSponsored;
-    }
-
-    public function setIsSponsored(bool $isSponsored): Link
-    {
-        $this->isSponsored = $isSponsored;
-
-        return $this;
     }
 
     public function normalize(NormalizerInterface $normalizer, $format = null, array $context = []): array

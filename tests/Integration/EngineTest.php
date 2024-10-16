@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle\Tests\Integration;
 
 use Meilisearch\Bundle\Engine;
+use Meilisearch\Bundle\SearchableEntity;
 use Meilisearch\Bundle\Tests\BaseKernelTestCase;
+use Meilisearch\Bundle\Tests\Entity\Image;
+use Meilisearch\Bundle\Tests\Entity\Post;
 use Meilisearch\Exceptions\ApiException;
 
-/**
- * Class EngineTest.
- */
-class EngineTest extends BaseKernelTestCase
+final class EngineTest extends BaseKernelTestCase
 {
     protected Engine $engine;
 
@@ -27,7 +27,17 @@ class EngineTest extends BaseKernelTestCase
      */
     public function testIndexingEmptyEntity(): void
     {
-        $searchableImage = $this->createSearchableImage();
+        $image = new Image();
+
+        $this->entityManager->persist($image);
+        $this->entityManager->flush();
+
+        $searchableImage = new SearchableEntity(
+            $this->getPrefix().'image',
+            $image,
+            $this->get('doctrine')->getManager()->getClassMetadata(Image::class),
+            null
+        );
 
         // Index
         $result = $this->engine->index($searchableImage);
@@ -51,17 +61,25 @@ class EngineTest extends BaseKernelTestCase
 
     public function testRemovingMultipleEntity(): void
     {
-        $post1 = $this->createSearchablePost();
-        $post2 = $this->createSearchablePost();
+        $metadata = $this->get('doctrine')->getManager()->getClassMetadata(Post::class);
+        $serializer = $this->get('serializer');
 
-        $result = $this->engine->remove([$post1, $post2]);
+        $this->entityManager->persist($post1 = new Post());
+        $this->entityManager->persist($post2 = new Post());
+
+        $this->entityManager->flush();
+
+        $postSearchable1 = new SearchableEntity($this->getPrefix().'posts', $post1, $metadata, $serializer);
+        $postSearchable2 = new SearchableEntity($this->getPrefix().'posts', $post2, $metadata, $serializer);
+
+        $result = $this->engine->remove([$postSearchable1, $postSearchable2]);
 
         $this->assertArrayHasKey('sf_phpunit__posts', $result);
         $this->assertCount(2, $result['sf_phpunit__posts']);
 
         $this->waitForAllTasks();
 
-        foreach ([$post1, $post2] as $post) {
+        foreach ([$postSearchable1, $postSearchable2] as $post) {
             $searchResult = $this->engine->search('', $post->getIndexUid(), []);
 
             $this->assertArrayHasKey('hits', $searchResult);
