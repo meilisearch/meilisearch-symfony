@@ -8,6 +8,7 @@ use Meilisearch\Bundle\MeilisearchBundle;
 use Meilisearch\Bundle\Services\UnixTimestampNormalizer;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
@@ -50,6 +51,7 @@ final class MeilisearchExtension extends Extension
         $container->findDefinition('meilisearch.client')
             ->replaceArgument(0, $config['url'])
             ->replaceArgument(1, $config['api_key'])
+            ->replaceArgument(2, new Reference($config['http_client'], ContainerInterface::IGNORE_ON_INVALID_REFERENCE))
             ->replaceArgument(4, [MeilisearchBundle::qualifiedVersion()]);
 
         $container->findDefinition('meilisearch.service')
