@@ -241,7 +241,7 @@ final class MeilisearchImportCommand extends IndexCommand
         foreach ($indexes as $index) {
             $tempIndex = $index;
             $tempIndex['name'] = $prefix.$tempIndex['prefixed_name'];
-            $pair = [$tempIndex['name'], $index['name']];
+            $pair = [$tempIndex['name'], $index['prefixed_name']];
 
             // Indexes must be declared only once during a swap
             if (!\in_array($pair, $indexPairs, true)) {
