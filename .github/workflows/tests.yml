@@ -28,7 +28,7 @@ jobs:
           MEILI_NO_ANALYTICS: true
     strategy:
       matrix:
-        php-version: ['7.4', '8.1', '8.2', '8.3']
+        php-version: ['7.4', '8.1', '8.2', '8.3', '8.4']
         sf-version: ['5.4', '6.4', '7.0', '7.1']
         exclude:
           - php-version: '7.4'
@@ -47,7 +47,7 @@ jobs:
             sf-version: '5.4'
           - php-version: '8.3'
             sf-version: '5.4'
-          - php-version: '8.3'
+          - php-version: '8.4'
             sf-version: '5.4'
 
     name: integration-tests (PHP ${{ matrix.php-version }}) (Symfony ${{ matrix.sf-version }}.*)
@@ -87,13 +87,15 @@ jobs:
   code-style:
     runs-on: ubuntu-latest
     name: 'Code style'
+    env:
+      PHP_CS_FIXER_IGNORE_ENV: 1
     steps:
       - uses: actions/checkout@v4
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.4
 
       - name: Validate composer.json and composer.lock
         run: composer validate
