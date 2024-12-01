@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Meilisearch\Bundle\Collection;
 use Meilisearch\Bundle\SearchService;
-use Meilisearch\Bundle\Tests\Entity\Post;
 use Meilisearch\Client;
 use Meilisearch\Exceptions\ApiException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -33,16 +32,6 @@ abstract class BaseKernelTestCase extends KernelTestCase
         $tool->createSchema($metaData);
 
         $this->cleanUp();
-    }
-
-    protected function createPost(): Post
-    {
-        $post = new Post('Test Post', 'Test content post');
-
-        $this->entityManager->persist($post);
-        $this->entityManager->flush();
-
-        return $post;
     }
 
     protected function getPrefix(): string
