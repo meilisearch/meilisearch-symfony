@@ -7,6 +7,7 @@ namespace Meilisearch\Bundle\DependencyInjection;
 use Meilisearch\Bundle\Searchable;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 final class Configuration implements ConfigurationInterface
 {
@@ -62,11 +63,20 @@ final class Configuration implements ConfigurationInterface
                                 ->info('Property accessor path (like method or property name) used to decide if an entry should be indexed.')
                                 ->defaultNull()
                             ->end()
-                            ->arrayNode('settings')
+                            ->variableNode('settings')
+                                ->defaultValue([])
                                 ->info('Configure indices settings, see: https://www.meilisearch.com/docs/reference/api/settings')
                                 ->beforeNormalization()
                                     ->always()
-                                    ->then(static function (array $value) {
+                                    ->then(static function ($value) {
+                                        if (null === $value) {
+                                            return [];
+                                        }
+
+                                        if (!\is_array($value)) {
+                                            throw new InvalidConfigurationException('Settings must be an array.');
+                                        }
+
                                         $stringSettings = ['distinctAttribute', 'proximityPrecision', 'searchCutoffMs'];
 
                                         foreach ($stringSettings as $setting) {
@@ -77,9 +87,7 @@ final class Configuration implements ConfigurationInterface
 
                                         return $value;
                                     })
-                                ->end()
-                                ->arrayPrototype()
-                                    ->variablePrototype()->end()
+                                    ->end()
                                 ->end()
                             ->end()
                         ->end()

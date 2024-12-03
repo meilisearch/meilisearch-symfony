@@ -24,6 +24,46 @@ final class ConfigurationTest extends KernelTestCase
     }
 
     /**
+     * @param mixed $value
+     *
+     * @dataProvider dataTestSettingsDynamicCheckerInvalid
+     */
+    public function testSettingsDynamicCheckerInvalid($value): void
+    {
+        $this->assertConfigurationIsInvalid([
+            'meilisearch' => [
+                'indices' => [
+                    [
+                        'name' => 'items',
+                        'class' => 'App\Entity\Post',
+                        'settings' => $value,
+                    ],
+                ],
+            ],
+        ], 'Settings must be an array.');
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @dataProvider dataTestSettingsDynamicCheckerValid
+     */
+    public function testSettingsDynamicCheckerValid($value): void
+    {
+        $this->assertConfigurationIsValid([
+            'meilisearch' => [
+                'indices' => [
+                    [
+                        'name' => 'items',
+                        'class' => 'App\Entity\Post',
+                        'settings' => $value,
+                    ],
+                ],
+            ],
+        ]);
+    }
+
+    /**
      * @return iterable<array{inputConfig: array<mixed>, expectedConfig: array<mixed>}>
      */
     public static function dataTestConfigurationTree(): iterable
@@ -291,6 +331,41 @@ final class ConfigurationTest extends KernelTestCase
                 'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
                 'http_client' => 'acme.http_client',
             ],
+        ];
+    }
+
+    /**
+     * @return iterable<array{value: mixed}>
+     */
+    public static function dataTestSettingsDynamicCheckerInvalid(): iterable
+    {
+        yield 'string is not acceptable' => [
+            'value' => 'hello',
+        ];
+        yield 'int is not acceptable' => [
+            'value' => 1,
+        ];
+        yield 'bool is not acceptable' => [
+            'value' => true,
+        ];
+    }
+
+    /**
+     * @return iterable<array{value: mixed}>
+     */
+    public static function dataTestSettingsDynamicCheckerValid(): iterable
+    {
+        yield 'array is acceptable' => [
+            'value' => [],
+        ];
+        yield 'array with arbitrary key is acceptable' => [
+            'value' => [
+                'key' => 'value',
+                'key2' => 'value2',
+            ],
+        ];
+        yield 'null is acceptable' => [
+            'value' => null,
         ];
     }
 
