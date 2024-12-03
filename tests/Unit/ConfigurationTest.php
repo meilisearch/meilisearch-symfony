@@ -334,32 +334,38 @@ final class ConfigurationTest extends KernelTestCase
         ];
     }
 
+    /**
+     * @return iterable<array{value: mixed}>
+     */
     public static function dataTestSettingsDynamicCheckerInvalid(): iterable
     {
         yield 'string is not acceptable' => [
-            'value' => 'hello'
+            'value' => 'hello',
         ];
         yield 'int is not acceptable' => [
-            'value' => 1
+            'value' => 1,
         ];
         yield 'bool is not acceptable' => [
-            'value' => true
+            'value' => true,
         ];
     }
 
+    /**
+     * @return iterable<array{value: mixed}>
+     */
     public static function dataTestSettingsDynamicCheckerValid(): iterable
     {
         yield 'array is acceptable' => [
-            'value' => []
+            'value' => [],
         ];
         yield 'array with arbitrary key is acceptable' => [
             'value' => [
                 'key' => 'value',
                 'key2' => 'value2',
-            ]
+            ],
         ];
         yield 'null is acceptable' => [
-            'value' => null
+            'value' => null,
         ];
     }
 
