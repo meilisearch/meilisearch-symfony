@@ -13,7 +13,7 @@ final class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('meili_search');
+        $treeBuilder = new TreeBuilder('meilisearch');
         $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
