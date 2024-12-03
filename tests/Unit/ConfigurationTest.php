@@ -24,6 +24,42 @@ final class ConfigurationTest extends KernelTestCase
     }
 
     /**
+     * @param mixed $value
+     *
+     * @dataProvider dataTestSettingsDynamicChecker
+     */
+    public function testSettingsDynamicChecker($value, bool $passed): void
+    {
+        if (!$passed) {
+            $this->assertConfigurationIsInvalid([
+                'meilisearch' => [
+                    'indices' => [
+                        [
+                            'name' => 'items',
+                            'class' => 'App\Entity\Post',
+                            'settings' => $value,
+                        ],
+                    ],
+                ],
+            ], 'Settings must be an array.');
+
+            return;
+        }
+
+        $this->assertConfigurationIsValid([
+            'meilisearch' => [
+                'indices' => [
+                    [
+                        'name' => 'items',
+                        'class' => 'App\Entity\Post',
+                        'settings' => $value,
+                    ],
+                ],
+            ],
+        ]);
+    }
+
+    /**
      * @return iterable<array{inputConfig: array<mixed>, expectedConfig: array<mixed>}>
      */
     public static function dataTestConfigurationTree(): iterable
@@ -291,6 +327,34 @@ final class ConfigurationTest extends KernelTestCase
                 'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
                 'http_client' => 'acme.http_client',
             ],
+        ];
+    }
+
+    public static function dataTestSettingsDynamicChecker(): iterable
+    {
+        yield 'string is not acceptable' => [
+            'settings' => 'hello',
+            'passed' => false,
+        ];
+
+        yield 'int is not acceptable' => [
+            'settings' => 1,
+            'passed' => false,
+        ];
+
+        yield 'bool is not acceptable' => [
+            'settings' => true,
+            'passed' => false,
+        ];
+
+        yield 'array is acceptable' => [
+            'settings' => [],
+            'passed' => true,
+        ];
+
+        yield 'null is acceptable' => [
+            'settings' => null,
+            'passed' => true,
         ];
     }
 
