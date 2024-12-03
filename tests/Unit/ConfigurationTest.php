@@ -26,26 +26,30 @@ final class ConfigurationTest extends KernelTestCase
     /**
      * @param mixed $value
      *
-     * @dataProvider dataTestSettingsDynamicChecker
+     * @dataProvider dataTestSettingsDynamicCheckerInvalid
      */
-    public function testSettingsDynamicChecker($value, bool $passed): void
+    public function testSettingsDynamicCheckerInvalid($value): void
     {
-        if (!$passed) {
-            $this->assertConfigurationIsInvalid([
-                'meilisearch' => [
-                    'indices' => [
-                        [
-                            'name' => 'items',
-                            'class' => 'App\Entity\Post',
-                            'settings' => $value,
-                        ],
+        $this->assertConfigurationIsInvalid([
+            'meilisearch' => [
+                'indices' => [
+                    [
+                        'name' => 'items',
+                        'class' => 'App\Entity\Post',
+                        'settings' => $value,
                     ],
                 ],
-            ], 'Settings must be an array.');
+            ],
+        ], 'Settings must be an array.');
+    }
 
-            return;
-        }
-
+    /**
+     * @param mixed $value
+     *
+     * @dataProvider dataTestSettingsDynamicCheckerValid
+     */
+    public function testSettingsDynamicCheckerValid($value): void
+    {
         $this->assertConfigurationIsValid([
             'meilisearch' => [
                 'indices' => [
@@ -330,31 +334,32 @@ final class ConfigurationTest extends KernelTestCase
         ];
     }
 
-    public static function dataTestSettingsDynamicChecker(): iterable
+    public static function dataTestSettingsDynamicCheckerInvalid(): iterable
     {
         yield 'string is not acceptable' => [
-            'settings' => 'hello',
-            'passed' => false,
+            'value' => 'hello'
         ];
-
         yield 'int is not acceptable' => [
-            'settings' => 1,
-            'passed' => false,
+            'value' => 1
         ];
-
         yield 'bool is not acceptable' => [
-            'settings' => true,
-            'passed' => false,
+            'value' => true
         ];
+    }
 
+    public static function dataTestSettingsDynamicCheckerValid(): iterable
+    {
         yield 'array is acceptable' => [
-            'settings' => [],
-            'passed' => true,
+            'value' => []
         ];
-
+        yield 'array with arbitrary key is acceptable' => [
+            'value' => [
+                'key' => 'value',
+                'key2' => 'value2',
+            ]
+        ];
         yield 'null is acceptable' => [
-            'settings' => null,
-            'passed' => true,
+            'value' => null
         ];
     }
 
