@@ -16,9 +16,7 @@ final class SerializationTest extends BaseKernelTestCase
     {
         $post = new Post('a simple post', 'some text', $datetime = new \DateTimeImmutable('@1728994403'));
         $idReflection = (new \ReflectionObject($post))->getProperty('id');
-        if (PHP_VERSION_ID < 80000) {
-            $idReflection->setAccessible(true);
-        }
+        $idReflection->setAccessible(true);
         $idReflection->setValue($post, 12);
 
         $comment = new Comment($post, 'a great comment', $datetime);
