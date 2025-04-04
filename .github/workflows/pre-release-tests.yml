@@ -60,6 +60,12 @@ jobs:
             sf-version: '5.4'
           - php-version: '8.4'
             sf-version: '5.4'
+          - php-version: '7.4'
+            sf-version: '7.2'
+          - php-version: '8.0'
+            sf-version: '7.2'
+          - php-version: '8.1'
+            sf-version: '7.2'
 
     name: integration-tests-against-rc (PHP ${{ matrix.php-version }}) (Symfony ${{ matrix.sf-version }}.*)
     steps:
