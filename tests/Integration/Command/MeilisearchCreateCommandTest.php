@@ -133,7 +133,11 @@ EOD, $importOutput);
 
         $getSetting = static fn ($value) => $value instanceof \IteratorAggregate ? iterator_to_array($value) : $value;
 
-        self::assertSame(['publishedAt', 'title'], $getSetting($settings['filterableAttributes']));
+        $filterableAttributes = $getSetting($settings['filterableAttributes']);
+        sort($filterableAttributes);
+        $expected = ['publishedAt', 'title'];
+        sort($expected);
+        self::assertSame($expected, $filterableAttributes);
         self::assertSame(['title'], $getSetting($settings['searchableAttributes']));
         self::assertSame(['a', 'n', 'the'], $getSetting($settings['stopWords']));
         self::assertSame(['fantastic' => ['great'], 'great' => ['fantastic']], $getSetting($settings['synonyms']));
