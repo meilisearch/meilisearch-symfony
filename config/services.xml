@@ -54,7 +54,7 @@
 
         <service id="Meilisearch\Bundle\Command\MeilisearchClearCommand">
             <argument type="service" id="meilisearch.service" />
-            <tag name="console.command" />
+            <tag name="console.command" command="meilisearch:clear|meili:clear" description="Clear the index documents" />
         </service>
 
         <service id="Meilisearch\Bundle\Command\MeilisearchCreateCommand">
@@ -62,12 +62,12 @@
             <argument type="service" id="meilisearch.client" />
             <argument type="service" id="meilisearch.settings_updater" />
             <argument type="service" id="event_dispatcher" />
-            <tag name="console.command" />
+            <tag name="console.command" command="meilisearch:create|meili:create" description="Create indexes" />
         </service>
 
         <service id="Meilisearch\Bundle\Command\MeilisearchDeleteCommand">
             <argument type="service" id="meilisearch.service" />
-            <tag name="console.command" />
+            <tag name="console.command" command="meilisearch:delete|meili:delete" description="Delete the indexes" />
         </service>
 
         <service id="Meilisearch\Bundle\Command\MeilisearchImportCommand">
@@ -76,14 +76,14 @@
             <argument type="service" id="meilisearch.client" />
             <argument type="service" id="meilisearch.settings_updater" />
             <argument type="service" id="event_dispatcher" />
-            <tag name="console.command" />
+            <tag name="console.command" command="meilisearch:import|meili:import" description="Import given entity into search engine" />
         </service>
 
         <service id="Meilisearch\Bundle\Command\MeilisearchUpdateSettingsCommand">
             <argument type="service" id="meilisearch.service" />
             <argument type="service" id="meilisearch.settings_updater" />
             <argument type="service" id="event_dispatcher" />
-            <tag name="console.command" />
+            <tag name="console.command" command="meilisearch:update-settings" description="Push settings to meilisearch" />
         </service>
 
         <service id="Meilisearch\Bundle\Services\UnixTimestampNormalizer">

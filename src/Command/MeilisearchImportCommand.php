@@ -13,12 +13,14 @@ use Meilisearch\Bundle\SearchService;
 use Meilisearch\Bundle\Services\SettingsUpdater;
 use Meilisearch\Client;
 use Meilisearch\Exceptions\TimeOutException;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+#[AsCommand(name: 'meilisearch:import', description: 'Import given entity into search engine', aliases: ['meili:import'])]
 final class MeilisearchImportCommand extends IndexCommand
 {
     private const TEMP_INDEX_PREFIX = '_tmp_';
@@ -38,20 +40,9 @@ final class MeilisearchImportCommand extends IndexCommand
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public static function getDefaultName(): string
-    {
-        return 'meilisearch:import|meili:import';
-    }
-
-    public static function getDefaultDescription(): string
-    {
-        return 'Import given entity into search engine';
-    }
-
     protected function configure(): void
     {
         $this
-            ->setDescription(self::getDefaultDescription())
             ->addOption('indices', 'i', InputOption::VALUE_OPTIONAL, 'Comma-separated list of index names')
             ->addOption(
                 'update-settings',

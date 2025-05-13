@@ -9,12 +9,14 @@ use Meilisearch\Bundle\EventListener\ConsoleOutputSubscriber;
 use Meilisearch\Bundle\Model\Aggregator;
 use Meilisearch\Bundle\SearchService;
 use Meilisearch\Bundle\Services\SettingsUpdater;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+#[AsCommand(name: 'meilisearch:update-settings', description: 'Push settings to meilisearch')]
 final class MeilisearchUpdateSettingsCommand extends IndexCommand
 {
     private SettingsUpdater $settingsUpdater;
@@ -28,20 +30,9 @@ final class MeilisearchUpdateSettingsCommand extends IndexCommand
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public static function getDefaultName(): string
-    {
-        return 'meilisearch:update-settings';
-    }
-
-    public static function getDefaultDescription(): string
-    {
-        return 'Push settings to meilisearch';
-    }
-
     protected function configure(): void
     {
         $this
-            ->setDescription(self::getDefaultDescription())
             ->addOption('indices', 'i', InputOption::VALUE_OPTIONAL, 'Comma-separated list of index names')
             ->addOption(
                 'response-timeout',

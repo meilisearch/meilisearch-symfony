@@ -4,26 +4,17 @@ declare(strict_types=1);
 
 namespace Meilisearch\Bundle\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'meilisearch:clear', description: 'Clear the index documents', aliases: ['meili:clear'])]
 final class MeilisearchClearCommand extends IndexCommand
 {
-    public static function getDefaultName(): string
-    {
-        return 'meilisearch:clear|meili:clear';
-    }
-
-    public static function getDefaultDescription(): string
-    {
-        return 'Clear the index documents';
-    }
-
     protected function configure(): void
     {
         $this
-            ->setDescription(self::getDefaultDescription())
             ->addOption('indices', 'i', InputOption::VALUE_OPTIONAL, 'Comma-separated list of index names');
     }
 
