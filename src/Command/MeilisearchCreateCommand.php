@@ -10,12 +10,14 @@ use Meilisearch\Bundle\Model\Aggregator;
 use Meilisearch\Bundle\SearchService;
 use Meilisearch\Bundle\Services\SettingsUpdater;
 use Meilisearch\Client;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+#[AsCommand(name: 'meilisearch:create', description: 'Create indexes', aliases: ['meili:create'])]
 final class MeilisearchCreateCommand extends IndexCommand
 {
     private Client $searchClient;
@@ -31,20 +33,9 @@ final class MeilisearchCreateCommand extends IndexCommand
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public static function getDefaultName(): string
-    {
-        return 'meilisearch:create|meili:create';
-    }
-
-    public static function getDefaultDescription(): string
-    {
-        return 'Create indexes';
-    }
-
     protected function configure(): void
     {
         $this
-            ->setDescription(self::getDefaultDescription())
             ->addOption('indices', 'i', InputOption::VALUE_OPTIONAL, 'Comma-separated list of index names')
             ->addOption(
                 'update-settings',

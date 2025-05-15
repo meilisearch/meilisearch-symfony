@@ -70,5 +70,11 @@ final class Kernel extends HttpKernel
                 'php_errors' => ['log' => true],
             ]);
         }
+        // @phpstan-ignore-next-line
+        if (Kernel::VERSION_ID >= 70300) {
+            $container->prependExtensionConfig('framework', [
+                'property_info' => ['with_constructor_extractor' => false],
+            ]);
+        }
     }
 }

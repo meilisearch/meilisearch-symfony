@@ -40,7 +40,7 @@ jobs:
     strategy:
       matrix:
         php-version: ['7.4', '8.1', '8.2', '8.3', '8.4']
-        sf-version: ['5.4', '6.4', '7.0', '7.1', '7.2']
+        sf-version: ['5.4', '6.4', '7.0', '7.1', '7.2', '7.3']
         exclude:
           - php-version: '7.4'
             sf-version: '6.4'
@@ -48,12 +48,16 @@ jobs:
             sf-version: '7.0'
           - php-version: '7.4'
             sf-version: '7.1'
+          - php-version: '7.4'
+            sf-version: '7.3'
           - php-version: '8.1'
             sf-version: '5.4'
           - php-version: '8.1'
             sf-version: '7.0'
           - php-version: '8.1'
             sf-version: '7.1'
+          - php-version: '8.1'
+            sf-version: '7.3'
           - php-version: '8.2'
             sf-version: '5.4'
           - php-version: '8.3'
@@ -77,6 +81,11 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           tools: composer, flex
+
+      - name: Configure minimum stability
+        if: matrix.sf-version == '7.3'
+        # Currently Symfony 7.3 release is in beta, which means we need to configure this flag to be able to use it.
+        run: composer config minimum-stability beta
 
       - name: Validate composer.json and composer.lock
         run: composer validate

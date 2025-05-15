@@ -6,26 +6,17 @@ namespace Meilisearch\Bundle\Command;
 
 use Meilisearch\Bundle\Collection;
 use Meilisearch\Exceptions\ApiException;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'meilisearch:delete', description: 'Delete the indexes', aliases: ['meili:delete'])]
 final class MeilisearchDeleteCommand extends IndexCommand
 {
-    public static function getDefaultName(): string
-    {
-        return 'meilisearch:delete|meili:delete';
-    }
-
-    public static function getDefaultDescription(): string
-    {
-        return 'Delete the indexes';
-    }
-
     protected function configure(): void
     {
         $this
-            ->setDescription(self::getDefaultDescription())
             ->addOption('indices', 'i', InputOption::VALUE_OPTIONAL, 'Comma-separated list of index names');
     }
 

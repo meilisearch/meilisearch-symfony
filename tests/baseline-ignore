@@ -1,1 +1,3 @@
 %Method "ArrayAccess::offsetGet\(\)" might add "mixed" as a native return type declaration in the future. Do the same in implementation "Meilisearch\\Contracts\\Data" now to avoid errors or add an explicit @return annotation to suppress this message.%
+%Since symfony/var-exporter 7.3: The "Symfony\\Component\\VarExporter\\LazyGhostTrait" trait is deprecated, use native lazy objects instead.%
+%Since symfony/var-exporter 7.3: Using ProxyHelper::generateLazyGhost\(\) is deprecated, use native lazy objects instead.%
