@@ -71,11 +71,6 @@ jobs:
           php-version: ${{ matrix.php-version }}
           tools: composer, flex
 
-      - name: Configure minimum stability
-        if: matrix.sf-version == '7.3'
-        # Currently Symfony 7.3 release is in beta, which means we need to configure this flag to be able to use it.
-        run: composer config minimum-stability beta
-
       - name: Validate composer.json and composer.lock
         run: composer validate
 
