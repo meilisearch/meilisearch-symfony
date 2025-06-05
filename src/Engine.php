@@ -72,10 +72,6 @@ final class Engine
         $data = [];
 
         foreach ($searchableEntities as $entity) {
-            $searchableArray = $entity->getSearchableArray();
-            if (0 === \count($searchableArray)) {
-                continue;
-            }
             $indexUid = $entity->getIndexUid();
 
             if (!isset($data[$indexUid])) {
