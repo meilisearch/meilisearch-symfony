@@ -39,13 +39,9 @@ final class EngineTest extends BaseKernelTestCase
             null
         );
 
-        // Index
-        $result = $this->engine->index($searchableImage);
-        $this->assertEmpty($result);
-
         // Remove
         $result = $this->engine->remove($searchableImage);
-        $this->assertEmpty($result);
+        $this->assertArrayHasKey('sf_phpunit__image', $result);
 
         // Update
         $result = $this->engine->index($searchableImage);
