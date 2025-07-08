@@ -13,8 +13,7 @@ doctrine:
         types:
             dummy_object_id: Meilisearch\Bundle\Tests\Dbal\Type\DummyObjectIdType
     orm:
-        enable_native_lazy_objects: true
-        auto_generate_proxy_classes: false
+        auto_generate_proxy_classes: true
         report_fields_where_declared: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true

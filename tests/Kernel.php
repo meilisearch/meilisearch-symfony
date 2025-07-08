@@ -7,6 +7,7 @@ namespace Meilisearch\Bundle\Tests;
 use Doctrine\Bundle\DoctrineBundle\ConnectionFactory;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Doctrine\ORM\Configuration;
+use Doctrine\ORM\Mapping\LegacyReflectionFields;
 use Meilisearch\Bundle\MeilisearchBundle;
 use Symfony\Bridge\Doctrine\ArgumentResolver\EntityValueResolver;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
@@ -29,7 +30,11 @@ final class Kernel extends HttpKernel
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
         if (PHP_VERSION_ID >= 80000) {
-            $loader->load(__DIR__.'/config/config.yaml');
+            if (class_exists(LegacyReflectionFields::class) && PHP_VERSION_ID >= 80400) {
+                $loader->load(__DIR__.'/config/config.yaml');
+            } else {
+                $loader->load(__DIR__.'/config/config_old_proxy.yaml');
+            }
         } else {
             $loader->load(__DIR__.'/config/config_php7.yaml');
         }
