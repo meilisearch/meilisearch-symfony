@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle\Services;
 
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\Mapping\LegacyReflectionFields;
 use Doctrine\ORM\Proxy\DefaultProxyClassNameResolver;
 use Doctrine\Persistence\ObjectManager;
 use Meilisearch\Bundle\Collection;
@@ -374,6 +375,11 @@ final class MeilisearchService implements SearchService
         static $resolver;
 
         $resolver ??= (function () {
+            // Native lazy objects compatibility
+            if (PHP_VERSION_ID >= 80400 && class_exists(LegacyReflectionFields::class)) {
+                return fn (object $object) => \get_class($object);
+            }
+
             // Doctrine ORM v3+ compatibility
             if (class_exists(DefaultProxyClassNameResolver::class)) {
                 return fn (object $object) => DefaultProxyClassNameResolver::getClass($object);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Meilisearch\Bundle\Tests\Integration;
 
+use Doctrine\ORM\Mapping\LegacyReflectionFields;
 use Doctrine\Persistence\Proxy;
 use Meilisearch\Bundle\Exception\EntityNotFoundInObjectID;
 use Meilisearch\Bundle\Exception\InvalidEntityForAggregator;
@@ -35,6 +36,10 @@ final class AggregatorTest extends BaseKernelTestCase
 
     public function testAggregatorProxyClass(): void
     {
+        if (class_exists(LegacyReflectionFields::class)) {
+            $this->markTestSkipped('Skipping, because proxies are not wrapped anymore with lazy native objects.');
+        }
+
         $this->entityManager->persist($post = new Post());
         $this->entityManager->flush();
         $postId = $post->getId();

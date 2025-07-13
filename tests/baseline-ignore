@@ -1,3 +1,9 @@
 %Method "ArrayAccess::offsetGet\(\)" might add "mixed" as a native return type declaration in the future. Do the same in implementation "Meilisearch\\Contracts\\Data" now to avoid errors or add an explicit @return annotation to suppress this message.%
 %Since symfony/var-exporter 7.3: The "Symfony\\Component\\VarExporter\\LazyGhostTrait" trait is deprecated, use native lazy objects instead.%
 %Since symfony/var-exporter 7.3: Using ProxyHelper::generateLazyGhost\(\) is deprecated, use native lazy objects instead.%
+%Class "Doctrine\\ORM\\Proxy\\Autoloader" is deprecated. Use native lazy objects instead.%
+%Calling Doctrine\\ORM\\Configuration::setProxyDir is deprecated and will not be possible in Doctrine ORM 4.0%
+%Calling Doctrine\\ORM\\Configuration::getProxyDir is deprecated and will not be possible in Doctrine ORM 4.0%
+%Calling Doctrine\\ORM\\Configuration::setAutoGenerateProxyClasses is deprecated and will not be possible in Doctrine ORM 4.0%
+%Calling Doctrine\\ORM\\Configuration::getAutoGenerateProxyClasses is deprecated and will not be possible in Doctrine ORM 4.0%
+%Calling Doctrine\\ORM\\Configuration::setProxyNamespace is deprecated and will not be possible in Doctrine ORM 4.0%
