@@ -114,6 +114,10 @@ final class MeilisearchImportCommand extends IndexCommand
 
             $output->writeln('<info>Importing for index '.$entityClassName.'</info>');
 
+            if ($updateSettings) {
+                $this->settingsUpdater->update($index['prefixed_name'], $responseTimeout, $prefix ? $prefix.$index['prefixed_name'] : null);
+            }
+
             $page = max(0, (int) $input->getOption('skip-batches'));
 
             if ($page > 0) {
@@ -155,10 +159,6 @@ final class MeilisearchImportCommand extends IndexCommand
             } while (\count($entities) >= $batchSize);
 
             $manager->clear();
-
-            if ($updateSettings) {
-                $this->settingsUpdater->update($index['prefixed_name'], $responseTimeout, $prefix ? $prefix.$index['prefixed_name'] : null);
-            }
         }
 
         if ($swapIndices) {
