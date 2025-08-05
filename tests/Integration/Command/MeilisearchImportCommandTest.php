@@ -206,15 +206,17 @@ EOD, $commandTester->getDisplay());
         $commandTester = new CommandTester($command);
         $return = $commandTester->execute(['--indices' => $this->index->getUid()]);
 
-        $this->assertSame('Importing for index Meilisearch\Bundle\Tests\Entity\Post
-Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index (6 indexed since start)
-Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__aggregated index (6 indexed since start)
+        $this->assertSame(<<<'EOD'
+Importing for index Meilisearch\Bundle\Tests\Entity\Post
 Setting "stopWords" updated of "sf_phpunit__posts".
 Setting "filterableAttributes" updated of "sf_phpunit__posts".
 Setting "searchCutoffMs" updated of "sf_phpunit__posts".
 Setting "typoTolerance" updated of "sf_phpunit__posts".
+Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index (6 indexed since start)
+Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__aggregated index (6 indexed since start)
 Done!
-', $commandTester->getDisplay());
+
+EOD, $commandTester->getDisplay());
 
         $this->assertSame(0, $return);
     }
@@ -262,12 +264,12 @@ EOD, $commandTester->getDisplay());
 
         $this->assertSame(<<<'EOD'
 Importing for index Meilisearch\Bundle\Tests\Entity\Post
-Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index (6 indexed since start)
-Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__aggregated index (6 indexed since start)
 Setting "stopWords" updated of "sf_phpunit__posts".
 Setting "filterableAttributes" updated of "sf_phpunit__posts".
 Setting "searchCutoffMs" updated of "sf_phpunit__posts".
 Setting "typoTolerance" updated of "sf_phpunit__posts".
+Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index (6 indexed since start)
+Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__aggregated index (6 indexed since start)
 Done!
 
 EOD, $commandTester->getDisplay());
@@ -291,12 +293,12 @@ EOD, $commandTester->getDisplay());
         $output = $commandTester->getDisplay();
         $this->assertSame(<<<'EOD'
 Importing for index Meilisearch\Bundle\Tests\Entity\Post
-Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index (6 indexed since start)
-Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__aggregated index (6 indexed since start)
 Setting "stopWords" updated of "sf_phpunit__posts".
 Setting "filterableAttributes" updated of "sf_phpunit__posts".
 Setting "searchCutoffMs" updated of "sf_phpunit__posts".
 Setting "typoTolerance" updated of "sf_phpunit__posts".
+Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index (6 indexed since start)
+Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__aggregated index (6 indexed since start)
 Done!
 
 EOD, $commandTester->getDisplay());
@@ -393,11 +395,11 @@ EOD, $importOutput);
 
         $this->assertSame(<<<'EOD'
 Importing for index Meilisearch\Bundle\Tests\Entity\DynamicSettings
-Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\DynamicSettings entities into sf_phpunit__dynamic_settings index (6 indexed since start)
 Setting "filterableAttributes" updated of "sf_phpunit__dynamic_settings".
 Setting "searchableAttributes" updated of "sf_phpunit__dynamic_settings".
 Setting "stopWords" updated of "sf_phpunit__dynamic_settings".
 Setting "synonyms" updated of "sf_phpunit__dynamic_settings".
+Indexed a batch of 6 / 6 Meilisearch\Bundle\Tests\Entity\DynamicSettings entities into sf_phpunit__dynamic_settings index (6 indexed since start)
 Done!
 
 EOD, $importOutput);
@@ -432,14 +434,14 @@ EOD, $importOutput);
 
         $this->assertSame(<<<'EOD'
 Importing for index Meilisearch\Bundle\Tests\Entity\Post
-Indexed a batch of 2 / 2 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index (2 indexed since start)
-Indexed a batch of 2 / 2 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__aggregated index (2 indexed since start)
-Indexed a batch of 2 / 2 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index (4 indexed since start)
-Indexed a batch of 2 / 2 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__aggregated index (4 indexed since start)
 Setting "stopWords" updated of "sf_phpunit__posts".
 Setting "filterableAttributes" updated of "sf_phpunit__posts".
 Setting "searchCutoffMs" updated of "sf_phpunit__posts".
 Setting "typoTolerance" updated of "sf_phpunit__posts".
+Indexed a batch of 2 / 2 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index (2 indexed since start)
+Indexed a batch of 2 / 2 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__aggregated index (2 indexed since start)
+Indexed a batch of 2 / 2 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__posts index (4 indexed since start)
+Indexed a batch of 2 / 2 Meilisearch\Bundle\Tests\Entity\Post entities into sf_phpunit__aggregated index (4 indexed since start)
 Done!
 
 EOD, $importOutput);
