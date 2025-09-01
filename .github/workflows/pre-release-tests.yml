@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Grep docker latest rc version of Meilisearch
         id: grep-step
@@ -74,7 +74,7 @@ jobs:
     name: integration-tests-against-rc (PHP ${{ matrix.php-version }}) (Symfony ${{ matrix.sf-version }}.*)
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
