@@ -7,3 +7,4 @@
 %Calling Doctrine\\ORM\\Configuration::setAutoGenerateProxyClasses is deprecated and will not be possible in Doctrine ORM 4.0%
 %Calling Doctrine\\ORM\\Configuration::getAutoGenerateProxyClasses is deprecated and will not be possible in Doctrine ORM 4.0%
 %Calling Doctrine\\ORM\\Configuration::setProxyNamespace is deprecated and will not be possible in Doctrine ORM 4.0%
+%Since doctrine/doctrine-bundle 2.16: Not setting "doctrine.orm.enable_native_lazy_objects" to true is deprecated%
