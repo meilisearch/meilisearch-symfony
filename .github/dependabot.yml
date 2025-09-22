@@ -9,7 +9,6 @@ updates:
     open-pull-requests-limit: 10
     labels:
       - dependencies
-      - skip-changelog
     rebase-strategy: disabled
 
   - package-ecosystem: "github-actions"
@@ -17,6 +16,5 @@ updates:
     schedule:
       interval: "monthly"
     labels:
-      - 'skip-changelog'
       - 'dependencies'
     rebase-strategy: disabled
