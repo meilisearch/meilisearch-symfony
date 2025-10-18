@@ -7,3 +7,4 @@ parameters:
 		- tests
 	ignoreErrors:
 		- '#Call to static method getClass\(\) on an unknown class Doctrine\\Common\\Util\\ClassUtils#'
+		- '#Parameter \#1 \$array of function array_unique expects an array of values castable to string, list<class-string<Meilisearch\\Bundle\\Entity\\Aggregator>\|Meilisearch\\Bundle\\Entity\\Aggregator> given#'
