@@ -11,8 +11,8 @@ on:
   schedule:
     - cron: '0 3 * * 1'
 
-env:
-  fail-fast: true
+#env:
+#  fail-fast: true
 
 jobs:
   integration-tests:
@@ -30,8 +30,9 @@ jobs:
           MEILI_NO_ANALYTICS: true
     strategy:
       matrix:
-        php-version: ['7.4', '8.1', '8.2', '8.3', '8.4']
-        sf-version: ['5.4', '6.4', '7.0', '7.1', '7.2', '7.3']
+        php-version: [ '7.4', '8.1', '8.2', '8.3', '8.4' ]
+        sf-version: [ '5.4', '6.4', '7.0', '7.1', '7.2', '7.3' ]
+        dependencies: [ 'default' ]
         exclude:
           - php-version: '7.4'
             sf-version: '6.4'
@@ -40,6 +41,8 @@ jobs:
           - php-version: '7.4'
             sf-version: '7.1'
           - php-version: '7.4'
+            sf-version: '7.2'
+          - php-version: '7.4'
             sf-version: '7.3'
           - php-version: '8.1'
             sf-version: '5.4'
@@ -48,6 +51,8 @@ jobs:
           - php-version: '8.1'
             sf-version: '7.1'
           - php-version: '8.1'
+            sf-version: '7.2'
+          - php-version: '8.1'
             sf-version: '7.3'
           - php-version: '8.2'
             sf-version: '5.4'
@@ -55,14 +60,24 @@ jobs:
             sf-version: '5.4'
           - php-version: '8.4'
             sf-version: '5.4'
+        include:
           - php-version: '7.4'
-            sf-version: '7.2'
-          - php-version: '8.0'
-            sf-version: '7.2'
-          - php-version: '8.1'
-            sf-version: '7.2'
+            sf-version: '5.4'
+            dependencies: 'lowest'
+          - php-version: '7.4'
+            sf-version: '5.4'
+            dependencies: 'highest'
+          - php-version: '8.4'
+            sf-version: '6.4'
+            dependencies: 'lowest'
+          - php-version: '8.4'
+            sf-version: '6.4'
+            dependencies: 'highest'
+          - php-version: '8.4'
+            sf-version: '7.3'
+            dependencies: 'highest'
 
-    name: integration-tests (PHP ${{ matrix.php-version }}) (Symfony ${{ matrix.sf-version }}.*)
+    name: integration-tests (PHP ${{ matrix.php-version }}) (Symfony ${{ matrix.sf-version }}.*)${{ matrix.dependencies != 'default' && format(' ({0})', matrix.dependencies) || '' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -73,7 +88,7 @@ jobs:
           php-version: ${{ matrix.php-version }}
           tools: composer, flex
 
-      - name: Validate composer.json and composer.lock
+      - name: Validate composer.json
         run: composer validate
 
       - name: Remove doctrine/annotations
@@ -85,7 +100,8 @@ jobs:
         env:
           SYMFONY_REQUIRE: ${{ matrix.sf-version }}.*
         with:
-          dependency-versions: 'highest'
+          composer-options: --no-interaction --no-progress --prefer-dist --dev
+          dependency-versions: "${{ matrix.dependencies }}"
 
       - name: Run test suite
         run: composer test:unit -- --coverage-clover coverage.xml
@@ -93,7 +109,7 @@ jobs:
       - name: Upload coverage file
         uses: actions/upload-artifact@v4
         with:
-          name: 'phpunit-${{ matrix.php-version }}-${{ matrix.sf-version }}-coverage'
+          name: "phpunit-${{ matrix.php-version }}-${{ matrix.sf-version }}-${{ matrix.dependencies }}-coverage"
           path: 'coverage.xml'
 
   code-style:

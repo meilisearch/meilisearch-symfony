@@ -137,12 +137,12 @@ final class MeilisearchService implements SearchService
         return $this->engine->clear($this->searchableAs($className));
     }
 
-    public function deleteByIndexName(string $indexName): ?array
+    public function deleteByIndexName(string $indexName): array
     {
         return $this->engine->delete($indexName);
     }
 
-    public function delete(string $className): ?array
+    public function delete(string $className): array
     {
         $this->assertIsSearchable($className);
 
