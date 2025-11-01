@@ -43,7 +43,6 @@ final class Kernel extends HttpKernel
         if (\defined(ConnectionFactory::class.'::DEFAULT_SCHEME_MAP')) {
             $container->prependExtensionConfig('doctrine', [
                 'orm' => [
-                    'report_fields_where_declared' => true,
                     'validate_xml_mapping' => true,
                 ],
             ]);
