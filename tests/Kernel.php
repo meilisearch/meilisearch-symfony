@@ -49,6 +49,15 @@ final class Kernel extends HttpKernel
             ]);
         }
 
+        // doctrine-bundle 2.x compatibility
+        if (!class_exists(Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\CacheCompatibilityPass::class)) {
+            $container->prependExtensionConfig('doctrine', [
+                'orm' => [
+                    'report_fields_where_declared' => true,
+                ],
+            ]);
+        }
+
         // @phpstan-ignore-next-line
         if (method_exists(Configuration::class, 'setLazyGhostObjectEnabled') && Kernel::VERSION_ID >= 60100) {
             $container->prependExtensionConfig('doctrine', [
