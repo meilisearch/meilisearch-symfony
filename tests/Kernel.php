@@ -50,7 +50,7 @@ final class Kernel extends HttpKernel
         }
 
         // doctrine-bundle 2.x compatibility
-        if (!class_exists(Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\CacheCompatibilityPass::class)) {
+        if (class_exists(Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\CacheCompatibilityPass::class)) {
             $container->prependExtensionConfig('doctrine', [
                 'orm' => [
                     'report_fields_where_declared' => true,
