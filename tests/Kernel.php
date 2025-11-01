@@ -49,7 +49,7 @@ final class Kernel extends HttpKernel
         }
 
         // doctrine-orm 2.x compatibility
-        if (!class_exists(\Doctrine\Common\Annotations\AnnotationReader::class)) {
+        if (class_exists(\Doctrine\Common\Annotations\AnnotationReader::class)) {
             $container->prependExtensionConfig('doctrine', [
                 'orm' => [
                     'report_fields_where_declared' => true,
