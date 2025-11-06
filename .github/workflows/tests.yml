@@ -12,7 +12,7 @@ on:
     - cron: '0 3 * * 1'
 
 env:
-  fail-fast: false
+  fail-fast: true
 
 jobs:
   integration-tests:

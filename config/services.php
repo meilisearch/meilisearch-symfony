@@ -14,7 +14,7 @@ return static function(ContainerConfigurator $container) {
     $services->set('meilisearch.service', \Meilisearch\Bundle\Services\MeilisearchService::class)
         ->public()
         ->args([
-            abstract_arg(\normalizer::class),
+            abstract_arg('normalizer'),
             service('meilisearch.engine'),
             abstract_arg('configuration'),
             service('property_accessor'),
@@ -49,10 +49,6 @@ return static function(ContainerConfigurator $container) {
 
     $services->alias(\Meilisearch\Client::class, 'meilisearch.client')
         ->public();
-
-    $services->alias('search.client', 'meilisearch.client')
-        ->public()
-        ->deprecate('meilisearch/search-bundle', '0.14', 'The "%alias_id%" service alias is deprecated. Use "meilisearch.client" instead.');
 
     $services->alias(\Meilisearch\Bundle\SearchService::class, 'meilisearch.service');
 
