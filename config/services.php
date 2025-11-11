@@ -17,7 +17,6 @@ use Meilisearch\Client;
 
 return static function (ContainerConfigurator $container) {
     $services = $container->services();
-    $parameters = $container->parameters();
 
     $services->set('meilisearch.engine', Engine::class)
         ->args([service('meilisearch.client')]);
