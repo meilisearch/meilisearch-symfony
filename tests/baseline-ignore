@@ -2,10 +2,17 @@
 %Since symfony/var-exporter 7.3: The "Symfony\\Component\\VarExporter\\LazyGhostTrait" trait is deprecated, use native lazy objects instead.%
 %Since symfony/var-exporter 7.3: Using ProxyHelper::generateLazyGhost\(\) is deprecated, use native lazy objects instead.%
 %Class "Doctrine\\ORM\\Proxy\\Autoloader" is deprecated. Use native lazy objects instead.%
-%Calling Doctrine\\ORM\\Configuration::setProxyDir is deprecated and will not be possible in Doctrine ORM 4.0%
-%Calling Doctrine\\ORM\\Configuration::getProxyDir is deprecated and will not be possible in Doctrine ORM 4.0%
-%Calling Doctrine\\ORM\\Configuration::setAutoGenerateProxyClasses is deprecated and will not be possible in Doctrine ORM 4.0%
-%Calling Doctrine\\ORM\\Configuration::getAutoGenerateProxyClasses is deprecated and will not be possible in Doctrine ORM 4.0%
+%Calling Doctrine\\ORM\\Configuration::(setProxyDir|getProxyDir) is deprecated and will not be possible in Doctrine ORM 4.0%
+%Calling Doctrine\\ORM\\Configuration::(setAutoGenerateProxyClasses|getAutoGenerateProxyClasses) is deprecated and will not be possible in Doctrine ORM 4.0%
 %Calling Doctrine\\ORM\\Configuration::setProxyNamespace is deprecated and will not be possible in Doctrine ORM 4.0%
 %Since doctrine/doctrine-bundle 2.16: Not setting "doctrine.orm.enable_native_lazy_objects" to true is deprecated%
-%The "report_fields_where_declared" configuration option is deprecated and will be removed in DoctrineBundle 3.0. When using ORM 3, report_fields_where_declared will always be true.%
+%The "report_fields_where_declared" configuration option is deprecated and will be removed in DoctrineBundle 3.0.%
+%Implicitly marking parameter \$.+ as nullable is deprecated%
+%The "Doctrine\\Bundle\\DoctrineBundle\\CacheWarmer\\DoctrineMetadataCacheWarmer::doWarmUp\(\)" method will require a new "string|null \$buildDir" argument in the next major version of its parent class "Symfony\\Bundle\\FrameworkBundle\\CacheWarmer\\AbstractPhpFileCacheWarmer", not defining it is deprecated%
+%Constant E_STRICT is deprecated%
+%Method "ArrayAccess::(offsetExists|offsetGet|offsetSet|offsetUnset)\(\)" might add ".+" as a native return type declaration in the future. Do the same in implementation "(Doctrine\\Common\\Collections\\.+|Doctrine\\ORM\\PersistentCollection)" now to avoid errors or add an explicit @return annotation to suppress this message%
+%Method "Countable::count\(\)" might add "int" as a native return type declaration in the future. Do the same in implementation "Doctrine\\Common\\Collections\\.+" now to avoid errors or add an explicit @return annotation to suppress this message%
+%Method "IteratorAggregate::getIterator\(\)" might add "\\Traversable" as a native return type declaration in the future\. Do the same in implementation "Doctrine\\Common\\Collections\\.+" now to avoid errors or add an explicit @return annotation to suppress this message%
+%Return type of Doctrine\\Common\\Collections\\(ArrayCollection|AbstractLazyCollection)::count\(\) should either be compatible with Countable::count\(\): int, or the \#\[\\ReturnTypeWillChange\] attribute should be used to temporarily suppress the notice%
+%Return type of Doctrine\\Common\\Collections\\(ArrayCollection|AbstractLazyCollection)::getIterator\(\) should either be compatible with IteratorAggregate::getIterator\(\): Traversable, or the \#\[\\ReturnTypeWillChange\] attribute should be used to temporarily suppress the notice%
+%Return type of Doctrine\\Common\\Collections\\(ArrayCollection|AbstractLazyCollection)::(offsetExists|offsetGet|offsetSet|offsetUnset)\(\$offset.*\) should either be compatible with ArrayAccess::(offsetExists|offsetGet|offsetSet|offsetUnset)\(mixed \$offset.*\): .+, or the \#\[\\ReturnTypeWillChange\] attribute should be used to temporarily suppress the notice%
