@@ -111,7 +111,7 @@ final class Engine
     /**
      * Delete an index and its content.
      */
-    public function delete(string $indexUid): ?array
+    public function delete(string $indexUid): array
     {
         return $this->client->deleteIndex($indexUid);
     }

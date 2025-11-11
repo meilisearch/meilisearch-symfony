@@ -13,7 +13,7 @@ return (new PhpCsFixer\Config())
     ->setFinder($finder)
     ->setRules([
         '@Symfony' => true,
-        '@PHP80Migration:risky' => true,
+        '@PHP8x0Migration:risky' => true,
         'native_function_invocation' => ['include' => ['@compiler_optimized'], 'scope' => 'namespaced'],
         'global_namespace_import' => [
             'import_classes' => false,
