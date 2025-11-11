@@ -15,7 +15,7 @@ use Meilisearch\Bundle\Services\SettingsUpdater;
 use Meilisearch\Bundle\Services\UnixTimestampNormalizer;
 use Meilisearch\Client;
 
-return static function(ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container) {
     $services = $container->services();
     $parameters = $container->parameters();
 
