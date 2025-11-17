@@ -39,37 +39,25 @@ jobs:
           MEILI_NO_ANALYTICS: true
     strategy:
       matrix:
-        php-version: ['7.4', '8.1', '8.2', '8.3', '8.4']
-        sf-version: ['5.4', '6.4', '7.0', '7.1', '7.2', '7.3']
+        php-version: ['8.1', '8.2', '8.3', '8.4']
+        sf-version: ['6.4', '7.0', '7.1', '7.2', '7.3', '8.0']
         exclude:
-          - php-version: '7.4'
-            sf-version: '6.4'
-          - php-version: '7.4'
-            sf-version: '7.0'
-          - php-version: '7.4'
-            sf-version: '7.1'
-          - php-version: '7.4'
-            sf-version: '7.3'
-          - php-version: '8.1'
-            sf-version: '5.4'
           - php-version: '8.1'
             sf-version: '7.0'
           - php-version: '8.1'
             sf-version: '7.1'
           - php-version: '8.1'
             sf-version: '7.3'
-          - php-version: '8.2'
-            sf-version: '5.4'
-          - php-version: '8.3'
-            sf-version: '5.4'
-          - php-version: '8.4'
-            sf-version: '5.4'
-          - php-version: '7.4'
-            sf-version: '7.2'
           - php-version: '8.0'
             sf-version: '7.2'
           - php-version: '8.1'
             sf-version: '7.2'
+          - php-version: '8.1'
+            sf-version: '8.0'
+          - php-version: '8.2'
+            sf-version: '8.0'
+          - php-version: '8.3'
+            sf-version: '8.0'
 
     name: integration-tests-against-rc (PHP ${{ matrix.php-version }}) (Symfony ${{ matrix.sf-version }}.*)
     steps:

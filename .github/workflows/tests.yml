@@ -27,20 +27,10 @@ jobs:
           MEILI_NO_ANALYTICS: true
     strategy:
       matrix:
-        php-version: [ '7.4', '8.1', '8.2', '8.3', '8.4' ]
-        sf-version: [ '5.4', '6.4', '7.0', '7.1', '7.2', '7.3' ]
+        php-version: [ '8.1', '8.2', '8.3', '8.4' ]
+        sf-version: [ '6.4', '7.0', '7.1', '7.2', '7.3' ]
         dependencies: [ 'default' ]
         exclude:
-          - php-version: '7.4'
-            sf-version: '6.4'
-          - php-version: '7.4'
-            sf-version: '7.0'
-          - php-version: '7.4'
-            sf-version: '7.1'
-          - php-version: '7.4'
-            sf-version: '7.2'
-          - php-version: '7.4'
-            sf-version: '7.3'
           - php-version: '8.1'
             sf-version: '5.4'
           - php-version: '8.1'
@@ -51,19 +41,13 @@ jobs:
             sf-version: '7.2'
           - php-version: '8.1'
             sf-version: '7.3'
+          - php-version: '8.1'
+            sf-version: '8.0'
           - php-version: '8.2'
-            sf-version: '5.4'
+            sf-version: '8.0'
           - php-version: '8.3'
-            sf-version: '5.4'
-          - php-version: '8.4'
-            sf-version: '5.4'
+            sf-version: '8.0'
         include:
-          - php-version: '7.4'
-            sf-version: '5.4'
-            dependencies: 'lowest'
-          - php-version: '7.4'
-            sf-version: '5.4'
-            dependencies: 'highest'
           - php-version: '8.4'
             sf-version: '6.4'
             dependencies: 'lowest'
@@ -83,7 +67,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          tools: composer, flex
+          tools: composer, flex, phpmd
 
       - name: Validate composer.json
         run: composer validate
@@ -137,7 +121,7 @@ jobs:
         run: composer lint:check
 
       - name: PHP MD
-        run: composer phpmd
+        run: phpmd src text phpmd.xml
         continue-on-error: true
 
       - name: PHPStan
