@@ -97,7 +97,7 @@ jobs:
         env:
           SYMFONY_REQUIRE: ${{ matrix.sf-version }}.*
         with:
-          composer-options: --no-interaction --no-progress --prefer-dist --dev
+          composer-options: --no-interaction --no-progress --prefer-dist --no-security-blocking
           dependency-versions: "${{ matrix.dependencies }}"
 
       - name: Run test suite
