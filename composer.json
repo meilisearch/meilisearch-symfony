@@ -47,7 +47,7 @@
     "phpunit/php-code-coverage": "^9.2.32",
     "symfony/doctrine-bridge": "^5.4.19 || ^6.0.7 || ^7.0",
     "symfony/filesystem": "^5.4 || ^6.0 || ^7.0",
-    "symfony/framework-bundle": "^5.4.17 || ^6.0 || ^7.0",
+    "symfony/framework-bundle": "^8.0.0",
     "symfony/http-client": "^5.4.47 || ^6.4.15 || ^7.1.8",
     "symfony/phpunit-bridge": "^7.3",
     "symfony/yaml": "^5.4 || ^6.0 || ^7.0"
