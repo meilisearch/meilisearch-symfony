@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Meilisearch\Bundle\Tests\Entity\ObjectId;
 
-final class DummyObjectId
+final class DummyObjectId implements \Stringable
 {
     private int $id;
 
