@@ -77,7 +77,7 @@ jobs:
     name: integration-tests (PHP ${{ matrix.php-version }}) (Symfony ${{ matrix.sf-version }}.*)${{ matrix.dependencies != 'default' && format(' ({0})', matrix.dependencies) || '' }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -115,7 +115,7 @@ jobs:
     env:
       PHP_CS_FIXER_IGNORE_ENV: 1
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -149,7 +149,7 @@ jobs:
     name: Yaml linting check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Yaml lint check
         uses: ibiqlik/action-yamllint@v3
         with:
@@ -163,7 +163,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 2
 
