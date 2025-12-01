@@ -7,7 +7,6 @@
 /.gitattributes                     export-ignore
 /.gitignore                         export-ignore
 /.php-cs-fixer.dist.php             export-ignore
-/bors.toml                          export-ignore
 /docker-compose.yml                 export-ignore
 /docker-entrypoint.sh               export-ignore
 /Dockerfile                         export-ignore
