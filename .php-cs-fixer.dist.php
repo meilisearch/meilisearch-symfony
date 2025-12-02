@@ -12,6 +12,7 @@ return (new PhpCsFixer\Config())
     ->setUnsupportedPhpVersionAllowed(true)
     ->setRiskyAllowed(true)
     ->setFinder($finder)
+    ->setUnsupportedPhpVersionAllowed(true)
     ->setRules([
         '@Symfony' => true,
         '@PHP8x0Migration:risky' => true,

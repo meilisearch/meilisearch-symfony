@@ -2,6 +2,7 @@
 %Since symfony/var-exporter 7.3: The "Symfony\\Component\\VarExporter\\LazyGhostTrait" trait is deprecated, use native lazy objects instead.%
 %Since symfony/var-exporter 7.3: Using ProxyHelper::generateLazyGhost\(\) is deprecated, use native lazy objects instead.%
 %Class "Doctrine\\ORM\\Proxy\\Autoloader" is deprecated. Use native lazy objects instead.%
+%Class "Doctrine\\ORM\\Proxy\\DefaultProxyClassNameResolver" is deprecated. Use native lazy objects instead.%
 %Calling Doctrine\\ORM\\Configuration::(setProxyDir|getProxyDir) is deprecated and will not be possible in Doctrine ORM 4.0%
 %Calling Doctrine\\ORM\\Configuration::(setAutoGenerateProxyClasses|getAutoGenerateProxyClasses) is deprecated and will not be possible in Doctrine ORM 4.0%
 %Calling Doctrine\\ORM\\Configuration::setProxyNamespace is deprecated and will not be possible in Doctrine ORM 4.0%
