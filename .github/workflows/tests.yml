@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       meilisearch:
-        image: getmeili/meilisearch:latest
+        image: getmeili/meilisearch-enterprise:latest
         ports:
           - '7700:7700'
         env:
