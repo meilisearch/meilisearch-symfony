@@ -9,7 +9,7 @@ use Meilisearch\Bundle\Event\SettingsUpdatedEvent;
 use Meilisearch\Bundle\Exception\InvalidIndiceException;
 use Meilisearch\Bundle\Exception\InvalidSettingName;
 use Meilisearch\Bundle\Exception\TaskException;
-use Meilisearch\Bundle\SearchService;
+use Meilisearch\Bundle\SearchManagerInterface;
 use Meilisearch\Bundle\SettingsProvider;
 use Meilisearch\Client;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -18,15 +18,14 @@ final class SettingsUpdater
 {
     private const DEFAULT_RESPONSE_TIMEOUT = 5000;
 
-    private Client $searchClient;
-    private EventDispatcherInterface $eventDispatcher;
     private Collection $configuration;
 
-    public function __construct(SearchService $searchService, Client $searchClient, EventDispatcherInterface $eventDispatcher)
-    {
-        $this->searchClient = $searchClient;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->configuration = $searchService->getConfiguration();
+    public function __construct(
+        SearchManagerInterface $searchManager,
+        private readonly Client $searchClient,
+        private readonly EventDispatcherInterface $eventDispatcher,
+    ) {
+        $this->configuration = $searchManager->getConfiguration();
     }
 
     /**
