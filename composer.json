@@ -21,12 +21,13 @@
     "php": "^8.1",
     "ext-json": "*",
     "meilisearch/meilisearch-php": "^1.16",
-    "symfony/config": "^6.4 || ^7.0",
-    "symfony/dependency-injection": "^6.4 || ^7.0",
-    "symfony/event-dispatcher": "^6.4 || ^7.0",
-    "symfony/http-kernel": "^6.4 || ^7.0",
-    "symfony/property-access": "^6.4 || ^7.0",
-    "symfony/serializer": "^6.4 || ^7.0"
+    "symfony/config": "^5.4 || ^6.0 || ^7.0 || ^8.0",
+    "symfony/dependency-injection": "^5.4.17 || ^6.0 || ^7.0 || ^8.0",
+    "symfony/event-dispatcher": "^5.4 || ^6.0 || ^7.0 || ^8.0",
+    "symfony/http-kernel": "^5.4 || ^6.0 || ^7.0 || ^8.0",
+    "symfony/polyfill-php80": "^1.27",
+    "symfony/property-access": "^5.4 || ^6.0 || ^7.0 || ^8.0",
+    "symfony/serializer": "^5.4 || ^6.0 || ^7.0 || ^8.0"
   },
   "require-dev": {
     "doctrine/doctrine-bundle": "^2.10 || ^3.0",
@@ -43,13 +44,13 @@
     "phpstan/phpstan-phpunit": "^2.0.8",
     "phpstan/phpstan-symfony": "^2.0.8",
     "phpunit/php-code-coverage": "^9.2.32",
-    "symfony/doctrine-bridge": "^6.4 || ^7.0",
-    "symfony/filesystem": "^6.4 || ^7.0",
-    "symfony/framework-bundle": "^6.4 || ^7.0",
-    "symfony/http-client": "^6.4.15 || ^7.1.8",
+    "symfony/doctrine-bridge": "^5.4.19 || ^6.0.7 || ^7.0 || ^8.0",
+    "symfony/filesystem": "^5.4 || ^6.0 || ^7.0 || ^8.0",
+    "symfony/framework-bundle": "^5.4.17 || ^6.0 || ^7.0 || ^8.0",
+    "symfony/http-client": "^5.4.47 || ^6.4.15 || ^7.1.8",
     "symfony/phpunit-bridge": "^7.3",
-    "symfony/yaml": "^6.4 || ^7.0",
-    "symfony/var-exporter": "^6.4 || ^7.0"
+    "symfony/yaml": "^5.4 || ^6.0 || ^7.0 || ^8.0",
+    "symfony/var-exporter": "^5.4 || ^6.0 || ^7.0 || ^8.0"
   },
   "autoload": {
     "psr-4": {
