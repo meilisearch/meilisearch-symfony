@@ -13,6 +13,7 @@ use Meilisearch\Bundle\DataProvider\DataProviderRegistryInterface;
 use Meilisearch\Bundle\Engine;
 use Meilisearch\Bundle\Exception\NotSearchableException;
 use Meilisearch\Bundle\Model\Aggregator;
+use Meilisearch\Bundle\Model\SearchResults;
 use Meilisearch\Bundle\SearchableObject;
 use Meilisearch\Bundle\SearchManagerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -192,18 +193,27 @@ final class MeilisearchManager implements SearchManagerInterface
         return $this->engine->delete($this->searchableAs($className));
     }
 
+    /**
+     * @template T of object
+     *
+     * @param class-string<T> $className
+     *
+     * @return SearchResults<T>
+     */
     public function search(
         string $className,
         string $query = '',
         array $searchParams = [],
-    ): array {
+    ): SearchResults {
         $this->assertIsSearchable($className);
 
         $response = $this->engine->search($query, $this->searchableAs($className), $searchParams + ['limit' => $this->configuration->get('nbResults')]);
+        $response['raw'] = $response;
         $hits = $response[self::RESULT_KEY_HITS];
 
         if ([] === $hits) {
-            return [];
+            /** @var SearchResults<T> */
+            return new SearchResults(...$response);
         }
 
         $baseClassName = $this->getBaseClassName($className);
@@ -232,13 +242,16 @@ final class MeilisearchManager implements SearchManagerInterface
             }
         }
 
-        return $results;
+        $response['hits'] = $results;
+
+        /** @var SearchResults<T> */
+        return new SearchResults(...$response);
     }
 
     public function rawSearch(
         string $className,
         string $query = '',
-        array $searchParams = []
+        array $searchParams = [],
     ): array {
         $this->assertIsSearchable($className);
 
@@ -405,7 +418,7 @@ final class MeilisearchManager implements SearchManagerInterface
         $resolver ??= (static function () {
             // Native lazy objects compatibility
             if (PHP_VERSION_ID >= 80400 && class_exists(LegacyReflectionFields::class)) {
-                return fn (object $object) => \get_class($object);
+                return fn (object $object) => $object::class;
             }
 
             // Doctrine ORM v3+ compatibility

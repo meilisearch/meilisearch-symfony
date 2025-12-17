@@ -210,12 +210,12 @@ final class MeilisearchService implements SearchService
         ObjectManager $objectManager,
         string $className,
         string $query = '',
-        array $searchParams = []
+        array $searchParams = [],
     ): array {
         trigger_deprecation('meilisearch/meilisearch-symfony', '0.16', 'Passing `Doctrine\Persistence\ObjectManager` to search() is deprecated. Use `Meilisearch\Bundle\Services\MeilisearchManager::search()` instead.');
 
         if (null !== $this->manager) {
-            return $this->manager->search($className, $query, $searchParams);
+            return $this->manager->search($className, $query, $searchParams)->jsonSerialize();
         }
 
         $this->assertIsSearchable($className);
@@ -256,7 +256,7 @@ final class MeilisearchService implements SearchService
     public function rawSearch(
         string $className,
         string $query = '',
-        array $searchParams = []
+        array $searchParams = [],
     ): array {
         trigger_deprecation('meilisearch/meilisearch-symfony', '0.16', 'Using `Meilisearch\Bundle\Services\MeilisearchService::rawSearch()` is deprecated. Use `Meilisearch\Bundle\Services\MeilisearchManager::rawSearch()` instead.');
 
@@ -408,7 +408,7 @@ final class MeilisearchService implements SearchService
     private function makeSearchServiceResponseFrom(
         ObjectManager $objectManager,
         array $entities,
-        callable $operation
+        callable $operation,
     ): array {
         $batch = [];
         foreach (array_chunk($entities, $this->configuration->get('batchSize')) as $chunk) {
@@ -455,7 +455,7 @@ final class MeilisearchService implements SearchService
         $resolver ??= (function () {
             // Native lazy objects compatibility
             if (PHP_VERSION_ID >= 80400 && class_exists(LegacyReflectionFields::class)) {
-                return fn (object $object) => \get_class($object);
+                return fn (object $object) => $object::class;
             }
 
             // Doctrine ORM v3+ compatibility

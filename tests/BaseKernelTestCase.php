@@ -9,6 +9,7 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Meilisearch\Bundle\Collection;
 use Meilisearch\Bundle\SearchManagerInterface;
 use Meilisearch\Client;
+use Meilisearch\Contracts\TasksQuery;
 use Meilisearch\Exceptions\ApiException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -26,10 +27,11 @@ abstract class BaseKernelTestCase extends KernelTestCase
         $this->client = $this->get('meilisearch.client');
         $this->searchManager = $this->get('meilisearch.manager');
 
-        $metaData = $this->entityManager->getMetadataFactory()->getAllMetadata();
+        $metadata = $this->entityManager->getMetadataFactory()->getAllMetadata();
+
         $tool = new SchemaTool($this->entityManager);
-        $tool->dropSchema($metaData);
-        $tool->createSchema($metaData);
+        $tool->dropSchema($metadata);
+        $tool->createSchema($metadata);
 
         $this->cleanUp();
     }
@@ -46,7 +48,9 @@ abstract class BaseKernelTestCase extends KernelTestCase
 
     protected function waitForAllTasks(): void
     {
-        foreach ($this->client->getTasks() as $task) {
+        $query = (new TasksQuery())->setStatuses(['enqueued', 'processing']);
+
+        foreach ($this->client->getTasks($query) as $task) {
             $this->client->waitForTask($task['uid']);
         }
     }
@@ -65,7 +69,7 @@ abstract class BaseKernelTestCase extends KernelTestCase
     {
         try {
             $this->searchManager->deleteByIndexName($indexName);
-        } catch (ApiException $e) {
+        } catch (ApiException) {
             // Don't assert undefined indexes.
             // Just plainly delete all existing indexes to get a clean state.
         }

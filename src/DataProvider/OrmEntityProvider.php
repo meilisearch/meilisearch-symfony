@@ -71,9 +71,9 @@ final class OrmEntityProvider implements DataProviderInterface
 
     public function getIdentifierValues(object $object): array
     {
-        $manager = $this->managerRegistry->getManagerForClass(\get_class($object));
+        $manager = $this->managerRegistry->getManagerForClass($object::class);
 
-        return $manager->getClassMetadata(\get_class($object))->getIdentifierValues($object);
+        return $manager->getClassMetadata($object::class)->getIdentifierValues($object);
     }
 
     public function normalizeIdentifiers(array $identifiers): string|int

@@ -31,7 +31,7 @@ final class SearchableObject
         private readonly object $object,
         private readonly \Stringable|string|int $identifier,
         private readonly NormalizerInterface $normalizer,
-        array $normalizationContext = []
+        array $normalizationContext = [],
     ) {
         $this->normalizationContext = array_merge($normalizationContext, ['meilisearch' => true]);
     }

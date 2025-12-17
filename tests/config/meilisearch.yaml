@@ -60,6 +60,10 @@ meilisearch:
       data_provider: Meilisearch\Bundle\Tests\Integration\Fixtures\ActorDataProvider
     - name: cars
       class: 'Meilisearch\Bundle\Tests\Entity\Car'
+    - name: movies
+      class: 'Meilisearch\Bundle\Tests\Entity\Movie'
+      settings:
+        filterableAttributes: ['genre']
 
 services:
   Meilisearch\Bundle\Tests\Integration\Fixtures\:

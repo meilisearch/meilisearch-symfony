@@ -27,7 +27,7 @@ final class MeilisearchCreateCommandTest extends BaseKernelTestCase
         $createCommandTester = new CommandTester($createCommand);
         $createCommandTester->execute([]);
 
-        $this->assertSame($this->client->getTasks()->getResults()[0]['type'], 'indexCreation');
+        $this->assertSame('indexCreation', $this->client->getTasks()->getResults()[0]['type']);
     }
 
     #[TestWith([false])]
@@ -61,6 +61,8 @@ Setting "stopWords" updated of "sf_phpunit__dynamic_settings".
 Setting "synonyms" updated of "sf_phpunit__dynamic_settings".
 Creating index sf_phpunit__actor for Meilisearch\Bundle\Tests\Entity\Actor
 Creating index sf_phpunit__cars for Meilisearch\Bundle\Tests\Entity\Car
+Creating index sf_phpunit__movies for Meilisearch\Bundle\Tests\Entity\Movie
+Setting "filterableAttributes" updated of "sf_phpunit__movies".
 Creating index sf_phpunit__aggregated for Meilisearch\Bundle\Tests\Entity\Post
 Creating index sf_phpunit__aggregated for Meilisearch\Bundle\Tests\Entity\Tag
 Done!
@@ -79,6 +81,7 @@ Creating index sf_phpunit__dummy_custom_groups for Meilisearch\Bundle\Tests\Enti
 Creating index sf_phpunit__dynamic_settings for Meilisearch\Bundle\Tests\Entity\DynamicSettings
 Creating index sf_phpunit__actor for Meilisearch\Bundle\Tests\Entity\Actor
 Creating index sf_phpunit__cars for Meilisearch\Bundle\Tests\Entity\Car
+Creating index sf_phpunit__movies for Meilisearch\Bundle\Tests\Entity\Movie
 Creating index sf_phpunit__aggregated for Meilisearch\Bundle\Tests\Entity\Post
 Creating index sf_phpunit__aggregated for Meilisearch\Bundle\Tests\Entity\Tag
 Done!

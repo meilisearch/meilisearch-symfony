@@ -39,6 +39,7 @@ Deleted sf_phpunit__dummy_custom_groups
 Deleted sf_phpunit__dynamic_settings
 Deleted sf_phpunit__actor
 Deleted sf_phpunit__cars
+Deleted sf_phpunit__movies
 Done!
 
 EOD, $clearOutput);
