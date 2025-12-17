@@ -7,7 +7,7 @@ namespace Meilisearch\Bundle\Command;
 use Meilisearch\Bundle\Collection;
 use Meilisearch\Bundle\EventListener\ConsoleOutputSubscriber;
 use Meilisearch\Bundle\Model\Aggregator;
-use Meilisearch\Bundle\SearchService;
+use Meilisearch\Bundle\SearchManagerInterface;
 use Meilisearch\Bundle\Services\SettingsUpdater;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,15 +19,12 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 #[AsCommand(name: 'meilisearch:update-settings', description: 'Push settings to meilisearch')]
 final class MeilisearchUpdateSettingsCommand extends IndexCommand
 {
-    private SettingsUpdater $settingsUpdater;
-    private EventDispatcherInterface $eventDispatcher;
-
-    public function __construct(SearchService $searchService, SettingsUpdater $settingsUpdater, EventDispatcherInterface $eventDispatcher)
-    {
-        parent::__construct($searchService);
-
-        $this->settingsUpdater = $settingsUpdater;
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(
+        SearchManagerInterface $searchManager,
+        private readonly SettingsUpdater $settingsUpdater,
+        private readonly EventDispatcherInterface $eventDispatcher,
+    ) {
+        parent::__construct($searchManager);
     }
 
     protected function configure(): void
@@ -56,7 +53,7 @@ final class MeilisearchUpdateSettingsCommand extends IndexCommand
         foreach ($entitiesToIndex as $index) {
             $entityClassName = $index['class'];
 
-            if (!$this->searchService->isSearchable($entityClassName)) {
+            if (!$this->searchManager->isSearchable($entityClassName)) {
                 continue;
             }
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle\Tests\Integration;
 
 use Meilisearch\Bundle\Engine;
-use Meilisearch\Bundle\SearchableEntity;
+use Meilisearch\Bundle\SearchableObject;
 use Meilisearch\Bundle\Tests\BaseKernelTestCase;
 use Meilisearch\Bundle\Tests\Entity\Image;
 use Meilisearch\Bundle\Tests\Entity\Post;
@@ -32,11 +32,13 @@ final class EngineTest extends BaseKernelTestCase
         $this->entityManager->persist($image);
         $this->entityManager->flush();
 
-        $searchableImage = new SearchableEntity(
+        $searchableImage = new SearchableObject(
             $this->getPrefix().'image',
+            'objectID',
             $image,
-            $this->get('doctrine')->getManager()->getClassMetadata(Image::class),
-            null
+            $image->getId(),
+            $this->get('serializer'),
+            ['groups' => ['force_empty']],
         );
 
         // Remove
@@ -57,16 +59,14 @@ final class EngineTest extends BaseKernelTestCase
 
     public function testRemovingMultipleEntity(): void
     {
-        $metadata = $this->get('doctrine')->getManager()->getClassMetadata(Post::class);
-        $serializer = $this->get('serializer');
-
         $this->entityManager->persist($post1 = new Post());
         $this->entityManager->persist($post2 = new Post());
 
         $this->entityManager->flush();
 
-        $postSearchable1 = new SearchableEntity($this->getPrefix().'posts', $post1, $metadata, $serializer);
-        $postSearchable2 = new SearchableEntity($this->getPrefix().'posts', $post2, $metadata, $serializer);
+        $serializer = $this->get('serializer');
+        $postSearchable1 = new SearchableObject($this->getPrefix().'posts', 'objectID', $post1, $post1->getId(), $serializer);
+        $postSearchable2 = new SearchableObject($this->getPrefix().'posts', 'objectID', $post2, $post2->getId(), $serializer);
 
         $result = $this->engine->remove([$postSearchable1, $postSearchable2]);
 
@@ -78,8 +78,6 @@ final class EngineTest extends BaseKernelTestCase
         foreach ([$postSearchable1, $postSearchable2] as $post) {
             $searchResult = $this->engine->search('', $post->getIndexUid(), []);
 
-            $this->assertArrayHasKey('hits', $searchResult);
-            $this->assertIsArray($searchResult['hits']);
             $this->assertEmpty($searchResult['hits']);
         }
     }

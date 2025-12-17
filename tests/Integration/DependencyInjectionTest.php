@@ -10,6 +10,13 @@ use Meilisearch\Bundle\MeilisearchBundle;
 
 final class DependencyInjectionTest extends AbstractExtensionTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->container->setParameter('kernel.bundles', []);
+    }
+
     protected function getContainerExtensions(): array
     {
         return [

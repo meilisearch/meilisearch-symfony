@@ -50,9 +50,13 @@ Say goodbye to server deployment and manual updates with [Meilisearch Cloud](htt
 
 * **Require** PHP 7.4 and later.
 * **Compatible** with Symfony 5.4 and later.
-* **Support** Doctrine ORM.
 
 For support of older versions, see older versions of this bundle.
+
+## Doctrine Integration
+
+To enable Doctrine integration you have to install `doctrine/orm` and `doctrine/doctrine-bundle`
+packages.
 
 ## 🤖 Compatibility with Meilisearch
 

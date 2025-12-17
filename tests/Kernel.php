@@ -33,22 +33,12 @@ final class Kernel extends HttpKernel
 
         $doctrineBundleV3 = !class_exists(BlacklistSchemaAssetFilter::class);
 
-        if (PHP_VERSION_ID >= 80000) {
-            if ($doctrineBundleV3) {
-                $loader->load(__DIR__.'/config/doctrine.yaml');
-            } elseif (class_exists(LegacyReflectionFields::class) && PHP_VERSION_ID >= 80400) {
-                $loader->load(__DIR__.'/config/doctrine_v2.yaml');
-            } else {
-                $loader->load(__DIR__.'/config/doctrine_old_proxy.yaml');
-            }
+        if ($doctrineBundleV3) {
+            $loader->load(__DIR__.'/config/doctrine.yaml');
+        } elseif (class_exists(LegacyReflectionFields::class) && PHP_VERSION_ID >= 80400) {
+            $loader->load(__DIR__.'/config/doctrine_v2.yaml');
         } else {
-            $container->prependExtensionConfig('framework', [
-                'annotations' => true,
-                'serializer' => ['enable_annotations' => true],
-                'router' => ['utf8' => true],
-            ]);
-
-            $loader->load(__DIR__.'/config/doctrine_php7.yaml');
+            $loader->load(__DIR__.'/config/doctrine_old_proxy.yaml');
         }
         $loader->load(__DIR__.'/config/meilisearch.yaml');
 
@@ -71,13 +61,6 @@ final class Kernel extends HttpKernel
             ]);
         }
 
-        // @phpstan-ignore-next-line
-        if (Kernel::VERSION_ID >= 60400) {
-            $container->prependExtensionConfig('framework', [
-                'handle_all_throwables' => true,
-                'php_errors' => ['log' => true],
-            ]);
-        }
         // @phpstan-ignore-next-line
         if (Kernel::VERSION_ID >= 70300) {
             $container->prependExtensionConfig('framework', [
