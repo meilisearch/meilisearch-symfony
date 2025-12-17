@@ -1,0 +1,47 @@
+name: Update library version
+
+on:
+  workflow_dispatch:
+    inputs:
+      new_version:
+        description: 'The new version (vX.Y.Z)'
+        required: true
+      target_branch:
+        description: 'Target branch for the version update'
+        required: true
+        type: choice
+        options:
+          - main
+          - doctrinebundlev3
+
+env:
+  NEW_VERSION: ${{ github.event.inputs.new_version }}
+  NEW_BRANCH: update-version-${{ github.event.inputs.new_version }}
+  GH_TOKEN: ${{ secrets.MEILI_BOT_GH_PAT }}
+
+jobs:
+  update-version:
+    name: Update version in MeilisearchBundle.php
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.inputs.target_branch }}
+      - name: Update MeilisearchBundle.php file
+        run: |
+          raw_new_version=$(echo $NEW_VERSION | cut -d 'v' -f 2)
+          new_string="const VERSION = '$raw_new_version';"
+          sed -i "s/const VERSION = .*/$new_string/" src/MeilisearchBundle.php
+      - name: Commit and push the changes to the ${{ env.NEW_BRANCH }} branch
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "Update version for the next release (${{ env.NEW_VERSION }}) in MeilisearchBundle.php"
+          new_branch: ${{ env.NEW_BRANCH }}
+      - name: Create the PR pointing to ${{ github.event.inputs.target_branch }}
+        run: |
+          gh pr create \
+            --title "Update version for the next release ($NEW_VERSION)" \
+            --body '⚠️ This PR is automatically generated. Check the new version is the expected one.' \
+            --label 'skip-changelog' \
+            --base ${{ github.event.inputs.target_branch }} \
+            --head ${{ env.NEW_BRANCH }}
