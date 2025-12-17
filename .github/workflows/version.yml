@@ -1,0 +1,44 @@
+name: Update Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to update to (e.g., v1.0.0)'
+        required: true
+        type: string
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update version in files
+        run: |
+          # Update version in composer.json
+          sed -i 's/"version".*/"version": "${{ github.event.inputs.version }}",/' composer.json
+          
+          # Update version in README.md if needed
+          # sed -i 's/version ".*"/version "${{ github.event.inputs.version }}"/' README.md
+          
+          # Commit changes
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add composer.json
+          git commit -m "chore: update version to ${{ github.event.inputs.version }}"
+          git push
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          release_name: Release ${{ github.event.inputs.version }}
+          draft: false
+          prerelease: false
