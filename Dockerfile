@@ -1,4 +1,4 @@
-FROM php:8.4-fpm as php
+FROM php:8.5-fpm as php
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
