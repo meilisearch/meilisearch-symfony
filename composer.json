@@ -36,13 +36,12 @@
     "nikic/php-parser": "^5.6.2",
     "nyholm/psr7": "^1.8.2",
     "php-cs-fixer/shim": "^3.90.0",
-    "phpmd/phpmd": "^2.15",
     "phpstan/extension-installer": "^1.4.3",
     "phpstan/phpstan": "^2.1.32",
     "phpstan/phpstan-doctrine": "^2.0.11",
     "phpstan/phpstan-phpunit": "^2.0.8",
     "phpstan/phpstan-symfony": "^2.0.8",
-    "phpunit/php-code-coverage": "^9.2.32",
+    "phpunit/php-code-coverage": "^10.1",
     "symfony/doctrine-bridge": "^6.4 || ^7.0 || ^8.0",
     "symfony/filesystem": "^6.4 || ^7.0 || ^8.0",
     "symfony/framework-bundle": "^6.4 || ^7.0 || ^8.0",
@@ -69,7 +68,6 @@
     }
   },
   "scripts": {
-    "phpmd": "./vendor/bin/phpmd src text phpmd.xml",
     "phpstan": "./vendor/bin/phpstan",
     "test:unit": "SYMFONY_DEPRECATIONS_HELPER='ignoreFile=./tests/baseline-ignore' ./vendor/bin/simple-phpunit --colors=always --verbose",
     "test:unit:coverage": "SYMFONY_DEPRECATIONS_HELPER='ignoreFile=./tests/baseline-ignore' XDEBUG_MODE=coverage ./vendor/bin/simple-phpunit --colors=always --coverage-html=tests/coverage",
