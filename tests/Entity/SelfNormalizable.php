@@ -10,32 +10,16 @@ use Meilisearch\Bundle\SearchableObject;
 use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-/**
- * @ORM\Entity
- */
 #[ORM\Entity]
 class SelfNormalizable implements NormalizableInterface
 {
-    /**
-     * @ORM\Id
-     *
-     * @ORM\Column(type="integer")
-     *
-     * @ORM\GeneratedValue("NONE")
-     */
     #[ORM\Id]
     #[ORM\Column(type: Types::INTEGER)]
     private int $id;
 
-    /**
-     * @ORM\Column(type="string")
-     */
     #[ORM\Column(type: Types::STRING)]
     private string $name;
 
-    /**
-     * @ORM\Column(type="datetime_immutable")
-     */
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private \DateTimeImmutable $createdAt;
 

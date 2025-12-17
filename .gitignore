@@ -4,6 +4,7 @@ composer.lock
 /vendor/
 /var/
 phpstan.neon
+/config/reference.php
 
 # Meilisearch
 /data.ms/*
