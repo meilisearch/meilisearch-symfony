@@ -6,6 +6,7 @@ namespace Meilisearch\Bundle\Tests\Integration\Command;
 
 use Meilisearch\Bundle\Tests\BaseKernelTestCase;
 use Meilisearch\Bundle\Tests\Entity\DynamicSettings;
+use PHPUnit\Framework\Attributes\TestWith;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -29,10 +30,8 @@ final class MeilisearchCreateCommandTest extends BaseKernelTestCase
         $this->assertSame($this->client->getTasks()->getResults()[0]['type'], 'indexCreation');
     }
 
-    /**
-     * @testWith [false]
-     *           [true]
-     */
+    #[TestWith([false])]
+    #[TestWith([true])]
     public function testWithoutIndices(bool $updateSettings): void
     {
         $createCommand = $this->application->find('meilisearch:create');
