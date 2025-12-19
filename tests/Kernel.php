@@ -9,7 +9,6 @@ use Doctrine\Bundle\DoctrineBundle\Dbal\BlacklistSchemaAssetFilter;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Doctrine\ORM\Mapping\LegacyReflectionFields;
 use Meilisearch\Bundle\MeilisearchBundle;
-use Symfony\Bridge\Doctrine\ArgumentResolver\EntityValueResolver;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -47,16 +46,6 @@ final class Kernel extends HttpKernel
                 'orm' => [
                     'report_fields_where_declared' => true,
                     'validate_xml_mapping' => true,
-                ],
-            ]);
-        }
-
-        if (class_exists(EntityValueResolver::class)) {
-            $container->prependExtensionConfig('doctrine', [
-                'orm' => [
-                    'controller_resolver' => [
-                        'auto_mapping' => false,
-                    ],
                 ],
             ]);
         }
