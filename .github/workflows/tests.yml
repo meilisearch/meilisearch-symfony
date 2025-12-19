@@ -116,7 +116,6 @@ jobs:
 
       - name: PHPStan
         run: |
-          vendor/bin/phpunit --version
           composer phpstan
 
   yaml-lint:
