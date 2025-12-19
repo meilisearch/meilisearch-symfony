@@ -70,8 +70,8 @@
   },
   "scripts": {
     "phpstan": "./vendor/bin/phpstan",
-    "test:unit": "SYMFONY_DEPRECATIONS_HELPER='ignoreFile=./tests/baseline-ignore' ./vendor/bin/phpunit --colors=always",
-    "test:unit:coverage": "SYMFONY_DEPRECATIONS_HELPER='ignoreFile=./tests/baseline-ignore' XDEBUG_MODE=coverage ./vendor/bin/phpunit --colors=always --coverage-html=tests/coverage",
+    "test:unit": "./vendor/bin/phpunit --colors=always",
+    "test:unit:coverage": "XDEBUG_MODE=coverage ./vendor/bin/phpunit --colors=always --coverage-html=tests/coverage",
     "lint:check": "./vendor/bin/php-cs-fixer fix -v --using-cache=no --dry-run",
     "lint:fix": "./vendor/bin/php-cs-fixer fix -v --using-cache=no"
   }
