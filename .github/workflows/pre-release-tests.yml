@@ -67,7 +67,16 @@ jobs:
             sf-version: '6.4'
             dependencies: 'highest'
           - php-version: '8.4'
-            sf-version: '7.3'
+            sf-version: '7.4'
+            dependencies: 'lowest'
+          - php-version: '8.4'
+            sf-version: '7.4'
+            dependencies: 'highest'
+          - php-version: '8.4'
+            sf-version: '8.0'
+            dependencies: 'lowest'
+          - php-version: '8.4'
+            sf-version: '8.0'
             dependencies: 'highest'
 
     name: integration-tests-against-rc (PHP ${{ matrix.php-version }}) (Symfony ${{ matrix.sf-version }}.*)${{ matrix.dependencies != 'default' && format(' ({0})', matrix.dependencies) || '' }}
