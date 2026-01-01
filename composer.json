@@ -43,7 +43,7 @@
     "phpstan/phpstan-phpunit": "^2.0.8",
     "phpstan/phpstan-symfony": "^2.0.8",
     "phpunit/php-code-coverage": "^9.2.32",
-    "symfony/doctrine-bridge": "^6.4 || ^7.0",
+    "symfony/doctrine-bridge": "^8.0.3",
     "symfony/filesystem": "^6.4 || ^7.0",
     "symfony/framework-bundle": "^6.4 || ^7.0",
     "symfony/http-client": "^6.4.15 || ^7.1.8",
