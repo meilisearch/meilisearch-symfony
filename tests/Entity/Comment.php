@@ -6,55 +6,26 @@ namespace Meilisearch\Bundle\Tests\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
-/**
- * @ORM\Entity
- *
- * @ORM\Table(name="comments")
- */
 #[ORM\Entity]
 #[ORM\Table(name: 'comments')]
 class Comment
 {
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue
-     *
-     * @ORM\Column(type="integer", nullable=true)
-     *
-     * @Groups({"searchable"})
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER)]
     #[Groups('searchable')]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Post", inversedBy="comments")
-     *
-     * @ORM\JoinColumn(nullable=false)
-     */
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     private Post $post;
 
-    /**
-     * @ORM\Column(type="text")
-     *
-     * @Groups({"searchable"})
-     */
     #[ORM\Column(type: Types::TEXT)]
     #[Groups('searchable')]
     private string $content;
 
-    /**
-     * @ORM\Column(type="datetime_immutable")
-     *
-     * @Groups({"searchable"})
-     */
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[Groups('searchable')]
     private \DateTimeImmutable $publishedAt;

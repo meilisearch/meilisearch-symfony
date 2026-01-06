@@ -11,38 +11,21 @@ use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-/**
- * @ORM\Entity
- */
 #[ORM\Entity]
 class Tag implements NormalizableInterface
 {
-    /**
-     * @ORM\Id
-     *
-     * @ORM\Column(type="integer")
-     */
     #[ORM\Id]
     #[ORM\Column(type: Types::INTEGER)]
     private int $id;
 
-    /**
-     * @ORM\Column(type="string")
-     */
     #[ORM\Column(type: Types::STRING)]
     private string $name;
 
-    /**
-     * @ORM\Column(type="smallint")
-     */
     #[ORM\Column(type: Types::SMALLINT)]
     private int $count = 0;
 
     private bool $public = true;
 
-    /**
-     * @ORM\Column(type="datetime_immutable")
-     */
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private \DateTimeImmutable $publishedAt;
 

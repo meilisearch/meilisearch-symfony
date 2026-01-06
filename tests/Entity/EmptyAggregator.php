@@ -7,9 +7,6 @@ namespace Meilisearch\Bundle\Tests\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Meilisearch\Bundle\Entity\Aggregator;
 
-/**
- * @ORM\Entity
- */
 #[ORM\Entity]
 class EmptyAggregator extends Aggregator
 {

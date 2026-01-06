@@ -8,72 +8,32 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
-/**
- * @ORM\Entity
- *
- * @ORM\Table(name="posts")
- */
 #[ORM\Entity]
 #[ORM\Table(name: 'posts')]
 class Post
 {
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue
-     *
-     * @ORM\Column(type="integer")
-     *
-     * @Groups({"searchable"})
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER)]
     #[Groups('searchable')]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     *
-     * @Groups({"searchable"})
-     */
     #[ORM\Column(type: Types::STRING, nullable: true)]
     #[Groups('searchable')]
     private ?string $title;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     *
-     * @Groups({"searchable"})
-     */
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups('searchable')]
     private ?string $content;
 
-    /**
-     * @ORM\Column(type="datetime_immutable")
-     *
-     * @Groups({"searchable"})
-     */
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[Groups('searchable')]
     private \DateTimeImmutable $publishedAt;
 
     /**
      * @var Collection<int, Comment>
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Comment",
-     *     mappedBy="post",
-     *     cascade={"persist"},
-     *     orphanRemoval=true
-     * )
-     *
-     * @ORM\OrderBy({"publishedAt": "DESC"})
-     *
-     * @Groups({"searchable"})
      */
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'post', cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['publishedAt' => 'DESC'])]
@@ -98,9 +58,7 @@ class Post
         $this->title = $title;
     }
 
-    /**
-     * @Groups({"searchable"})
-     */
+    #[Groups('searchable')]
     public function getTitle(): ?string
     {
         return $this->title;
@@ -111,9 +69,7 @@ class Post
         return $this->content;
     }
 
-    /**
-     * @Groups({"searchable"})
-     */
+    #[Groups('searchable')]
     public function getPublishedAt(): \DateTimeImmutable
     {
         return $this->publishedAt;

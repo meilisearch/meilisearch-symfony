@@ -7,43 +7,21 @@ namespace Meilisearch\Bundle\Tests\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Meilisearch\Bundle\Tests\Entity\ObjectId\DummyObjectId;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
-/**
- * @ORM\Entity
- *
- * @ORM\Table(name="pages")
- */
 #[ORM\Entity]
 #[ORM\Table(name: 'pages')]
 class Page
 {
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="NONE")
-     *
-     * @ORM\Column(type="dummy_object_id")
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'NONE')]
     #[ORM\Column(type: 'dummy_object_id')]
     private DummyObjectId $id;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     *
-     * @Groups({"searchable"})
-     */
     #[ORM\Column(type: Types::STRING)]
     #[Groups('searchable')]
     private string $title;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     *
-     * @Groups({"searchable"})
-     */
     #[ORM\Column(type: Types::TEXT)]
     #[Groups('searchable')]
     private string $content;
