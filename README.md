@@ -48,8 +48,8 @@ Say goodbye to server deployment and manual updates with [Meilisearch Cloud](htt
 
 ## 📝 Requirements
 
-* **Require** PHP 7.4 and later.
-* **Compatible** with Symfony 5.4 and later.
+* **Require** PHP 8.1 and later.
+* **Compatible** with Symfony 6.4 and later.
 
 For support of older versions, see older versions of this bundle.
 

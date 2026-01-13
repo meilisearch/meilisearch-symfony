@@ -26,7 +26,7 @@ jobs:
     strategy:
       matrix:
         php-version: [ '8.1', '8.2', '8.3', '8.4' ]
-        sf-version: ['6.4', '7.0', '7.1', '7.2', '7.3' ]
+        sf-version: ['6.4', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0' ]
         dependencies: [ 'default' ]
         exclude:
           - php-version: '8.1'
@@ -37,6 +37,14 @@ jobs:
             sf-version: '7.2'
           - php-version: '8.1'
             sf-version: '7.3'
+          - php-version: '8.1'
+            sf-version: '7.4'
+          - php-version: '8.1'
+            sf-version: '8.0'
+          - php-version: '8.2'
+            sf-version: '8.0'
+          - php-version: '8.3'
+            sf-version: '8.0'
         include:
           - php-version: '8.4'
             sf-version: '6.4'
@@ -45,7 +53,16 @@ jobs:
             sf-version: '6.4'
             dependencies: 'highest'
           - php-version: '8.4'
-            sf-version: '7.3'
+            sf-version: '7.4'
+            dependencies: 'lowest'
+          - php-version: '8.4'
+            sf-version: '7.4'
+            dependencies: 'highest'
+          - php-version: '8.4'
+            sf-version: '8.0'
+            dependencies: 'lowest'
+          - php-version: '8.4'
+            sf-version: '8.0'
             dependencies: 'highest'
 
     name: integration-tests (PHP ${{ matrix.php-version }}) (Symfony ${{ matrix.sf-version }}.*)${{ matrix.dependencies != 'default' && format(' ({0})', matrix.dependencies) || '' }}
@@ -89,6 +106,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.4
+          tools: phpmd
 
       - name: Validate composer.json and composer.lock
         run: composer validate
@@ -105,12 +123,11 @@ jobs:
         run: composer lint:check
 
       - name: PHP MD
-        run: composer phpmd
+        run: phpmd src text phpmd.xml
         continue-on-error: true
 
       - name: PHPStan
         run: |
-          vendor/bin/simple-phpunit --version
           composer phpstan
 
   yaml-lint:

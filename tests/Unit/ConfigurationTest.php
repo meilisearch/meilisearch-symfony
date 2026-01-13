@@ -6,6 +6,7 @@ namespace Meilisearch\Bundle\Tests\Unit;
 
 use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;
 use Meilisearch\Bundle\DependencyInjection\Configuration;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class ConfigurationTest extends KernelTestCase
@@ -15,17 +16,14 @@ final class ConfigurationTest extends KernelTestCase
     /**
      * @param array<mixed> $inputConfig
      * @param array<mixed> $expectedConfig
-     *
-     * @dataProvider dataTestConfigurationTree
      */
+    #[DataProvider('dataTestConfigurationTree')]
     public function testValidConfig(array $inputConfig, array $expectedConfig): void
     {
         $this->assertProcessedConfigurationEquals($inputConfig, $expectedConfig);
     }
 
-    /**
-     * @dataProvider dataTestSettingsDynamicCheckerInvalid
-     */
+    #[DataProvider('dataTestSettingsDynamicCheckerInvalid')]
     public function testSettingsDynamicCheckerInvalid(mixed $value): void
     {
         $this->assertConfigurationIsInvalid([
@@ -41,9 +39,7 @@ final class ConfigurationTest extends KernelTestCase
         ], 'Settings must be an array.');
     }
 
-    /**
-     * @dataProvider dataTestSettingsDynamicCheckerValid
-     */
+    #[DataProvider('dataTestSettingsDynamicCheckerValid')]
     public function testSettingsDynamicCheckerValid(mixed $value): void
     {
         $this->assertConfigurationIsValid([

@@ -9,7 +9,6 @@ doctrine:
             dummy_object_id: Meilisearch\Bundle\Tests\Dbal\Type\DummyObjectIdType
     orm:
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
-        auto_mapping: true
         mappings:
             App:
                 is_bundle: false
