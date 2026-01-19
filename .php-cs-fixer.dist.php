@@ -22,8 +22,7 @@ return (new PhpCsFixer\Config())
             'import_constants' => false,
         ],
         'no_superfluous_phpdoc_tags' => false,
-        // @todo: when we'll support only PHP 8.0 and upper, we can enable `parameters` for `trailing_comma_in_multiline` rule
-        'trailing_comma_in_multiline' => ['after_heredoc' => true, 'elements' => ['array_destructuring', 'arrays', 'match'/* , 'parameters' */]],
-        // @todo: when we'll support only PHP 8.0 and upper, we can enable this
-        'get_class_to_class_keyword' => false,
+        'trailing_comma_in_multiline' => ['after_heredoc' => true, 'elements' => ['array_destructuring', 'arrays', 'match', 'parameters']],
+        'get_class_to_class_keyword' => true,
+        'phpdoc_to_comment' => ['ignored_tags' => ['var']], // changes phpdoc and breaks SCA
     ]);

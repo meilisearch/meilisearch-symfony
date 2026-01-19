@@ -43,6 +43,7 @@ Setting "filterableAttributes" updated of "sf_phpunit__dynamic_settings".
 Setting "searchableAttributes" updated of "sf_phpunit__dynamic_settings".
 Setting "stopWords" updated of "sf_phpunit__dynamic_settings".
 Setting "synonyms" updated of "sf_phpunit__dynamic_settings".
+Setting "filterableAttributes" updated of "sf_phpunit__movies".
 Done!
 
 EOD, $importOutput);

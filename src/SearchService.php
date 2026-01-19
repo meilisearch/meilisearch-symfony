@@ -60,7 +60,7 @@ interface SearchService
         ObjectManager $objectManager,
         string $className,
         string $query = '',
-        array $searchParams = []
+        array $searchParams = [],
     ): array;
 
     /**
@@ -73,7 +73,7 @@ interface SearchService
     public function rawSearch(
         string $className,
         string $query = '',
-        array $searchParams = []
+        array $searchParams = [],
     ): array;
 
     /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle;
 
 use Meilisearch\Bundle\Exception\NotSearchableException;
+use Meilisearch\Bundle\Model\SearchResults;
 
 /**
  * @phpstan-import-type IndexDeletionTask from Engine
@@ -81,11 +82,11 @@ interface SearchManagerInterface
      * @param class-string<T> $className
      * @param array<mixed>    $searchParams
      *
-     * @return list<T>
+     * @return SearchResults<T>
      *
      * @throws NotSearchableException
      */
-    public function search(string $className, string $query = '', array $searchParams = []): array;
+    public function search(string $className, string $query = '', array $searchParams = []): SearchResults;
 
     /**
      * @param class-string $className

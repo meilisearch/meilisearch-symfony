@@ -38,6 +38,7 @@ Cleared sf_phpunit__dummy_custom_groups index of Meilisearch\Bundle\Tests\Entity
 Cleared sf_phpunit__dynamic_settings index of Meilisearch\Bundle\Tests\Entity\DynamicSettings
 Cleared sf_phpunit__actor index of Meilisearch\Bundle\Tests\Entity\Actor
 Cleared sf_phpunit__cars index of Meilisearch\Bundle\Tests\Entity\Car
+Cleared sf_phpunit__movies index of Meilisearch\Bundle\Tests\Entity\Movie
 Done!
 
 EOD, $commandTester->getDisplay());

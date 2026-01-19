@@ -8,6 +8,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ObjectManager;
 use Meilisearch\Bundle\Tests\BaseKernelTestCase;
 use Meilisearch\Bundle\Tests\Entity\Car;
+use Meilisearch\Bundle\Tests\Entity\Movie;
 use Meilisearch\Bundle\Tests\Entity\Post;
 use Meilisearch\Bundle\Tests\Entity\Tag;
 use Meilisearch\Endpoints\Indexes;
@@ -76,7 +77,7 @@ final class SearchTest extends BaseKernelTestCase
         $results = $this->searchManager->search(Post::class, $searchTerm);
         $this->assertCount(5, $results);
 
-        $resultTitles = array_map(static fn (Post $post) => $post->getTitle(), $results);
+        $resultTitles = array_map(static fn (Post $post) => $post->getTitle(), $results->getHits());
         $this->assertEqualsCanonicalizing($testDataTitles, $resultTitles);
 
         $results = $this->searchManager->rawSearch(Post::class, $searchTerm);
@@ -116,8 +117,12 @@ final class SearchTest extends BaseKernelTestCase
 
         $results = $this->searchManager->search(Post::class, 'Test', ['page' => 2, 'hitsPerPage' => 2]);
         $this->assertCount(2, $results);
+        $this->assertSame(2, $results->getPage());
+        $this->assertSame(2, $results->getHitsPerPage());
+        $this->assertSame(5, $results->getTotalHits());
+        $this->assertSame(3, $results->getTotalPages());
 
-        $resultTitles = array_map(static fn (Post $post) => $post->getTitle(), $results);
+        $resultTitles = array_map(static fn (Post $post) => $post->getTitle(), $results->getHits());
         $this->assertEqualsCanonicalizing(\array_slice($testDataTitles, 2, 2), $resultTitles);
     }
 
@@ -161,5 +166,30 @@ final class SearchTest extends BaseKernelTestCase
         $results = $this->searchManager->search(Car::class, 'Audi');
 
         $this->assertCount(3, $results);
+    }
+
+    public function testSearchWithFacet(): void
+    {
+        $this->entityManager->persist(new Movie('Pride and Prejudice', 'romance'));
+        $this->entityManager->persist(new Movie('Le Petit Prince', 'adventure'));
+        $this->entityManager->persist(new Movie('Le Rouge et le Noir', 'romance'));
+        $this->entityManager->persist(new Movie('Alice In Wonderland', 'fantasy'));
+        $this->entityManager->persist(new Movie('The Hobbit', 'romance'));
+        $this->entityManager->persist(new Movie('Harry Potter and the Half-Blood Prince', 'fantasy'));
+        $this->entityManager->persist(new Movie('The Hitchhiker\'s Guide to the Galaxy'));
+
+        $this->entityManager->flush();
+
+        $command = $this->application->find('meilisearch:import');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            '--indices' => 'movies',
+        ]);
+
+        $this->waitForAllTasks();
+
+        $results = $this->searchManager->search(Movie::class, 'prince', ['facets' => ['genre']]);
+
+        $this->assertSame(['genre' => ['adventure' => 1, 'fantasy' => 1]], $results->getFacetDistribution());
     }
 }
