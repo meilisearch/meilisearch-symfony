@@ -174,12 +174,12 @@ final class MeilisearchService implements SearchService
         trigger_deprecation('meilisearch/meilisearch-symfony', '0.16', 'Using `Meilisearch\Bundle\Services\MeilisearchService::clear()` is deprecated. Use `Meilisearch\Bundle\Services\MeilisearchManager::clear()` instead.');
 
         if (null !== $this->manager) {
-            return $this->manager->clear($className);
+            return $this->manager->clear($className)->toArray();
         }
 
         $this->assertIsSearchable($className);
 
-        return $this->engine->clear($this->searchableAs($className));
+        return $this->engine->clear($this->searchableAs($className))->toArray();
     }
 
     public function deleteByIndexName(string $indexName): array
@@ -187,10 +187,10 @@ final class MeilisearchService implements SearchService
         trigger_deprecation('meilisearch/meilisearch-symfony', '0.16', 'Using `Meilisearch\Bundle\Services\MeilisearchService::deleteByIndexName()` is deprecated. Use `Meilisearch\Bundle\Services\MeilisearchManager::deleteByIndexName()` instead.');
 
         if (null !== $this->manager) {
-            return $this->manager->deleteByIndexName($indexName);
+            return $this->manager->deleteByIndexName($indexName)->toArray();
         }
 
-        return $this->engine->delete($indexName);
+        return $this->engine->delete($indexName)->toArray();
     }
 
     public function delete(string $className): array
@@ -198,12 +198,12 @@ final class MeilisearchService implements SearchService
         trigger_deprecation('meilisearch/meilisearch-symfony', '0.16', 'Using `Meilisearch\Bundle\Services\MeilisearchService::delete()` is deprecated. Use `Meilisearch\Bundle\Services\MeilisearchManager::delete()` instead.');
 
         if (null !== $this->manager) {
-            return $this->manager->delete($className);
+            return $this->manager->delete($className)->toArray();
         }
 
         $this->assertIsSearchable($className);
 
-        return $this->engine->delete($this->searchableAs($className));
+        return $this->engine->delete($this->searchableAs($className))->toArray();
     }
 
     public function search(

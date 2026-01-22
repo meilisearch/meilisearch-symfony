@@ -6,6 +6,7 @@ namespace Meilisearch\Bundle\Tests\Integration\Command;
 
 use Meilisearch\Bundle\Tests\BaseKernelTestCase;
 use Meilisearch\Bundle\Tests\Entity\DynamicSettings;
+use Meilisearch\Contracts\TaskType;
 use PHPUnit\Framework\Attributes\TestWith;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -27,7 +28,7 @@ final class MeilisearchCreateCommandTest extends BaseKernelTestCase
         $createCommandTester = new CommandTester($createCommand);
         $createCommandTester->execute([]);
 
-        $this->assertSame('indexCreation', $this->client->getTasks()->getResults()[0]['type']);
+        $this->assertSame(TaskType::IndexCreation, $this->client->getTasks()->getResults()[0]->getType());
     }
 
     #[TestWith([false])]

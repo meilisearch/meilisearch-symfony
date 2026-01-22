@@ -7,11 +7,15 @@ namespace Meilisearch\Bundle\Tests;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Meilisearch\Bundle\Collection;
+use Meilisearch\Bundle\Engine;
 use Meilisearch\Bundle\SearchManagerInterface;
 use Meilisearch\Client;
+use Meilisearch\Contracts\Task;
 use Meilisearch\Contracts\TasksQuery;
 use Meilisearch\Exceptions\ApiException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+
+use function Meilisearch\partial;
 
 abstract class BaseKernelTestCase extends KernelTestCase
 {
@@ -51,7 +55,11 @@ abstract class BaseKernelTestCase extends KernelTestCase
         $query = (new TasksQuery())->setStatuses(['enqueued', 'processing']);
 
         foreach ($this->client->getTasks($query) as $task) {
-            $this->client->waitForTask($task['uid']);
+            if (\is_array($task)) {
+                $http = (new \ReflectionObject($this->client))->getProperty('http')->getValue($this->client);
+                $task = Task::fromArray($task, partial(Engine::waitTask(...), $http));
+            }
+            $task->wait();
         }
     }
 

@@ -16,13 +16,11 @@ use Meilisearch\Bundle\Model\Aggregator;
 use Meilisearch\Bundle\Model\SearchResults;
 use Meilisearch\Bundle\SearchableObject;
 use Meilisearch\Bundle\SearchManagerInterface;
+use Meilisearch\Contracts\Task;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * @phpstan-import-type IndexDeletionTask from Engine
- * @phpstan-import-type DocumentDeletionTask from Engine
- * @phpstan-import-type DocumentAdditionOrUpdateTask from Engine
  * @phpstan-import-type SearchResponse from Engine
  */
 final class MeilisearchManager implements SearchManagerInterface
@@ -174,19 +172,19 @@ final class MeilisearchManager implements SearchManagerInterface
         return array_merge(...$responses);
     }
 
-    public function clear(string $className): array
+    public function clear(string $className): Task
     {
         $this->assertIsSearchable($className);
 
         return $this->engine->clear($this->searchableAs($className));
     }
 
-    public function deleteByIndexName(string $indexName): array
+    public function deleteByIndexName(string $indexName): Task
     {
         return $this->engine->delete($indexName);
     }
 
-    public function delete(string $className): array
+    public function delete(string $className): Task
     {
         $this->assertIsSearchable($className);
 
