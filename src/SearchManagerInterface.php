@@ -6,11 +6,9 @@ namespace Meilisearch\Bundle;
 
 use Meilisearch\Bundle\Exception\NotSearchableException;
 use Meilisearch\Bundle\Model\SearchResults;
+use Meilisearch\Contracts\Task;
 
 /**
- * @phpstan-import-type IndexDeletionTask from Engine
- * @phpstan-import-type DocumentDeletionTask from Engine
- * @phpstan-import-type DocumentAdditionOrUpdateTask from Engine
  * @phpstan-import-type SearchResponse from Engine
  */
 interface SearchManagerInterface
@@ -36,7 +34,7 @@ interface SearchManagerInterface
     /**
      * @param object|array<object> $searchable
      *
-     * @return list<array<non-empty-string, DocumentAdditionOrUpdateTask>>
+     * @return list<array<non-empty-string, Task>>
      *
      * @throws NotSearchableException
      */
@@ -45,7 +43,7 @@ interface SearchManagerInterface
     /**
      * @param object|array<object> $searchable
      *
-     * @return array<non-empty-string, list<DocumentDeletionTask>>
+     * @return array<non-empty-string, list<Task>>
      *
      * @throws NotSearchableException
      */
@@ -54,27 +52,21 @@ interface SearchManagerInterface
     /**
      * @param class-string $className
      *
-     * @return DocumentDeletionTask
-     *
      * @throws NotSearchableException
      */
-    public function clear(string $className): array;
+    public function clear(string $className): Task;
 
     /**
      * @param non-empty-string $indexName
-     *
-     * @return IndexDeletionTask
      */
-    public function deleteByIndexName(string $indexName): array;
+    public function deleteByIndexName(string $indexName): Task;
 
     /**
      * @param class-string $className
      *
-     * @return IndexDeletionTask
-     *
      * @throws NotSearchableException
      */
-    public function delete(string $className): array;
+    public function delete(string $className): Task;
 
     /**
      * @template T of object

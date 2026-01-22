@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Meilisearch\Bundle\Command;
 
+use Meilisearch\Contracts\TaskStatus;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -27,9 +28,9 @@ final class MeilisearchClearCommand extends IndexCommand
             $indexName = $index['prefixed_name'];
             $className = $index['class'];
             $msg = "Cleared <info>$indexName</info> index of <comment>$className</comment>";
-            $array = $this->searchManager->clear($className);
+            $task = $this->searchManager->clear($className);
 
-            if ('failed' === $array['status']) {
+            if (TaskStatus::Failed === $task->getStatus()) {
                 $msg = "<error>Index <info>$indexName</info>  couldn\'t be cleared</error>";
             }
 
