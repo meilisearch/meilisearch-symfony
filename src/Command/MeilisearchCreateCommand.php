@@ -5,17 +5,21 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle\Command;
 
 use Meilisearch\Bundle\Collection;
+use Meilisearch\Bundle\Engine;
 use Meilisearch\Bundle\EventListener\ConsoleOutputSubscriber;
 use Meilisearch\Bundle\Model\Aggregator;
 use Meilisearch\Bundle\SearchManagerInterface;
 use Meilisearch\Bundle\Services\SettingsUpdater;
 use Meilisearch\Client;
+use Meilisearch\Contracts\Task;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+use function Meilisearch\partial;
 
 #[AsCommand(name: 'meilisearch:create', description: 'Create indexes', aliases: ['meili:create'])]
 final class MeilisearchCreateCommand extends IndexCommand
@@ -72,7 +76,11 @@ final class MeilisearchCreateCommand extends IndexCommand
             $output->writeln('<info>Creating index '.$indexName.' for '.$entityClassName.'</info>');
 
             $task = $this->searchClient->createIndex($indexName);
-            $this->searchClient->waitForTask($task['taskUid'], $responseTimeout);
+            if (\is_array($task)) {
+                $http = (new \ReflectionObject($this->searchClient))->getProperty('http')->getValue($this->searchClient);
+                $task = Task::fromArray($task, partial(Engine::waitTask(...), $http));
+            }
+            $task->wait($responseTimeout);
 
             if ($updateSettings) {
                 $this->settingsUpdater->update($indexName, $responseTimeout);

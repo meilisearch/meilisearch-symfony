@@ -21,9 +21,13 @@ final class MeilisearchClearCommandTest extends BaseKernelTestCase
 
     public function testClear(): void
     {
-        $command = $this->application->find('meilisearch:clear');
-        $commandTester = new CommandTester($command);
-        $commandTester->execute([]);
+        $createCommand = $this->application->find('meilisearch:create');
+        $createCommandTester = new CommandTester($createCommand);
+        $createCommandTester->execute([]);
+
+        $clearCommand = $this->application->find('meilisearch:clear');
+        $clearCommandTester = new CommandTester($clearCommand);
+        $clearCommandTester->execute([]);
 
         $this->assertSame(<<<'EOD'
 Cleared sf_phpunit__posts index of Meilisearch\Bundle\Tests\Entity\Post
@@ -41,20 +45,24 @@ Cleared sf_phpunit__cars index of Meilisearch\Bundle\Tests\Entity\Car
 Cleared sf_phpunit__movies index of Meilisearch\Bundle\Tests\Entity\Movie
 Done!
 
-EOD, $commandTester->getDisplay());
+EOD, $clearCommandTester->getDisplay());
     }
 
     public function testClearWithIndice(): void
     {
-        $command = $this->application->find('meilisearch:clear');
-        $commandTester = new CommandTester($command);
-        $commandTester->execute(['--indices' => 'posts']);
+        $createCommand = $this->application->find('meilisearch:create');
+        $createCommandTester = new CommandTester($createCommand);
+        $createCommandTester->execute(['--indices' => 'posts']);
+
+        $clearCommand = $this->application->find('meilisearch:clear');
+        $clearCommandTester = new CommandTester($clearCommand);
+        $clearCommandTester->execute(['--indices' => 'posts']);
 
         $this->assertSame(<<<'EOD'
 Cleared sf_phpunit__posts index of Meilisearch\Bundle\Tests\Entity\Post
 Done!
 
-EOD, $commandTester->getDisplay());
+EOD, $clearCommandTester->getDisplay());
     }
 
     public function testClearUnknownIndex(): void

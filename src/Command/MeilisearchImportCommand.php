@@ -12,6 +12,7 @@ use Meilisearch\Bundle\Model\Aggregator;
 use Meilisearch\Bundle\SearchManagerInterface;
 use Meilisearch\Bundle\Services\SettingsUpdater;
 use Meilisearch\Client;
+use Meilisearch\Contracts\TaskStatus;
 use Meilisearch\Exceptions\TimeOutException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -172,16 +173,14 @@ final class MeilisearchImportCommand extends IndexCommand
         foreach ($batch as $chunk) {
             foreach ($chunk as $indexName => $apiResponse) {
                 $formattedResponse[$indexName] ??= 0;
-                $indexInstance = $this->searchClient->index($indexName);
 
-                $indexInstance->waitForTask($apiResponse['taskUid'], $responseTimeout);
-                $task = $indexInstance->getTask($apiResponse['taskUid']);
+                $task = $apiResponse->wait($responseTimeout);
 
-                if ('failed' === $task['status']) {
-                    throw new TaskException($task['error']['message']);
+                if (TaskStatus::Failed === $task->getStatus()) {
+                    throw new TaskException($task->getError()->message);
                 }
 
-                $formattedResponse[$indexName] += $task['details']['indexedDocuments'];
+                $formattedResponse[$indexName] += $task->getDetails()->indexedDocuments;
             }
         }
 

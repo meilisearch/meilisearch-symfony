@@ -20,7 +20,7 @@
   "require": {
     "php": "^8.1",
     "ext-json": "*",
-    "meilisearch/meilisearch-php": "^1.16",
+    "meilisearch/meilisearch-php": "^1.16 || v2.0.0-beta.5",
     "symfony/config": "^6.4 || ^7.0 || ^8.0",
     "symfony/dependency-injection": "^6.4 || ^7.0 || ^8.0",
     "symfony/event-dispatcher": "^6.4 || ^7.0 || ^8.0",
@@ -53,7 +53,10 @@
   "autoload": {
     "psr-4": {
       "Meilisearch\\Bundle\\": "src/"
-    }
+    },
+    "files": [
+      "src/polyfill.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
@@ -69,8 +72,8 @@
   },
   "scripts": {
     "phpstan": "./vendor/bin/phpstan",
-    "test:unit": "./vendor/bin/phpunit --colors=always",
-    "test:unit:coverage": "XDEBUG_MODE=coverage ./vendor/bin/phpunit --colors=always --coverage-html=tests/coverage",
+    "test:unit": "./vendor/bin/phpunit --use-baseline phpunit.baseline.xml --colors=always",
+    "test:unit:coverage": "XDEBUG_MODE=coverage ./vendor/bin/phpunit --use-baseline phpunit.baseline.xml --colors=always --coverage-html=tests/coverage",
     "lint:check": "./vendor/bin/php-cs-fixer fix -v --using-cache=no --dry-run",
     "lint:fix": "./vendor/bin/php-cs-fixer fix -v --using-cache=no"
   }

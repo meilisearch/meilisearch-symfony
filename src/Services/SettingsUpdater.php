@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle\Services;
 
 use Meilisearch\Bundle\Collection;
+use Meilisearch\Bundle\Engine;
 use Meilisearch\Bundle\Event\SettingsUpdatedEvent;
 use Meilisearch\Bundle\Exception\InvalidIndiceException;
 use Meilisearch\Bundle\Exception\InvalidSettingName;
@@ -12,7 +13,11 @@ use Meilisearch\Bundle\Exception\TaskException;
 use Meilisearch\Bundle\SearchManagerInterface;
 use Meilisearch\Bundle\SettingsProvider;
 use Meilisearch\Client;
+use Meilisearch\Contracts\Task;
+use Meilisearch\Contracts\TaskStatus;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+use function Meilisearch\partial;
 
 final class SettingsUpdater
 {
@@ -63,13 +68,14 @@ final class SettingsUpdater
 
             // Update
             $task = $indexInstance->{$method}($value);
+            if (\is_array($task)) {
+                $http = (new \ReflectionObject($this->searchClient))->getProperty('http')->getValue($this->searchClient);
+                $task = Task::fromArray($task, partial(Engine::waitTask(...), $http));
+            }
+            $task = $task->wait($responseTimeout);
 
-            // Get task information using uid
-            $indexInstance->waitForTask($task['taskUid'], $responseTimeout);
-            $task = $indexInstance->getTask($task['taskUid']);
-
-            if ('failed' === $task['status']) {
-                throw new TaskException($task['error']['message']);
+            if (TaskStatus::Failed === $task->getStatus()) {
+                throw new TaskException($task->getError()->message);
             }
 
             $this->eventDispatcher->dispatch(new SettingsUpdatedEvent($index['class'], $indexName, $variable));
