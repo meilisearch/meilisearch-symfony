@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 final class MeilisearchBundle extends Bundle
 {
-    public const VERSION = '0.16.0';
+    public const VERSION = '0.16.1';
 
     public static function qualifiedVersion(): string
     {
