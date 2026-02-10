@@ -98,20 +98,19 @@ final class MeilisearchExtension extends Extension
 
     private function registerDataProviders(ContainerBuilder $container, array $config, bool $doctrineEnabled): void
     {
+        $customProviders = [];
+
         foreach ($config['indices'] as $indice) {
             $indexName = $indice['name'];
             $class = $indice['class'];
             $idNormalizer = $indice['id_normalizer'];
 
             if (null !== $indice['data_provider']) {
-                if ($container->hasDefinition($indice['data_provider'])) {
-                    $container
-                        ->findDefinition($indice['data_provider'])
-                        ->addTag('meilisearch.data_provider', [
-                            'index' => $indexName,
-                            'class' => $class,
-                        ]);
-                }
+                $customProviders[$indice['data_provider']] ??= [];
+                $customProviders[$indice['data_provider']][] = [
+                    'index' => $indexName,
+                    'class' => $class,
+                ];
 
                 continue;
             }
@@ -130,6 +129,8 @@ final class MeilisearchExtension extends Extension
                 }
             }
         }
+
+        $container->setParameter('.meilisearch.custom_data_providers', $customProviders);
     }
 
     private function registerOrmProvider(ContainerBuilder $container, string $indexName, string $class, string $idNormalizer): void
