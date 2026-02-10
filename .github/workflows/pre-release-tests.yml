@@ -37,10 +37,11 @@ jobs:
         env:
           MEILI_MASTER_KEY: masterKey
           MEILI_NO_ANALYTICS: true
+          MEILI_EXPERIMENTAL_ALLOWED_IP_NETWORKS: any
     strategy:
       matrix:
         php-version: [ '8.1', '8.2', '8.3', '8.4' ]
-        sf-version: ['6.4', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0' ]
+        sf-version: [ '6.4', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0' ]
         dependencies: [ 'default' ]
         exclude:
           - php-version: '8.1'

@@ -2,6 +2,12 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
+	'message' => '#^Call to function is_array\\(\\) with Meilisearch\\\\Contracts\\\\Task will always evaluate to false\\.$#',
+	'identifier' => 'function.impossibleType',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Command/MeilisearchCreateCommand.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Call to static method getClass\\(\\) on an unknown class Doctrine\\\\Common\\\\Util\\\\ClassUtils\\.$#',
 	'identifier' => 'class.notFound',
 	'count' => 1,

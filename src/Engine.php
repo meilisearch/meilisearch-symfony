@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle;
 
 use Meilisearch\Client;
+use Meilisearch\Contracts\Http;
+use Meilisearch\Contracts\Task;
 use Meilisearch\Exceptions\ApiException;
+use Meilisearch\Exceptions\TimeOutException;
+
+use function Meilisearch\partial;
 
 /**
- * @phpstan-type TaskStatus 'canceled'|'enqueued'|'failed'|'succeeded'|'processing'|non-empty-string
  * @phpstan-type SearchResponse array{
  *     hits: array<int, mixed>,
  *     query: string,
@@ -18,27 +22,6 @@ use Meilisearch\Exceptions\ApiException;
  *     estimatedTotalHits: int,
  *     requestUid: non-empty-string,
  *     nbHits: int
- * }
- * @phpstan-type IndexDeletionTask array{
- *     taskUid: int,
- *     indexUid: non-empty-string,
- *     status: TaskStatus,
- *     type: 'indexDeletion',
- *     enqueuedAt: non-empty-string
- * }
- * @phpstan-type DocumentDeletionTask array{
- *     taskUid: int,
- *     indexUid: non-empty-string,
- *     status: TaskStatus,
- *     type: 'documentDeletion',
- *     enqueuedAt: non-empty-string
- * }
- * @phpstan-type DocumentAdditionOrUpdateTask array{
- *     taskUid: int,
- *     indexUid: non-empty-string,
- *     status: TaskStatus,
- *     type: 'documentAdditionOrUpdate',
- *     enqueuedAt: non-empty-string
  * }
  */
 final class Engine
@@ -54,7 +37,7 @@ final class Engine
      *
      * @param SearchableObject|array<SearchableObject> $searchableObjects
      *
-     * @return array<non-empty-string, DocumentAdditionOrUpdateTask>
+     * @return array<non-empty-string, Task>
      *
      * @throws ApiException
      */
@@ -81,9 +64,11 @@ final class Engine
 
         $result = [];
         foreach ($data as $indexUid => $batch) {
-            $result[$indexUid] = $this->client
-                ->index($indexUid)
-                ->addDocuments($batch['documents'], $batch['primaryKey']);
+            $result[$indexUid] = $this->wrapTask(
+                $this->client
+                    ->index($indexUid)
+                    ->addDocuments($batch['documents'], $batch['primaryKey'])
+            );
         }
 
         return $result;
@@ -95,7 +80,7 @@ final class Engine
      *
      * @param SearchableObject|array<SearchableObject> $searchableObjects
      *
-     * @return array<non-empty-string, list<DocumentDeletionTask>>
+     * @return array<non-empty-string, list<Task>>
      */
     public function remove(SearchableObject|array $searchableObjects): array
     {
@@ -116,9 +101,11 @@ final class Engine
         foreach ($data as $indexUid => $objects) {
             $result[$indexUid] = [];
             foreach ($objects as $object) {
-                $result[$indexUid][] = $this->client
-                    ->index($indexUid)
-                    ->deleteDocument($object);
+                $result[$indexUid][] = $this->wrapTask(
+                    $this->client
+                        ->index($indexUid)
+                        ->deleteDocument($object)
+                );
             }
         }
 
@@ -130,23 +117,19 @@ final class Engine
      * This method enables you to delete an index’s contents (records).
      * Will fail if the index does not exist.
      *
-     * @return DocumentDeletionTask
-     *
      * @throws ApiException
      */
-    public function clear(string $indexUid): array
+    public function clear(string $indexUid): Task
     {
-        return $this->client->index($indexUid)->deleteAllDocuments();
+        return $this->wrapTask($this->client->index($indexUid)->deleteAllDocuments());
     }
 
     /**
      * Delete an index and its content.
-     *
-     * @return IndexDeletionTask
      */
-    public function delete(string $indexUid): array
+    public function delete(string $indexUid): Task
     {
-        return $this->client->deleteIndex($indexUid);
+        return $this->wrapTask($this->client->deleteIndex($indexUid));
     }
 
     /**
@@ -178,5 +161,39 @@ final class Engine
         }
 
         return $id;
+    }
+
+    private function wrapTask(Task|array $task): Task
+    {
+        if ($task instanceof Task) {
+            return $task;
+        }
+
+        $http = (new \ReflectionObject($this->client))->getProperty('http')->getValue($this->client);
+
+        return Task::fromArray($task, partial(self::waitTask(...), $http));
+    }
+
+    /**
+     * @internal
+     *
+     * @throws TimeOutException
+     */
+    public static function waitTask(Http $http, int $taskUid, int $timeoutInMs, int $intervalInMs): Task
+    {
+        $timeoutTemp = 0;
+
+        while ($timeoutInMs > $timeoutTemp) {
+            $task = Task::fromArray($http->get('/tasks/'.$taskUid), partial(self::waitTask(...), $http));
+
+            if ($task->isFinished()) {
+                return $task;
+            }
+
+            $timeoutTemp += $intervalInMs;
+            usleep(1000 * $intervalInMs);
+        }
+
+        throw new TimeOutException();
     }
 }

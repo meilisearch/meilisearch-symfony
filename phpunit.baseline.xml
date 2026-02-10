@@ -1,0 +1,1491 @@
+<?xml version="1.0"?>
+<files version="1">
+ <file path="vendor/symfony/config/ResourceCheckerConfigCache.php">
+  <line number="112" hash="b44d69a77d656e55a38d939a0c473e8b9a731e2b">
+   <issue><![CDATA[Symfony\Component\Config\ResourceCheckerConfigCache::write(): Implicitly marking parameter $metadata as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/ConfigCacheInterface.php">
+  <line number="46" hash="426ae3864525e35a32b3fc190a30d723d61c9c9c">
+   <issue><![CDATA[Symfony\Component\Config\ConfigCacheInterface::write(): Implicitly marking parameter $metadata as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/cache/Adapter/ApcuAdapter.php">
+  <line number="28" hash="9481d4522721e463678cea39ba1b2c1f4d080525">
+   <issue><![CDATA[Symfony\Component\Cache\Adapter\ApcuAdapter::__construct(): Implicitly marking parameter $version as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Cache\Adapter\ApcuAdapter::__construct(): Implicitly marking parameter $marshaller as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/cache/Adapter/AbstractAdapter.php">
+  <line number="90" hash="e9f8d4dd3051f1a8f4a4ca2c713091cdea664ddb">
+   <issue><![CDATA[Symfony\Component\Cache\Adapter\AbstractAdapter::createSystemCache(): Implicitly marking parameter $logger as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/cache/Traits/ContractsTrait.php">
+  <line number="62" hash="5575629c4b6edf20b759000ef680d03626e34e18">
+   <issue><![CDATA[Symfony\Component\Cache\Traits\ContractsTrait::doGet(): Implicitly marking parameter $metadata as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/cache-contracts/CacheTrait.php">
+  <line number="33" hash="10b73f0527b140a717dcf01b88f25512b15f68b8">
+   <issue><![CDATA[Symfony\Contracts\Cache\CacheTrait::get(): Implicitly marking parameter $beta as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Contracts\Cache\CacheTrait::get(): Implicitly marking parameter $metadata as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="46" hash="a647630fd1a1b36f4d89cfc90fb7e4f91d073385">
+   <issue><![CDATA[Symfony\Contracts\Cache\CacheTrait::doGet(): Implicitly marking parameter $metadata as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Contracts\Cache\CacheTrait::doGet(): Implicitly marking parameter $logger as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/cache-contracts/CacheInterface.php">
+  <line number="45" hash="4b95de86d2913444577c319d16368b286e64fa9d">
+   <issue><![CDATA[Symfony\Contracts\Cache\CacheInterface::get(): Implicitly marking parameter $beta as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Contracts\Cache\CacheInterface::get(): Implicitly marking parameter $metadata as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/cache/Adapter/ArrayAdapter.php">
+  <line number="77" hash="38c6494613af7b4c072c157c77fe6af33837cd48">
+   <issue><![CDATA[Symfony\Component\Cache\Adapter\ArrayAdapter::get(): Implicitly marking parameter $beta as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Cache\Adapter\ArrayAdapter::get(): Implicitly marking parameter $metadata as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/cache/Adapter/ChainAdapter.php">
+  <line number="91" hash="38c6494613af7b4c072c157c77fe6af33837cd48">
+   <issue><![CDATA[Symfony\Component\Cache\Adapter\ChainAdapter::get(): Implicitly marking parameter $beta as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Cache\Adapter\ChainAdapter::get(): Implicitly marking parameter $metadata as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="101" hash="39c53d37cff577883f0a160c3e17335f65628f9e">
+   <issue><![CDATA[{closure:Symfony\Component\Cache\Adapter\ChainAdapter::get():101}(): Implicitly marking parameter $item as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/cache/Adapter/PhpArrayAdapter.php">
+  <line number="81" hash="38c6494613af7b4c072c157c77fe6af33837cd48">
+   <issue><![CDATA[Symfony\Component\Cache\Adapter\PhpArrayAdapter::get(): Implicitly marking parameter $beta as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Cache\Adapter\PhpArrayAdapter::get(): Implicitly marking parameter $metadata as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/cache/Adapter/PhpFilesAdapter.php">
+  <line number="46" hash="b562b6e612108f3601c7f078b64d024b74992f3d">
+   <issue><![CDATA[Symfony\Component\Cache\Adapter\PhpFilesAdapter::__construct(): Implicitly marking parameter $directory as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/cache/Traits/FilesystemCommonTrait.php">
+  <line number="88" hash="fe0f6eabafbed2da6f62c0991e05440aba608212">
+   <issue><![CDATA[Symfony\Component\Cache\Traits\FilesystemCommonTrait::write(): Implicitly marking parameter $expiresAt as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="116" hash="1ef5ba952c52bb13fc413474e7844789835ae01a">
+   <issue><![CDATA[Symfony\Component\Cache\Traits\FilesystemCommonTrait::getFile(): Implicitly marking parameter $directory as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/error-handler/ErrorHandler.php">
+  <line number="111" hash="afa1735bea3e84cbf20257d6ed7a73c5d5fb9e7c">
+   <issue><![CDATA[Symfony\Component\ErrorHandler\ErrorHandler::register(): Implicitly marking parameter $handler as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="182" hash="3e03df535a109f8459b8c5dac16a18e4a7265563">
+   <issue><![CDATA[Symfony\Component\ErrorHandler\ErrorHandler::__construct(): Implicitly marking parameter $bootstrappingLogger as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="562" hash="ca0d9b8ee85b4810a80a31df44e996b03a7ca41b">
+   <issue><![CDATA[Symfony\Component\ErrorHandler\ErrorHandler::handleFatalError(): Implicitly marking parameter $error as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="58" hash="4d48580d505eed01daef166e0cb36e892889899c">
+   <issue><![CDATA[Constant E_STRICT is deprecated]]></issue>
+  </line>
+  <line number="76" hash="fd038cba418da1a0867f4cd9e3dbace05f5c4626">
+   <issue><![CDATA[Constant E_STRICT is deprecated]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/ContainerBuilder.php">
+  <line number="158" hash="b8df9c658c192a4b95064bec285c2c00c5386915">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\ContainerBuilder::__construct(): Implicitly marking parameter $parameterBag as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="434" hash="7968aaa2e85b59b6e9b2b175a65cd0b5f597e8ea">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\ContainerBuilder::loadFromExtension(): Implicitly marking parameter $values as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="534" hash="18953c9ffae99920f88855ca3cc01e7bf1350c50">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\ContainerBuilder::doGet(): Implicitly marking parameter $inlineServices as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="903" hash="4e16aedad36883b7a5e1eca212318739cc14d84b">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\ContainerBuilder::register(): Implicitly marking parameter $class as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="914" hash="d8ce4e6f954adf5981665ee0f11aae010e8fe7eb">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\ContainerBuilder::autowire(): Implicitly marking parameter $class as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="1032" hash="409ca359c772f7f02711a55c27a338cecb483f04">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\ContainerBuilder::createService(): Implicitly marking parameter $id as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="1383" hash="bb47c5b95a1581750bee45533f3e962fa86558e8">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\ContainerBuilder::registerAliasForArgument(): Implicitly marking parameter $name as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="1430" hash="af7182d9c6e5fc516049f1fbb17e8491ea63a6e5">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\ContainerBuilder::resolveEnvPlaceholders(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\DependencyInjection\ContainerBuilder::resolveEnvPlaceholders(): Implicitly marking parameter $usedEnvs as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Container.php">
+  <line number="70" hash="b8df9c658c192a4b95064bec285c2c00c5386915">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Container::__construct(): Implicitly marking parameter $parameterBag as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Argument/ServiceLocator.php">
+  <line number="27" hash="00afa6976d366c9942fc82abd6f69d0b9e46744a">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Argument\ServiceLocator::__construct(): Implicitly marking parameter $serviceTypes as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/ServiceLocator.php">
+  <line number="141" hash="cdaa375c34960736c09f27636f13bf5a545ef10d">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\ServiceLocator::formatAlternatives(): Implicitly marking parameter $alternatives as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Definition.php">
+  <line number="64" hash="7c63f85f1295ab28f44eb3742e958ecbe149308a">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Definition::__construct(): Implicitly marking parameter $class as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="136" hash="6971c9bf5f28ddd14296795ed1b633bf6a50ed60">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Definition::setDecoratedService(): Implicitly marking parameter $renamedId as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/doctrine-bridge/DependencyInjection/AbstractDoctrineExtension.php">
+  <line number="144" hash="e5324c977666027438ec07a812870cf7b9d895b9">
+   <issue><![CDATA[Symfony\Bridge\Doctrine\DependencyInjection\AbstractDoctrineExtension::getMappingDriverBundleConfigDefaults(): Implicitly marking parameter $bundleDir as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="450" hash="71a212cae0c2cb7774d5e208474ebdf0d30f9e09">
+   <issue><![CDATA[Symfony\Bridge\Doctrine\DependencyInjection\AbstractDoctrineExtension::getMappingResourceConfigDirectory(): Implicitly marking parameter $bundleDir as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/event-dispatcher/EventDispatcher.php">
+  <line number="45" hash="d1e2bca496e0f77437d197810a502b1e01282ab0">
+   <issue><![CDATA[Symfony\Component\EventDispatcher\EventDispatcher::dispatch(): Implicitly marking parameter $eventName as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="62" hash="000e0339f6012ec7bd03580e8a3cd1d1c6c993c0">
+   <issue><![CDATA[Symfony\Component\EventDispatcher\EventDispatcher::getListeners(): Implicitly marking parameter $eventName as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="111" hash="fc24ff72ea17891f03b79c11ae4efa7f2f3a757d">
+   <issue><![CDATA[Symfony\Component\EventDispatcher\EventDispatcher::hasListeners(): Implicitly marking parameter $eventName as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/event-dispatcher/EventDispatcherInterface.php">
+  <line number="62" hash="76aa82d8a144e97bb5120afc4e71d756695b4b72">
+   <issue><![CDATA[Symfony\Component\EventDispatcher\EventDispatcherInterface::getListeners(): Implicitly marking parameter $eventName as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="74" hash="c2c3217aeba2fca763a46ed4c35517f094376acc">
+   <issue><![CDATA[Symfony\Component\EventDispatcher\EventDispatcherInterface::hasListeners(): Implicitly marking parameter $eventName as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/event-dispatcher-contracts/EventDispatcherInterface.php">
+  <line number="30" hash="6283523f0ef260c7f57d9c3b0fe6ebc40e6e3348">
+   <issue><![CDATA[Symfony\Contracts\EventDispatcher\EventDispatcherInterface::dispatch(): Implicitly marking parameter $eventName as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Compiler/MergeExtensionConfigurationPass.php">
+  <line number="159" hash="32b54cec391c9dc592e7631ac8e8401613e0260a">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Compiler\MergeExtensionConfigurationContainerBuilder::__construct(): Implicitly marking parameter $parameterBag as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="181" hash="af7182d9c6e5fc516049f1fbb17e8491ea63a6e5">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Compiler\MergeExtensionConfigurationContainerBuilder::resolveEnvPlaceholders(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Compiler\MergeExtensionConfigurationContainerBuilder::resolveEnvPlaceholders(): Implicitly marking parameter $usedEnvs as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Compiler/ServiceLocatorTagPass.php">
+  <line number="105" hash="031bc8d4a0024085d885289ede71933b880c22e9">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass::register(): Implicitly marking parameter $callerId as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Compiler/AutowirePass.php">
+  <line number="689" hash="e50619223377b280eaa7afd036d68ee2febb242e">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Compiler\AutowirePass::populateAutowiringAlias(): Implicitly marking parameter $target as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="709" hash="1553c7d321065174ee57e9097b2f4bb23a1b5606">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Compiler\AutowirePass::getCombinedAlias(): Implicitly marking parameter $name as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Compiler/InlineServiceDefinitionsPass.php">
+  <line number="37" hash="c8b73852b65b3fb37be34b80a03a9f899d5b4c56">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass::__construct(): Implicitly marking parameter $analyzingPass as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Compiler/ServiceReferenceGraph.php">
+  <line number="77" hash="3d4c7ee874fd1e2aedb4b86f81235312913aefd6">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Compiler\ServiceReferenceGraph::connect(): Implicitly marking parameter $reference as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/Resource/ClassExistenceResource.php">
+  <line number="37" hash="6accd7791001061f0f8c29b44885c2d19cdc1334">
+   <issue><![CDATA[Symfony\Component\Config\Resource\ClassExistenceResource::__construct(): Implicitly marking parameter $exists as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="142" hash="5adec5efc0e2c836981ba4d6ec62af97a8c33397">
+   <issue><![CDATA[Symfony\Component\Config\Resource\ClassExistenceResource::throwOnRequiredClass(): Implicitly marking parameter $previous as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/http-kernel/Config/FileLocator.php">
+  <line number="33" hash="c77a4149899f6bf6e2db6cce1f089b9c8043ef87">
+   <issue><![CDATA[Symfony\Component\HttpKernel\Config\FileLocator::locate(): Implicitly marking parameter $currentPath as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/FileLocator.php">
+  <line number="36" hash="0ee74ac6a85a768861116153859741c12c48df3a">
+   <issue><![CDATA[Symfony\Component\Config\FileLocator::locate(): Implicitly marking parameter $currentPath as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/FileLocatorInterface.php">
+  <line number="33" hash="f1adf63f77b9a170b8f9adc9a69dcf51d71b90c2">
+   <issue><![CDATA[Symfony\Component\Config\FileLocatorInterface::locate(): Implicitly marking parameter $currentPath as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/Loader/LoaderResolver.php">
+  <line number="39" hash="c928c2cd2db85fa00ddfc0da392b5e59032d460d">
+   <issue><![CDATA[Symfony\Component\Config\Loader\LoaderResolver::resolve(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/Loader/LoaderResolverInterface.php">
+  <line number="26" hash="e09ec5820e1b46f00eb711e81658e83419fd2567">
+   <issue><![CDATA[Symfony\Component\Config\Loader\LoaderResolverInterface::resolve(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Loader/XmlFileLoader.php">
+  <line number="44" hash="8517a28f5629116be82fb6fad8aa6de2baa0b19f">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\XmlFileLoader::load(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="71" hash="09c8ef01a5a6cd0a905c711b1b96a5d336be7e00">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\XmlFileLoader::loadXml(): Implicitly marking parameter $root as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="96" hash="2e349ff32ac7ec2c9266ef8c5e8b8999013d0a33">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\XmlFileLoader::supports(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="109" hash="f59bf12a0e46e72c8cbf15d213e7fdebc3a8f4ec">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\XmlFileLoader::parseParameters(): Implicitly marking parameter $root as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="116" hash="4963bd62399210a2c379be0a66c537cb5a180158">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\XmlFileLoader::parseImports(): Implicitly marking parameter $root as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="132" hash="a52650dd3470db25e231febad66b132322037f5e">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\XmlFileLoader::parseDefinitions(): Implicitly marking parameter $root as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="190" hash="ecb54c37d7065457b0b37151ad54959a3635e8ee">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\XmlFileLoader::getServiceDefaults(): Implicitly marking parameter $root as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="472" hash="4e15f3bb87789a4f393c788ada11580337a9e848">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\XmlFileLoader::processAnonymousServices(): Implicitly marking parameter $root as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Loader/FileLoader.php">
+  <line number="49" hash="89391a55f56c3d525283052953f68bb9b6115ad6">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\FileLoader::__construct(): Implicitly marking parameter $env as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="59" hash="a4d3b2985fb863095e95c9573310a75b01e3c063">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\FileLoader::import(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\FileLoader::import(): Implicitly marking parameter $sourceResource as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="101" hash="0473df87d1c0939667132162dc81d788bc940c65">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\FileLoader::registerClasses(): Implicitly marking parameter $exclude as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/Loader/FileLoader.php">
+  <line number="34" hash="c57dd86a228e45682dc05033af2f03c30e27ad07">
+   <issue><![CDATA[Symfony\Component\Config\Loader\FileLoader::__construct(): Implicitly marking parameter $env as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="73" hash="c3b2fe7eb84c6f45060fd37e39703ef7b0292789">
+   <issue><![CDATA[Symfony\Component\Config\Loader\FileLoader::import(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Config\Loader\FileLoader::import(): Implicitly marking parameter $sourceResource as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Config\Loader\FileLoader::import(): Implicitly marking parameter $exclude as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="104" hash="81a2895a4379913fdac1eb0f2e153738158e7f6c">
+   <issue><![CDATA[Symfony\Component\Config\Loader\FileLoader::glob(): Implicitly marking parameter $resource as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="136" hash="321991e764ed23d2dfeb25fc57ae2cadac65880e">
+   <issue><![CDATA[Symfony\Component\Config\Loader\FileLoader::doImport(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Config\Loader\FileLoader::doImport(): Implicitly marking parameter $sourceResource as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/Loader/Loader.php">
+  <line number="26" hash="14142d9ff33363b11652cb9db2e5c22f06cc3353">
+   <issue><![CDATA[Symfony\Component\Config\Loader\Loader::__construct(): Implicitly marking parameter $env as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="49" hash="68e1e0f9a58df4a397f46f073a793e9eb020bed8">
+   <issue><![CDATA[Symfony\Component\Config\Loader\Loader::import(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="59" hash="e5c4397af35ffa80531dd88886baa08cf41a9cda">
+   <issue><![CDATA[Symfony\Component\Config\Loader\Loader::resolve(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/Loader/LoaderInterface.php">
+  <line number="28" hash="44bb9f6f0836205edc8f200eb9b448a9c60f85f7">
+   <issue><![CDATA[Symfony\Component\Config\Loader\LoaderInterface::load(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="37" hash="4e42776c892dc264017cce0dcacbb03b98951297">
+   <issue><![CDATA[Symfony\Component\Config\Loader\LoaderInterface::supports(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Loader/YamlFileLoader.php">
+  <line number="120" hash="8517a28f5629116be82fb6fad8aa6de2baa0b19f">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\YamlFileLoader::load(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="184" hash="2e349ff32ac7ec2c9266ef8c5e8b8999013d0a33">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\YamlFileLoader::supports(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Loader/IniFileLoader.php">
+  <line number="24" hash="8517a28f5629116be82fb6fad8aa6de2baa0b19f">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\IniFileLoader::load(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="58" hash="2e349ff32ac7ec2c9266ef8c5e8b8999013d0a33">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\IniFileLoader::supports(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Loader/PhpFileLoader.php">
+  <line number="39" hash="7e32ddda1023eb83954660b07cd896553e91d652">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\PhpFileLoader::__construct(): Implicitly marking parameter $env as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\PhpFileLoader::__construct(): Implicitly marking parameter $generator as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="45" hash="8517a28f5629116be82fb6fad8aa6de2baa0b19f">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\PhpFileLoader::load(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="74" hash="2e349ff32ac7ec2c9266ef8c5e8b8999013d0a33">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\PhpFileLoader::supports(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Loader/GlobFileLoader.php">
+  <line number="21" hash="8517a28f5629116be82fb6fad8aa6de2baa0b19f">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\GlobFileLoader::load(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="32" hash="2e349ff32ac7ec2c9266ef8c5e8b8999013d0a33">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\GlobFileLoader::supports(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Loader/DirectoryLoader.php">
+  <line number="21" hash="1db31546603c862d77923afd9f45d9ec554e462d">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\DirectoryLoader::load(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="42" hash="2e349ff32ac7ec2c9266ef8c5e8b8999013d0a33">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\DirectoryLoader::supports(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Loader/ClosureLoader.php">
+  <line number="28" hash="1fcb652cbc9b8e12a17c57d6bf895f62d984fb89">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\ClosureLoader::__construct(): Implicitly marking parameter $env as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="34" hash="8517a28f5629116be82fb6fad8aa6de2baa0b19f">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\ClosureLoader::load(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="39" hash="2e349ff32ac7ec2c9266ef8c5e8b8999013d0a33">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\ClosureLoader::supports(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/Loader/DelegatingLoader.php">
+  <line number="31" hash="8517a28f5629116be82fb6fad8aa6de2baa0b19f">
+   <issue><![CDATA[Symfony\Component\Config\Loader\DelegatingLoader::load(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="40" hash="2e349ff32ac7ec2c9266ef8c5e8b8999013d0a33">
+   <issue><![CDATA[Symfony\Component\Config\Loader\DelegatingLoader::supports(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Loader/Configurator/ContainerConfigurator.php">
+  <line number="41" hash="1c12c4560ca63a216fb80070611e78455ca73737">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator::__construct(): Implicitly marking parameter $env as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="61" hash="56a182ff01aa533efc39a7a8d81172e19e196015">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator::import(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="114" hash="a7ff19412172db02cd47b0333234837d260d4d70">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\Configurator\inline_service(): Implicitly marking parameter $class as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="148" hash="bbc76b59cc4b110a248ef5074b4e645cbfec0e17">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator(): Implicitly marking parameter $indexAttribute as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator(): Implicitly marking parameter $defaultIndexMethod as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator(): Implicitly marking parameter $defaultPriorityMethod as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="156" hash="7c819093caf6f4470f812b69e1a7c0dfa14e35d5">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\Configurator\tagged_locator(): Implicitly marking parameter $indexAttribute as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\Configurator\tagged_locator(): Implicitly marking parameter $defaultIndexMethod as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\Configurator\tagged_locator(): Implicitly marking parameter $defaultPriorityMethod as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/yaml/Parser.php">
+  <line number="564" hash="28336cc5abeefad47aac453c716f9fbed2f4a587">
+   <issue><![CDATA[Symfony\Component\Yaml\Parser::getNextEmbedBlock(): Implicitly marking parameter $indentation as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="1046" hash="140e1c62f89caee951717894c2f4f7deacf89f0a">
+   <issue><![CDATA[Symfony\Component\Yaml\Parser::preg_match(): Implicitly marking parameter $matches as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/yaml/Inline.php">
+  <line number="37" hash="6987a244df3c8abf3314d02ed35105f4e75d7f7a">
+   <issue><![CDATA[Symfony\Component\Yaml\Inline::initialize(): Implicitly marking parameter $parsedLineNumber as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Yaml\Inline::initialize(): Implicitly marking parameter $parsedFilename as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="270" hash="44db3294f529b58837b8b11d4109f03d7743d4ec">
+   <issue><![CDATA[Symfony\Component\Yaml\Inline::parseScalar(): Implicitly marking parameter $delimiters as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Yaml\Inline::parseScalar(): Implicitly marking parameter $isQuoted as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="559" hash="d5377fb24b703b2376da2a940d20d6858e1d786e">
+   <issue><![CDATA[Symfony\Component\Yaml\Inline::evaluateScalar(): Implicitly marking parameter $isQuotedString as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/Definition/BaseNode.php">
+  <line number="49" hash="0ae5bdf551b8d95f88077f0078a8b50a4b4f13b1">
+   <issue><![CDATA[Symfony\Component\Config\Definition\BaseNode::__construct(): Implicitly marking parameter $parent as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/framework-bundle/DependencyInjection/Configuration.php">
+  <line number="149" hash="e6eb8be786fa6e46c9d5f07df3868f9334f33e17">
+   <issue><![CDATA[{closure:Symfony\Bundle\FrameworkBundle\DependencyInjection\Configuration::getConfigTreeBuilder():149}(): Implicitly marking parameter $parentPackage as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Loader/Configurator/ServicesConfigurator.php">
+  <line number="37" hash="d27d565036719fce71f3f2ba6898f54f1977277f">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\Configurator\ServicesConfigurator::__construct(): Implicitly marking parameter $path as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="73" hash="9fb8427fd72f1b47e4054c25d5b75842396f2b53">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\Configurator\ServicesConfigurator::set(): Implicitly marking parameter $class as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="183" hash="19ef96278b0d555480a027b693f0a7956fab8081">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\Configurator\ServicesConfigurator::__invoke(): Implicitly marking parameter $class as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Loader/Configurator/ServiceConfigurator.php">
+  <line number="52" hash="a993ad95bcca3ed99e6ef73576dc9a157f12e389">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\Configurator\ServiceConfigurator::__construct(): Implicitly marking parameter $path as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Loader/Configurator/AbstractServiceConfigurator.php">
+  <line number="23" hash="c53039ce261ea55375bef3b8e23f591439b90692">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\Configurator\AbstractServiceConfigurator::__construct(): Implicitly marking parameter $id as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="45" hash="9fb8427fd72f1b47e4054c25d5b75842396f2b53">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\Configurator\AbstractServiceConfigurator::set(): Implicitly marking parameter $class as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="109" hash="19ef96278b0d555480a027b693f0a7956fab8081">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\Configurator\AbstractServiceConfigurator::__invoke(): Implicitly marking parameter $class as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Loader/Configurator/Traits/DecorateTrait.php">
+  <line number="28" hash="5fed4e1e0ebfd14ad6b7fb7a1e4fc428c2138099">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Loader\Configurator\Traits\DecorateTrait::decorate(): Implicitly marking parameter $renamedId as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Argument/TaggedIteratorArgument.php">
+  <line number="38" hash="7110f695993d9d03ed3b6432d701b868e30691b1">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument::__construct(): Implicitly marking parameter $indexAttribute as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument::__construct(): Implicitly marking parameter $defaultIndexMethod as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument::__construct(): Implicitly marking parameter $defaultPriorityMethod as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Attribute/Target.php">
+  <line number="39" hash="3c02eedb08b592690243f42fd4538195d6772666">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Attribute\Target::parseName(): Implicitly marking parameter $attribute as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/console/Application.php">
+  <line number="137" hash="f162a6c7e7106cfd5e8f9045e041d95409258036">
+   <issue><![CDATA[Symfony\Component\Console\Application::run(): Implicitly marking parameter $input as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Console\Application::run(): Implicitly marking parameter $output as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="770" hash="b0f65629f46f4ecb136456aedd93bdd1f9191f5a">
+   <issue><![CDATA[Symfony\Component\Console\Application::all(): Implicitly marking parameter $namespace as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="1115" hash="94cf2dff4a04c51066a74a7e57f40619f29756dc">
+   <issue><![CDATA[Symfony\Component\Console\Application::extractNamespace(): Implicitly marking parameter $limit as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/yaml/Command/LintCommand.php">
+  <line number="45" hash="3ad677f59111dbb9d7e9f73e78dda8b0c4765727">
+   <issue><![CDATA[Symfony\Component\Yaml\Command\LintCommand::__construct(): Implicitly marking parameter $name as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Yaml\Command\LintCommand::__construct(): Implicitly marking parameter $directoryIteratorProvider as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Yaml\Command\LintCommand::__construct(): Implicitly marking parameter $isReadableProvider as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="130" hash="10217fda773464bceb8120ac052f885575137727">
+   <issue><![CDATA[Symfony\Component\Yaml\Command\LintCommand::validate(): Implicitly marking parameter $file as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/console/Command/Command.php">
+  <line number="99" hash="da50ec34147714ed82f788d8b83ab05b96772c0c">
+   <issue><![CDATA[Symfony\Component\Console\Command\Command::__construct(): Implicitly marking parameter $name as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="135" hash="bc74e9f3bbb8179f10721e0e12a4c468701a6ff8">
+   <issue><![CDATA[Symfony\Component\Console\Command\Command::setApplication(): Implicitly marking parameter $application as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="436" hash="71446ecd4f543e20c10f8ee498c4e5bfc04c8038">
+   <issue><![CDATA[Symfony\Component\Console\Command\Command::addArgument(): Implicitly marking parameter $mode as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="457" hash="aa31938b5c81fad5cd59f227027bf4012e79c30d">
+   <issue><![CDATA[Symfony\Component\Console\Command\Command::addOption(): Implicitly marking parameter $mode as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/Definition/Processor.php">
+  <line number="70" hash="c8b65ccc99240d685b6087f240d81f62fbaf453d">
+   <issue><![CDATA[Symfony\Component\Config\Definition\Processor::normalizeConfig(): Implicitly marking parameter $plural as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/Definition/Builder/TreeBuilder.php">
+  <line number="33" hash="fe8f184cc59d9f98edac5473bd1494757bfa2bfa">
+   <issue><![CDATA[Symfony\Component\Config\Definition\Builder\TreeBuilder::__construct(): Implicitly marking parameter $builder as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/Definition/Builder/NodeBuilder.php">
+  <line number="42" hash="f4711b9b188b8cf3760f0f2c02fbfbaaaf37668e">
+   <issue><![CDATA[Symfony\Component\Config\Definition\Builder\NodeBuilder::setParent(): Implicitly marking parameter $parent as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/Definition/Builder/ArrayNodeDefinition.php">
+  <line number="40" hash="1c5ef100de4bd48ba8041cb79ee1c07fac14c5be">
+   <issue><![CDATA[Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition::__construct(): Implicitly marking parameter $parent as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="129" hash="675b0f246fa2e519faf1fd8d576f424fe5e24d90">
+   <issue><![CDATA[Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition::addDefaultChildrenIfNoneSet(): Implicitly marking parameter $children as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="172" hash="028ced3cfb598146b1da14d2c58b5a6da15f52a1">
+   <issue><![CDATA[Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition::fixXmlConfig(): Implicitly marking parameter $plural as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/Definition/Builder/NodeDefinition.php">
+  <line number="41" hash="1c5ef100de4bd48ba8041cb79ee1c07fac14c5be">
+   <issue><![CDATA[Symfony\Component\Config\Definition\Builder\NodeDefinition::__construct(): Implicitly marking parameter $parent as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/Definition/Builder/NormalizationBuilder.php">
+  <line number="39" hash="c5e90da49dfdab73b9e006a0e6aa9285f66e6305">
+   <issue><![CDATA[Symfony\Component\Config\Definition\Builder\NormalizationBuilder::remap(): Implicitly marking parameter $plural as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="51" hash="1d6a9b955a98d5f2317b1cd938f1e4d63efbdcd2">
+   <issue><![CDATA[Symfony\Component\Config\Definition\Builder\NormalizationBuilder::before(): Implicitly marking parameter $closure as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/Definition/Builder/ExprBuilder.php">
+  <line number="45" hash="f41876240cda0ef8bcb793a927daf7b70259a62b">
+   <issue><![CDATA[Symfony\Component\Config\Definition\Builder\ExprBuilder::always(): Implicitly marking parameter $then as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="64" hash="9fc43732857d10915f76dd3677a780317707a279">
+   <issue><![CDATA[Symfony\Component\Config\Definition\Builder\ExprBuilder::ifTrue(): Implicitly marking parameter $closure as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/Definition/Builder/ValidationBuilder.php">
+  <line number="34" hash="1e1cf013f7cc1f1b2182646977f20e51c243ace2">
+   <issue><![CDATA[Symfony\Component\Config\Definition\Builder\ValidationBuilder::rule(): Implicitly marking parameter $closure as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/Definition/Builder/BooleanNodeDefinition.php">
+  <line number="24" hash="1c5ef100de4bd48ba8041cb79ee1c07fac14c5be">
+   <issue><![CDATA[Symfony\Component\Config\Definition\Builder\BooleanNodeDefinition::__construct(): Implicitly marking parameter $parent as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/Definition/EnumNode.php">
+  <line number="25" hash="faed6c15b07235ee52ce72a524c23eed46fc29be">
+   <issue><![CDATA[Symfony\Component\Config\Definition\EnumNode::__construct(): Implicitly marking parameter $parent as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/Definition/NumericNode.php">
+  <line number="26" hash="c3ca9d16ff6091823392f2c7adf147924a232800">
+   <issue><![CDATA[Symfony\Component\Config\Definition\NumericNode::__construct(): Implicitly marking parameter $parent as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Config\Definition\NumericNode::__construct(): Implicitly marking parameter $min as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Config\Definition\NumericNode::__construct(): Implicitly marking parameter $max as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/http-foundation/Cookie.php">
+  <line number="80" hash="9435b6ebe20e202171adf8ecc904467b5b9179a7">
+   <issue><![CDATA[Symfony\Component\HttpFoundation\Cookie::create(): Implicitly marking parameter $value as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\HttpFoundation\Cookie::create(): Implicitly marking parameter $domain as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\HttpFoundation\Cookie::create(): Implicitly marking parameter $secure as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="100" hash="7af11a212f4f08b7b1e965e078654efc53128058">
+   <issue><![CDATA[Symfony\Component\HttpFoundation\Cookie::__construct(): Implicitly marking parameter $value as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\HttpFoundation\Cookie::__construct(): Implicitly marking parameter $domain as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\HttpFoundation\Cookie::__construct(): Implicitly marking parameter $secure as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Serializer.php">
+  <line number="155" hash="41a9073713f00289b5b735334fb3c131efc20cf2">
+   <issue><![CDATA[Symfony\Component\Serializer\Serializer::normalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="197" hash="9bd1aba7748d5a0856bfd47c43047790ef08e9ec">
+   <issue><![CDATA[Symfony\Component\Serializer\Serializer::denormalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="254" hash="b06f5c70edcfac6bfce75870e3cde202bb6b153e">
+   <issue><![CDATA[Symfony\Component\Serializer\Serializer::supportsNormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="259" hash="cdc02ceb9559b7a0361fb4c36c5b9c75032410c1">
+   <issue><![CDATA[Symfony\Component\Serializer\Serializer::supportsDenormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Normalizer/ContextAwareNormalizerInterface.php">
+  <line number="26" hash="b155e6c5206f7748ac7aa6a32e32bbe6db14fd09">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface::supportsNormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Normalizer/NormalizerInterface.php">
+  <line number="41" hash="16bde215cb7a2cf1038f6b77c0fa35e9c48366c7">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\NormalizerInterface::normalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="52" hash="43b77c695e531cf3861d0c8f662f24fafeeeb48a">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\NormalizerInterface::supportsNormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Normalizer/ContextAwareDenormalizerInterface.php">
+  <line number="26" hash="72f25c1970532f1ae5377ac99484de2bbdd1f0d9">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\ContextAwareDenormalizerInterface::supportsDenormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Normalizer/DenormalizerInterface.php">
+  <line number="49" hash="568cebb887efd026525d2442c4df80549c54cf1b">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\DenormalizerInterface::denormalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="61" hash="0a26f5b081eed196a1e130ede5c189371b91eabe">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\DenormalizerInterface::supportsDenormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/property-access/PropertyAccessor.php">
+  <line number="82" hash="65c196f17839e7d15bfc4a0909ce4a199784f2fb">
+   <issue><![CDATA[Symfony\Component\PropertyAccess\PropertyAccessor::__construct(): Implicitly marking parameter $cacheItemPool as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\PropertyAccess\PropertyAccessor::__construct(): Implicitly marking parameter $readInfoExtractor as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\PropertyAccess\PropertyAccessor::__construct(): Implicitly marking parameter $writeInfoExtractor as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="190" hash="816e32070b9132c8e5327cb0da017945f18a9106">
+   <issue><![CDATA[Symfony\Component\PropertyAccess\PropertyAccessor::throwInvalidArgumentException(): Implicitly marking parameter $previous as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="665" hash="a316d9b6822bee0aa018281ff03faa6fb49373c6">
+   <issue><![CDATA[Symfony\Component\PropertyAccess\PropertyAccessor::createCache(): Implicitly marking parameter $logger as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/string/Slugger/SluggerInterface.php">
+  <line number="26" hash="a5e36478ac860c29507f06b9d720821432c85360">
+   <issue><![CDATA[Symfony\Component\String\Slugger\SluggerInterface::slug(): Implicitly marking parameter $locale as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/property-info/Extractor/ReflectionExtractor.php">
+  <line number="86" hash="6aad93d7ae480f3ec18351486cfce56db652ec3d">
+   <issue><![CDATA[Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor::__construct(): Implicitly marking parameter $mutatorPrefixes as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor::__construct(): Implicitly marking parameter $accessorPrefixes as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor::__construct(): Implicitly marking parameter $arrayMutatorPrefixes as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor::__construct(): Implicitly marking parameter $inflector as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/config/Util/XmlUtils.php">
+  <line number="45" hash="582f2d2c77105fe7ffae357a4d52c5e92ba87eb7">
+   <issue><![CDATA[Symfony\Component\Config\Util\XmlUtils::parse(): Implicitly marking parameter $schemaOrCallable as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="115" hash="b4726bf64318315778b3c3e0e7414bc926fa9006">
+   <issue><![CDATA[Symfony\Component\Config\Util\XmlUtils::loadFile(): Implicitly marking parameter $schemaOrCallable as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Argument/BoundArgument.php">
+  <line number="31" hash="b0c4568ae99007c51de794aa9f6e007430f3a09d">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Argument\BoundArgument::__construct(): Implicitly marking parameter $file as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/doctrine-bridge/IdGenerator/UuidGenerator.php">
+  <line number="29" hash="cda3de67f63b754357545370a443ffc5e75737d2">
+   <issue><![CDATA[Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator::__construct(): Implicitly marking parameter $factory as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="55" hash="23c25d0614f6735dc65d3e4b2473a0c7711c72bc">
+   <issue><![CDATA[Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator::nameBased(): Implicitly marking parameter $namespace as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="73" hash="015aad0b6701b376208038948cdf566c72a12240">
+   <issue><![CDATA[Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator::timeBased(): Implicitly marking parameter $node as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Normalizer/NormalizableInterface.php">
+  <line number="36" hash="a48714805bf9f0cee38b89cc98ed2ded51de1aa7">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\NormalizableInterface::normalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Normalizer/ConstraintViolationListNormalizer.php">
+  <line number="48" hash="47fb9f8f81723e7095f0ec9c0a2a0aa68241b93f">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\ConstraintViolationListNormalizer::normalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="114" hash="65c83a1770c1f0d69e9dcdbaefc6f64e92105552">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\ConstraintViolationListNormalizer::supportsNormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/EnvVarProcessor.php">
+  <line number="31" hash="f80d9b0e706df11a739cfbfbfa0741de83dd2c0f">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\EnvVarProcessor::__construct(): Implicitly marking parameter $loaders as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Attribute/Autowire.php">
+  <line number="40" hash="ceb043f6ab1e59b0d2e3038886d66ec328517fc4">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Attribute\Autowire::__construct(): Implicitly marking parameter $value as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Attribute\Autowire::__construct(): Implicitly marking parameter $service as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Attribute\Autowire::__construct(): Implicitly marking parameter $expression as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Attribute\Autowire::__construct(): Implicitly marking parameter $env as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Attribute\Autowire::__construct(): Implicitly marking parameter $param as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/var-exporter/ProxyHelper.php">
+  <line number="216" hash="48258ac3977923e8c95e361261c4463f6c5b34c6">
+   <issue><![CDATA[Symfony\Component\VarExporter\ProxyHelper::exportSignature(): Implicitly marking parameter $args as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="273" hash="8668058710a3e84835315d45a5432fa5e2709d94">
+   <issue><![CDATA[Symfony\Component\VarExporter\ProxyHelper::exportType(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/http-foundation/Request.php">
+  <line number="451" hash="8e73c8504b66c9a0758d31630faa25e662f7fcff">
+   <issue><![CDATA[Symfony\Component\HttpFoundation\Request::duplicate(): Implicitly marking parameter $query as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\HttpFoundation\Request::duplicate(): Implicitly marking parameter $request as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\HttpFoundation\Request::duplicate(): Implicitly marking parameter $attributes as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\HttpFoundation\Request::duplicate(): Implicitly marking parameter $cookies as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\HttpFoundation\Request::duplicate(): Implicitly marking parameter $files as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\HttpFoundation\Request::duplicate(): Implicitly marking parameter $server as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="1609" hash="336e0496c7c2d75460d41c3fdb7dc4595c811b28">
+   <issue><![CDATA[Symfony\Component\HttpFoundation\Request::getPreferredLanguage(): Implicitly marking parameter $locales as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="2007" hash="db0fa4e8fc19d5a1b04bfca8636f3c243d67c577">
+   <issue><![CDATA[Symfony\Component\HttpFoundation\Request::getTrustedValues(): Implicitly marking parameter $ip as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/http-foundation/ParameterBag.php">
+  <line number="41" hash="62791e24172995815b0455263f89a87183721a1a">
+   <issue><![CDATA[Symfony\Component\HttpFoundation\ParameterBag::all(): Implicitly marking parameter $key as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="177" hash="3564a608cb9d7906eafbbd5dc6f9dc7a1b59e144">
+   <issue><![CDATA[Symfony\Component\HttpFoundation\ParameterBag::getEnum(): Implicitly marking parameter $default as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/http-foundation/HeaderBag.php">
+  <line number="68" hash="62791e24172995815b0455263f89a87183721a1a">
+   <issue><![CDATA[Symfony\Component\HttpFoundation\HeaderBag::all(): Implicitly marking parameter $key as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="113" hash="5b238439b81209389002a7973601cca8a1ed63ed">
+   <issue><![CDATA[Symfony\Component\HttpFoundation\HeaderBag::get(): Implicitly marking parameter $default as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="200" hash="25305b0817e4849ef57350822a97de6c68b3f128">
+   <issue><![CDATA[Symfony\Component\HttpFoundation\HeaderBag::getDate(): Implicitly marking parameter $default as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/http-foundation/InputBag.php">
+  <line number="87" hash="3564a608cb9d7906eafbbd5dc6f9dc7a1b59e144">
+   <issue><![CDATA[Symfony\Component\HttpFoundation\InputBag::getEnum(): Implicitly marking parameter $default as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/http-foundation/Response.php">
+  <line number="500" hash="c859decfa0e3b79818f468ffed5e8f0bcfdfd0ad">
+   <issue><![CDATA[Symfony\Component\HttpFoundation\Response::setStatusCode(): Implicitly marking parameter $text as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="765" hash="cd417fb0d2d7773eabf775cd292cee66091e2de4">
+   <issue><![CDATA[Symfony\Component\HttpFoundation\Response::setExpires(): Implicitly marking parameter $date as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="946" hash="127d2f1e93a1e37c11623c7352dc5b96b8e59b0b">
+   <issue><![CDATA[Symfony\Component\HttpFoundation\Response::setLastModified(): Implicitly marking parameter $date as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="984" hash="3965abc4a6c5559f33424b9eedf50b506ee35905">
+   <issue><![CDATA[Symfony\Component\HttpFoundation\Response::setEtag(): Implicitly marking parameter $etag as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="1287" hash="fadee1c8f44720040ebf55069ddba40cb4e985c9">
+   <issue><![CDATA[Symfony\Component\HttpFoundation\Response::isRedirect(): Implicitly marking parameter $location as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/http-foundation/ResponseHeaderBag.php">
+  <line number="89" hash="62791e24172995815b0455263f89a87183721a1a">
+   <issue><![CDATA[Symfony\Component\HttpFoundation\ResponseHeaderBag::all(): Implicitly marking parameter $key as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="186" hash="9e3abf7df729fc397a2a6cd62817bc4a62ad6dab">
+   <issue><![CDATA[Symfony\Component\HttpFoundation\ResponseHeaderBag::removeCookie(): Implicitly marking parameter $domain as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="239" hash="57342b7b61c4718cc1c75a6e7af2da7859a418a1">
+   <issue><![CDATA[Symfony\Component\HttpFoundation\ResponseHeaderBag::clearCookie(): Implicitly marking parameter $domain as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\HttpFoundation\ResponseHeaderBag::clearCookie(): Implicitly marking parameter $sameSite as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/TypedReference.php">
+  <line number="32" hash="364e7a24b61c8e218f586668b4978134239c0433">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\TypedReference::__construct(): Implicitly marking parameter $name as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/http-kernel/Fragment/InlineFragmentRenderer.php">
+  <line number="33" hash="5ebaa13ae77fa942466a9397f8090456478830c5">
+   <issue><![CDATA[Symfony\Component\HttpKernel\Fragment\InlineFragmentRenderer::__construct(): Implicitly marking parameter $dispatcher as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/framework-bundle/Routing/Router.php">
+  <line number="43" hash="166ab15cacab854621c8b22b856a00756df10dab">
+   <issue><![CDATA[Symfony\Bundle\FrameworkBundle\Routing\Router::__construct(): Implicitly marking parameter $context as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Bundle\FrameworkBundle\Routing\Router::__construct(): Implicitly marking parameter $parameters as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Bundle\FrameworkBundle\Routing\Router::__construct(): Implicitly marking parameter $logger as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Bundle\FrameworkBundle\Routing\Router::__construct(): Implicitly marking parameter $defaultLocale as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/routing/Router.php">
+  <line number="94" hash="0186ebc5ebeb782b6f2a7731299b196d0f928de9">
+   <issue><![CDATA[Symfony\Component\Routing\Router::__construct(): Implicitly marking parameter $context as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Routing\Router::__construct(): Implicitly marking parameter $logger as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Routing\Router::__construct(): Implicitly marking parameter $defaultLocale as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/framework-bundle/CacheWarmer/RouterCacheWarmer.php">
+  <line number="37" hash="c3dced4ff04aa522d23b7693298af66340b173d1">
+   <issue><![CDATA[Symfony\Bundle\FrameworkBundle\CacheWarmer\RouterCacheWarmer::warmUp(): Implicitly marking parameter $buildDir as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Normalizer/ProblemNormalizer.php">
+  <line number="54" hash="47fb9f8f81723e7095f0ec9c0a2a0aa68241b93f">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\ProblemNormalizer::normalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="113" hash="65c83a1770c1f0d69e9dcdbaefc6f64e92105552">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\ProblemNormalizer::supportsNormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/cache/Adapter/TagAwareAdapter.php">
+  <line number="54" hash="14c85ef9db55f3a09bb15d652687d51aaa64f480">
+   <issue><![CDATA[Symfony\Component\Cache\Adapter\TagAwareAdapter::__construct(): Implicitly marking parameter $tagsPool as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/framework-bundle/CacheWarmer/ConfigBuilderCacheWarmer.php">
+  <line number="34" hash="55f80741df896324409d7c5da299870642fbabe7">
+   <issue><![CDATA[Symfony\Bundle\FrameworkBundle\CacheWarmer\ConfigBuilderCacheWarmer::__construct(): Implicitly marking parameter $logger as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/framework-bundle/Secrets/SodiumVault.php">
+  <line number="33" hash="6d332eec99566db17abb055876c587c4438ccd7a">
+   <issue><![CDATA[Symfony\Bundle\FrameworkBundle\Secrets\SodiumVault::__construct(): Implicitly marking parameter $decryptionKey as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/http-kernel/EventListener/LocaleListener.php">
+  <line number="38" hash="17ee2f7543be61bb9e84cff3f59fae7838c02866">
+   <issue><![CDATA[Symfony\Component\HttpKernel\EventListener\LocaleListener::__construct(): Implicitly marking parameter $router as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/http-kernel/EventListener/ErrorListener.php">
+  <line number="47" hash="19982cee7404412aba96509adc7bffe174df6398">
+   <issue><![CDATA[Symfony\Component\HttpKernel\EventListener\ErrorListener::__construct(): Implicitly marking parameter $logger as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="186" hash="9b9c150f4a0cbf3db930fbb0560c21eda10b5a3a">
+   <issue><![CDATA[Symfony\Component\HttpKernel\EventListener\ErrorListener::logException(): Implicitly marking parameter $logLevel as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/console/EventListener/ErrorListener.php">
+  <line number="29" hash="39b05ef3deae42342f1ec8504e7f202245bf2f5b">
+   <issue><![CDATA[Symfony\Component\Console\EventListener\ErrorListener::__construct(): Implicitly marking parameter $logger as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/http-kernel/EventListener/DebugHandlersListener.php">
+  <line number="44" hash="57a9e77cff940a8b790f7cf3250a930087d25b0d">
+   <issue><![CDATA[Symfony\Component\HttpKernel\EventListener\DebugHandlersListener::__construct(): Implicitly marking parameter $exceptionHandler as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\HttpKernel\EventListener\DebugHandlersListener::__construct(): Implicitly marking parameter $webMode as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="61" hash="7e62fd7c8842588af564560805f874b6b448c464">
+   <issue><![CDATA[Symfony\Component\HttpKernel\EventListener\DebugHandlersListener::configure(): Implicitly marking parameter $event as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/http-kernel/EventListener/RouterListener.php">
+  <line number="56" hash="b1faaa8513ec219fe2b2beac22cf231cc7e3b320">
+   <issue><![CDATA[Symfony\Component\HttpKernel\EventListener\RouterListener::__construct(): Implicitly marking parameter $context as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\HttpKernel\EventListener\RouterListener::__construct(): Implicitly marking parameter $logger as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\HttpKernel\EventListener\RouterListener::__construct(): Implicitly marking parameter $projectDir as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/framework-bundle/Command/CacheClearCommand.php">
+  <line number="43" hash="487f275a94eaba3be38f18e94142cd3e89ec579c">
+   <issue><![CDATA[Symfony\Bundle\FrameworkBundle\Command\CacheClearCommand::__construct(): Implicitly marking parameter $filesystem as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/framework-bundle/Command/CachePoolClearCommand.php">
+  <line number="41" hash="cd020b81c2a28dd274c118af0ca147c81bea0664">
+   <issue><![CDATA[Symfony\Bundle\FrameworkBundle\Command\CachePoolClearCommand::__construct(): Implicitly marking parameter $poolNames as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/framework-bundle/Command/CachePoolDeleteCommand.php">
+  <line number="38" hash="cd020b81c2a28dd274c118af0ca147c81bea0664">
+   <issue><![CDATA[Symfony\Bundle\FrameworkBundle\Command\CachePoolDeleteCommand::__construct(): Implicitly marking parameter $poolNames as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/framework-bundle/Command/DebugAutowiringCommand.php">
+  <line number="38" hash="0d86f80a5729149237e228cba0183e74c5bf0b3a">
+   <issue><![CDATA[Symfony\Bundle\FrameworkBundle\Command\DebugAutowiringCommand::__construct(): Implicitly marking parameter $name as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Bundle\FrameworkBundle\Command\DebugAutowiringCommand::__construct(): Implicitly marking parameter $fileLinkFormatter as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/framework-bundle/Command/RouterDebugCommand.php">
+  <line number="45" hash="853575f86b67a7f0a44e831433475e87274536a2">
+   <issue><![CDATA[Symfony\Bundle\FrameworkBundle\Command\RouterDebugCommand::__construct(): Implicitly marking parameter $fileLinkFormatter as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/framework-bundle/Command/SecretsSetCommand.php">
+  <line number="39" hash="3f20f47a483b8712b32beb4034c6bcb42ca764dd">
+   <issue><![CDATA[Symfony\Bundle\FrameworkBundle\Command\SecretsSetCommand::__construct(): Implicitly marking parameter $localVault as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/framework-bundle/Command/SecretsRemoveCommand.php">
+  <line number="38" hash="3f20f47a483b8712b32beb4034c6bcb42ca764dd">
+   <issue><![CDATA[Symfony\Bundle\FrameworkBundle\Command\SecretsRemoveCommand::__construct(): Implicitly marking parameter $localVault as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/framework-bundle/Command/SecretsGenerateKeysCommand.php">
+  <line number="36" hash="3f20f47a483b8712b32beb4034c6bcb42ca764dd">
+   <issue><![CDATA[Symfony\Bundle\FrameworkBundle\Command\SecretsGenerateKeysCommand::__construct(): Implicitly marking parameter $localVault as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/framework-bundle/Command/SecretsListCommand.php">
+  <line number="37" hash="3f20f47a483b8712b32beb4034c6bcb42ca764dd">
+   <issue><![CDATA[Symfony\Bundle\FrameworkBundle\Command\SecretsListCommand::__construct(): Implicitly marking parameter $localVault as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/framework-bundle/Command/SecretsDecryptToLocalCommand.php">
+  <line number="34" hash="3f20f47a483b8712b32beb4034c6bcb42ca764dd">
+   <issue><![CDATA[Symfony\Bundle\FrameworkBundle\Command\SecretsDecryptToLocalCommand::__construct(): Implicitly marking parameter $localVault as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/framework-bundle/Command/SecretsEncryptFromLocalCommand.php">
+  <line number="33" hash="3f20f47a483b8712b32beb4034c6bcb42ca764dd">
+   <issue><![CDATA[Symfony\Bundle\FrameworkBundle\Command\SecretsEncryptFromLocalCommand::__construct(): Implicitly marking parameter $localVault as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/cache/Adapter/FilesystemAdapter.php">
+  <line number="23" hash="c9e62f5761a37557732ba9a47a2d0e0827438f95">
+   <issue><![CDATA[Symfony\Component\Cache\Adapter\FilesystemAdapter::__construct(): Implicitly marking parameter $directory as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Cache\Adapter\FilesystemAdapter::__construct(): Implicitly marking parameter $marshaller as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/Dumper/PhpDumper.php">
+  <line number="1050" hash="be028b486a99ff9250a039fc48408779b27b3db9">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Dumper\PhpDumper::addInlineService(): Implicitly marking parameter $inlineDef as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="1110" hash="7de218ff3e2d38c90e733ffadb8a479794dc3ff8">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Dumper\PhpDumper::addServices(): Implicitly marking parameter $services as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="1152" hash="2019fe5b779e8f79ad3d7d8232502b09c572a0a2">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Dumper\PhpDumper::addNewInstance(): Implicitly marking parameter $id as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="1781" hash="e1bc9a8eace0d0af642ea270bb16e1f60235148f">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Dumper\PhpDumper::getDefinitionsFromArguments(): Implicitly marking parameter $definitions as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Dumper\PhpDumper::getDefinitionsFromArguments(): Implicitly marking parameter $byConstructor as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="2012" hash="88261568eee68b6899b7d3156f4dc3130596b223">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\Dumper\PhpDumper::getServiceCall(): Implicitly marking parameter $reference as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/dependency-injection/LazyProxy/PhpDumper/LazyServiceDumper.php">
+  <line number="29" hash="98cab8062e7e757d99326353f45a6b75bce12da6">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\LazyProxy\PhpDumper\LazyServiceDumper::isProxyCandidate(): Implicitly marking parameter $asGhostObject as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\DependencyInjection\LazyProxy\PhpDumper\LazyServiceDumper::isProxyCandidate(): Implicitly marking parameter $id as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="99" hash="0394f1012ecce4c61a26ee0376760179e35071e7">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\LazyProxy\PhpDumper\LazyServiceDumper::getProxyCode(): Implicitly marking parameter $id as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="142" hash="2e33ad0acf09e4843c7077dde3d6e05c9efb0930">
+   <issue><![CDATA[Symfony\Component\DependencyInjection\LazyProxy\PhpDumper\LazyServiceDumper::getProxyClass(): Implicitly marking parameter $class as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/var-exporter/LazyGhostTrait.php">
+  <line number="34" hash="e3b1046cc2d1f192a486f9e64ad194099e682653">
+   <issue><![CDATA[Symfony\Component\VarExporter\LazyGhostTrait::createLazyGhost(): Implicitly marking parameter $skippedProperties as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\VarExporter\LazyGhostTrait::createLazyGhost(): Implicitly marking parameter $instance as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/var-exporter/VarExporter.php">
+  <line number="40" hash="0bc6a6492806d6ce0548593a3f245374a50a341d">
+   <issue><![CDATA[Symfony\Component\VarExporter\VarExporter::export(): Implicitly marking parameter $isStaticValue as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/http-kernel/CacheWarmer/CacheWarmerAggregate.php">
+  <line number="34" hash="1374db21a60291b45b2b3f929ec8087bed036a34">
+   <issue><![CDATA[Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerAggregate::__construct(): Implicitly marking parameter $deprecationLogsFilepath as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="54" hash="88a534c9d06f4b0360241a4fb4b4763cd6644475">
+   <issue><![CDATA[Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerAggregate::warmUp(): Implicitly marking parameter $buildDir as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerAggregate::warmUp(): Implicitly marking parameter $io as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/doctrine-bridge/ContainerAwareEventManager.php">
+  <line number="47" hash="6345bb34dee3b5a454a1f450c7ac78352b34426d">
+   <issue><![CDATA[Symfony\Bridge\Doctrine\ContainerAwareEventManager::dispatchEvent(): Implicitly marking parameter $eventArgs as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/cache/Adapter/NullAdapter.php">
+  <line number="40" hash="38c6494613af7b4c072c157c77fe6af33837cd48">
+   <issue><![CDATA[Symfony\Component\Cache\Adapter\NullAdapter::get(): Implicitly marking parameter $beta as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Cache\Adapter\NullAdapter::get(): Implicitly marking parameter $metadata as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/http-kernel/Log/Logger.php">
+  <line number="60" hash="4cff8a4337b914a8599a2bd48d75d98cedfaaad3">
+   <issue><![CDATA[Symfony\Component\HttpKernel\Log\Logger::__construct(): Implicitly marking parameter $minLevel as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\HttpKernel\Log\Logger::__construct(): Implicitly marking parameter $formatter as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="115" hash="2113e566b9a8b0a8e0a6dc1c5b78c8e3700df34a">
+   <issue><![CDATA[Symfony\Component\HttpKernel\Log\Logger::getLogs(): Implicitly marking parameter $request as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="124" hash="d8e0402996c830d8cd841757ff14faedc151aba9">
+   <issue><![CDATA[Symfony\Component\HttpKernel\Log\Logger::countErrors(): Implicitly marking parameter $request as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/http-kernel/Log/DebugLoggerInterface.php">
+  <line number="36" hash="90804ed5ea934dd53fb70e5ad3477da99fb99f2a">
+   <issue><![CDATA[Symfony\Component\HttpKernel\Log\DebugLoggerInterface::getLogs(): Implicitly marking parameter $request as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="43" hash="4312e0a8c54ac0e2897b678df74a1ea319bf3800">
+   <issue><![CDATA[Symfony\Component\HttpKernel\Log\DebugLoggerInterface::countErrors(): Implicitly marking parameter $request as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/http-kernel/Debug/ErrorHandlerConfigurator.php">
+  <line number="39" hash="8523c0032fada139204803e9041dac34b5ad8938">
+   <issue><![CDATA[Symfony\Component\HttpKernel\Debug\ErrorHandlerConfigurator::__construct(): Implicitly marking parameter $logger as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\HttpKernel\Debug\ErrorHandlerConfigurator::__construct(): Implicitly marking parameter $deprecationLogger as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Normalizer/ObjectNormalizer.php">
+  <line number="37" hash="9847c82a7130cc2e0690e02efd42220c5580f833">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\ObjectNormalizer::__construct(): Implicitly marking parameter $classMetadataFactory as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\ObjectNormalizer::__construct(): Implicitly marking parameter $nameConverter as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\ObjectNormalizer::__construct(): Implicitly marking parameter $propertyAccessor as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\ObjectNormalizer::__construct(): Implicitly marking parameter $propertyTypeExtractor as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\ObjectNormalizer::__construct(): Implicitly marking parameter $classDiscriminatorResolver as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\ObjectNormalizer::__construct(): Implicitly marking parameter $objectClassResolver as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="65" hash="b352dffa18995c490328fff843c6f7dc4ef36cfd">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\ObjectNormalizer::extractAttributes(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="128" hash="b49867064fb4237476e1228908526574c5be3060">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\ObjectNormalizer::getAttributeValue(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="140" hash="d93cf93531b7958649293f6567e76f170315b2bb">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\ObjectNormalizer::setAttributeValue(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Normalizer/AbstractObjectNormalizer.php">
+  <line number="118" hash="ceb043f6ab1e59b0d2e3038886d66ec328517fc4">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer::__construct(): Implicitly marking parameter $classMetadataFactory as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer::__construct(): Implicitly marking parameter $nameConverter as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer::__construct(): Implicitly marking parameter $classDiscriminatorResolver as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer::__construct(): Implicitly marking parameter $objectClassResolver as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="146" hash="92f2e7614e3534ac6aa7933dab93035470c1d646">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer::supportsNormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="154" hash="4ac07cc58d2042f906dba0ba60d7868caab95670">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer::normalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="240" hash="1785d98c4cb2facb8bacf2a4ac3f2aa81282cbde">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer::instantiateObject(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="291" hash="d75892d0abda088d96cea5977c9c3c9e0bcdc2b2">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer::extractAttributes(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="298" hash="175e031ac86013e704fd771dd3dac5dba27a85fe">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer::getAttributeValue(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="305" hash="a1d8c0ee62a9d389e52e91f81e691b1d08f49115">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer::supportsDenormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="313" hash="230bd69245a317a937c1ead7f6caff8c0e0026cb">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer::denormalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="425" hash="5aa371541e1a458a2e4d992001081052678ea3c8">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer::setAttributeValue(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="623" hash="bb7cff428af97b8347ba9a3ef3ee17e87a4d25b6">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer::denormalizeParameter(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Normalizer/AbstractNormalizer.php">
+  <line number="146" hash="b1b26a86163756648d153b992a29e51154226ab6">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\AbstractNormalizer::__construct(): Implicitly marking parameter $classMetadataFactory as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\AbstractNormalizer::__construct(): Implicitly marking parameter $nameConverter as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="204" hash="841de59ee669425c79a7e9167642d7765e5a90cd">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\AbstractNormalizer::handleCircularReference(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="273" hash="624b315f0f48d4b385967ebef03140330a7f96b9">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\AbstractNormalizer::isAllowedAttribute(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="324" hash="1785d98c4cb2facb8bacf2a4ac3f2aa81282cbde">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\AbstractNormalizer::instantiateObject(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="454" hash="bb7cff428af97b8347ba9a3ef3ee17e87a4d25b6">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\AbstractNormalizer::denormalizeParameter(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Normalizer/ObjectToPopulateTrait.php">
+  <line number="24" hash="b910ffb04d172d943608b773c79c2f85b1feaff0">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\ObjectToPopulateTrait::extractObjectToPopulate(): Implicitly marking parameter $key as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/NameConverter/MetadataAwareNameConverter.php">
+  <line number="44" hash="ae28f6385e8fdf5557c9883f8d10e7f9ab4d3cae">
+   <issue><![CDATA[Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter::normalize(): Implicitly marking parameter $class as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter::normalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="57" hash="8874c259c6b8b897e5b59ed3e83ba9d6450a8452">
+   <issue><![CDATA[Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter::denormalize(): Implicitly marking parameter $class as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter::denormalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="89" hash="b41a349e2b21c42572d8e177faa3159155441eb2">
+   <issue><![CDATA[Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter::normalizeFallback(): Implicitly marking parameter $class as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter::normalizeFallback(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="104" hash="f64ff32a595111926964d543f46e1bf132994a3b">
+   <issue><![CDATA[Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter::denormalizeFallback(): Implicitly marking parameter $class as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter::denormalizeFallback(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/NameConverter/AdvancedNameConverterInterface.php">
+  <line number="21" hash="04758e66dba8ab742d1dbc0ad9c6fbb1e977b219">
+   <issue><![CDATA[Symfony\Component\Serializer\NameConverter\AdvancedNameConverterInterface::normalize(): Implicitly marking parameter $class as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Serializer\NameConverter\AdvancedNameConverterInterface::normalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="23" hash="7ad862a5e988150bb72fde4032893acbf9cc1de8">
+   <issue><![CDATA[Symfony\Component\Serializer\NameConverter\AdvancedNameConverterInterface::denormalize(): Implicitly marking parameter $class as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Serializer\NameConverter\AdvancedNameConverterInterface::denormalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/property-info/Type.php">
+  <line number="79" hash="0c63c3605a5eddfe8abeb45e8855bb093dcfe956">
+   <issue><![CDATA[Symfony\Component\PropertyInfo\Type::__construct(): Implicitly marking parameter $class as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Normalizer/UnwrappingDenormalizer.php">
+  <line number="31" hash="a2c65c65d7269a98d7fbf99b21990c719f14613f">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\UnwrappingDenormalizer::__construct(): Implicitly marking parameter $propertyAccessor as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="41" hash="9bd1aba7748d5a0856bfd47c43047790ef08e9ec">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\UnwrappingDenormalizer::denormalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="61" hash="cdc02ceb9559b7a0361fb4c36c5b9c75032410c1">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\UnwrappingDenormalizer::supportsDenormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Normalizer/UidNormalizer.php">
+  <line number="54" hash="c49993b530fd68dfd52baec45f09da6e184d2297">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\UidNormalizer::normalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="65" hash="b06f5c70edcfac6bfce75870e3cde202bb6b153e">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\UidNormalizer::supportsNormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="70" hash="9bd1aba7748d5a0856bfd47c43047790ef08e9ec">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\UidNormalizer::denormalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="91" hash="cdc02ceb9559b7a0361fb4c36c5b9c75032410c1">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\UidNormalizer::supportsDenormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Normalizer/DateTimeNormalizer.php">
+  <line number="66" hash="09fe6a5d3bc3a1e765212008f009266784549097">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\DateTimeNormalizer::normalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="86" hash="65c83a1770c1f0d69e9dcdbaefc6f64e92105552">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\DateTimeNormalizer::supportsNormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="94" hash="52dfe69c52ef26fa9ddfc987213337e2d93f15a0">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\DateTimeNormalizer::denormalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="144" hash="cef135e92a062d810c67cdd6d13de9964cd9aed9">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\DateTimeNormalizer::supportsDenormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Normalizer/DateTimeZoneNormalizer.php">
+  <line number="37" hash="09fe6a5d3bc3a1e765212008f009266784549097">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\DateTimeZoneNormalizer::normalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="49" hash="65c83a1770c1f0d69e9dcdbaefc6f64e92105552">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\DateTimeZoneNormalizer::supportsNormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="57" hash="37c1b5ad203e30c83c08a9be1ffda95ba6dd5e15">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\DateTimeZoneNormalizer::denormalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="73" hash="cef135e92a062d810c67cdd6d13de9964cd9aed9">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\DateTimeZoneNormalizer::supportsDenormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Normalizer/DateIntervalNormalizer.php">
+  <line number="48" hash="09fe6a5d3bc3a1e765212008f009266784549097">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\DateIntervalNormalizer::normalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="60" hash="65c83a1770c1f0d69e9dcdbaefc6f64e92105552">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\DateIntervalNormalizer::supportsNormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="78" hash="6e1ab3888d7e044d64372c5dc0bb1f2a7e34ceca">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\DateIntervalNormalizer::denormalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="127" hash="cef135e92a062d810c67cdd6d13de9964cd9aed9">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\DateIntervalNormalizer::supportsDenormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Normalizer/FormErrorNormalizer.php">
+  <line number="25" hash="47fb9f8f81723e7095f0ec9c0a2a0aa68241b93f">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\FormErrorNormalizer::normalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="48" hash="b06f5c70edcfac6bfce75870e3cde202bb6b153e">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\FormErrorNormalizer::supportsNormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Normalizer/BackedEnumNormalizer.php">
+  <line number="37" hash="346a0313162a0d641f9cd9c51c493388d9c99c53">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer::normalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="46" hash="b06f5c70edcfac6bfce75870e3cde202bb6b153e">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer::supportsNormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="54" hash="9bd1aba7748d5a0856bfd47c43047790ef08e9ec">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer::denormalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="87" hash="cdc02ceb9559b7a0361fb4c36c5b9c75032410c1">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer::supportsDenormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Normalizer/DataUriNormalizer.php">
+  <line number="38" hash="f240eb89be532db8a812825685b05a5a2a0251af">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\DataUriNormalizer::__construct(): Implicitly marking parameter $mimeTypeGuesser as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="58" hash="09fe6a5d3bc3a1e765212008f009266784549097">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\DataUriNormalizer::normalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="84" hash="65c83a1770c1f0d69e9dcdbaefc6f64e92105552">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\DataUriNormalizer::supportsNormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="97" hash="8e87ea93da242888fa9c1ca934c807d50ce2177b">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\DataUriNormalizer::denormalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="126" hash="cef135e92a062d810c67cdd6d13de9964cd9aed9">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\DataUriNormalizer::supportsDenormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Normalizer/JsonSerializableNormalizer.php">
+  <line number="26" hash="c49993b530fd68dfd52baec45f09da6e184d2297">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer::normalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="53" hash="65c83a1770c1f0d69e9dcdbaefc6f64e92105552">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer::supportsNormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="61" hash="cef135e92a062d810c67cdd6d13de9964cd9aed9">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer::supportsDenormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="66" hash="9bd1aba7748d5a0856bfd47c43047790ef08e9ec">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer::denormalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Normalizer/ArrayDenormalizer.php">
+  <line number="47" hash="32fb2d2742abf1746ded4bfc07e18ae07cdf72f6">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\ArrayDenormalizer::denormalize(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="77" hash="cdc02ceb9559b7a0361fb4c36c5b9c75032410c1">
+   <issue><![CDATA[Symfony\Component\Serializer\Normalizer\ArrayDenormalizer::supportsDenormalization(): Implicitly marking parameter $format as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Encoder/XmlEncoder.php">
+  <line number="345" hash="306d2c314ce9955aa039d0c65e51158b75016119">
+   <issue><![CDATA[Symfony\Component\Serializer\Encoder\XmlEncoder::buildXml(): Implicitly marking parameter $xmlRootNodeName as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="419" hash="e1d1489389c83fb2a552e3f146cd6903048c20fe">
+   <issue><![CDATA[Symfony\Component\Serializer\Encoder\XmlEncoder::appendNode(): Implicitly marking parameter $key as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Encoder/JsonEncoder.php">
+  <line number="30" hash="eb7d42d6661432aabc8923d23c31822dcf14d59f">
+   <issue><![CDATA[Symfony\Component\Serializer\Encoder\JsonEncoder::__construct(): Implicitly marking parameter $encodingImpl as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Serializer\Encoder\JsonEncoder::__construct(): Implicitly marking parameter $decodingImpl as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Encoder/YamlEncoder.php">
+  <line number="53" hash="db3feec3ebed897341f9b57c21e85ac9a0fb5db1">
+   <issue><![CDATA[Symfony\Component\Serializer\Encoder\YamlEncoder::__construct(): Implicitly marking parameter $dumper as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Serializer\Encoder\YamlEncoder::__construct(): Implicitly marking parameter $parser as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/php-http/discovery/src/Psr17Factory.php">
+  <line number="51" hash="ceb043f6ab1e59b0d2e3038886d66ec328517fc4">
+   <issue><![CDATA[Http\Discovery\Psr17Factory::__construct(): Implicitly marking parameter $requestFactory as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Http\Discovery\Psr17Factory::__construct(): Implicitly marking parameter $responseFactory as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Http\Discovery\Psr17Factory::__construct(): Implicitly marking parameter $serverRequestFactory as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Http\Discovery\Psr17Factory::__construct(): Implicitly marking parameter $streamFactory as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Http\Discovery\Psr17Factory::__construct(): Implicitly marking parameter $uploadedFileFactory as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Http\Discovery\Psr17Factory::__construct(): Implicitly marking parameter $uriFactory as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="101" hash="e1a8e977173d721e70c698caf438e8346486444d">
+   <issue><![CDATA[Http\Discovery\Psr17Factory::createServerRequestFromGlobals(): Implicitly marking parameter $server as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Http\Discovery\Psr17Factory::createServerRequestFromGlobals(): Implicitly marking parameter $get as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Http\Discovery\Psr17Factory::createServerRequestFromGlobals(): Implicitly marking parameter $post as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Http\Discovery\Psr17Factory::createServerRequestFromGlobals(): Implicitly marking parameter $cookie as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Http\Discovery\Psr17Factory::createServerRequestFromGlobals(): Implicitly marking parameter $files as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Http\Discovery\Psr17Factory::createServerRequestFromGlobals(): Implicitly marking parameter $body as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="137" hash="5265d5a25406898319e76a6ca9bd512ce7be11f7">
+   <issue><![CDATA[Http\Discovery\Psr17Factory::createUploadedFile(): Implicitly marking parameter $size as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Http\Discovery\Psr17Factory::createUploadedFile(): Implicitly marking parameter $clientFilename as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Http\Discovery\Psr17Factory::createUploadedFile(): Implicitly marking parameter $clientMediaType as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="151" hash="0a6d712f8554938e056ce0a6735c9666268a9167">
+   <issue><![CDATA[Http\Discovery\Psr17Factory::createUriFromGlobals(): Implicitly marking parameter $server as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/psr/http-factory/src/UploadedFileFactoryInterface.php">
+  <line number="27" hash="35ee7365b5a3c95df9436108889d1c071e358727">
+   <issue><![CDATA[Psr\Http\Message\UploadedFileFactoryInterface::createUploadedFile(): Implicitly marking parameter $size as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="30" hash="aae8dbc3ae2adc57c6ab02f9a606e20335a778a8">
+   <issue><![CDATA[Psr\Http\Message\UploadedFileFactoryInterface::createUploadedFile(): Implicitly marking parameter $clientFilename as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Psr\Http\Message\UploadedFileFactoryInterface::createUploadedFile(): Implicitly marking parameter $clientMediaType as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Mapping/ClassMetadata.php">
+  <line number="47" hash="fe7d8ffda5e58719a3a923b2ce7f307129f83abc">
+   <issue><![CDATA[Symfony\Component\Serializer\Mapping\ClassMetadata::__construct(): Implicitly marking parameter $classDiscriminatorMapping as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="93" hash="d488577a2cebe5c8f3f1728b59b13cb71dc66566">
+   <issue><![CDATA[Symfony\Component\Serializer\Mapping\ClassMetadata::setClassDiscriminatorMapping(): Implicitly marking parameter $mapping as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/serializer/Mapping/AttributeMetadata.php">
+  <line number="113" hash="89f1a301306e5a6ec975ca4e15c7384b5d7737f3">
+   <issue><![CDATA[Symfony\Component\Serializer\Mapping\AttributeMetadata::setSerializedName(): Implicitly marking parameter $serializedName as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="127" hash="ad42c4c95858a77499d864a372e2ac0b5b0ef045">
+   <issue><![CDATA[Symfony\Component\Serializer\Mapping\AttributeMetadata::setSerializedPath(): Implicitly marking parameter $serializedPath as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="var/cache/test/doctrine/orm/Proxies/__CG__MeilisearchBundleTestsEntityPost.php">
+  <line number="136" hash="5290f0c5f1b7f8db91787caec3a7e537fa9ff225">
+   <issue><![CDATA[Proxies\__CG__\Meilisearch\Bundle\Tests\Entity\Post::__setInitializer(): Implicitly marking parameter $initializer as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="154" hash="aef8dea2270fd985e36d0f3f262fc72abd179529">
+   <issue><![CDATA[Proxies\__CG__\Meilisearch\Bundle\Tests\Entity\Post::__setCloner(): Implicitly marking parameter $cloner as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/framework-bundle/Console/Application.php">
+  <line number="160" hash="c98b57cea14f2f56d970728d58cce4b4a99bfe4b">
+   <issue><![CDATA[Symfony\Bundle\FrameworkBundle\Console\Application::all(): Implicitly marking parameter $namespace as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/console/Input/InputArgument.php">
+  <line number="41" hash="2dcb6910290822263a499c21bbb094562214d0e5">
+   <issue><![CDATA[Symfony\Component\Console\Input\InputArgument::__construct(): Implicitly marking parameter $mode as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/console/Input/InputOption.php">
+  <line number="62" hash="5abbb9183958622e3b6823602c62c5b9f8eb47d5">
+   <issue><![CDATA[Symfony\Component\Console\Input\InputOption::__construct(): Implicitly marking parameter $mode as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/console/Command/DumpCompletionCommand.php">
+  <line number="48" hash="78ccd037e28749e667d71a2a016cf28870fbccec">
+   <issue><![CDATA[Using ${var} in strings is deprecated, use {$var} instead]]></issue>
+  </line>
+  <line number="56" hash="92ad638fa3a660057933a759d2f24a8dd8882617">
+   <issue><![CDATA[Using ${var} in strings is deprecated, use {$var} instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/console/Helper/HelperSet.php">
+  <line number="40" hash="022dbf828f2ba83dc2d8e22d27174a5370b8891a">
+   <issue><![CDATA[Symfony\Component\Console\Helper\HelperSet::set(): Implicitly marking parameter $alias as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="79" hash="600a11c39050ce22781dff1668c9268977962065">
+   <issue><![CDATA[Symfony\Component\Console\Helper\HelperSet::setCommand(): Implicitly marking parameter $command as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/console/Helper/Helper.php">
+  <line number="29" hash="e91d55fbbd40053f94558e68cdbff865a4fd551d">
+   <issue><![CDATA[Symfony\Component\Console\Helper\Helper::setHelperSet(): Implicitly marking parameter $helperSet as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="99" hash="2f91d3e4ae8268def8a726e26679df5e3ef83696">
+   <issue><![CDATA[Symfony\Component\Console\Helper\Helper::substr(): Implicitly marking parameter $length as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/console/Helper/HelperInterface.php">
+  <line number="24" hash="9233a97b1fe1d71442c263818f66a5c3c6df2d2c">
+   <issue><![CDATA[Symfony\Component\Console\Helper\HelperInterface::setHelperSet(): Implicitly marking parameter $helperSet as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/console/Helper/ProcessHelper.php">
+  <line number="37" hash="630e854c3d30523b80b8caa6fd428a6af9a34461">
+   <issue><![CDATA[Symfony\Component\Console\Helper\ProcessHelper::run(): Implicitly marking parameter $error as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Console\Helper\ProcessHelper::run(): Implicitly marking parameter $callback as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="105" hash="4b0e431a550905de536682edb18992de098fe483">
+   <issue><![CDATA[Symfony\Component\Console\Helper\ProcessHelper::mustRun(): Implicitly marking parameter $error as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Console\Helper\ProcessHelper::mustRun(): Implicitly marking parameter $callback as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="119" hash="d89fae9da0b387a40b33d587d41ace6f4755689c">
+   <issue><![CDATA[Symfony\Component\Console\Helper\ProcessHelper::wrapCallback(): Implicitly marking parameter $callback as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/console/Command/LazyCommand.php">
+  <line number="46" hash="9d74a7aa2bb3a8d798e3f779dcbf63af1f8aea49">
+   <issue><![CDATA[Symfony\Component\Console\Command\LazyCommand::setApplication(): Implicitly marking parameter $application as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="120" hash="4c2d88adb31a37c7a1f17cf8798bd709fa6ddd36">
+   <issue><![CDATA[Symfony\Component\Console\Command\LazyCommand::addArgument(): Implicitly marking parameter $mode as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="130" hash="85c4cfd4050efb6a496f583bb7d19e9e6e168498">
+   <issue><![CDATA[Symfony\Component\Console\Command\LazyCommand::addOption(): Implicitly marking parameter $mode as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/console/Input/ArrayInput.php">
+  <line number="30" hash="de894e16858b08fe2dddc23a38d07bdf9f976fb8">
+   <issue><![CDATA[Symfony\Component\Console\Input\ArrayInput::__construct(): Implicitly marking parameter $definition as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/console/Input/Input.php">
+  <line number="36" hash="e161dc9bda910ea8143ae3043b83a0bbfb595b4c">
+   <issue><![CDATA[Symfony\Component\Console\Input\Input::__construct(): Implicitly marking parameter $definition as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/console/Output/StreamOutput.php">
+  <line number="42" hash="b7ec0f2668b5b60021519f24c1a7fe7ecd6a2c6b">
+   <issue><![CDATA[Symfony\Component\Console\Output\StreamOutput::__construct(): Implicitly marking parameter $decorated as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Console\Output\StreamOutput::__construct(): Implicitly marking parameter $formatter as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/console/Output/Output.php">
+  <line number="40" hash="e8e13ab41c55b3af1cb4320198b0478c07d6dc19">
+   <issue><![CDATA[Symfony\Component\Console\Output\Output::__construct(): Implicitly marking parameter $formatter as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/console/Formatter/OutputFormatterStyle.php">
+  <line number="36" hash="b6b45cfb9e5f2add234aa84c1d3f03d636b0868c">
+   <issue><![CDATA[Symfony\Component\Console\Formatter\OutputFormatterStyle::__construct(): Implicitly marking parameter $foreground as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Console\Formatter\OutputFormatterStyle::__construct(): Implicitly marking parameter $background as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="44" hash="0f787d717f5c3755402fd15e8c53bec3e3c09900">
+   <issue><![CDATA[Symfony\Component\Console\Formatter\OutputFormatterStyle::setForeground(): Implicitly marking parameter $color as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="52" hash="a1f2ccf0735a72c066539092158c1f045418ecec">
+   <issue><![CDATA[Symfony\Component\Console\Formatter\OutputFormatterStyle::setBackground(): Implicitly marking parameter $color as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/console/Formatter/OutputFormatterStyleInterface.php">
+  <line number="24" hash="87fdd1056613d82c1b1faf0e3ed165291ccd5ae4">
+   <issue><![CDATA[Symfony\Component\Console\Formatter\OutputFormatterStyleInterface::setForeground(): Implicitly marking parameter $color as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="29" hash="2bce100b3e3835085ae6bcf43d34c091fb6a0626">
+   <issue><![CDATA[Symfony\Component\Console\Formatter\OutputFormatterStyleInterface::setBackground(): Implicitly marking parameter $color as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/console/Formatter/OutputFormatterStyleStack.php">
+  <line number="29" hash="8d91a9667e156a55089ca30283fa8644aadb9ea2">
+   <issue><![CDATA[Symfony\Component\Console\Formatter\OutputFormatterStyleStack::__construct(): Implicitly marking parameter $emptyStyle as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="58" hash="d421a0cf56b4384424b36d6c6d3ba116f1f7efae">
+   <issue><![CDATA[Symfony\Component\Console\Formatter\OutputFormatterStyleStack::pop(): Implicitly marking parameter $style as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/console/Style/SymfonyStyle.php">
+  <line number="64" hash="1839e13b10201f1834c8c08f91828082d3b9bcbf">
+   <issue><![CDATA[Symfony\Component\Console\Style\SymfonyStyle::block(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Console\Style\SymfonyStyle::block(): Implicitly marking parameter $style as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="253" hash="81b78fcab17db4469662bdbe0fbd6899a8a92d54">
+   <issue><![CDATA[Symfony\Component\Console\Style\SymfonyStyle::ask(): Implicitly marking parameter $default as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Console\Style\SymfonyStyle::ask(): Implicitly marking parameter $validator as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="264" hash="7f4dc6013bf834f1ea3a62fe1cad2b2cb69a7e02">
+   <issue><![CDATA[Symfony\Component\Console\Style\SymfonyStyle::askHidden(): Implicitly marking parameter $validator as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="341" hash="90f7660e30df928ed946791bd3be879077a5f615">
+   <issue><![CDATA[Symfony\Component\Console\Style\SymfonyStyle::progressIterate(): Implicitly marking parameter $max as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="466" hash="000218b4cd127a883a744385c118c32ae7fdcde4">
+   <issue><![CDATA[Symfony\Component\Console\Style\SymfonyStyle::createBlock(): Implicitly marking parameter $type as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Console\Style\SymfonyStyle::createBlock(): Implicitly marking parameter $style as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/console/Style/StyleInterface.php">
+  <line number="88" hash="c4d4e0b54ab2b5c19e7c5831be79dc5ca3e8e317">
+   <issue><![CDATA[Symfony\Component\Console\Style\StyleInterface::ask(): Implicitly marking parameter $default as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+   <issue><![CDATA[Symfony\Component\Console\Style\StyleInterface::ask(): Implicitly marking parameter $validator as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+  <line number="95" hash="51bf5499047a284016e421fa129805f000707fa0">
+   <issue><![CDATA[Symfony\Component\Console\Style\StyleInterface::askHidden(): Implicitly marking parameter $validator as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+ <file path="vendor/symfony/console/Output/TrimmedBufferOutput.php">
+  <line number="27" hash="6e4df21f78b3051c2d6b2cdd8d5ed00cca688f3f">
+   <issue><![CDATA[Symfony\Component\Console\Output\TrimmedBufferOutput::__construct(): Implicitly marking parameter $formatter as nullable is deprecated, the explicit nullable type must be used instead]]></issue>
+  </line>
+ </file>
+</files>
