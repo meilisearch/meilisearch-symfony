@@ -17,6 +17,24 @@ final class DataProviderPass implements CompilerPassInterface
             return;
         }
 
+        if ($container->hasParameter('.meilisearch.custom_data_providers')) {
+            $customProviders = $container->getParameter('.meilisearch.custom_data_providers');
+
+            foreach ($customProviders as $serviceId => $tagsConfigs) {
+                if (!$container->has($serviceId)) {
+                    $indices = array_column($tagsConfigs, 'index');
+
+                    throw new \InvalidArgumentException(\sprintf('The service "%s" configured as a "data_provider" for index(es) "%s" was not found.', $serviceId, implode('", "', $indices)));
+                }
+
+                $definition = $container->findDefinition($serviceId);
+
+                foreach ($tagsConfigs as $attributes) {
+                    $definition->addTag('meilisearch.data_provider', $attributes);
+                }
+            }
+        }
+
         $definition = $container->getDefinition('meilisearch.data_provider.registry');
 
         $locatorServices = [];
