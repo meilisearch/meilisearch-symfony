@@ -11,7 +11,7 @@
   <a href="https://discord.meilisearch.com">Discord</a> |
   <a href="https://roadmap.meilisearch.com/tabs/1-under-consideration">Roadmap</a> |
   <a href="https://www.meilisearch.com">Website</a> |
-  <a href="https://www.meilisearch.com/docs/faq">FAQ</a>
+  <a href="https://www.meilisearch.com/docs/learn/resources/faq">FAQ</a>
 </h4>
 
 <p align="center">
@@ -40,7 +40,7 @@
 
 Check out the [Wiki](https://github.com/meilisearch/meilisearch-symfony/wiki) of this repository to get started! 🚀
 
-Also, see our [Documentation](https://www.meilisearch.com/docs/learn/getting_started/installation) or our [API References](https://www.meilisearch.com/docs/reference/api/overview).
+Also, see our [Documentation](https://www.meilisearch.com/docs/learn/self_hosted/install_meilisearch_locally) or our [API References](https://www.meilisearch.com/docs/reference/api/authorization).
 
 ## ⚡ Supercharge your Meilisearch experience
 
@@ -66,10 +66,10 @@ This package guarantees compatibility with [version v1.x of Meilisearch](https:/
 
 The following sections may interest you:
 
-- **Manipulate documents**: see the [API references](https://www.meilisearch.com/docs/reference/api/documents) or read more about [documents](https://www.meilisearch.com/docs/learn/core_concepts/documents).
-- **Search**: see the [API references](https://www.meilisearch.com/docs/reference/api/search) or follow our guide on [search parameters](https://www.meilisearch.com/docs/reference/api/search#search-parameters).
-- **Manage the indexes**: see the [API references](https://www.meilisearch.com/docs/reference/api/indexes) or read more about [indexes](https://www.meilisearch.com/docs/learn/core_concepts/indexes).
-- **Configure the index settings**: see the [API references](https://www.meilisearch.com/docs/reference/api/settings) or follow our guide on [settings parameters](https://www.meilisearch.com/docs/reference/api/settings#settings_parameters).
+- **Manipulate documents**: see the [API references](https://www.meilisearch.com/docs/reference/api/documents/list-documents-with-get) or read more about [documents](https://www.meilisearch.com/docs/learn/getting_started/documents).
+- **Search**: see the [API references](https://www.meilisearch.com/docs/reference/api/search/search-with-post) or follow our guide on [search parameters](https://www.meilisearch.com/docs/reference/api/search/search-with-post#search-parameters).
+- **Manage the indexes**: see the [API references](https://www.meilisearch.com/docs/reference/api/indexes/list-all-indexes) or read more about [indexes](https://www.meilisearch.com/docs/learn/getting_started/indexes).
+- **Configure the index settings**: see the [API references](https://www.meilisearch.com/docs/reference/api/settings/list-all-settings) or follow our guide on [settings parameters](https://www.meilisearch.com/docs/reference/api/settings/list-all-settings#settings_parameters).
 
 📖 Also, check out the [Wiki](https://github.com/meilisearch/meilisearch-symfony/wiki) of this repository!
 

@@ -75,7 +75,7 @@ final class Configuration implements ConfigurationInterface
                             ->end()
                             ->variableNode('settings')
                                 ->defaultValue([])
-                                ->info('Configure indices settings, see: https://www.meilisearch.com/docs/reference/api/settings')
+                                ->info('Configure indices settings, see: https://www.meilisearch.com/docs/reference/api/settings/list-all-settings')
                                 ->beforeNormalization()
                                     ->always()
                                     ->then(static function ($value) {
