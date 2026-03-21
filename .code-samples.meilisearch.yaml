@@ -2,7 +2,7 @@ landing_getting_started_1: |-
     // # Configure your entities by adding them in config/packages/meilisearch.yaml
     // meilisearch:
     //    url: 'http://127.0.0.1:7700'
-    //    api_key: 'masterKey'
+    //    api_key: 'MEILISEARCH_KEY'
     //    indices:
     //        - name: movies
     //          class: App\Entity\Movie
