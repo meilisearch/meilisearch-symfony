@@ -172,6 +172,31 @@ final class MeilisearchManager implements SearchManagerInterface
         return array_merge(...$responses);
     }
 
+    /**
+     * Resolves the Meilisearch document ids an entity currently maps to, one per
+     * matching index (covering aggregators and multi-index entities).
+     *
+     * Intended for the async removal path: the ids are computed while the entity
+     * is still alive so documents can later be deleted without reloading it.
+     *
+     * @return array<non-empty-string, int|string> Prefixed index uid => document id
+     */
+    public function getSearchableDocumentIds(object $entity): array
+    {
+        $documentIds = [];
+        $baseClass = $this->getBaseClassName($entity);
+
+        foreach ($this->getIndicesForEntity($entity) as $indexConfig) {
+            $indexName = $indexConfig['name'];
+            $prefixedIndexName = $this->configuration->get('prefix').$indexName;
+            $provider = $this->dataProviderRegistry->getDataProvider($indexName, $baseClass);
+
+            $documentIds[$prefixedIndexName] = $provider->normalizeIdentifiers($provider->getIdentifierValues($entity));
+        }
+
+        return $documentIds;
+    }
+
     public function clear(string $className): Task
     {
         $this->assertIsSearchable($className);

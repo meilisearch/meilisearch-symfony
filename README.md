@@ -32,6 +32,8 @@
 - [📖 Documentation](#-documentation)
 - [⚡ Supercharge your Meilisearch experience](#-supercharge-your-meilisearch-experience)
 - [📝 Requirements](#-requirements)
+- [Doctrine Integration](#doctrine-integration)
+- [Asynchronous indexing with Symfony Messenger](#asynchronous-indexing-with-symfony-messenger)
 - [🤖 Compatibility with Meilisearch](#-compatibility-with-meilisearch)
 - [💡 Learn More](#-learn-more)
 - [⚙️ Development Workflow and Contributing](#️-development-workflow-and-contributing)
@@ -57,6 +59,62 @@ For support of older versions, see older versions of this bundle.
 
 To enable Doctrine integration you have to install `doctrine/orm` and `doctrine/doctrine-bundle`
 packages.
+
+By default, every persisted, updated or removed entity is indexed **synchronously** inside the
+request: the bundle performs one blocking Meilisearch HTTP call per entity. See the next section to
+move that work out of the request cycle.
+
+## Asynchronous indexing with Symfony Messenger
+
+Indexing can be delegated to [Symfony Messenger](https://symfony.com/doc/current/messenger.html), the
+same way Symfony Mailer makes email delivery asynchronous: it is **opt-in** and controlled purely by
+message routing. Nothing changes unless you enable it, so this is fully backward compatible.
+
+First install the component:
+
+```bash
+composer require symfony/messenger
+```
+
+Then enable the integration:
+
+```yaml
+# config/packages/meilisearch.yaml
+meilisearch:
+    messenger:
+        enabled: true
+        # bus: messenger.bus.default # optional: a specific bus service id
+```
+
+When enabled, the bundle's synchronous Doctrine subscriber is replaced by an asynchronous one. During
+each `flush()` it buffers the changes and, once the flush succeeds, dispatches at most two messages:
+
+- `Meilisearch\Bundle\Messenger\IndexEntitiesMessage` — entities to (re)index. The handler reloads the
+  live entities before normalizing them.
+- `Meilisearch\Bundle\Messenger\RemoveDocumentsMessage` — documents to delete, addressed by their
+  already-resolved id. The deleted entity is **never reloaded**, which avoids the "entity not found"
+  error described in [#62](https://github.com/meilisearch/meilisearch-symfony/issues/62).
+
+By default both messages are handled synchronously (nothing runs in the background yet). To actually
+process them out of the request, route them to an async transport and run a consumer:
+
+```yaml
+# config/packages/messenger.yaml
+framework:
+    messenger:
+        transports:
+            async: '%env(MESSENGER_TRANSPORT_DSN)%'
+        routing:
+            'Meilisearch\Bundle\Messenger\IndexEntitiesMessage': async
+            'Meilisearch\Bundle\Messenger\RemoveDocumentsMessage': async
+```
+
+```bash
+php bin/console messenger:consume async
+```
+
+Only the routed messages become asynchronous; anything left unrouted keeps running in-process. Note
+that the asynchronous index path supports entities with a single-column identifier.
 
 ## 🤖 Compatibility with Meilisearch
 

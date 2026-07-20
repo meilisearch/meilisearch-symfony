@@ -1,0 +1,13 @@
+meilisearch:
+    messenger:
+        enabled: true
+
+framework:
+    messenger:
+        transports:
+            # Handle messages in-process so the test exercises the full opt-in path
+            # (dispatch -> handler -> Meilisearch) without a running consumer.
+            meilisearch_sync: 'sync://'
+        routing:
+            'Meilisearch\Bundle\Messenger\IndexEntitiesMessage': meilisearch_sync
+            'Meilisearch\Bundle\Messenger\RemoveDocumentsMessage': meilisearch_sync

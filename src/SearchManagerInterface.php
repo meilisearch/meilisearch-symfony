@@ -50,6 +50,14 @@ interface SearchManagerInterface
     public function remove(object|array $searchable): array;
 
     /**
+     * Resolves the Meilisearch document ids an entity currently maps to, keyed by
+     * prefixed index uid (one entry per matching index).
+     *
+     * @return array<non-empty-string, int|string>
+     */
+    public function getSearchableDocumentIds(object $entity): array;
+
+    /**
      * @param class-string $className
      *
      * @throws NotSearchableException
