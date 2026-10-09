@@ -51,7 +51,7 @@ interface SearchManagerInterface
 
     /**
      * Resolves the Meilisearch document ids an entity currently maps to, keyed by
-     * prefixed index uid (one entry per matching index).
+     * index name without prefix (one entry per matching index).
      *
      * @return array<non-empty-string, int|string>
      */

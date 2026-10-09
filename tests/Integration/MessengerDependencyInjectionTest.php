@@ -6,6 +6,8 @@ namespace Meilisearch\Bundle\Tests\Integration;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Meilisearch\Bundle\DependencyInjection\MeilisearchExtension;
+use Meilisearch\Bundle\Messenger\IndexEntitiesMessage;
+use Meilisearch\Bundle\Messenger\RemoveDocumentsMessage;
 use Symfony\Component\DependencyInjection\Reference;
 
 final class MessengerDependencyInjectionTest extends AbstractExtensionTestCase
@@ -51,8 +53,11 @@ final class MessengerDependencyInjectionTest extends AbstractExtensionTestCase
             $this->assertContainerBuilderHasServiceDefinitionWithTag(self::ASYNC_SUBSCRIBER, 'doctrine_mongodb.odm.event_listener', ['event' => $event]);
         }
 
-        $this->assertContainerBuilderHasServiceDefinitionWithTag(self::INDEX_HANDLER, 'messenger.message_handler');
-        $this->assertContainerBuilderHasServiceDefinitionWithTag(self::REMOVE_HANDLER, 'messenger.message_handler');
+        $this->assertContainerBuilderHasServiceDefinitionWithTag(self::INDEX_HANDLER, 'messenger.message_handler', ['handles' => IndexEntitiesMessage::class]);
+        $this->assertContainerBuilderHasServiceDefinitionWithTag(self::REMOVE_HANDLER, 'messenger.message_handler', ['handles' => RemoveDocumentsMessage::class]);
+
+        // Objects are reloaded through the data providers, not through Doctrine directly.
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument(self::INDEX_HANDLER, 1, new Reference('meilisearch.data_provider.registry'));
 
         // Default bus is referenced when none is configured.
         $this->assertContainerBuilderHasServiceDefinitionWithArgument(self::ASYNC_SUBSCRIBER, 1, new Reference('messenger.default_bus'));
@@ -68,8 +73,22 @@ final class MessengerDependencyInjectionTest extends AbstractExtensionTestCase
         ]);
 
         $this->assertContainerBuilderHasServiceDefinitionWithArgument(self::ASYNC_SUBSCRIBER, 1, new Reference('app.custom_bus'));
-        $this->assertContainerBuilderHasServiceDefinitionWithTag(self::INDEX_HANDLER, 'messenger.message_handler', ['bus' => 'app.custom_bus']);
-        $this->assertContainerBuilderHasServiceDefinitionWithTag(self::REMOVE_HANDLER, 'messenger.message_handler', ['bus' => 'app.custom_bus']);
+        $this->assertContainerBuilderHasServiceDefinitionWithTag(self::INDEX_HANDLER, 'messenger.message_handler', ['handles' => IndexEntitiesMessage::class, 'bus' => 'app.custom_bus']);
+        $this->assertContainerBuilderHasServiceDefinitionWithTag(self::REMOVE_HANDLER, 'messenger.message_handler', ['handles' => RemoveDocumentsMessage::class, 'bus' => 'app.custom_bus']);
+    }
+
+    public function testMessengerEnabledWithoutDoctrineOnlyRegistersHandlers(): void
+    {
+        $this->container->setParameter('kernel.bundles', []);
+        $this->load([
+            'url' => 'http://meilisearch:7700',
+            'api_key' => null,
+            'messenger' => ['enabled' => true],
+        ]);
+
+        $this->assertContainerBuilderNotHasService(self::ASYNC_SUBSCRIBER);
+        $this->assertContainerBuilderHasServiceDefinitionWithTag(self::INDEX_HANDLER, 'messenger.message_handler', ['handles' => IndexEntitiesMessage::class]);
+        $this->assertContainerBuilderHasServiceDefinitionWithTag(self::REMOVE_HANDLER, 'messenger.message_handler', ['handles' => RemoveDocumentsMessage::class]);
     }
 
     private function enableDoctrine(): void

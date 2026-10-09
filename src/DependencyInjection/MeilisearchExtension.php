@@ -49,11 +49,16 @@ final class MeilisearchExtension extends Extension
             throw new LogicException('Enabling "meilisearch.messenger" requires the Symfony Messenger component. Try running "composer require symfony/messenger".');
         }
 
+        if ($messengerEnabled) {
+            $this->registerMessenger($loader, $container, $config, $doctrineEnabled);
+        }
+
         if ($doctrineEnabled) {
             $loader->load('doctrine.php');
 
             if ($messengerEnabled) {
-                $this->registerMessenger($loader, $container, $config);
+                // The asynchronous subscriber fully replaces the synchronous one.
+                $container->removeDefinition('meilisearch.search_indexer_subscriber');
             } elseif (\count($doctrineEvents = $config['doctrineSubscribedEvents']) > 0) {
                 $subscriber = $container->getDefinition('meilisearch.search_indexer_subscriber');
 
@@ -88,35 +93,37 @@ final class MeilisearchExtension extends Extension
     }
 
     /**
-     * Registers the asynchronous Doctrine subscriber and Messenger handlers, and removes
-     * the synchronous subscriber it replaces.
+     * Registers the Messenger handlers and, when Doctrine is available, the asynchronous
+     * Doctrine subscriber dispatching their messages.
      *
      * @param array<mixed> $config
      */
-    private function registerMessenger(Loader\PhpFileLoader $loader, ContainerBuilder $container, array $config): void
+    private function registerMessenger(Loader\PhpFileLoader $loader, ContainerBuilder $container, array $config, bool $doctrineEnabled): void
     {
         $loader->load('messenger.php');
 
         $bus = $config['messenger']['bus'];
 
-        $subscriber = $container->getDefinition('meilisearch.async_search_indexer_subscriber');
-        $subscriber->replaceArgument(1, new Reference($bus ?? 'messenger.default_bus'));
+        if ($doctrineEnabled) {
+            $subscriber = $container->getDefinition('meilisearch.async_search_indexer_subscriber');
+            $subscriber->replaceArgument(1, new Reference($bus ?? 'messenger.default_bus'));
 
-        foreach (['postPersist', 'postUpdate', 'preRemove', 'postFlush'] as $event) {
-            $subscriber->addTag('doctrine.event_listener', ['event' => $event]);
-            $subscriber->addTag('doctrine_mongodb.odm.event_listener', ['event' => $event]);
+            foreach (['postPersist', 'postUpdate', 'preRemove', 'postFlush'] as $event) {
+                $subscriber->addTag('doctrine.event_listener', ['event' => $event]);
+                $subscriber->addTag('doctrine_mongodb.odm.event_listener', ['event' => $event]);
+            }
+        } else {
+            $container->removeDefinition('meilisearch.async_search_indexer_subscriber');
         }
 
         if (null !== $bus) {
             foreach (['meilisearch.messenger.index_entities_handler', 'meilisearch.messenger.remove_documents_handler'] as $handlerId) {
                 $handler = $container->getDefinition($handlerId);
+                $attributes = $handler->getTag('messenger.message_handler')[0];
                 $handler->clearTag('messenger.message_handler');
-                $handler->addTag('messenger.message_handler', ['bus' => $bus]);
+                $handler->addTag('messenger.message_handler', $attributes + ['bus' => $bus]);
             }
         }
-
-        // The asynchronous subscriber fully replaces the synchronous one.
-        $container->removeDefinition('meilisearch.search_indexer_subscriber');
     }
 
     /**

@@ -25,9 +25,9 @@ use Symfony\Component\Messenger\MessageBusInterface;
 final class AsyncDoctrineEventSubscriber
 {
     /**
-     * Searchable entity ids to (re)index, deduplicated per class.
+     * Searchable entity ids to (re)index, deduplicated per index name and class.
      *
-     * @var array<class-string, array<array-key, int|string>>
+     * @var array<non-empty-string, array<class-string, array<array-key, int|string>>>
      */
     private array $entitiesToIndex = [];
 
@@ -58,15 +58,17 @@ final class AsyncDoctrineEventSubscriber
     {
         // Resolve the document ids now, before the entity is gone from the database.
         // The async handler deletes by id and never reloads the entity.
-        foreach ($this->searchManager->getSearchableDocumentIds($args->getObject()) as $indexUid => $documentId) {
-            $this->documentsToRemove[$indexUid][(string) $documentId] = $documentId;
+        $prefix = $this->searchManager->getConfiguration()->get('prefix');
+
+        foreach ($this->searchManager->getSearchableDocumentIds($args->getObject()) as $indexName => $documentId) {
+            $this->documentsToRemove[$prefix.$indexName][(string) $documentId] = $documentId;
         }
     }
 
     public function postFlush(): void
     {
         if ([] !== $this->entitiesToIndex) {
-            $this->bus->dispatch(new IndexEntitiesMessage($this->toLists($this->entitiesToIndex)));
+            $this->bus->dispatch(new IndexEntitiesMessage(array_map($this->toLists(...), $this->entitiesToIndex)));
         }
 
         if ([] !== $this->documentsToRemove) {
@@ -91,12 +93,14 @@ final class AsyncDoctrineEventSubscriber
             return;
         }
 
-        // The entity maps to the same document id in every index it belongs to, so any
-        // of them can be used to reload it later. The class name resolves proxies.
+        // The handler indexes a reloaded entity into every index it belongs to, so a
+        // single index is enough to reload it: its data provider and the id that
+        // provider understands are kept together. The class name resolves proxies.
         $class = $args->getObjectManager()->getClassMetadata($entity::class)->getName();
-        $documentId = reset($documentIds);
+        $indexName = array_key_first($documentIds);
+        $documentId = $documentIds[$indexName];
 
-        $this->entitiesToIndex[$class][(string) $documentId] = $documentId;
+        $this->entitiesToIndex[$indexName][$class][(string) $documentId] = $documentId;
     }
 
     /**

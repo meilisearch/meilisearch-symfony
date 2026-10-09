@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle\Tests\Integration\Messenger;
 
 use Meilisearch\Bundle\Tests\BaseKernelTestCase;
+use Meilisearch\Bundle\Tests\Entity\Car;
+use Meilisearch\Bundle\Tests\Entity\ContentAggregator;
 use Meilisearch\Bundle\Tests\Entity\ObjectId\DummyObjectId;
 use Meilisearch\Bundle\Tests\Entity\Page;
 use Meilisearch\Bundle\Tests\Entity\Post;
@@ -57,6 +59,34 @@ final class MessengerIntegrationTest extends BaseKernelTestCase
 
         $this->assertCount(1, $result);
         $this->assertSame('Second title', $result[0]->getTitle());
+    }
+
+    /**
+     * The handler reloads entities through the data provider of the index, so
+     * composite identifiers are supported just like in the synchronous path.
+     */
+    public function testEntityWithCompositeIdentifierIsIndexedThroughMessenger(): void
+    {
+        $this->entityManager->persist(new Car('Audi A8', 2010));
+        $this->entityManager->persist(new Car('Audi A8', 2012));
+        $this->entityManager->flush();
+
+        $this->waitForAllTasks();
+
+        $this->assertCount(2, $this->searchManager->search(Car::class, 'Audi'));
+    }
+
+    public function testEntityIsIndexedIntoEveryIndexItBelongsTo(): void
+    {
+        $post = new Post('Aggregated async post');
+
+        $this->entityManager->persist($post);
+        $this->entityManager->flush();
+
+        $this->waitForAllTasks();
+
+        $this->assertCount(1, $this->searchManager->search(Post::class, 'Aggregated'));
+        $this->assertSame(1, $this->searchManager->count(ContentAggregator::class, 'Aggregated'));
     }
 
     /**

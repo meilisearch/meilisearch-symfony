@@ -90,7 +90,8 @@ When enabled, the bundle's synchronous Doctrine subscriber is replaced by an asy
 each `flush()` it buffers the changes and, once the flush succeeds, dispatches at most two messages:
 
 - `Meilisearch\Bundle\Messenger\IndexEntitiesMessage` — entities to (re)index. The handler reloads the
-  live entities before normalizing them.
+  live entities through the data provider of their index before normalizing them, so
+  it is not tied to Doctrine ORM and works with custom data providers too.
 - `Meilisearch\Bundle\Messenger\RemoveDocumentsMessage` — documents to delete, addressed by their
   already-resolved id. The deleted entity is **never reloaded**, which avoids the "entity not found"
   error described in [#62](https://github.com/meilisearch/meilisearch-symfony/issues/62).
@@ -113,8 +114,14 @@ framework:
 php bin/console messenger:consume async
 ```
 
-Only the routed messages become asynchronous; anything left unrouted keeps running in-process. Note
-that the asynchronous index path supports entities with a single-column identifier.
+Only the routed messages become asynchronous; anything left unrouted keeps running in-process.
+
+The handlers are registered even without Doctrine, so objects served by a custom data provider can be
+(re)indexed asynchronously by dispatching the message yourself:
+
+```php
+$bus->dispatch(new IndexEntitiesMessage(['actor' => [Actor::class => [1, 2, 3]]]));
+```
 
 ## 🤖 Compatibility with Meilisearch
 

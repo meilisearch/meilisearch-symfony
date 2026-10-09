@@ -3,7 +3,9 @@
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Meilisearch\Bundle\EventListener\AsyncDoctrineEventSubscriber;
+use Meilisearch\Bundle\Messenger\IndexEntitiesMessage;
 use Meilisearch\Bundle\Messenger\IndexEntitiesMessageHandler;
+use Meilisearch\Bundle\Messenger\RemoveDocumentsMessage;
 use Meilisearch\Bundle\Messenger\RemoveDocumentsMessageHandler;
 
 return static function (ContainerConfigurator $container) {
@@ -19,13 +21,13 @@ return static function (ContainerConfigurator $container) {
     $services->set('meilisearch.messenger.index_entities_handler', IndexEntitiesMessageHandler::class)
         ->args([
             service('meilisearch.manager'),
-            service('doctrine'),
+            service('meilisearch.data_provider.registry'),
         ])
-        ->tag('messenger.message_handler');
+        ->tag('messenger.message_handler', ['handles' => IndexEntitiesMessage::class]);
 
     $services->set('meilisearch.messenger.remove_documents_handler', RemoveDocumentsMessageHandler::class)
         ->args([
             service('meilisearch.engine'),
         ])
-        ->tag('messenger.message_handler');
+        ->tag('messenger.message_handler', ['handles' => RemoveDocumentsMessage::class]);
 };
