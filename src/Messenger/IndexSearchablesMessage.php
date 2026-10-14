@@ -15,7 +15,7 @@ namespace Meilisearch\Bundle\Messenger;
  * The index name is only used to resolve the data provider that loads the
  * objects; once loaded they are indexed into every index they belong to.
  */
-final class IndexEntitiesMessage
+final class IndexSearchablesMessage
 {
     /**
      * @param array<non-empty-string, array<class-string, list<int|string>>> $identifiersByIndex Index name (without prefix) => class name => normalized identifiers

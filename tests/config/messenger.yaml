@@ -9,5 +9,5 @@ framework:
             # (dispatch -> handler -> Meilisearch) without a running consumer.
             meilisearch_sync: 'sync://'
         routing:
-            'Meilisearch\Bundle\Messenger\IndexEntitiesMessage': meilisearch_sync
+            'Meilisearch\Bundle\Messenger\IndexSearchablesMessage': meilisearch_sync
             'Meilisearch\Bundle\Messenger\RemoveDocumentsMessage': meilisearch_sync

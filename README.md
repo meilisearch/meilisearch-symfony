@@ -89,7 +89,7 @@ meilisearch:
 When enabled, the bundle's synchronous Doctrine subscriber is replaced by an asynchronous one. During
 each `flush()` it buffers the changes and, once the flush succeeds, dispatches at most two messages:
 
-- `Meilisearch\Bundle\Messenger\IndexEntitiesMessage` — entities to (re)index. The handler reloads the
+- `Meilisearch\Bundle\Messenger\IndexSearchablesMessage` — objects to (re)index. The handler reloads the
   live entities through the data provider of their index before normalizing them, so
   it is not tied to Doctrine ORM and works with custom data providers too.
 - `Meilisearch\Bundle\Messenger\RemoveDocumentsMessage` — documents to delete, addressed by their
@@ -106,7 +106,7 @@ framework:
         transports:
             async: '%env(MESSENGER_TRANSPORT_DSN)%'
         routing:
-            'Meilisearch\Bundle\Messenger\IndexEntitiesMessage': async
+            'Meilisearch\Bundle\Messenger\IndexSearchablesMessage': async
             'Meilisearch\Bundle\Messenger\RemoveDocumentsMessage': async
 ```
 
@@ -120,7 +120,7 @@ The handlers are registered even without Doctrine, so objects served by a custom
 (re)indexed asynchronously by dispatching the message yourself:
 
 ```php
-$bus->dispatch(new IndexEntitiesMessage(['actor' => [Actor::class => [1, 2, 3]]]));
+$bus->dispatch(new IndexSearchablesMessage(['actor' => [Actor::class => [1, 2, 3]]]));
 ```
 
 ## 🤖 Compatibility with Meilisearch

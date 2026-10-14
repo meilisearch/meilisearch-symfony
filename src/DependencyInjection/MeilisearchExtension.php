@@ -117,7 +117,7 @@ final class MeilisearchExtension extends Extension
         }
 
         if (null !== $bus) {
-            foreach (['meilisearch.messenger.index_entities_handler', 'meilisearch.messenger.remove_documents_handler'] as $handlerId) {
+            foreach (['meilisearch.messenger.index_searchables_handler', 'meilisearch.messenger.remove_documents_handler'] as $handlerId) {
                 $handler = $container->getDefinition($handlerId);
                 $attributes = $handler->getTag('messenger.message_handler')[0];
                 $handler->clearTag('messenger.message_handler');

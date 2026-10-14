@@ -6,13 +6,13 @@ namespace Meilisearch\Bundle\Tests\Unit\Messenger;
 
 use Meilisearch\Bundle\DataProvider\DataProviderInterface;
 use Meilisearch\Bundle\DataProvider\DataProviderRegistryInterface;
-use Meilisearch\Bundle\Messenger\IndexEntitiesMessage;
-use Meilisearch\Bundle\Messenger\IndexEntitiesMessageHandler;
+use Meilisearch\Bundle\Messenger\IndexSearchablesMessage;
+use Meilisearch\Bundle\Messenger\IndexSearchablesMessageHandler;
 use Meilisearch\Bundle\SearchManagerInterface;
 use Meilisearch\Bundle\Tests\Entity\Actor;
 use PHPUnit\Framework\TestCase;
 
-final class IndexEntitiesMessageHandlerTest extends TestCase
+final class IndexSearchablesMessageHandlerTest extends TestCase
 {
     public function testObjectsAreLoadedThroughTheDataProviderOfTheIndex(): void
     {
@@ -34,8 +34,8 @@ final class IndexEntitiesMessageHandlerTest extends TestCase
         $searchManager->method('isSearchable')->willReturn(true);
         $searchManager->expects($this->once())->method('index')->with($actors)->willReturn([]);
 
-        (new IndexEntitiesMessageHandler($searchManager, $registry))(
-            new IndexEntitiesMessage(['actor' => [Actor::class => [1, 2]]])
+        (new IndexSearchablesMessageHandler($searchManager, $registry))(
+            new IndexSearchablesMessage(['actor' => [Actor::class => [1, 2]]])
         );
     }
 
@@ -51,8 +51,8 @@ final class IndexEntitiesMessageHandlerTest extends TestCase
         $searchManager->method('isSearchable')->willReturn(true);
         $searchManager->expects($this->never())->method('index');
 
-        (new IndexEntitiesMessageHandler($searchManager, $registry))(
-            new IndexEntitiesMessage(['actor' => [Actor::class => [99]]])
+        (new IndexSearchablesMessageHandler($searchManager, $registry))(
+            new IndexSearchablesMessage(['actor' => [Actor::class => [99]]])
         );
     }
 
@@ -65,8 +65,8 @@ final class IndexEntitiesMessageHandlerTest extends TestCase
         $searchManager->method('isSearchable')->willReturn(false);
         $searchManager->expects($this->never())->method('index');
 
-        (new IndexEntitiesMessageHandler($searchManager, $registry))(
-            new IndexEntitiesMessage(['actor' => [Actor::class => [1]]])
+        (new IndexSearchablesMessageHandler($searchManager, $registry))(
+            new IndexSearchablesMessage(['actor' => [Actor::class => [1]]])
         );
     }
 }

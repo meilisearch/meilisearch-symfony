@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle\EventListener;
 
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Meilisearch\Bundle\Messenger\IndexEntitiesMessage;
+use Meilisearch\Bundle\Messenger\IndexSearchablesMessage;
 use Meilisearch\Bundle\Messenger\RemoveDocumentsMessage;
 use Meilisearch\Bundle\SearchManagerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -68,7 +68,7 @@ final class AsyncDoctrineEventSubscriber
     public function postFlush(): void
     {
         if ([] !== $this->entitiesToIndex) {
-            $this->bus->dispatch(new IndexEntitiesMessage(array_map($this->toLists(...), $this->entitiesToIndex)));
+            $this->bus->dispatch(new IndexSearchablesMessage(array_map($this->toLists(...), $this->entitiesToIndex)));
         }
 
         if ([] !== $this->documentsToRemove) {

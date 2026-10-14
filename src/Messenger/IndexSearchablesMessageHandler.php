@@ -8,7 +8,7 @@ use Meilisearch\Bundle\DataProvider\DataProviderRegistryInterface;
 use Meilisearch\Bundle\SearchManagerInterface;
 
 /**
- * Reloads the live objects referenced by an {@see IndexEntitiesMessage} and hands
+ * Reloads the live objects referenced by an {@see IndexSearchablesMessage} and hands
  * them to the search manager for (re)indexing.
  *
  * Objects are loaded through the data provider registered for the index, so this
@@ -16,7 +16,7 @@ use Meilisearch\Bundle\SearchManagerInterface;
  * shape the provider supports. Identifiers that no longer resolve to an object are
  * silently skipped (e.g. deleted again before the message was consumed).
  */
-final class IndexEntitiesMessageHandler
+final class IndexSearchablesMessageHandler
 {
     public function __construct(
         private readonly SearchManagerInterface $searchManager,
@@ -24,7 +24,7 @@ final class IndexEntitiesMessageHandler
     ) {
     }
 
-    public function __invoke(IndexEntitiesMessage $message): void
+    public function __invoke(IndexSearchablesMessage $message): void
     {
         foreach ($message->getIdentifiersByIndex() as $indexName => $identifiersByClass) {
             foreach ($identifiersByClass as $class => $identifiers) {
