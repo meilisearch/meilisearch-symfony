@@ -113,6 +113,23 @@ final class Engine
     }
 
     /**
+     * Remove documents from a single index by their ids.
+     *
+     * Unlike {@see self::remove()} this never touches the source entity: only the
+     * already-resolved document ids are needed, which is what the async removal
+     * path relies on to delete documents of already-deleted entities.
+     *
+     * @param non-empty-string $indexUid
+     * @param list<int|string> $ids
+     *
+     * @throws ApiException
+     */
+    public function removeDocuments(string $indexUid, array $ids): Task
+    {
+        return $this->wrapTask($this->client->index($indexUid)->deleteDocuments($ids));
+    }
+
+    /**
      * Clear the records of an index.
      * This method enables you to delete an index’s contents (records).
      * Will fail if the index does not exist.

@@ -32,6 +32,8 @@
 - [📖 Documentation](#-documentation)
 - [⚡ Supercharge your Meilisearch experience](#-supercharge-your-meilisearch-experience)
 - [📝 Requirements](#-requirements)
+- [Doctrine Integration](#doctrine-integration)
+- [Asynchronous indexing with Symfony Messenger](#asynchronous-indexing-with-symfony-messenger)
 - [🤖 Compatibility with Meilisearch](#-compatibility-with-meilisearch)
 - [💡 Learn More](#-learn-more)
 - [⚙️ Development Workflow and Contributing](#️-development-workflow-and-contributing)
@@ -57,6 +59,76 @@ For support of older versions, see older versions of this bundle.
 
 To enable Doctrine integration you have to install `doctrine/orm` and `doctrine/doctrine-bundle`
 packages.
+
+By default, every persisted, updated or removed entity is indexed **synchronously** inside the
+request: the bundle performs one blocking Meilisearch HTTP call per entity. See the next section to
+move that work out of the request cycle.
+
+## Asynchronous indexing with Symfony Messenger
+
+Indexing can be delegated to [Symfony Messenger](https://symfony.com/doc/current/messenger.html), the
+same way Symfony Mailer makes email delivery asynchronous: it is **opt-in** and controlled purely by
+message routing. Nothing changes unless you enable it, so this is fully backward compatible.
+
+First install the component:
+
+```bash
+composer require symfony/messenger
+```
+
+Then enable the integration:
+
+```yaml
+# config/packages/meilisearch.yaml
+meilisearch:
+    messenger:
+        enabled: true
+        # bus: messenger.bus.default # optional: a specific bus service id
+```
+
+When enabled, the bundle's synchronous Doctrine subscriber is replaced by an asynchronous one. During
+each `flush()` it buffers the changes and, once the flush succeeds, dispatches at most two messages:
+
+- `Meilisearch\Bundle\Messenger\IndexSearchablesMessage` — objects to (re)index. The handler reloads the
+  live entities through the data provider of their index before normalizing them, so
+  it is not tied to Doctrine ORM and works with custom data providers too.
+- `Meilisearch\Bundle\Messenger\RemoveDocumentsMessage` — documents to delete, addressed by their
+  already-resolved id. The deleted entity is **never reloaded**, which avoids the "entity not found"
+  error described in [#62](https://github.com/meilisearch/meilisearch-symfony/issues/62).
+
+By default both messages are handled synchronously (nothing runs in the background yet). To actually
+process them out of the request, route them to an async transport and run a consumer:
+
+```yaml
+# config/packages/messenger.yaml
+framework:
+    messenger:
+        transports:
+            async: '%env(MESSENGER_TRANSPORT_DSN)%'
+        routing:
+            'Meilisearch\Bundle\Messenger\IndexSearchablesMessage': async
+            'Meilisearch\Bundle\Messenger\RemoveDocumentsMessage': async
+```
+
+```bash
+php bin/console messenger:consume async
+```
+
+Only the routed messages become asynchronous; anything left unrouted keeps running in-process.
+
+The messages are dispatched once Doctrine's `flush()` succeeds. If you wrap the flush in your own
+transaction, they are dispatched before that transaction commits, just like the synchronous subscriber
+indexes before the commit. A worker may then handle a message before the changes are visible, and a
+rollback does not withdraw an already dispatched message. To tie the messages to the transaction, use
+the [Doctrine transport](https://symfony.com/doc/current/messenger.html#doctrine-transport) on the
+same database connection: the messages are then stored as part of the transaction.
+
+The handlers are registered even without Doctrine, so objects served by a custom data provider can be
+(re)indexed asynchronously by dispatching the message yourself:
+
+```php
+$bus->dispatch(new IndexSearchablesMessage(['actor' => [Actor::class => [1, 2, 3]]]));
+```
 
 ## 🤖 Compatibility with Meilisearch
 
