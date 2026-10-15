@@ -31,7 +31,6 @@ final class IndexSearchablesMessageHandlerTest extends TestCase
             ->willReturn($dataProvider);
 
         $searchManager = $this->createMock(SearchManagerInterface::class);
-        $searchManager->method('isSearchable')->willReturn(true);
         $searchManager->expects($this->once())->method('index')->with($actors)->willReturn([]);
 
         (new IndexSearchablesMessageHandler($searchManager, $registry))(
@@ -48,7 +47,6 @@ final class IndexSearchablesMessageHandlerTest extends TestCase
         $registry->method('getDataProvider')->willReturn($dataProvider);
 
         $searchManager = $this->createMock(SearchManagerInterface::class);
-        $searchManager->method('isSearchable')->willReturn(true);
         $searchManager->expects($this->never())->method('index');
 
         (new IndexSearchablesMessageHandler($searchManager, $registry))(
@@ -56,17 +54,16 @@ final class IndexSearchablesMessageHandlerTest extends TestCase
         );
     }
 
-    public function testNotSearchableClassesAreSkipped(): void
+    public function testEmptyIdentifierListsAreSkipped(): void
     {
         $registry = $this->createMock(DataProviderRegistryInterface::class);
         $registry->expects($this->never())->method('getDataProvider');
 
         $searchManager = $this->createMock(SearchManagerInterface::class);
-        $searchManager->method('isSearchable')->willReturn(false);
         $searchManager->expects($this->never())->method('index');
 
         (new IndexSearchablesMessageHandler($searchManager, $registry))(
-            new IndexSearchablesMessage(['actor' => [Actor::class => [1]]])
+            new IndexSearchablesMessage(['actor' => [Actor::class => []]])
         );
     }
 }

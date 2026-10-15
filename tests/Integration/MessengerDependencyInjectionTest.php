@@ -59,6 +59,9 @@ final class MessengerDependencyInjectionTest extends AbstractExtensionTestCase
         // Objects are reloaded through the data providers, not through Doctrine directly.
         $this->assertContainerBuilderHasServiceDefinitionWithArgument(self::INDEX_HANDLER, 1, new Reference('meilisearch.data_provider.registry'));
 
+        // Document ids are resolved through the data providers.
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument(self::ASYNC_SUBSCRIBER, 2, new Reference('meilisearch.data_provider.registry'));
+
         // Default bus is referenced when none is configured.
         $this->assertContainerBuilderHasServiceDefinitionWithArgument(self::ASYNC_SUBSCRIBER, 1, new Reference('messenger.default_bus'));
     }

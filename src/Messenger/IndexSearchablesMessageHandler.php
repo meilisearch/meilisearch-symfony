@@ -28,7 +28,7 @@ final class IndexSearchablesMessageHandler
     {
         foreach ($message->getIdentifiersByIndex() as $indexName => $identifiersByClass) {
             foreach ($identifiersByClass as $class => $identifiers) {
-                if ([] === $identifiers || !$this->searchManager->isSearchable($class)) {
+                if ([] === $identifiers) {
                     continue;
                 }
 

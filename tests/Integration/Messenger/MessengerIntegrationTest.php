@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle\Tests\Integration\Messenger;
 
 use Meilisearch\Bundle\Tests\BaseKernelTestCase;
+use Meilisearch\Bundle\Tests\Entity\Article;
 use Meilisearch\Bundle\Tests\Entity\Car;
 use Meilisearch\Bundle\Tests\Entity\ContentAggregator;
+use Meilisearch\Bundle\Tests\Entity\ContentItem;
 use Meilisearch\Bundle\Tests\Entity\ObjectId\DummyObjectId;
 use Meilisearch\Bundle\Tests\Entity\Page;
 use Meilisearch\Bundle\Tests\Entity\Post;
@@ -87,6 +89,29 @@ final class MessengerIntegrationTest extends BaseKernelTestCase
 
         $this->assertCount(1, $this->searchManager->search(Post::class, 'Aggregated'));
         $this->assertSame(1, $this->searchManager->count(ContentAggregator::class, 'Aggregated'));
+    }
+
+    /**
+     * The index is configured for the parent class only, so the entity is not
+     * "searchable" by its own class name but still has to be indexed and removed.
+     */
+    public function testEntityIndexedThroughItsParentClassIsIndexedAndRemovedThroughMessenger(): void
+    {
+        $article = new Article();
+
+        $this->entityManager->persist($article);
+        $this->entityManager->flush();
+
+        $this->waitForAllTasks();
+
+        $this->assertSame(1, $this->searchManager->count(ContentItem::class));
+
+        $this->entityManager->remove($article);
+        $this->entityManager->flush();
+
+        $this->waitForAllTasks();
+
+        $this->assertSame(0, $this->searchManager->count(ContentItem::class));
     }
 
     /**
