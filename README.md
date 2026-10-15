@@ -116,6 +116,13 @@ php bin/console messenger:consume async
 
 Only the routed messages become asynchronous; anything left unrouted keeps running in-process.
 
+The messages are dispatched once Doctrine's `flush()` succeeds. If you wrap the flush in your own
+transaction, they are dispatched before that transaction commits, just like the synchronous subscriber
+indexes before the commit. A worker may then handle a message before the changes are visible, and a
+rollback does not withdraw an already dispatched message. To tie the messages to the transaction, use
+the [Doctrine transport](https://symfony.com/doc/current/messenger.html#doctrine-transport) on the
+same database connection: the messages are then stored as part of the transaction.
+
 The handlers are registered even without Doctrine, so objects served by a custom data provider can be
 (re)indexed asynchronously by dispatching the message yourself:
 

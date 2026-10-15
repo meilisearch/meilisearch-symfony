@@ -52,6 +52,39 @@ final class AsyncDoctrineEventSubscriberTest extends TestCase
         $subscriber->postFlush();
     }
 
+    public function testFailingDispatchDoesNotResendAnAlreadyDispatchedBatch(): void
+    {
+        $dispatched = [];
+
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->method('dispatch')->willReturnCallback(static function (object $message) use (&$dispatched): Envelope {
+            $dispatched[] = $message;
+
+            if ($message instanceof RemoveDocumentsMessage) {
+                throw new \RuntimeException('Transport unavailable');
+            }
+
+            return new Envelope($message);
+        });
+
+        $subscriber = $this->createSubscriber($bus);
+        $subscriber->postPersist($this->createEventArgs(new Post('Indexed post')));
+        $subscriber->preRemove($this->createEventArgs(new Post('Removed post')));
+
+        try {
+            $subscriber->postFlush();
+            $this->fail('The failing dispatch should not be swallowed.');
+        } catch (\RuntimeException) {
+        }
+
+        $subscriber->postFlush();
+
+        $this->assertEquals([
+            new IndexSearchablesMessage(['aggregated' => [Post::class => [12]]]),
+            new RemoveDocumentsMessage(['sf_aggregated' => [12]]),
+        ], $dispatched);
+    }
+
     public function testEntityWithoutIndexIsIgnored(): void
     {
         $bus = $this->createMock(MessageBusInterface::class);

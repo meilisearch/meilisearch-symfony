@@ -72,16 +72,20 @@ final class AsyncDoctrineEventSubscriber
 
     public function postFlush(): void
     {
-        if ([] !== $this->entitiesToIndex) {
-            $this->bus->dispatch(new IndexSearchablesMessage(array_map($this->toLists(...), $this->entitiesToIndex)));
-        }
-
-        if ([] !== $this->documentsToRemove) {
-            $this->bus->dispatch(new RemoveDocumentsMessage($this->toLists($this->documentsToRemove)));
-        }
-
+        // Reset the buffers before dispatching, so a failing dispatch can never make a
+        // later flush send an already dispatched batch again.
+        $entitiesToIndex = $this->entitiesToIndex;
+        $documentsToRemove = $this->documentsToRemove;
         $this->entitiesToIndex = [];
         $this->documentsToRemove = [];
+
+        if ([] !== $entitiesToIndex) {
+            $this->bus->dispatch(new IndexSearchablesMessage(array_map($this->toLists(...), $entitiesToIndex)));
+        }
+
+        if ([] !== $documentsToRemove) {
+            $this->bus->dispatch(new RemoveDocumentsMessage($this->toLists($documentsToRemove)));
+        }
     }
 
     private function scheduleIndex(LifecycleEventArgs $args): void
