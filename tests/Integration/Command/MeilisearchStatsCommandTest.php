@@ -61,11 +61,11 @@ final class MeilisearchStatsCommandTest extends BaseKernelTestCase
 
         $this->assertMatchesRegularExpression('/^\+[-+]* Indexes stats [-+]*\+$/m', $statsOutput);
         $this->assertMatchesRegularExpression(
-            '/^\| Index +\| No of documents +\| Document db size +\| Avg document size +\| Indexing +\| No of embeddings +\| No of embedded documents +\|$/m',
+            '/^\| Index +\| No of documents +\| Document db size +\| Avg document size +\| Fragmentation ratio +\| Indexing +\| No of embeddings +\| No of embedded documents +\|$/m',
             $statsOutput
         );
         $this->assertMatchesRegularExpression(
-            '/^\| sf_phpunit__posts +\| 3 +\| [\d,]+(\.\d{2} [KMGT]B| B) +\| [\d,]+(\.\d{2} [KMGT]B| B) +\| (Yes|No) +\| 0 +\| 0 +\|$/m',
+            '/^\| sf_phpunit__posts +\| 3 +\| [\d,]+(\.\d{2} [KMGT]B| B) +\| [\d,]+(\.\d{2} [KMGT]B| B) +\| \d+\.\d{2}% +\| (Yes|No) +\| 0 +\| 0 +\|$/m',
             $statsOutput
         );
         $this->assertStringNotContainsString('sf_phpunit__aggregated', $statsOutput);

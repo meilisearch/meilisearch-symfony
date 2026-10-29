@@ -45,7 +45,7 @@ final class MeilisearchStatsCommandTest extends TestCase
         'app_tags' => [
             'numberOfDocuments' => 163999,
             'indexSize' => 536870912,
-            'usedIndexSize' => 402653184,
+            'usedIndexSize' => 268435456,
             'rawDocumentDbSize' => 260046848,
             'avgDocumentSize' => 1536,
             'isIndexing' => true,
@@ -188,12 +188,12 @@ EOD,
         $display = $commandTester->getDisplay();
 
         $this->assertStringContainsString(<<<'EOD'
-+-----------+-----------------+------------------+------ Indexes stats ---------+------------------+--------------------------+
-| Index     | No of documents | Document db size | Avg document size | Indexing | No of embeddings | No of embedded documents |
-+-----------+-----------------+------------------+-------------------+----------+------------------+--------------------------+
-| app_posts | 49,832          | 15.77 MB         | 308 B             | No       | 0                | 0                        |
-| app_tags  | 163,999         | 248.00 MB        | 1.50 KB           | Yes      | 326,000          | 163,000                  |
-+-----------+-----------------+------------------+-------------------+----------+------------------+--------------------------+
++-----------+-----------------+------------------+----------------- Indexes stats ---------+----------+------------------+--------------------------+
+| Index     | No of documents | Document db size | Avg document size | Fragmentation ratio | Indexing | No of embeddings | No of embedded documents |
++-----------+-----------------+------------------+-------------------+---------------------+----------+------------------+--------------------------+
+| app_posts | 49,832          | 15.77 MB         | 308 B             | 25.00%              | No       | 0                | 0                        |
+| app_tags  | 163,999         | 248.00 MB        | 1.50 KB           | 50.00%              | Yes      | 326,000          | 163,000                  |
++-----------+-----------------+------------------+-------------------+---------------------+----------+------------------+--------------------------+
 
 EOD, $display);
         $this->assertMatchesRegularExpression('/ Global stats .* Indexes stats /s', $display);
@@ -215,14 +215,40 @@ EOD, $display);
         $display = $commandTester->getDisplay();
 
         $this->assertStringContainsString(<<<'EOD'
-+----------+-----------------+------------------+------ Indexes stats ---------+------------------+--------------------------+
-| Index    | No of documents | Document db size | Avg document size | Indexing | No of embeddings | No of embedded documents |
-+----------+-----------------+------------------+-------------------+----------+------------------+--------------------------+
-| app_tags | 163,999         | 248.00 MB        | 1.50 KB           | Yes      | 326,000          | 163,000                  |
-+----------+-----------------+------------------+-------------------+----------+------------------+--------------------------+
++----------+-----------------+------------------+----------------- Indexes stats ---------+----------+------------------+--------------------------+
+| Index    | No of documents | Document db size | Avg document size | Fragmentation ratio | Indexing | No of embeddings | No of embedded documents |
++----------+-----------------+------------------+-------------------+---------------------+----------+------------------+--------------------------+
+| app_tags | 163,999         | 248.00 MB        | 1.50 KB           | 50.00%              | Yes      | 326,000          | 163,000                  |
++----------+-----------------+------------------+-------------------+---------------------+----------+------------------+--------------------------+
 
 EOD, $display);
         $this->assertStringNotContainsString('app_posts', $display);
+    }
+
+    public function testIndexFragmentationRatioOfAnEmptyIndexIsZero(): void
+    {
+        $emptyIndexStats = [
+            'app_posts' => [
+                'numberOfDocuments' => 0,
+                'indexSize' => 0,
+                'usedIndexSize' => 0,
+                'rawDocumentDbSize' => 0,
+                'avgDocumentSize' => 0,
+                'isIndexing' => false,
+                'numberOfEmbeddings' => 0,
+                'numberOfEmbeddedDocuments' => 0,
+                'fieldDistribution' => [],
+            ],
+        ];
+
+        $commandTester = new CommandTester($this->createCommand(self::GLOBAL_STATS, $emptyIndexStats));
+        $commandTester->execute(['--indices' => 'posts']);
+
+        $commandTester->assertCommandIsSuccessful();
+        $this->assertStringContainsString(
+            "\n| app_posts | 0               | 0 B              | 0 B               | 0.00%               | No       | 0                | 0                        |\n",
+            $commandTester->getDisplay()
+        );
     }
 
     /**
@@ -312,10 +338,11 @@ EOD, $display);
 
     /**
      * @param array{databaseSize: int, usedDatabaseSize: int, lastUpdate: string|null} $globalStats
+     * @param array<string, array<string, mixed>>                                      $indexesStats
      */
-    private function createCommand(array $globalStats): MeilisearchStatsCommand
+    private function createCommand(array $globalStats, array $indexesStats = self::INDEXES_STATS): MeilisearchStatsCommand
     {
-        $statsResponseBody = json_encode($globalStats + ['indexes' => self::INDEXES_STATS], \JSON_THROW_ON_ERROR);
+        $statsResponseBody = json_encode($globalStats + ['indexes' => $indexesStats], \JSON_THROW_ON_ERROR);
 
         $httpClient = new MockHttpClient(function (string $method, string $url) use ($statsResponseBody): MockResponse {
             $this->requests[] = $method.' '.$url;

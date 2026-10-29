@@ -44,7 +44,7 @@ final class MeilisearchStatsCommand extends IndexCommand
         $this->renderGlobalStats($stats, $output);
         $this->renderIndexesStats($indexes, $stats['indexes'], $output);
 
-        if ($this->fragmentationRatio($stats) > self::COMPACT_RECOMMENDATION_RATIO) {
+        if ($this->fragmentationRatio($stats['databaseSize'], $stats['usedDatabaseSize']) > self::COMPACT_RECOMMENDATION_RATIO) {
             $output->writeln('<comment>Fragmentation ratio is above 30%, compacting your indexes may improve performance. Run the meilisearch:compact command.</comment>');
         }
 
@@ -62,7 +62,7 @@ final class MeilisearchStatsCommand extends IndexCommand
             ->addRow([
                 $this->formatBytes($stats['databaseSize']),
                 $this->formatBytes($stats['usedDatabaseSize']),
-                $this->formatPercentage($this->fragmentationRatio($stats)),
+                $this->formatPercentage($this->fragmentationRatio($stats['databaseSize'], $stats['usedDatabaseSize'])),
                 $this->formatLastUpdate($stats['lastUpdate']),
             ])
             ->render();
@@ -80,6 +80,7 @@ final class MeilisearchStatsCommand extends IndexCommand
                 'No of documents',
                 'Document db size',
                 'Avg document size',
+                'Fragmentation ratio',
                 'Indexing',
                 'No of embeddings',
                 'No of embedded documents',
@@ -100,6 +101,7 @@ final class MeilisearchStatsCommand extends IndexCommand
                 number_format($indexStats['numberOfDocuments']),
                 $this->formatBytes($indexStats['rawDocumentDbSize']),
                 $this->formatBytes($indexStats['avgDocumentSize']),
+                $this->formatPercentage($this->fragmentationRatio($indexStats['indexSize'], $indexStats['usedIndexSize'])),
                 $indexStats['isIndexing'] ? 'Yes' : 'No',
                 number_format($indexStats['numberOfEmbeddings']),
                 number_format($indexStats['numberOfEmbeddedDocuments']),
@@ -109,16 +111,13 @@ final class MeilisearchStatsCommand extends IndexCommand
         $table->render();
     }
 
-    /**
-     * @param Stats $stats
-     */
-    private function fragmentationRatio(array $stats): float
+    private function fragmentationRatio(int $size, int $usedSize): float
     {
-        if (0 === $stats['databaseSize']) {
+        if (0 === $size) {
             return 0.0;
         }
 
-        return ($stats['databaseSize'] - $stats['usedDatabaseSize']) / $stats['databaseSize'];
+        return ($size - $usedSize) / $size;
     }
 
     private function formatBytes(int $bytes): string
