@@ -11,6 +11,7 @@ use Meilisearch\Bundle\SearchManagerInterface;
 use Meilisearch\Bundle\Tests\Entity\Comment;
 use Meilisearch\Bundle\Tests\Entity\Page;
 use Meilisearch\Bundle\Tests\Entity\Post;
+use Meilisearch\Bundle\Tests\Entity\Tag;
 use Meilisearch\Client;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -25,6 +26,7 @@ final class MeilisearchCompactCommandTest extends TestCase
     private const CONFIGURED_INDICES = [
         ['name' => 'comments', 'prefixed_name' => 'app_comments', 'class' => Comment::class],
         ['name' => 'pages', 'prefixed_name' => 'app_pages', 'class' => Page::class],
+        ['name' => 'tags', 'prefixed_name' => 'app_tags', 'class' => Tag::class],
         ['name' => 'posts', 'prefixed_name' => 'app_posts', 'class' => Post::class],
     ];
 
@@ -56,6 +58,20 @@ EOD, $applicationTester->getDisplay());
         $applicationTester->assertCommandIsSuccessful();
     }
 
+    public function testTimedOutCompactionIsReportedAndTheNextIndexIsStillCompacted(): void
+    {
+        $applicationTester = $this->createApplicationTester();
+        $applicationTester->run(['command' => 'meilisearch:compact', '--indices' => 'tags,posts', '--response-timeout' => 1]);
+
+        $this->assertSame(<<<'EOD'
+Timed out waiting for the compaction of app_tags, the task is still running on the server
+Compacted app_posts
+Done!
+
+EOD, $applicationTester->getDisplay());
+        $applicationTester->assertCommandIsSuccessful();
+    }
+
     private function createApplicationTester(): ApplicationTester
     {
         $httpClient = new MockHttpClient(fn (string $method, string $url): MockResponse => match ($method.' '.$url) {
@@ -74,6 +90,8 @@ EOD, $applicationTester->getDisplay());
             ]),
             'POST http://meilisearch.test/indexes/app_posts/compact' => self::jsonResponse(202, self::enqueuedCompaction(2, 'app_posts')),
             'GET http://meilisearch.test/tasks/2' => self::jsonResponse(200, self::finishedCompaction(2, 'app_posts', 'succeeded', null)),
+            'POST http://meilisearch.test/indexes/app_tags/compact' => self::jsonResponse(202, self::enqueuedCompaction(3, 'app_tags')),
+            'GET http://meilisearch.test/tasks/3' => self::jsonResponse(200, self::enqueuedCompaction(3, 'app_tags')),
             default => throw new \LogicException(\sprintf('Unexpected request "%s %s".', $method, $url)),
         });
 

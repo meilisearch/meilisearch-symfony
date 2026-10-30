@@ -8,6 +8,7 @@ use Meilisearch\Bundle\Engine;
 use Meilisearch\Bundle\SearchManagerInterface;
 use Meilisearch\Contracts\TaskStatus;
 use Meilisearch\Exceptions\ApiException;
+use Meilisearch\Exceptions\TimeOutException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -49,6 +50,10 @@ final class MeilisearchCompactCommand extends IndexCommand
                 $task = $this->engine->compact($indexName)->wait($responseTimeout);
             } catch (ApiException $e) {
                 $output->writeln('Cannot compact '.$indexName.': '.$e->getMessage());
+
+                continue;
+            } catch (TimeOutException) {
+                $output->writeln('<comment>Timed out waiting for the compaction of <info>'.$indexName.'</info>, the task is still running on the server</comment>');
 
                 continue;
             }
