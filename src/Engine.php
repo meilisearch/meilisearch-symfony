@@ -7,6 +7,7 @@ namespace Meilisearch\Bundle;
 use Meilisearch\Client;
 use Meilisearch\Contracts\Http;
 use Meilisearch\Contracts\Task;
+use Meilisearch\Endpoints\Index;
 use Meilisearch\Exceptions\ApiException;
 use Meilisearch\Exceptions\TimeOutException;
 
@@ -148,7 +149,7 @@ final class Engine
      */
     public function search(string $query, string $indexUid, array $searchParams): array
     {
-        return $this->client->index($indexUid)->rawSearch('' !== $query ? $query : null, $searchParams);
+        return $this->client->index($indexUid)->rawSearch('' !== $query ? $query : null, $this->verbatim($searchParams));
     }
 
     /**
@@ -158,7 +159,19 @@ final class Engine
      */
     public function count(string $query, string $indexName, array $searchParams): int
     {
-        return $this->client->index($indexName)->search($query, $searchParams)->getHitsCount();
+        return $this->client->index($indexName)->search($query, $this->verbatim($searchParams))->getHitsCount();
+    }
+
+    /**
+     * The 1.x client sends search parameters as they are and only accepts arrays.
+     *
+     * @param array<mixed> $searchParams
+     *
+     * @return array<mixed>|VerbatimSearchQuery
+     */
+    private function verbatim(array $searchParams): array|VerbatimSearchQuery
+    {
+        return class_exists(Index::class) ? new VerbatimSearchQuery($searchParams) : $searchParams;
     }
 
     private function normalizeId(\Stringable|string|int $id): string|int
