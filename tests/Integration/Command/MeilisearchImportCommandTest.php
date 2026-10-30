@@ -15,7 +15,6 @@ use Meilisearch\Bundle\Tests\Entity\Podcast;
 use Meilisearch\Bundle\Tests\Entity\Post;
 use Meilisearch\Bundle\Tests\Entity\SelfNormalizable;
 use Meilisearch\Bundle\Tests\Entity\Tag;
-use Meilisearch\Endpoints\Indexes;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -24,13 +23,13 @@ final class MeilisearchImportCommandTest extends BaseKernelTestCase
     private static string $indexName = 'posts';
 
     private Application $application;
-    private Indexes $index;
+    private string $prefixedIndexName;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->index = $this->client->index($this->getPrefix().self::$indexName);
+        $this->prefixedIndexName = $this->getPrefix().self::$indexName;
         $this->application = new Application(self::createKernel());
     }
 
@@ -204,7 +203,7 @@ EOD, $commandTester->getDisplay());
 
         $command = $this->application->find('meilisearch:import');
         $commandTester = new CommandTester($command);
-        $return = $commandTester->execute(['--indices' => $this->index->getUid()]);
+        $return = $commandTester->execute(['--indices' => $this->prefixedIndexName]);
 
         $this->assertSame(<<<'EOD'
 Importing for index Meilisearch\Bundle\Tests\Entity\Post
@@ -259,7 +258,7 @@ EOD, $commandTester->getDisplay());
         $command = $this->application->find('meilisearch:import');
         $commandTester = new CommandTester($command);
         $return = $commandTester->execute([
-            '--indices' => $this->index->getUid(), // This is the already prefixed name
+            '--indices' => $this->prefixedIndexName, // This is the already prefixed name
         ]);
 
         $this->assertSame(<<<'EOD'

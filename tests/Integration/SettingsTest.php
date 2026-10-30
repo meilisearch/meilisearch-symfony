@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle\Tests\Integration;
 
 use Meilisearch\Bundle\Tests\BaseKernelTestCase;
-use Meilisearch\Contracts\Index\TypoTolerance;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -61,7 +60,6 @@ final class SettingsTest extends BaseKernelTestCase
 
         $this->assertStringContainsString('Setting "typoTolerance" updated of "sf_phpunit__posts".', $output);
         $this->assertArrayHasKey('typoTolerance', $settings);
-        $this->assertInstanceOf(TypoTolerance::class, $settings['typoTolerance']);
         $this->assertTrue($settings['typoTolerance']['enabled']);
         $this->assertSame(['title'], $settings['typoTolerance']['disableOnAttributes']);
         $this->assertSame(['york'], $settings['typoTolerance']['disableOnWords']);

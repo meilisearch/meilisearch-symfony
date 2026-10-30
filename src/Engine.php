@@ -17,11 +17,18 @@ use function Meilisearch\partial;
  *     hits: array<int, mixed>,
  *     query: string,
  *     processingTimeMs: int,
- *     limit: int,
- *     offset: int,
- *     estimatedTotalHits: int,
- *     requestUid: non-empty-string,
- *     nbHits: int
+ *     limit?: int,
+ *     offset?: int,
+ *     estimatedTotalHits?: int,
+ *     nbHits?: int,
+ *     page?: int,
+ *     hitsPerPage?: int,
+ *     totalHits?: int,
+ *     totalPages?: int,
+ *     semanticHitCount?: int,
+ *     facetDistribution?: array<string, mixed>,
+ *     facetStats?: array<string, mixed>,
+ *     requestUid?: non-empty-string
  * }
  */
 final class Engine
