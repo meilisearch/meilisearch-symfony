@@ -23,6 +23,23 @@ use function Meilisearch\partial;
  *     requestUid: non-empty-string,
  *     nbHits: int
  * }
+ * @phpstan-type IndexStats array{
+ *     numberOfDocuments: int,
+ *     indexSize: int,
+ *     usedIndexSize: int,
+ *     rawDocumentDbSize: int,
+ *     avgDocumentSize: int,
+ *     isIndexing: bool,
+ *     numberOfEmbeddings: int,
+ *     numberOfEmbeddedDocuments: int,
+ *     fieldDistribution: array<string, int>
+ * }
+ * @phpstan-type Stats array{
+ *     databaseSize: int,
+ *     usedDatabaseSize: int,
+ *     lastUpdate: non-empty-string|null,
+ *     indexes: array<non-empty-string, IndexStats>
+ * }
  */
 final class Engine
 {
@@ -133,6 +150,14 @@ final class Engine
     }
 
     /**
+     * Compact an index to reclaim the space of its fragmented database.
+     */
+    public function compact(string $indexUid): Task
+    {
+        return $this->wrapTask($this->http()->post('/indexes/'.$indexUid.'/compact'));
+    }
+
+    /**
      * Method used for querying an index.
      *
      * @param array<mixed> $searchParams
@@ -154,6 +179,18 @@ final class Engine
         return $this->client->index($indexName)->search($query, $searchParams)->getHitsCount();
     }
 
+    /**
+     * Get the database stats and the stats of every index.
+     *
+     * @return Stats
+     *
+     * @throws ApiException
+     */
+    public function stats(): array
+    {
+        return $this->http()->get('/stats');
+    }
+
     private function normalizeId(\Stringable|string|int $id): string|int
     {
         if (\is_object($id)) {
@@ -169,9 +206,12 @@ final class Engine
             return $task;
         }
 
-        $http = (new \ReflectionObject($this->client))->getProperty('http')->getValue($this->client);
+        return Task::fromArray($task, partial(self::waitTask(...), $this->http()));
+    }
 
-        return Task::fromArray($task, partial(self::waitTask(...), $http));
+    private function http(): Http
+    {
+        return (new \ReflectionObject($this->client))->getProperty('http')->getValue($this->client);
     }
 
     /**

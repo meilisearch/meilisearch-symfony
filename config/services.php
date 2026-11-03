@@ -3,9 +3,11 @@
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Meilisearch\Bundle\Command\MeilisearchClearCommand;
+use Meilisearch\Bundle\Command\MeilisearchCompactCommand;
 use Meilisearch\Bundle\Command\MeilisearchCreateCommand;
 use Meilisearch\Bundle\Command\MeilisearchDeleteCommand;
 use Meilisearch\Bundle\Command\MeilisearchImportCommand;
+use Meilisearch\Bundle\Command\MeilisearchStatsCommand;
 use Meilisearch\Bundle\Command\MeilisearchUpdateSettingsCommand;
 use Meilisearch\Bundle\DataProvider\DataProviderRegistry;
 use Meilisearch\Bundle\DataProvider\DataProviderRegistryInterface;
@@ -89,6 +91,13 @@ return static function (ContainerConfigurator $container) {
         ->args([service('meilisearch.manager')])
         ->tag('console.command', ['command' => 'meilisearch:clear|meili:clear', 'description' => 'Clear the index documents']);
 
+    $services->set(MeilisearchCompactCommand::class)
+        ->args([
+            service('meilisearch.manager'),
+            service('meilisearch.engine'),
+        ])
+        ->tag('console.command', ['command' => 'meilisearch:compact|meili:compact', 'description' => 'Compact the indexes']);
+
     $services->set(MeilisearchCreateCommand::class)
         ->args([
             service('meilisearch.manager'),
@@ -111,6 +120,13 @@ return static function (ContainerConfigurator $container) {
             service('meilisearch.data_provider.registry'),
         ])
         ->tag('console.command', ['command' => 'meilisearch:import|meili:import', 'description' => 'Import given entity into search engine']);
+
+    $services->set(MeilisearchStatsCommand::class)
+        ->args([
+            service('meilisearch.manager'),
+            service('meilisearch.engine'),
+        ])
+        ->tag('console.command', ['command' => 'meilisearch:stats|meili:stats', 'description' => 'Show the database and index stats']);
 
     $services->set(MeilisearchUpdateSettingsCommand::class)
         ->args([
