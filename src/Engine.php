@@ -7,6 +7,7 @@ namespace Meilisearch\Bundle;
 use Meilisearch\Client;
 use Meilisearch\Contracts\Http;
 use Meilisearch\Contracts\Task;
+use Meilisearch\Endpoints\Index;
 use Meilisearch\Exceptions\ApiException;
 use Meilisearch\Exceptions\TimeOutException;
 
@@ -17,11 +18,18 @@ use function Meilisearch\partial;
  *     hits: array<int, mixed>,
  *     query: string,
  *     processingTimeMs: int,
- *     limit: int,
- *     offset: int,
- *     estimatedTotalHits: int,
- *     requestUid: non-empty-string,
- *     nbHits: int
+ *     limit?: int,
+ *     offset?: int,
+ *     estimatedTotalHits?: int,
+ *     nbHits?: int,
+ *     page?: int,
+ *     hitsPerPage?: int,
+ *     totalHits?: int,
+ *     totalPages?: int,
+ *     semanticHitCount?: int,
+ *     facetDistribution?: array<string, mixed>,
+ *     facetStats?: array<string, mixed>,
+ *     requestUid?: non-empty-string
  * }
  * @phpstan-type IndexStats array{
  *     numberOfDocuments: int,
@@ -166,7 +174,7 @@ final class Engine
      */
     public function search(string $query, string $indexUid, array $searchParams): array
     {
-        return $this->client->index($indexUid)->rawSearch('' !== $query ? $query : null, $searchParams);
+        return $this->client->index($indexUid)->rawSearch('' !== $query ? $query : null, $this->verbatim($searchParams));
     }
 
     /**
@@ -176,7 +184,19 @@ final class Engine
      */
     public function count(string $query, string $indexName, array $searchParams): int
     {
-        return $this->client->index($indexName)->search($query, $searchParams)->getHitsCount();
+        return $this->client->index($indexName)->search($query, $this->verbatim($searchParams))->getHitsCount();
+    }
+
+    /**
+     * The 1.x client sends search parameters as they are and only accepts arrays.
+     *
+     * @param array<mixed> $searchParams
+     *
+     * @return array<mixed>|VerbatimSearchQuery
+     */
+    private function verbatim(array $searchParams): array|VerbatimSearchQuery
+    {
+        return class_exists(Index::class) ? new VerbatimSearchQuery($searchParams) : $searchParams;
     }
 
     /**

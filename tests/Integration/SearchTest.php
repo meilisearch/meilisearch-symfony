@@ -11,7 +11,6 @@ use Meilisearch\Bundle\Tests\Entity\Car;
 use Meilisearch\Bundle\Tests\Entity\Movie;
 use Meilisearch\Bundle\Tests\Entity\Post;
 use Meilisearch\Bundle\Tests\Entity\Tag;
-use Meilisearch\Endpoints\Indexes;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -22,7 +21,7 @@ final class SearchTest extends BaseKernelTestCase
     protected Connection $connection;
     protected ObjectManager $objectManager;
     protected Application $application;
-    protected Indexes $index;
+    protected string $prefixedIndexName;
 
     protected function setUp(): void
     {
@@ -30,7 +29,7 @@ final class SearchTest extends BaseKernelTestCase
 
         $this->client = $this->get('meilisearch.client');
         $this->objectManager = $this->get('doctrine')->getManager();
-        $this->index = $this->client->index($this->getPrefix().self::$indexName);
+        $this->prefixedIndexName = $this->getPrefix().self::$indexName;
         $this->application = new Application(self::createKernel());
     }
 
@@ -57,7 +56,7 @@ final class SearchTest extends BaseKernelTestCase
         $command = $this->application->find('meilisearch:import');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
-            '--indices' => $this->index->getUid(),
+            '--indices' => $this->prefixedIndexName,
         ]);
 
         $output = $commandTester->getDisplay();
@@ -110,7 +109,7 @@ final class SearchTest extends BaseKernelTestCase
         $command = $this->application->find('meilisearch:import');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
-            '--indices' => $this->index->getUid(),
+            '--indices' => $this->prefixedIndexName,
         ]);
 
         $this->waitForAllTasks();
@@ -137,7 +136,7 @@ final class SearchTest extends BaseKernelTestCase
         $command = $this->application->find('meilisearch:import');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
-            '--indices' => $this->index->getUid(),
+            '--indices' => $this->prefixedIndexName,
         ]);
 
         $this->waitForAllTasks();

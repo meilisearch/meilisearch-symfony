@@ -81,4 +81,36 @@ final class EngineTest extends BaseKernelTestCase
             $this->assertEmpty($searchResult['hits']);
         }
     }
+
+    public function testSearchAcceptsNullFilter(): void
+    {
+        $this->entityManager->persist($post = new Post());
+        $this->entityManager->flush();
+
+        $searchablePost = new SearchableObject($this->getPrefix().'posts', 'objectID', $post, $post->getId(), $this->get('serializer'));
+
+        $this->engine->index($searchablePost);
+        $this->waitForAllTasks();
+
+        $searchResult = $this->engine->search('', $searchablePost->getIndexUid(), ['filter' => null]);
+
+        $this->assertCount(1, $searchResult['hits']);
+        $this->assertSame(1, $this->engine->count('', $searchablePost->getIndexUid(), ['filter' => null]));
+    }
+
+    public function testSearchForwardsParametersTheClientDoesNotKnowToMeilisearch(): void
+    {
+        $this->entityManager->persist($post = new Post());
+        $this->entityManager->flush();
+
+        $searchablePost = new SearchableObject($this->getPrefix().'posts', 'objectID', $post, $post->getId(), $this->get('serializer'));
+
+        $this->engine->index($searchablePost);
+        $this->waitForAllTasks();
+
+        $this->expectException(ApiException::class);
+        $this->expectExceptionMessageMatches('/parameterUnknownToMeilisearch/');
+
+        $this->engine->search('', $searchablePost->getIndexUid(), ['parameterUnknownToMeilisearch' => true]);
+    }
 }
