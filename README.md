@@ -127,6 +127,8 @@ The handlers are registered even without Doctrine, so objects served by a custom
 (re)indexed asynchronously by dispatching the message yourself:
 
 ```php
+use Meilisearch\Bundle\Messenger\IndexSearchablesMessage;
+
 $bus->dispatch(new IndexSearchablesMessage(['actor' => [Actor::class => [1, 2, 3]]]));
 ```
 
