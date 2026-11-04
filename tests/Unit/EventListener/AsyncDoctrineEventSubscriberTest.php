@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle\Tests\Unit\EventListener;
 
 use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\ManagerEventArgs;
+use Doctrine\Persistence\Event\OnClearEventArgs;
 use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\Persistence\ObjectManager;
 use Meilisearch\Bundle\Collection;
@@ -23,6 +25,13 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 final class AsyncDoctrineEventSubscriberTest extends TestCase
 {
+    private ObjectManager $objectManager;
+
+    protected function setUp(): void
+    {
+        $this->objectManager = $this->createObjectManager();
+    }
+
     /**
      * The entity class has no index of its own: it is only part of an aggregator.
      */
@@ -36,7 +45,7 @@ final class AsyncDoctrineEventSubscriberTest extends TestCase
 
         $subscriber = $this->createSubscriber($bus);
         $subscriber->postPersist($this->createEventArgs(new Post('Aggregated post')));
-        $subscriber->postFlush();
+        $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
     }
 
     public function testEntityOnlyPartOfAnAggregatorIsRemoved(): void
@@ -49,7 +58,7 @@ final class AsyncDoctrineEventSubscriberTest extends TestCase
 
         $subscriber = $this->createSubscriber($bus);
         $subscriber->preRemove($this->createEventArgs(new Post('Aggregated post')));
-        $subscriber->postFlush();
+        $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
     }
 
     public function testFailingDispatchDoesNotResendAnAlreadyDispatchedBatch(): void
@@ -74,14 +83,14 @@ final class AsyncDoctrineEventSubscriberTest extends TestCase
         $thrown = false;
 
         try {
-            $subscriber->postFlush();
+            $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
         } catch (\RuntimeException) {
             $thrown = true;
         }
 
         $this->assertTrue($thrown, 'The failing dispatch should not be swallowed.');
 
-        $subscriber->postFlush();
+        $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
 
         $this->assertEquals([
             new IndexSearchablesMessage(['aggregated' => [Post::class => [12]]]),
@@ -111,14 +120,14 @@ final class AsyncDoctrineEventSubscriberTest extends TestCase
         $thrown = false;
 
         try {
-            $subscriber->postFlush();
+            $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
         } catch (\RuntimeException) {
             $thrown = true;
         }
 
         $this->assertTrue($thrown, 'The failing dispatch should not be swallowed.');
 
-        $subscriber->postFlush();
+        $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
 
         $this->assertEquals([
             new IndexSearchablesMessage(['aggregated' => [Post::class => [12]]]),
@@ -139,7 +148,7 @@ final class AsyncDoctrineEventSubscriberTest extends TestCase
         $subscriber->postPersist($this->createEventArgs(new Post('Indexed post')));
         $subscriber->preRemove($this->createEventArgs(new Post('Removed post')));
         $subscriber->reset();
-        $subscriber->postFlush();
+        $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
     }
 
     public function testClearingTheObjectManagerDropsPendingChanges(): void
@@ -149,8 +158,42 @@ final class AsyncDoctrineEventSubscriberTest extends TestCase
 
         $subscriber = $this->createSubscriber($bus);
         $subscriber->preRemove($this->createEventArgs(new Post('Removed post')));
-        $subscriber->onClear();
-        $subscriber->postFlush();
+        $subscriber->onClear(new OnClearEventArgs($this->objectManager));
+        $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
+    }
+
+    /**
+     * The subscriber is shared by all object managers: a flush or clear of one of
+     * them must leave the pending changes of the others alone.
+     */
+    public function testPendingChangesAreKeptPerObjectManager(): void
+    {
+        $dispatched = [];
+
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->method('dispatch')->willReturnCallback(static function (object $message) use (&$dispatched): Envelope {
+            $dispatched[] = $message;
+
+            return new Envelope($message);
+        });
+
+        $otherObjectManager = $this->createObjectManager();
+
+        $subscriber = $this->createSubscriber($bus);
+        $subscriber->preRemove($this->createEventArgs(new Post('Removed post')));
+        $subscriber->postPersist($this->createEventArgs(new Post('Indexed post'), $otherObjectManager));
+
+        $subscriber->postFlush(new ManagerEventArgs($otherObjectManager));
+        $subscriber->onClear(new OnClearEventArgs($otherObjectManager));
+
+        $this->assertEquals([new IndexSearchablesMessage(['aggregated' => [Post::class => [12]]])], $dispatched);
+
+        $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
+
+        $this->assertEquals([
+            new IndexSearchablesMessage(['aggregated' => [Post::class => [12]]]),
+            new RemoveDocumentsMessage(['aggregated' => [12]]),
+        ], $dispatched);
     }
 
     public function testEntityWithoutIndexIsIgnored(): void
@@ -161,7 +204,7 @@ final class AsyncDoctrineEventSubscriberTest extends TestCase
         $subscriber = $this->createSubscriber($bus);
         $subscriber->postPersist($this->createEventArgs(new Comment(new Post(), 'Not indexed')));
         $subscriber->preRemove($this->createEventArgs(new Comment(new Post(), 'Not indexed')));
-        $subscriber->postFlush();
+        $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
     }
 
     private function createSubscriber(MessageBusInterface $bus): AsyncDoctrineEventSubscriber
@@ -184,14 +227,21 @@ final class AsyncDoctrineEventSubscriberTest extends TestCase
         return new AsyncDoctrineEventSubscriber($searchManager, $bus, $registry);
     }
 
-    private function createEventArgs(object $entity): LifecycleEventArgs
+    private function createObjectManager(): ObjectManager
     {
-        $metadata = $this->createStub(ClassMetadata::class);
-        $metadata->method('getName')->willReturn($entity::class);
-
         $objectManager = $this->createStub(ObjectManager::class);
-        $objectManager->method('getClassMetadata')->willReturn($metadata);
+        $objectManager->method('getClassMetadata')->willReturnCallback(function (string $class): ClassMetadata {
+            $metadata = $this->createStub(ClassMetadata::class);
+            $metadata->method('getName')->willReturn($class);
 
-        return new LifecycleEventArgs($entity, $objectManager);
+            return $metadata;
+        });
+
+        return $objectManager;
+    }
+
+    private function createEventArgs(object $entity, ?ObjectManager $objectManager = null): LifecycleEventArgs
+    {
+        return new LifecycleEventArgs($entity, $objectManager ?? $this->objectManager);
     }
 }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Meilisearch\Bundle\EventListener;
 
+use Doctrine\Common\EventArgs;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\ObjectManager;
 use Meilisearch\Bundle\DataProvider\DataProviderRegistryInterface;
 use Meilisearch\Bundle\Messenger\IndexSearchablesMessage;
 use Meilisearch\Bundle\Messenger\RemoveDocumentsMessage;
@@ -25,33 +27,33 @@ use Symfony\Contracts\Service\ResetInterface;
  * Removals resolve their document ids while the entity is still alive and delete by
  * id, so the handler never reloads a deleted entity (see #62).
  *
- * The buffers are cleared when the object manager is cleared and when the service
- * is reset, so changes of a failed flush are never dispatched by a later flush in a
- * long-running process.
+ * Changes are buffered per object manager: a flush only dispatches the changes of
+ * the manager that flushed, and clearing a manager only drops its own changes. All
+ * buffers are cleared when the service is reset, so changes of a failed flush are
+ * never dispatched by a later flush in a long-running process.
  *
  * @internal
  */
 final class AsyncDoctrineEventSubscriber implements ResetInterface
 {
     /**
-     * Searchable entity ids to (re)index, deduplicated per index name and class.
+     * Pending changes per object manager: searchable entity ids to (re)index,
+     * deduplicated per index name and class, and document ids to delete,
+     * deduplicated per index name.
      *
-     * @var array<non-empty-string, array<class-string, array<array-key, int|string>>>
+     * @var \WeakMap<ObjectManager, array{
+     *     index: array<non-empty-string, array<class-string, array<array-key, int|string>>>,
+     *     remove: array<non-empty-string, array<array-key, int|string>>,
+     * }>
      */
-    private array $entitiesToIndex = [];
-
-    /**
-     * Document ids to delete, deduplicated per index name.
-     *
-     * @var array<non-empty-string, array<array-key, int|string>>
-     */
-    private array $documentsToRemove = [];
+    private \WeakMap $pending;
 
     public function __construct(
         private readonly SearchManagerInterface $searchManager,
         private readonly MessageBusInterface $bus,
         private readonly DataProviderRegistryInterface $dataProviderRegistry,
     ) {
+        $this->pending = new \WeakMap();
     }
 
     public function postPersist(LifecycleEventArgs $args): void
@@ -68,31 +70,48 @@ final class AsyncDoctrineEventSubscriber implements ResetInterface
     {
         // Resolve the document ids now, before the entity is gone from the database.
         // The async handler deletes by id and never reloads the entity.
-        foreach ($this->resolveDocumentIds($args) as $indexName => $documentId) {
-            $this->documentsToRemove[$indexName][(string) $documentId] = $documentId;
+        $documentIds = $this->resolveDocumentIds($args);
+
+        if ([] === $documentIds) {
+            return;
         }
+
+        $manager = $args->getObjectManager();
+        $pending = $this->pending[$manager] ?? ['index' => [], 'remove' => []];
+
+        foreach ($documentIds as $indexName => $documentId) {
+            $pending['remove'][$indexName][(string) $documentId] = $documentId;
+        }
+
+        $this->pending[$manager] = $pending;
     }
 
-    public function onClear(): void
+    public function onClear(EventArgs $args): void
     {
         // Pending changes of a cleared object manager will never be flushed.
-        $this->reset();
+        unset($this->pending[self::getObjectManager($args)]);
     }
 
     public function reset(): void
     {
-        $this->entitiesToIndex = [];
-        $this->documentsToRemove = [];
+        $this->pending = new \WeakMap();
     }
 
-    public function postFlush(): void
+    public function postFlush(EventArgs $args): void
     {
-        // Reset the buffers before dispatching, so a failing dispatch can never make a
+        $manager = self::getObjectManager($args);
+        $pending = $this->pending[$manager] ?? null;
+
+        // Clear the buffers before dispatching, so a failing dispatch can never make a
         // later flush send an already dispatched batch again.
-        $entitiesToIndex = $this->entitiesToIndex;
-        $documentsToRemove = $this->documentsToRemove;
-        $this->entitiesToIndex = [];
-        $this->documentsToRemove = [];
+        unset($this->pending[$manager]);
+
+        if (null === $pending) {
+            return;
+        }
+
+        $entitiesToIndex = $pending['index'];
+        $documentsToRemove = $pending['remove'];
 
         try {
             if ([] !== $entitiesToIndex) {
@@ -121,7 +140,25 @@ final class AsyncDoctrineEventSubscriber implements ResetInterface
         $indexName = array_key_first($documentIds);
         $documentId = $documentIds[$indexName];
 
-        $this->entitiesToIndex[$indexName][$class][(string) $documentId] = $documentId;
+        $manager = $args->getObjectManager();
+        $pending = $this->pending[$manager] ?? ['index' => [], 'remove' => []];
+        $pending['index'][$indexName][$class][(string) $documentId] = $documentId;
+        $this->pending[$manager] = $pending;
+    }
+
+    /**
+     * Returns the object manager of a postFlush or onClear event.
+     */
+    private static function getObjectManager(EventArgs $args): ObjectManager
+    {
+        if (method_exists($args, 'getObjectManager')) {
+            return $args->getObjectManager();
+        }
+
+        // doctrine/orm < 2.13 only exposes the entity manager on these events.
+        \assert(method_exists($args, 'getEntityManager'));
+
+        return $args->getEntityManager();
     }
 
     /**
