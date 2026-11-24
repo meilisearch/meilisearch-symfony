@@ -59,7 +59,7 @@ final class AsyncDoctrineEventSubscriberTest extends TestCase
             ->willReturnCallback(static fn (object $message): Envelope => new Envelope($message));
 
         $subscriber = $this->createSubscriber($bus);
-        $subscriber->preRemove($this->createEventArgs(new Post('Aggregated post')));
+        $this->remove($subscriber, new Post('Aggregated post'));
         $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
     }
 
@@ -92,7 +92,7 @@ final class AsyncDoctrineEventSubscriberTest extends TestCase
 
         $subscriber = $this->createSubscriber($bus, $logger);
         $subscriber->postPersist($this->createEventArgs(new Post('Indexed post')));
-        $subscriber->preRemove($this->createEventArgs(new Post('Removed post')));
+        $this->remove($subscriber, new Post('Removed post'));
         $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
         $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
 
@@ -122,7 +122,7 @@ final class AsyncDoctrineEventSubscriberTest extends TestCase
 
         $subscriber = $this->createSubscriber($bus);
         $subscriber->postPersist($this->createEventArgs(new Post('Indexed post')));
-        $subscriber->preRemove($this->createEventArgs(new Post('Removed post')));
+        $this->remove($subscriber, new Post('Removed post'));
         $subscriber->reset();
         $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
     }
@@ -133,7 +133,7 @@ final class AsyncDoctrineEventSubscriberTest extends TestCase
         $bus->expects($this->never())->method('dispatch');
 
         $subscriber = $this->createSubscriber($bus);
-        $subscriber->preRemove($this->createEventArgs(new Post('Removed post')));
+        $this->remove($subscriber, new Post('Removed post'));
         $subscriber->onClear(new OnClearEventArgs($this->objectManager));
         $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
     }
@@ -156,7 +156,7 @@ final class AsyncDoctrineEventSubscriberTest extends TestCase
         $otherObjectManager = $this->createObjectManager();
 
         $subscriber = $this->createSubscriber($bus);
-        $subscriber->preRemove($this->createEventArgs(new Post('Removed post')));
+        $this->remove($subscriber, new Post('Removed post'));
         $subscriber->postPersist($this->createEventArgs(new Post('Indexed post'), $otherObjectManager));
 
         $subscriber->postFlush(new ManagerEventArgs($otherObjectManager));
@@ -188,17 +188,31 @@ final class AsyncDoctrineEventSubscriberTest extends TestCase
         });
 
         $subscriber = $this->createSubscriber($bus);
-        $subscriber->preRemove($this->createEventArgs(new Post('Removed post')));
+        $this->remove($subscriber, new Post('Removed post'));
         $subscriber->onClear($this->createPartialClearEventArgs(Comment::class));
         $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
 
         $this->assertEquals([new RemoveDocumentsMessage(['aggregated' => [12]])], $dispatched);
 
-        $subscriber->preRemove($this->createEventArgs(new Post('Removed post')));
+        $this->remove($subscriber, new Post('Removed post'));
         $subscriber->onClear($this->createPartialClearEventArgs(Post::class));
         $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
 
         $this->assertCount(1, $dispatched);
+    }
+
+    /**
+     * preRemove runs on remove(): a removal that is never flushed must not delete the
+     * document, even when something else is flushed later.
+     */
+    public function testRemovalThatIsNeverFlushedIsNotDispatched(): void
+    {
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects($this->never())->method('dispatch');
+
+        $subscriber = $this->createSubscriber($bus);
+        $subscriber->preRemove($this->createEventArgs(new Post('Removal cancelled before the flush')));
+        $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
     }
 
     public function testEntityWithoutIndexIsIgnored(): void
@@ -208,7 +222,7 @@ final class AsyncDoctrineEventSubscriberTest extends TestCase
 
         $subscriber = $this->createSubscriber($bus);
         $subscriber->postPersist($this->createEventArgs(new Comment(new Post(), 'Not indexed')));
-        $subscriber->preRemove($this->createEventArgs(new Comment(new Post(), 'Not indexed')));
+        $this->remove($subscriber, new Comment(new Post(), 'Not indexed'));
         $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
     }
 
@@ -266,6 +280,18 @@ final class AsyncDoctrineEventSubscriberTest extends TestCase
                 return $this->entityClass;
             }
         };
+    }
+
+    /**
+     * Removes an entity the way a flush does: preRemove on remove(), postRemove once
+     * the entity has been deleted.
+     */
+    private function remove(AsyncDoctrineEventSubscriber $subscriber, object $entity): void
+    {
+        $args = $this->createEventArgs($entity);
+
+        $subscriber->preRemove($args);
+        $subscriber->postRemove($args);
     }
 
     private function createEventArgs(object $entity, ?ObjectManager $objectManager = null): LifecycleEventArgs

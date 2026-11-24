@@ -48,7 +48,7 @@ final class MessengerDependencyInjectionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderNotHasService(self::SYNC_SUBSCRIBER);
         $this->assertContainerBuilderHasService(self::ASYNC_SUBSCRIBER);
 
-        foreach (['postPersist', 'postUpdate', 'preRemove', 'postFlush', 'onClear'] as $event) {
+        foreach (['postPersist', 'postUpdate', 'preRemove', 'postRemove', 'postFlush', 'onClear'] as $event) {
             $this->assertContainerBuilderHasServiceDefinitionWithTag(self::ASYNC_SUBSCRIBER, 'doctrine.event_listener', ['event' => $event]);
             $this->assertContainerBuilderHasServiceDefinitionWithTag(self::ASYNC_SUBSCRIBER, 'doctrine_mongodb.odm.event_listener', ['event' => $event]);
         }

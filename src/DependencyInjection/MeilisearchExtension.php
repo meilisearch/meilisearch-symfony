@@ -111,8 +111,13 @@ final class MeilisearchExtension extends Extension
             $subscriber = $container->getDefinition('meilisearch.async_search_indexer_subscriber');
             $subscriber->replaceArgument(1, new Reference($bus ?? 'messenger.default_bus'));
 
-            // The buffered changes are dispatched once the flush succeeds, and dropped
-            // when the object manager is cleared.
+            // Removals are resolved in preRemove and only queued in postRemove, once the
+            // entity has been deleted. The buffered changes are dispatched once the flush
+            // succeeds, and dropped when the object manager is cleared.
+            if (\in_array('preRemove', $doctrineEvents, true)) {
+                $doctrineEvents[] = 'postRemove';
+            }
+
             foreach ([...$doctrineEvents, 'postFlush', 'onClear'] as $event) {
                 $subscriber->addTag('doctrine.event_listener', ['event' => $event]);
                 $subscriber->addTag('doctrine_mongodb.odm.event_listener', ['event' => $event]);

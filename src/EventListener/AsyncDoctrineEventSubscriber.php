@@ -27,7 +27,9 @@ use Symfony\Contracts\Service\ResetInterface;
  * delivery asynchronous purely through message routing.
  *
  * Removals resolve their document ids while the entity is still alive and delete by
- * id, so the handler never reloads a deleted entity (see #62).
+ * id, so the handler never reloads a deleted entity (see #62). They are only queued
+ * for dispatch once the entity has actually been deleted, so a removal that is never
+ * flushed never reaches the bus.
  *
  * Changes are buffered per object manager: a flush only dispatches the changes of
  * the manager that flushed, and clearing a manager only drops its own changes. All
@@ -51,6 +53,14 @@ final class AsyncDoctrineEventSubscriber implements ResetInterface
      */
     private \WeakMap $pending;
 
+    /**
+     * Document ids resolved in preRemove, per entity, until postRemove confirms that
+     * the entity has been deleted.
+     *
+     * @var \WeakMap<object, array{class: class-string, documentIds: array<non-empty-string, int|string>}>
+     */
+    private \WeakMap $removing;
+
     private readonly LoggerInterface $logger;
 
     public function __construct(
@@ -60,6 +70,7 @@ final class AsyncDoctrineEventSubscriber implements ResetInterface
         ?LoggerInterface $logger = null,
     ) {
         $this->pending = new \WeakMap();
+        $this->removing = new \WeakMap();
         $this->logger = $logger ?? new NullLogger();
     }
 
@@ -75,15 +86,34 @@ final class AsyncDoctrineEventSubscriber implements ResetInterface
 
     public function preRemove(LifecycleEventArgs $args): void
     {
-        // Resolve the document ids now, before the entity is gone from the database.
-        // The async handler deletes by id and never reloads the entity.
+        // Resolve the document ids now, while the entity is still alive: after the
+        // delete its identifier may already be gone. The async handler deletes by id
+        // and never reloads the entity.
         $documentIds = $this->resolveDocumentIds($args);
 
         if ([] === $documentIds) {
             return;
         }
 
-        $class = $this->resolveClass($args);
+        $this->removing[$args->getObject()] = [
+            'class' => $this->resolveClass($args),
+            'documentIds' => $documentIds,
+        ];
+    }
+
+    public function postRemove(LifecycleEventArgs $args): void
+    {
+        // preRemove runs on remove(), postRemove only once the entity has been deleted:
+        // a removal that is never flushed is never dispatched.
+        $entity = $args->getObject();
+
+        if (!isset($this->removing[$entity])) {
+            return;
+        }
+
+        ['class' => $class, 'documentIds' => $documentIds] = $this->removing[$entity];
+        unset($this->removing[$entity]);
+
         $manager = $args->getObjectManager();
         $pending = $this->pending[$manager] ?? ['index' => [], 'remove' => []];
 
@@ -139,6 +169,7 @@ final class AsyncDoctrineEventSubscriber implements ResetInterface
     public function reset(): void
     {
         $this->pending = new \WeakMap();
+        $this->removing = new \WeakMap();
     }
 
     public function postFlush(EventArgs $args): void
