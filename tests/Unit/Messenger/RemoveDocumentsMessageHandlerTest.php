@@ -17,7 +17,7 @@ use Symfony\Component\HttpClient\Response\MockResponse;
 
 final class RemoveDocumentsMessageHandlerTest extends TestCase
 {
-    public function testDocumentsAreRemovedFromTheIndexWithTheConfiguredPrefix(): void
+    public function testDocumentsAreRemovedInChunksFromTheIndexWithTheConfiguredPrefix(): void
     {
         $requests = [];
 
@@ -34,14 +34,17 @@ final class RemoveDocumentsMessageHandlerTest extends TestCase
         });
 
         $searchManager = $this->createStub(SearchManagerInterface::class);
-        $searchManager->method('getConfiguration')->willReturn(new Collection(['prefix' => 'sf_']));
+        $searchManager->method('getConfiguration')->willReturn(new Collection(['prefix' => 'sf_', 'batchSize' => 2]));
 
         $engine = new Engine(new Client('http://meilisearch.test', 'masterKey', new Psr18Client($httpClient)));
 
         (new RemoveDocumentsMessageHandler($searchManager, $engine))(
-            new RemoveDocumentsMessage(['posts' => [1, 2], 'comments' => []])
+            new RemoveDocumentsMessage(['posts' => [1, 2, 3], 'comments' => []])
         );
 
-        $this->assertSame([['POST', '/indexes/sf_posts/documents/delete-batch', [1, 2]]], $requests);
+        $this->assertSame([
+            ['POST', '/indexes/sf_posts/documents/delete-batch', [1, 2]],
+            ['POST', '/indexes/sf_posts/documents/delete-batch', [3]],
+        ], $requests);
     }
 }

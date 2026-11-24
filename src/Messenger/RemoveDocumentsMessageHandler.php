@@ -15,7 +15,8 @@ use Meilisearch\Bundle\SearchManagerInterface;
  * used, which is what avoids the "entity not found" failure described in #62.
  *
  * The configured prefix is added to the index names here, so the documents are
- * removed from the same indices the consuming process indexes into.
+ * removed from the same indices the consuming process indexes into. Documents are
+ * removed in chunks of the configured batch size.
  */
 final class RemoveDocumentsMessageHandler
 {
@@ -27,14 +28,14 @@ final class RemoveDocumentsMessageHandler
 
     public function __invoke(RemoveDocumentsMessage $message): void
     {
-        $prefix = $this->searchManager->getConfiguration()->get('prefix');
+        $configuration = $this->searchManager->getConfiguration();
+        $prefix = $configuration->get('prefix');
+        $batchSize = $configuration->get('batchSize');
 
         foreach ($message->getDocumentIdsByIndex() as $indexName => $ids) {
-            if ([] === $ids) {
-                continue;
+            foreach (array_chunk($ids, $batchSize) as $chunk) {
+                $this->engine->removeDocuments($prefix.$indexName, $chunk);
             }
-
-            $this->engine->removeDocuments($prefix.$indexName, $ids);
         }
     }
 }
