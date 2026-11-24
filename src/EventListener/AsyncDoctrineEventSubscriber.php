@@ -179,7 +179,9 @@ final class AsyncDoctrineEventSubscriber implements ResetInterface
 
         // The handler indexes a reloaded entity into every index it belongs to, so a
         // single index is enough to reload it: its data provider and the id that
-        // provider understands are kept together.
+        // provider understands are kept together. The first configured index is
+        // deliberately the one used, so an entity in several indices with different
+        // data providers is always reloaded through the provider of that index.
         $class = $this->resolveClass($args);
         $indexName = array_key_first($documentIds);
         $documentId = $documentIds[$indexName];
