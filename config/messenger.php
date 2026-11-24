@@ -26,8 +26,10 @@ return static function (ContainerConfigurator $container) {
         ->args([
             service('meilisearch.manager'),
             service('meilisearch.data_provider.registry'),
+            service('logger')->nullOnInvalid(),
         ])
-        ->tag('messenger.message_handler', ['handles' => IndexSearchablesMessage::class]);
+        ->tag('messenger.message_handler', ['handles' => IndexSearchablesMessage::class])
+        ->tag('monolog.logger', ['channel' => 'meilisearch']);
 
     $services->set('meilisearch.messenger.remove_documents_handler', RemoveDocumentsMessageHandler::class)
         ->args([

@@ -13,6 +13,7 @@ use Meilisearch\Bundle\SearchManagerInterface;
 use Meilisearch\Bundle\Tests\Entity\Actor;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 final class IndexSearchablesMessageHandlerTest extends TestCase
 {
@@ -21,6 +22,8 @@ final class IndexSearchablesMessageHandlerTest extends TestCase
         $actors = [new Actor(1, 'Jack Nicholson'), new Actor(2, 'Marlon Brando')];
 
         $dataProvider = $this->createMock(DataProviderInterface::class);
+        $dataProvider->method('getIdentifierValues')->willReturnCallback(static fn (Actor $actor): array => ['id' => $actor->id]);
+        $dataProvider->method('normalizeIdentifiers')->willReturnCallback(static fn (array $identifiers): int => $identifiers['id']);
         $dataProvider->expects($this->once())
             ->method('loadByIdentifiers')
             ->with([1, 2])
@@ -40,7 +43,7 @@ final class IndexSearchablesMessageHandlerTest extends TestCase
         );
     }
 
-    public function testNothingIsIndexedWhenNoObjectIsFound(): void
+    public function testIdentifiersThatResolveToNothingAreLoggedAndSkipped(): void
     {
         $dataProvider = $this->createMock(DataProviderInterface::class);
         $dataProvider->method('loadByIdentifiers')->willReturn([]);
@@ -51,8 +54,43 @@ final class IndexSearchablesMessageHandlerTest extends TestCase
         $searchManager = $this->createSearchManager();
         $searchManager->expects($this->never())->method('index');
 
-        (new IndexSearchablesMessageHandler($searchManager, $registry))(
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())
+            ->method('warning')
+            ->with($this->anything(), ['index' => 'actor', 'class' => Actor::class, 'identifiers' => ['99']]);
+
+        (new IndexSearchablesMessageHandler($searchManager, $registry, $logger))(
             new IndexSearchablesMessage(['actor' => [Actor::class => [99]]])
+        );
+    }
+
+    /**
+     * An identifier that resolves to nothing is ambiguous: deleted since, or not
+     * visible yet because the flush ran inside an uncommitted outer transaction.
+     * It is logged, while the objects that were found are still indexed.
+     */
+    public function testOnlyTheIdentifiersThatResolveToNothingAreLogged(): void
+    {
+        $actor = new Actor(1, 'Jack Nicholson');
+
+        $dataProvider = $this->createMock(DataProviderInterface::class);
+        $dataProvider->method('getIdentifierValues')->willReturnCallback(static fn (Actor $actor): array => ['id' => $actor->id]);
+        $dataProvider->method('normalizeIdentifiers')->willReturnCallback(static fn (array $identifiers): int => $identifiers['id']);
+        $dataProvider->method('loadByIdentifiers')->willReturn([$actor]);
+
+        $registry = $this->createMock(DataProviderRegistryInterface::class);
+        $registry->method('getDataProvider')->willReturn($dataProvider);
+
+        $searchManager = $this->createSearchManager();
+        $searchManager->expects($this->once())->method('index')->with([$actor])->willReturn([]);
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())
+            ->method('warning')
+            ->with($this->anything(), ['index' => 'actor', 'class' => Actor::class, 'identifiers' => ['2', '3']]);
+
+        (new IndexSearchablesMessageHandler($searchManager, $registry, $logger))(
+            new IndexSearchablesMessage(['actor' => [Actor::class => [1, 2, 3]]])
         );
     }
 
@@ -79,6 +117,8 @@ final class IndexSearchablesMessageHandlerTest extends TestCase
         $loaded = [];
 
         $dataProvider = $this->createMock(DataProviderInterface::class);
+        $dataProvider->method('getIdentifierValues')->willReturnCallback(static fn (Actor $actor): array => ['id' => $actor->id]);
+        $dataProvider->method('normalizeIdentifiers')->willReturnCallback(static fn (array $identifiers): int => $identifiers['id']);
         $dataProvider->expects($this->exactly(2))
             ->method('loadByIdentifiers')
             ->willReturnCallback(static function (array $identifiers) use ($actors, &$loaded): array {
