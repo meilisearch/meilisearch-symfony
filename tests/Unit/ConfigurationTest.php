@@ -72,6 +72,10 @@ final class ConfigurationTest extends KernelTestCase
                 'serializer' => 'serializer',
                 'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
                 'http_client' => 'psr18.http_client',
+                'messenger' => [
+                    'enabled' => false,
+                    'bus' => null,
+                ],
                 'indices' => [],
             ],
         ];
@@ -93,6 +97,10 @@ final class ConfigurationTest extends KernelTestCase
                 'serializer' => 'serializer',
                 'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
                 'http_client' => 'psr18.http_client',
+                'messenger' => [
+                    'enabled' => false,
+                    'bus' => null,
+                ],
                 'indices' => [],
             ],
         ];
@@ -120,6 +128,10 @@ final class ConfigurationTest extends KernelTestCase
                 'serializer' => 'serializer',
                 'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
                 'http_client' => 'psr18.http_client',
+                'messenger' => [
+                    'enabled' => false,
+                    'bus' => null,
+                ],
                 'indices' => [
                     0 => [
                         'name' => 'posts',
@@ -209,6 +221,10 @@ final class ConfigurationTest extends KernelTestCase
                 'serializer' => 'serializer',
                 'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
                 'http_client' => 'psr18.http_client',
+                'messenger' => [
+                    'enabled' => false,
+                    'bus' => null,
+                ],
             ],
         ];
 
@@ -250,6 +266,10 @@ final class ConfigurationTest extends KernelTestCase
                 'serializer' => 'serializer',
                 'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
                 'http_client' => 'psr18.http_client',
+                'messenger' => [
+                    'enabled' => false,
+                    'bus' => null,
+                ],
             ],
         ];
 
@@ -292,6 +312,10 @@ final class ConfigurationTest extends KernelTestCase
                 'serializer' => 'serializer',
                 'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
                 'http_client' => 'psr18.http_client',
+                'messenger' => [
+                    'enabled' => false,
+                    'bus' => null,
+                ],
             ],
         ];
 
@@ -334,6 +358,10 @@ final class ConfigurationTest extends KernelTestCase
                 'serializer' => 'serializer',
                 'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
                 'http_client' => 'psr18.http_client',
+                'messenger' => [
+                    'enabled' => false,
+                    'bus' => null,
+                ],
             ],
         ];
 
@@ -352,6 +380,10 @@ final class ConfigurationTest extends KernelTestCase
                 'serializer' => 'serializer',
                 'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
                 'http_client' => 'acme.http_client',
+                'messenger' => [
+                    'enabled' => false,
+                    'bus' => null,
+                ],
             ],
         ];
 
@@ -373,6 +405,10 @@ final class ConfigurationTest extends KernelTestCase
                 'serializer' => 'serializer',
                 'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
                 'http_client' => 'psr18.http_client',
+                'messenger' => [
+                    'enabled' => false,
+                    'bus' => null,
+                ],
                 'indices' => [
                     0 => [
                         'name' => 'posts',
@@ -419,6 +455,10 @@ final class ConfigurationTest extends KernelTestCase
                 'serializer' => 'serializer',
                 'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
                 'http_client' => 'psr18.http_client',
+                'messenger' => [
+                    'enabled' => false,
+                    'bus' => null,
+                ],
                 'indices' => [
                     0 => [
                         'name' => 'posts',
@@ -433,6 +473,31 @@ final class ConfigurationTest extends KernelTestCase
                         'primary_key' => 'postId',
                     ],
                 ],
+            ],
+        ];
+
+        yield 'messenger enabled' => [
+            'inputConfig' => [
+                'meilisearch' => [
+                    'messenger' => [
+                        'enabled' => true,
+                        'bus' => 'app.custom_bus',
+                    ],
+                ],
+            ],
+            'expectedConfig' => [
+                'url' => 'http://localhost:7700',
+                'prefix' => null,
+                'nbResults' => 20,
+                'batchSize' => 500,
+                'serializer' => 'serializer',
+                'doctrineSubscribedEvents' => ['postPersist', 'postUpdate', 'preRemove'],
+                'http_client' => 'psr18.http_client',
+                'messenger' => [
+                    'enabled' => true,
+                    'bus' => 'app.custom_bus',
+                ],
+                'indices' => [],
             ],
         ];
     }
