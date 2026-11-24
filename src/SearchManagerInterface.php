@@ -7,6 +7,7 @@ namespace Meilisearch\Bundle;
 use Meilisearch\Bundle\Exception\NotSearchableException;
 use Meilisearch\Bundle\Model\SearchResults;
 use Meilisearch\Contracts\Task;
+use Meilisearch\Exceptions\ExceptionInterface;
 
 /**
  * @phpstan-import-type SearchResponse from Engine
@@ -37,6 +38,7 @@ interface SearchManagerInterface
      * @return list<array<non-empty-string, Task>>
      *
      * @throws NotSearchableException
+     * @throws ExceptionInterface
      */
     public function index(object|array $searchable): array;
 
@@ -46,6 +48,7 @@ interface SearchManagerInterface
      * @return array<non-empty-string, list<Task>>
      *
      * @throws NotSearchableException
+     * @throws ExceptionInterface
      */
     public function remove(object|array $searchable): array;
 
@@ -53,11 +56,14 @@ interface SearchManagerInterface
      * @param class-string $className
      *
      * @throws NotSearchableException
+     * @throws ExceptionInterface
      */
     public function clear(string $className): Task;
 
     /**
      * @param non-empty-string $indexName
+     *
+     * @throws ExceptionInterface
      */
     public function deleteByIndexName(string $indexName): Task;
 
@@ -65,6 +71,7 @@ interface SearchManagerInterface
      * @param class-string $className
      *
      * @throws NotSearchableException
+     * @throws ExceptionInterface
      */
     public function delete(string $className): Task;
 
@@ -77,6 +84,7 @@ interface SearchManagerInterface
      * @return SearchResults<T>
      *
      * @throws NotSearchableException
+     * @throws ExceptionInterface
      */
     public function search(string $className, string $query = '', array $searchParams = []): SearchResults;
 
@@ -87,6 +95,7 @@ interface SearchManagerInterface
      * @return SearchResponse
      *
      * @throws NotSearchableException
+     * @throws ExceptionInterface
      */
     public function rawSearch(string $className, string $query = '', array $searchParams = []): array;
 
@@ -95,6 +104,7 @@ interface SearchManagerInterface
      * @param array<mixed> $searchParams
      *
      * @throws NotSearchableException
+     * @throws ExceptionInterface
      */
     public function count(string $className, string $query = '', array $searchParams = []): int;
 }
