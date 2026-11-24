@@ -12,6 +12,8 @@ use Meilisearch\Bundle\Messenger\IndexSearchablesMessage;
 use Meilisearch\Bundle\Messenger\RemoveDocumentsMessage;
 use Meilisearch\Bundle\Model\Aggregator;
 use Meilisearch\Bundle\SearchManagerInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Service\ResetInterface;
 
@@ -49,12 +51,16 @@ final class AsyncDoctrineEventSubscriber implements ResetInterface
      */
     private \WeakMap $pending;
 
+    private readonly LoggerInterface $logger;
+
     public function __construct(
         private readonly SearchManagerInterface $searchManager,
         private readonly MessageBusInterface $bus,
         private readonly DataProviderRegistryInterface $dataProviderRegistry,
+        ?LoggerInterface $logger = null,
     ) {
         $this->pending = new \WeakMap();
+        $this->logger = $logger ?? new NullLogger();
     }
 
     public function postPersist(LifecycleEventArgs $args): void
@@ -157,15 +163,29 @@ final class AsyncDoctrineEventSubscriber implements ResetInterface
             }
         }
 
+        if ([] !== $entitiesToIndex) {
+            $this->dispatch(new IndexSearchablesMessage(array_map($this->toLists(...), $entitiesToIndex)));
+        }
+
+        if ([] !== $documentsToRemove) {
+            $this->dispatch(new RemoveDocumentsMessage($this->toLists($documentsToRemove)));
+        }
+    }
+
+    /**
+     * Dispatches a message without letting a failure escape: postFlush runs after the
+     * commit, so an exception would make the caller of flush() treat committed changes
+     * as failed. The failure is logged instead.
+     */
+    private function dispatch(object $message): void
+    {
         try {
-            if ([] !== $entitiesToIndex) {
-                $this->bus->dispatch(new IndexSearchablesMessage(array_map($this->toLists(...), $entitiesToIndex)));
-            }
-        } finally {
-            // The flush already succeeded: a failing index dispatch must not lose the removals.
-            if ([] !== $documentsToRemove) {
-                $this->bus->dispatch(new RemoveDocumentsMessage($this->toLists($documentsToRemove)));
-            }
+            $this->bus->dispatch($message);
+        } catch (\Throwable $exception) {
+            $this->logger->error('Dispatching "{message}" failed after a successful flush; the affected Meilisearch documents are out of date until they are reindexed.', [
+                'message' => $message::class,
+                'exception' => $exception,
+            ]);
         }
     }
 

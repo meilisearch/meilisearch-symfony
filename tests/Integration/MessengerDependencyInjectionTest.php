@@ -65,6 +65,9 @@ final class MessengerDependencyInjectionTest extends AbstractExtensionTestCase
         // The buffers are cleared between requests and messages.
         $this->assertContainerBuilderHasServiceDefinitionWithTag(self::ASYNC_SUBSCRIBER, 'kernel.reset', ['method' => 'reset']);
 
+        // Dispatch failures are logged on the meilisearch channel.
+        $this->assertContainerBuilderHasServiceDefinitionWithTag(self::ASYNC_SUBSCRIBER, 'monolog.logger', ['channel' => 'meilisearch']);
+
         // Default bus is referenced when none is configured.
         $this->assertContainerBuilderHasServiceDefinitionWithArgument(self::ASYNC_SUBSCRIBER, 1, new Reference('messenger.default_bus'));
     }

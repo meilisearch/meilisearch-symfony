@@ -19,7 +19,9 @@ use Meilisearch\Bundle\SearchManagerInterface;
 use Meilisearch\Bundle\Tests\Entity\Comment;
 use Meilisearch\Bundle\Tests\Entity\ContentAggregator;
 use Meilisearch\Bundle\Tests\Entity\Post;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -61,35 +63,37 @@ final class AsyncDoctrineEventSubscriberTest extends TestCase
         $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
     }
 
-    public function testFailingDispatchDoesNotResendAnAlreadyDispatchedBatch(): void
+    /**
+     * postFlush runs after the commit: a failing dispatch must not escape from flush(),
+     * must not keep the other message from being dispatched, and must not be resent.
+     *
+     * @param class-string $failingMessage
+     */
+    #[DataProvider('provideFailingMessages')]
+    public function testFailingDispatchIsLoggedInsteadOfThrown(string $failingMessage): void
     {
         $dispatched = [];
 
         $bus = $this->createMock(MessageBusInterface::class);
-        $bus->method('dispatch')->willReturnCallback(static function (object $message) use (&$dispatched): Envelope {
+        $bus->method('dispatch')->willReturnCallback(static function (object $message) use (&$dispatched, $failingMessage): Envelope {
             $dispatched[] = $message;
 
-            if ($message instanceof RemoveDocumentsMessage) {
+            if ($message instanceof $failingMessage) {
                 throw new \RuntimeException('Transport unavailable');
             }
 
             return new Envelope($message);
         });
 
-        $subscriber = $this->createSubscriber($bus);
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())
+            ->method('error')
+            ->with($this->anything(), $this->callback(static fn (array $context): bool => $failingMessage === $context['message'] && $context['exception'] instanceof \RuntimeException));
+
+        $subscriber = $this->createSubscriber($bus, $logger);
         $subscriber->postPersist($this->createEventArgs(new Post('Indexed post')));
         $subscriber->preRemove($this->createEventArgs(new Post('Removed post')));
-
-        $thrown = false;
-
-        try {
-            $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
-        } catch (\RuntimeException) {
-            $thrown = true;
-        }
-
-        $this->assertTrue($thrown, 'The failing dispatch should not be swallowed.');
-
+        $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
         $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
 
         $this->assertEquals([
@@ -98,41 +102,13 @@ final class AsyncDoctrineEventSubscriberTest extends TestCase
         ], $dispatched);
     }
 
-    public function testFailingIndexDispatchStillDispatchesTheRemovals(): void
+    /**
+     * @return iterable<string, array{class-string}>
+     */
+    public static function provideFailingMessages(): iterable
     {
-        $dispatched = [];
-
-        $bus = $this->createMock(MessageBusInterface::class);
-        $bus->method('dispatch')->willReturnCallback(static function (object $message) use (&$dispatched): Envelope {
-            $dispatched[] = $message;
-
-            if ($message instanceof IndexSearchablesMessage) {
-                throw new \RuntimeException('Message cannot be sent');
-            }
-
-            return new Envelope($message);
-        });
-
-        $subscriber = $this->createSubscriber($bus);
-        $subscriber->postPersist($this->createEventArgs(new Post('Indexed post')));
-        $subscriber->preRemove($this->createEventArgs(new Post('Removed post')));
-
-        $thrown = false;
-
-        try {
-            $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
-        } catch (\RuntimeException) {
-            $thrown = true;
-        }
-
-        $this->assertTrue($thrown, 'The failing dispatch should not be swallowed.');
-
-        $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
-
-        $this->assertEquals([
-            new IndexSearchablesMessage(['aggregated' => [Post::class => [12]]]),
-            new RemoveDocumentsMessage(['aggregated' => [12]]),
-        ], $dispatched);
+        yield 'index message' => [IndexSearchablesMessage::class];
+        yield 'removal message' => [RemoveDocumentsMessage::class];
     }
 
     /**
@@ -236,7 +212,7 @@ final class AsyncDoctrineEventSubscriberTest extends TestCase
         $subscriber->postFlush(new ManagerEventArgs($this->objectManager));
     }
 
-    private function createSubscriber(MessageBusInterface $bus): AsyncDoctrineEventSubscriber
+    private function createSubscriber(MessageBusInterface $bus, ?LoggerInterface $logger = null): AsyncDoctrineEventSubscriber
     {
         $searchManager = $this->createStub(SearchManagerInterface::class);
         $searchManager->method('getConfiguration')->willReturn(new Collection([
@@ -253,7 +229,7 @@ final class AsyncDoctrineEventSubscriberTest extends TestCase
         $registry = $this->createMock(DataProviderRegistryInterface::class);
         $registry->method('getDataProvider')->with('aggregated', Post::class)->willReturn($dataProvider);
 
-        return new AsyncDoctrineEventSubscriber($searchManager, $bus, $registry);
+        return new AsyncDoctrineEventSubscriber($searchManager, $bus, $registry, $logger);
     }
 
     private function createObjectManager(): ObjectManager
