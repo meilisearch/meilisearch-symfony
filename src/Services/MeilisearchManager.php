@@ -8,6 +8,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\Mapping\LegacyReflectionFields;
 use Doctrine\ORM\Proxy\DefaultProxyClassNameResolver;
 use Meilisearch\Bundle\Collection;
+use Meilisearch\Bundle\Contracts\SearchQuery;
 use Meilisearch\Bundle\DataProvider\DataProviderInterface;
 use Meilisearch\Bundle\DataProvider\DataProviderRegistryInterface;
 use Meilisearch\Bundle\Engine;
@@ -206,11 +207,66 @@ final class MeilisearchManager implements SearchManagerInterface
         $this->assertIsSearchable($className);
 
         $response = $this->engine->search($query, $this->searchableAs($className), $searchParams + ['limit' => $this->configuration->get('nbResults')]);
+
+        /** @var SearchResults<T> */
+        return $this->hydrate($className, $response);
+    }
+
+    /**
+     * Run several searches in one request, one result per query, in the order given.
+     *
+     * @param list<SearchQuery> $queries
+     *
+     * @return list<SearchResults<object>>
+     *
+     * @throws NotSearchableException
+     */
+    public function multiSearch(array $queries): array
+    {
+        $payloads = [];
+
+        foreach ($queries as $searchQuery) {
+            $this->assertIsSearchable($searchQuery->className);
+
+            $payloads[] = ['indexUid' => $this->searchableAs($searchQuery->className), 'q' => $searchQuery->query]
+                + $searchQuery->searchParams
+                + ['limit' => $this->configuration->get('nbResults')];
+        }
+
+        if ([] === $payloads) {
+            return [];
+        }
+
+        $response = $this->engine->multiSearch($payloads);
+        $results = [];
+
+        // Walking the queries rather than the response guarantees one result per query, in the
+        // order asked for, which is what the engine returns.
+        foreach ($queries as $position => $searchQuery) {
+            $results[] = $this->hydrate($searchQuery->className, $response['results'][$position]);
+        }
+
+        return $results;
+    }
+
+    /**
+     * Replace the raw hits of one search response with the entities they stand for.
+     *
+     * @param class-string         $className
+     * @param array<string, mixed> $response
+     *
+     * @return SearchResults<object>
+     */
+    private function hydrate(string $className, array $response): SearchResults
+    {
         $response['raw'] = $response;
         $hits = $response[self::RESULT_KEY_HITS];
 
+        // A multi search result names the index it came from. Keep it in the raw response and
+        // drop it from the named arguments, which SearchResults has no field for.
+        unset($response['indexUid']);
+
         if ([] === $hits) {
-            /** @var SearchResults<T> */
             return new SearchResults(...$response);
         }
 
@@ -242,7 +298,6 @@ final class MeilisearchManager implements SearchManagerInterface
 
         $response['hits'] = $results;
 
-        /** @var SearchResults<T> */
         return new SearchResults(...$response);
     }
 

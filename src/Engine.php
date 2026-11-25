@@ -195,6 +195,23 @@ final class Engine
     }
 
     /**
+     * Run several searches in one request.
+     *
+     * @param list<array<string, mixed>> $queries each already carrying its own indexUid
+     *
+     * @return array<string, mixed>
+     *
+     * @throws ApiException
+     */
+    public function multiSearch(array $queries): array
+    {
+        return $this->client->multiSearch(array_map(
+            static fn (array $query): VerbatimMultiSearchQuery => new VerbatimMultiSearchQuery($query),
+            $queries,
+        ));
+    }
+
+    /**
      * Search the index and returns the number of results.
      *
      * @param array<mixed> $searchParams
