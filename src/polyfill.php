@@ -17,7 +17,7 @@ namespace Meilisearch\Contracts {
     use Meilisearch\Contracts\TaskDetails\UnknownTaskDetails;
     use Meilisearch\Exceptions\LogicException;
 
-    if (!class_exists(TaskStatus::class, false)) {
+    if (!class_exists(TaskStatus::class)) {
         enum TaskStatus: string
         {
             case Canceled = 'canceled';
@@ -29,7 +29,7 @@ namespace Meilisearch\Contracts {
         }
     }
 
-    if (!class_exists(TaskType::class, false)) {
+    if (!class_exists(TaskType::class)) {
         enum TaskType: string
         {
             case IndexCreation = 'indexCreation';
@@ -61,7 +61,7 @@ namespace Meilisearch\Contracts {
         }
     }
 
-    if (!class_exists(TaskError::class, false)) {
+    if (!class_exists(TaskError::class)) {
         final class TaskError
         {
             /**
@@ -98,7 +98,7 @@ namespace Meilisearch\Contracts {
         }
     }
 
-    if (!class_exists(Task::class, false)) {
+    if (!class_exists(Task::class)) {
         final class Task implements \ArrayAccess
         {
             /**
@@ -304,7 +304,7 @@ namespace Meilisearch\Contracts {
 namespace Meilisearch\Contracts\TaskDetails {
     use Meilisearch\Contracts\TaskDetails;
 
-    if (!class_exists(DocumentAdditionOrUpdateDetails::class, false)) {
+    if (!class_exists(DocumentAdditionOrUpdateDetails::class)) {
         /**
          * @implements TaskDetails<array{
          *     receivedDocuments: non-negative-int,
@@ -333,7 +333,7 @@ namespace Meilisearch\Contracts\TaskDetails {
         }
     }
 
-    if (!class_exists(DocumentDeletionDetails::class, false)) {
+    if (!class_exists(DocumentDeletionDetails::class)) {
         /**
          * @implements TaskDetails<array{
          *     providedIds?: non-negative-int,
@@ -366,7 +366,7 @@ namespace Meilisearch\Contracts\TaskDetails {
         }
     }
 
-    if (!class_exists(DocumentEditionDetails::class, false)) {
+    if (!class_exists(DocumentEditionDetails::class)) {
         /**
          * @implements TaskDetails<array{
          *     context: array<non-empty-string, scalar|null>,
@@ -403,7 +403,7 @@ namespace Meilisearch\Contracts\TaskDetails {
         }
     }
 
-    if (!class_exists(DumpCreationDetails::class, false)) {
+    if (!class_exists(DumpCreationDetails::class)) {
         /**
          * @implements TaskDetails<array{
          *     dumpUid: non-empty-string|null
@@ -428,7 +428,7 @@ namespace Meilisearch\Contracts\TaskDetails {
         }
     }
 
-    if (!class_exists(IndexCreationDetails::class, false)) {
+    if (!class_exists(IndexCreationDetails::class)) {
         /**
          * @implements TaskDetails<array{
          *     primaryKey: non-empty-string|null
@@ -453,7 +453,7 @@ namespace Meilisearch\Contracts\TaskDetails {
         }
     }
 
-    if (!class_exists(IndexDeletionDetails::class, false)) {
+    if (!class_exists(IndexDeletionDetails::class)) {
         /**
          * @implements TaskDetails<array{
          *     deletedDocuments: non-negative-int|null
@@ -478,7 +478,7 @@ namespace Meilisearch\Contracts\TaskDetails {
         }
     }
 
-    if (!class_exists(IndexSwapDetails::class, false)) {
+    if (!class_exists(IndexSwapDetails::class)) {
         /**
          * @implements TaskDetails<array{
          *     swaps: array<array{indexes: mixed, rename: bool}>
@@ -503,7 +503,7 @@ namespace Meilisearch\Contracts\TaskDetails {
         }
     }
 
-    if (!class_exists(IndexUpdateDetails::class, false)) {
+    if (!class_exists(IndexUpdateDetails::class)) {
         /**
          * @implements TaskDetails<array{
          *     primaryKey: non-empty-string|null
@@ -528,7 +528,7 @@ namespace Meilisearch\Contracts\TaskDetails {
         }
     }
 
-    if (!class_exists(SettingsUpdateDetails::class, false)) {
+    if (!class_exists(SettingsUpdateDetails::class)) {
         /**
          * @implements TaskDetails<array{
          *     dictionary?: list<string>,
@@ -671,7 +671,7 @@ namespace Meilisearch\Contracts\TaskDetails {
         }
     }
 
-    if (!class_exists(TaskCancelationDetails::class, false)) {
+    if (!class_exists(TaskCancelationDetails::class)) {
         /**
          * @implements TaskDetails<array{
          *     matchedTasks: non-negative-int|null,
@@ -704,7 +704,7 @@ namespace Meilisearch\Contracts\TaskDetails {
         }
     }
 
-    if (!class_exists(TaskDeletionDetails::class, false)) {
+    if (!class_exists(TaskDeletionDetails::class)) {
         /**
          * @implements TaskDetails<array{
          *     matchedTasks: non-negative-int|null,
@@ -737,7 +737,7 @@ namespace Meilisearch\Contracts\TaskDetails {
         }
     }
 
-    if (!class_exists(UnknownTaskDetails::class, false)) {
+    if (!class_exists(UnknownTaskDetails::class)) {
         /**
          * @implements TaskDetails<array<mixed>>
          */
@@ -760,7 +760,7 @@ namespace Meilisearch\Contracts\TaskDetails {
 }
 
 namespace Meilisearch\Exceptions {
-    if (!class_exists(LogicException::class, false)) {
+    if (!class_exists(LogicException::class)) {
         final class LogicException extends \LogicException implements ExceptionInterface
         {
         }
