@@ -264,6 +264,11 @@ namespace Meilisearch\Contracts {
                 $details = $data['details'] ?? null;
                 $type = TaskType::tryFrom($data['type']) ?? TaskType::Unknown;
 
+                // A known task type with empty details carries no details object
+                if ([] === $details) {
+                    $details = null;
+                }
+
                 return new self(
                     $data['taskUid'] ?? $data['uid'],
                     $data['indexUid'] ?? null,
