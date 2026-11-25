@@ -7,6 +7,7 @@ namespace Meilisearch\Contracts {
     use Meilisearch\Contracts\TaskDetails\DocumentDeletionDetails;
     use Meilisearch\Contracts\TaskDetails\DocumentEditionDetails;
     use Meilisearch\Contracts\TaskDetails\DumpCreationDetails;
+    use Meilisearch\Contracts\TaskDetails\IndexCompactionDetails;
     use Meilisearch\Contracts\TaskDetails\IndexCreationDetails;
     use Meilisearch\Contracts\TaskDetails\IndexDeletionDetails;
     use Meilisearch\Contracts\TaskDetails\IndexSwapDetails;
@@ -44,6 +45,10 @@ namespace Meilisearch\Contracts {
             case TaskCancelation = 'taskCancelation';
             case TaskDeletion = 'taskDeletion';
             case SnapshotCreation = 'snapshotCreation';
+            case NetworkTopologyChange = 'networkTopologyChange';
+            case IndexCompaction = 'indexCompaction';
+            case DsrUpdate = 'dsrUpdate';
+            case DsrClear = 'dsrClear';
             case Unknown = 'unknown';
         }
     }
@@ -264,6 +269,11 @@ namespace Meilisearch\Contracts {
                 $details = $data['details'] ?? null;
                 $type = TaskType::tryFrom($data['type']) ?? TaskType::Unknown;
 
+                // A known task type with empty details carries no details object
+                if ([] === $details) {
+                    $details = null;
+                }
+
                 return new self(
                     $data['taskUid'] ?? $data['uid'],
                     $data['indexUid'] ?? null,
@@ -287,9 +297,10 @@ namespace Meilisearch\Contracts {
                         TaskType::DumpCreation => null !== $details ? DumpCreationDetails::fromArray($details) : null,
                         TaskType::TaskCancelation => null !== $details ? TaskCancelationDetails::fromArray($details) : null,
                         TaskType::TaskDeletion => null !== $details ? TaskDeletionDetails::fromArray($details) : null,
-                        // It’s intentional that SnapshotCreation tasks don’t have a details object
-                        // (no SnapshotCreationDetails exists and tests don’t exercise any details)
-                        TaskType::SnapshotCreation => null,
+                        // It’s intentional that these task types don’t have a details object
+                        // (meilisearch-php defines no matching TaskDetails class for them)
+                        TaskType::SnapshotCreation, TaskType::NetworkTopologyChange, TaskType::DsrUpdate, TaskType::DsrClear => null,
+                        TaskType::IndexCompaction => null !== $details ? IndexCompactionDetails::fromArray($details) : null,
                         TaskType::Unknown => UnknownTaskDetails::fromArray($details ?? []),
                     },
                     \array_key_exists('error', $data) && null !== $data['error'] ? TaskError::fromArray($data['error']) : null,
@@ -423,6 +434,35 @@ namespace Meilisearch\Contracts\TaskDetails {
             {
                 return new self(
                     $data['dumpUid'],
+                );
+            }
+        }
+    }
+
+    if (!class_exists(IndexCompactionDetails::class, false)) {
+        /**
+         * @implements TaskDetails<array{
+         *     preCompactionSize: non-empty-string,
+         *     postCompactionSize: non-empty-string
+         * }>
+         */
+        final class IndexCompactionDetails implements TaskDetails
+        {
+            /**
+             * @param non-empty-string $preCompactionSize
+             * @param non-empty-string $postCompactionSize
+             */
+            public function __construct(
+                public readonly string $preCompactionSize,
+                public readonly string $postCompactionSize,
+            ) {
+            }
+
+            public static function fromArray(array $data): self
+            {
+                return new self(
+                    $data['preCompactionSize'],
+                    $data['postCompactionSize'],
                 );
             }
         }
