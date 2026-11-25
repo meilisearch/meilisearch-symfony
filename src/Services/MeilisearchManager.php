@@ -165,11 +165,17 @@ final class MeilisearchManager implements SearchManagerInterface
         $responses = [];
         foreach ($batches as $objects) {
             foreach (array_chunk($objects, $this->configuration->get('batchSize')) as $chunk) {
-                $responses[] = $this->engine->remove($chunk);
+                foreach ($this->engine->remove($chunk) as $indexUid => $tasks) {
+                    $responses[$indexUid] ??= [];
+
+                    foreach ($tasks as $task) {
+                        $responses[$indexUid][] = $task;
+                    }
+                }
             }
         }
 
-        return array_merge(...$responses);
+        return $responses;
     }
 
     public function clear(string $className): Task
