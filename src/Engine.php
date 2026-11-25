@@ -123,15 +123,8 @@ final class Engine
         }
 
         $result = [];
-        foreach ($data as $indexUid => $objects) {
-            $result[$indexUid] = [];
-            foreach ($objects as $object) {
-                $result[$indexUid][] = $this->wrapTask(
-                    $this->client
-                        ->index($indexUid)
-                        ->deleteDocument($object)
-                );
-            }
+        foreach ($data as $indexUid => $ids) {
+            $result[$indexUid] = [$this->removeDocuments($indexUid, $ids)];
         }
 
         return $result;

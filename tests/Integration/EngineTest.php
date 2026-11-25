@@ -71,7 +71,7 @@ final class EngineTest extends BaseKernelTestCase
         $result = $this->engine->remove([$postSearchable1, $postSearchable2]);
 
         $this->assertArrayHasKey('sf_phpunit__posts', $result);
-        $this->assertCount(2, $result['sf_phpunit__posts']);
+        $this->assertCount(1, $result['sf_phpunit__posts']);
 
         $this->waitForAllTasks();
 
