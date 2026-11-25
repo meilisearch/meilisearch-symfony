@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Meilisearch\Bundle;
 
+use Meilisearch\Bundle\Contracts\SearchQuery;
 use Meilisearch\Bundle\Exception\NotSearchableException;
 use Meilisearch\Bundle\Model\SearchResults;
 use Meilisearch\Contracts\Task;
@@ -55,6 +56,17 @@ interface SearchManagerInterface
      * @throws NotSearchableException
      */
     public function clear(string $className): Task;
+
+    /**
+     * Run several searches in one request, one result per query, in the order given.
+     *
+     * @param list<SearchQuery> $queries
+     *
+     * @return list<SearchResults<object>>
+     *
+     * @throws NotSearchableException
+     */
+    public function multiSearch(array $queries): array;
 
     /**
      * @param non-empty-string $indexName

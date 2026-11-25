@@ -48,6 +48,16 @@ namespace Meilisearch\Contracts {
         }
     }
 
+    if (!class_exists(MultiSearchQuery::class)) {
+        /**
+         * Only the name is needed: the bundle sends its payload through
+         * {@see \Meilisearch\Bundle\VerbatimMultiSearchQuery}.
+         */
+        class MultiSearchQuery extends SearchQuery
+        {
+        }
+    }
+
     if (!interface_exists(TaskDetails::class)) {
         /**
          * @template T of array
