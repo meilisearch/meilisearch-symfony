@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Meilisearch\Bundle\Tests\Unit;
 
 use Meilisearch\Bundle\Engine;
+use Meilisearch\Bundle\SearchableObject;
 use Meilisearch\Client;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7\Response;
@@ -12,13 +13,19 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class EngineTest extends TestCase
 {
     /**
-     * @var list<array<string, mixed>>
+     * @var list<array<mixed>>
      */
     private array $sentBodies = [];
+
+    /**
+     * @var list<non-empty-string>
+     */
+    private array $sentRequests = [];
 
     /**
      * @param array<mixed> $searchParams
@@ -63,11 +70,46 @@ final class EngineTest extends TestCase
         $this->assertEquals([['q' => 'from parameters']], $this->sentBodies);
     }
 
+    public function testRemoveDeletesTheDocumentsOfAnIndexInOneRequest(): void
+    {
+        $normalizer = $this->createStub(NormalizerInterface::class);
+
+        $tasks = $this->createEngine()->remove([
+            new SearchableObject('posts', 'objectID', new \stdClass(), 1, $normalizer),
+            new SearchableObject('posts', 'objectID', new \stdClass(), 2, $normalizer),
+            new SearchableObject('tags', 'objectID', new \stdClass(), 3, $normalizer),
+        ]);
+
+        $this->assertSame([
+            'POST /indexes/posts/documents/delete-batch',
+            'POST /indexes/tags/documents/delete-batch',
+        ], $this->sentRequests);
+        $this->assertSame([[1, 2], [3]], $this->sentBodies);
+        $this->assertCount(1, $tasks['posts']);
+        $this->assertCount(1, $tasks['tags']);
+    }
+
     private function createEngine(): Engine
     {
         $httpClient = $this->createMock(ClientInterface::class);
         $httpClient->method('sendRequest')->willReturnCallback(function (RequestInterface $request): Response {
-            $this->sentBodies[] = json_decode((string) $request->getBody(), true, 512, \JSON_THROW_ON_ERROR);
+            $path = $request->getUri()->getPath();
+            $body = (string) $request->getBody();
+
+            $this->sentRequests[] = $request->getMethod().' '.$path;
+
+            if ('' !== $body) {
+                $this->sentBodies[] = json_decode($body, true, 512, \JSON_THROW_ON_ERROR);
+            }
+
+            if (str_contains($path, '/documents')) {
+                return new Response(202, ['Content-Type' => 'application/json'], json_encode([
+                    'taskUid' => 1,
+                    'status' => 'enqueued',
+                    'type' => 'documentDeletion',
+                    'enqueuedAt' => '2026-01-01T00:00:00Z',
+                ], \JSON_THROW_ON_ERROR));
+            }
 
             return new Response(200, ['Content-Type' => 'application/json'], json_encode([
                 'hits' => [['id' => 1]],
