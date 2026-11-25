@@ -37,6 +37,10 @@ final class MeilisearchExtension extends Extension
         $container->setParameter('meili_api_key', $config['api_key'] ?? null);
         $container->setParameter('meili_symfony_version', MeilisearchBundle::qualifiedVersion());
 
+        foreach (['meili_url', 'meili_api_key', 'meili_symfony_version'] as $parameter) {
+            $container->deprecateParameter($parameter, 'meilisearch/meilisearch-symfony', '0.17', 'The parameter "%s" is deprecated and will be removed, it is no longer used by the bundle.');
+        }
+
         foreach ($config['indices'] as $index => $indice) {
             $config['indices'][$index]['prefixed_name'] = $config['prefix'].$indice['name'];
             $config['indices'][$index]['settings'] = $this->findReferences($config['indices'][$index]['settings']);
