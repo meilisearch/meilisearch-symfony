@@ -64,21 +64,22 @@ final class MeilisearchManager implements SearchManagerInterface
     {
         $className = $this->getBaseClassName($className);
 
-        return \in_array($className, $this->searchables, true);
+        if (\in_array($className, $this->searchables, true)) {
+            return true;
+        }
+
+        foreach ($this->searchables as $searchable) {
+            if (is_subclass_of($className, $searchable)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function searchableAs(string $className): string
     {
-        $baseClassName = $this->getBaseClassName($className);
-
-        $indexes = new Collection($this->getConfiguration()->get('indices'));
-        $index = $indexes->firstWhere('class', $baseClassName);
-
-        if (null === $index) {
-            throw new NotSearchableException($baseClassName);
-        }
-
-        return $this->getConfiguration()->get('prefix').$index['name'];
+        return $this->getConfiguration()->get('prefix').$this->indexConfig($this->getBaseClassName($className))['name'];
     }
 
     public function getConfiguration(): Collection
@@ -215,8 +216,7 @@ final class MeilisearchManager implements SearchManagerInterface
         }
 
         $baseClassName = $this->getBaseClassName($className);
-        $indexes = new Collection($this->getConfiguration()->get('indices'));
-        $index = $indexes->firstWhere('class', $baseClassName);
+        $index = $this->indexConfig($baseClassName);
         $primaryKey = $index['primary_key'];
 
         $identifiers = array_column($hits, $primaryKey);
@@ -373,6 +373,39 @@ final class MeilisearchManager implements SearchManagerInterface
         }
 
         return $batch;
+    }
+
+    /**
+     * The index configured for this class, or for the closest class it extends.
+     *
+     * @param class-string $className
+     *
+     * @return array<string, mixed>
+     *
+     * @throws NotSearchableException
+     */
+    private function indexConfig(string $className): array
+    {
+        $indexes = new Collection($this->getConfiguration()->get('indices'));
+        $index = $indexes->firstWhere('class', $className);
+
+        // class_parents() lists ancestors nearest first, so a class configured closer in the
+        // hierarchy wins over one configured earlier in the configuration.
+        foreach (array_keys(class_parents($className) ?: []) as $parent) {
+            if (\is_array($index)) {
+                break;
+            }
+
+            $index = $indexes->firstWhere('class', $parent);
+        }
+
+        $index ??= $indexes->first(static fn (array $index): bool => is_subclass_of($className, $index['class']));
+
+        if (!\is_array($index)) {
+            throw new NotSearchableException($className);
+        }
+
+        return $index;
     }
 
     private function assertIsSearchable(string $className): void
