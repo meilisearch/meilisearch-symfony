@@ -13,6 +13,7 @@ use Meilisearch\Bundle\SearchManagerInterface;
 use Meilisearch\Bundle\Services\SettingsUpdater;
 use Meilisearch\Client;
 use Meilisearch\Contracts\TaskStatus;
+use Meilisearch\Exceptions\ExceptionInterface;
 use Meilisearch\Exceptions\TimeOutException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -104,7 +105,13 @@ final class MeilisearchImportCommand extends IndexCommand
             $output->writeln('<info>Importing for index '.$entityClassName.'</info>');
 
             if ($updateSettings) {
-                $this->settingsUpdater->update($index['prefixed_name'], $responseTimeout, $prefix ? $prefix.$index['prefixed_name'] : null);
+                try {
+                    $this->settingsUpdater->update($index['prefixed_name'], $responseTimeout, $prefix ? $prefix.$index['prefixed_name'] : null);
+                } catch (ExceptionInterface|TaskException $e) {
+                    $output->writeln('<error>Settings of the <info>'.$index['prefixed_name'].'</info> index couldn\'t be updated: '.$e->getMessage().'</error>');
+
+                    return self::FAILURE;
+                }
             }
 
             $page = max(0, (int) $input->getOption('skip-batches'));
