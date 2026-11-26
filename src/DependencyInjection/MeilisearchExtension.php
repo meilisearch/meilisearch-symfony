@@ -206,6 +206,9 @@ final class MeilisearchExtension extends Extension
             'class' => $class,
         ]);
 
+        // The definition is not autoconfigured, so the tag is set here.
+        $definition->addTag('kernel.reset', ['method' => 'reset']);
+
         $container->setDefinition($definitionId, $definition);
     }
 }

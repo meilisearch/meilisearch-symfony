@@ -26,7 +26,8 @@
     "symfony/event-dispatcher": "^6.4 || ^7.0 || ^8.0",
     "symfony/http-kernel": "^6.4 || ^7.0 || ^8.0",
     "symfony/property-access": "^6.4 || ^7.0 || ^8.0",
-    "symfony/serializer": "^6.4 || ^7.0 || ^8.0"
+    "symfony/serializer": "^6.4 || ^7.0 || ^8.0",
+    "symfony/service-contracts": "^2.5 || ^3"
   },
   "require-dev": {
     "doctrine/doctrine-bundle": "^2.10 || ^3.0",
